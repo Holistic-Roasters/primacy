@@ -93,7 +93,7 @@
             background-color: var(--primary);
             color: var(--light);
             padding: 1rem 2.5rem;
-            border-radius: 0;
+            border-radius: 50px;
             font-weight: 500;
             font-size: 1rem;
             letter-spacing: 0.05em;
@@ -233,6 +233,18 @@
             margin-top: 8rem;
         }
         
+        @media (max-width: 768px) {
+        .content-table, .content-table tbody, .content-table tr, .content-table td {
+            display: block;
+            width: 100%;
+        }
+        
+        .content-table td {
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+    }
+        
         @media (max-width: 1024px) {
             .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
@@ -248,16 +260,14 @@
             width: 100%;
             z-index: 100;
             transition: var(--fast-transition);
-            mix-blend-mode: difference;
+            background-color: white;
         }
         
         header.scrolled {
-            background-color: var(--light);
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            mix-blend-mode: normal;
         }
         
-        header.scrolled .logo, header.scrolled .nav-links a {
+        header.scrolled .nav-links a {
             color: var(--dark);
         }
         
@@ -278,9 +288,10 @@
             transition: var(--fast-transition);
         }
         
-        .logo img, .logo svg {
-            height: 30px;
+        .logo img {
+            height: 40px;
             margin-right: 10px;
+            object-fit: contain;
         }
         
         .nav-links {
@@ -293,7 +304,7 @@
         }
         
         .nav-links a {
-            color: var(--light);
+            color: var(--dark);
             font-weight: 500;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -321,7 +332,7 @@
             display: none;
             background: none;
             border: none;
-            color: var(--light);
+            color: var(--primary);
             font-size: 1.5rem;
             cursor: pointer;
             transition: var(--fast-transition);
@@ -544,22 +555,29 @@
             padding: clamp(5rem, 15vw, 12rem) 0;
         }
         
-        .features-list {
-            margin-top: 5rem;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
         }
         
-        .feature-item {
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--fast-transition);
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 5rem;
+            flex-direction: column;
         }
         
-        .feature-item:last-child {
-            margin-bottom: 0;
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
         .feature-icon {
-            flex-shrink: 0;
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -567,20 +585,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--light);
             font-size: 1.5rem;
         }
         
         .feature-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
             color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
         }
         
         .feature-content p {
-            font-size: 1.1rem;
             color: var(--dark-gray);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         /* Comparison Section */
@@ -878,9 +903,10 @@
             align-items: center;
         }
         
-        .footer-logo img, .footer-logo svg {
-            height: 30px;
+        .footer-logo img {
+            height: 35px;
             margin-right: 10px;
+            object-fit: contain;
         }
         
         .footer-about p {
@@ -1019,15 +1045,7 @@
         <div class="container">
             <nav>
                 <a href="#" class="logo">
-                    <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="10" y="10" width="80" height="70" rx="10" fill="white" />
-                        <circle cx="50" cy="35" r="10" fill="#ff373d" />
-                        <path d="M50 25 L50 10 L60 25 Z" fill="#ff373d" />
-                        <path d="M40 45 L30 65 L50 55 L70 65 L60 45 Z" fill="#ff373d" />
-                        <path d="M40 65 L35 75 L45 70 Z" fill="#ff373d" />
-                        <path d="M60 65 L65 75 L55 70 Z" fill="#ff373d" />
-                    </svg>
-                    PRIMACY.IO
+                    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/primacy_logo_bw.png?v=1742777076" alt="Primacy Logo" style="height: 40px;">
                 </a>
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
@@ -1047,10 +1065,17 @@
     <section class="hero" id="home">
         <div class="hero-background"></div>
         <div class="container hero-content">
-            <h1 class="hero-heading">Is Shopify's Blog Holding You Back?</h1>
-            <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
-            <div class="hero-cta">
-                <a href="#contact" class="btn">Let's Fix That</a>
+            <h1 class="hero-heading" style="margin-bottom: 3rem;">Is Shopify's Blog Holding You Back?</h1>
+            <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+                <div class="hero-text">
+                    <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
+                    <div class="hero-cta">
+                        <a href="#contact" class="btn">Let's Fix That</a>
+                    </div>
+                </div>
+                <div class="hero-image" style="text-align: right;">
+                    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopifyblog.png?v=1742772724" alt="Standard Shopify Blog" style="max-width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+                </div>
             </div>
         </div>
         <div class="scroll-indicator">
@@ -1065,20 +1090,41 @@
     <section class="about section-spacing" id="about">
         <div class="container">
             <h2 class="section-heading fade-in">Transform Your Content</h2>
-            <div class="about-content fade-in stagger-1">
-                <p>At <strong>Primacy</strong>, we transform your existing blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
-                <p>Our approach focuses on creating visually engaging, interactive content that keeps readers on your page longer and drives conversions.</p>
-            </div>
+            <table class="content-table" style="width: 100%; border-collapse: collapse; margin-top: 2rem;">
+                <tr>
+                    <td style="width: 50%; padding-right: 2rem; vertical-align: top;">
+                        <div class="about-content fade-in stagger-1">
+                            <p>At <strong>Primacy</strong>, we transform your existing blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
+                            <p>Our approach focuses on creating visually engaging, interactive content that keeps readers on your page longer and drives conversions.There are no apps to install and no monthy fees. We work directly in the code using HTML, CSS and Javascript.</p>
+							
+							
+							
+							<div class="shopify-partner" style="text-align: left;">
+							    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopify-partner.png?v=1742826953" alt="Shopify Partner" style="width: 39%; height: auto;">
+							    <p style="font-size: 10pt; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Enhancing your store's blog experience with expert solutions.<br></p>
+							</div>
+							
+							
+                            <a href="https://biodynamic.coffee/blogs/lifestyle/unlocking-the-perfect-brew-the-ideal-rest-period-for-specialty-coffee" class="btn" style="margin-top: 1.5rem;" target="_blank">View Blog Post</a>
+                        </div>
+                    </td>
+                    <td style="width: 50%; vertical-align: top;">
+                        <div class="about-image-wrapper fade-in stagger-2">
+                            <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/blog-post-example.png?v=1742769108" alt="Blog Post Example" class="about-image" style="width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </section>
     
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
-            <h2 class="section-heading fade-in">Why Upgrade Your Shopify Blog with Primacy?</h2>
+            <h2 class="section-heading fade-in">Why Upgrade Your Shopify Blog?</h2>
             
-            <div class="features-list">
-                <div class="feature-item fade-in stagger-1">
+            <div class="features-grid fade-in stagger-1">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-layer-group"></i>
                     </div>
@@ -1088,7 +1134,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-item fade-in stagger-2">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-film"></i>
                     </div>
@@ -1098,17 +1144,17 @@
                     </div>
                 </div>
                 
-                <div class="feature-item fade-in stagger-3">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-hand-pointer"></i>
                     </div>
                     <div class="feature-content">
                         <h3>Add interaction where it matters</h3>
-                        <p><strong>Tabs, accordions, scroll effects, expandable tips—give your audience something to <em>explore</em>, not just read.</strong></p>
+                        <p><strong>Tabs, scroll effects, interactive graphs & sliders, and expandable tips—give your audience something to <em>explore</em>, not just read.</strong></p>
                     </div>
                 </div>
                 
-                <div class="feature-item fade-in stagger-4">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-palette"></i>
                     </div>
@@ -1124,7 +1170,7 @@
     <!-- Comparison Section -->
     <section class="comparison section-spacing" id="comparison">
         <div class="container">
-            <h2 class="section-heading text-center fade-in">Before & After: See the Difference</h2>
+            <h2 class="section-heading fade-in">Before & After: See the Difference</h2>
             
             <div class="comparison-tabs fade-in stagger-1">
                 <button class="tab-button active" data-tab="tab1">Product Reviews</button>
@@ -1136,10 +1182,7 @@
                 <div class="comparison-grid">
                     <div class="comparison-card fade-in stagger-2">
                         <div class="comparison-image">
-                            <div class="comparison-image-placeholder">
-                                <p>Standard Shopify Blog Post</p>
-                                <p><small>(Placeholder for before image)</small></p>
-                            </div>
+                            <iframe width="100%" height="300" src="https://www.youtube.com/embed/p9WREuoEcAs" title="Standard Shopify Blog Post" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="comparison-details">
                             <h3 class="comparison-title">Before</h3>
@@ -1155,10 +1198,7 @@
                     
                     <div class="comparison-card fade-in stagger-3">
                         <div class="comparison-image">
-                            <div class="comparison-image-placeholder">
-                                <p>Primacy Enhanced Post</p>
-                                <p><small>(Placeholder for after image)</small></p>
-                            </div>
+                            <iframe width="100%" height="300" src="https://www.youtube.com/embed/yDN2TNVAdFU" title="Primacy Enhanced Post" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="comparison-details">
                             <h3 class="comparison-title">After</h3>
@@ -1328,43 +1368,259 @@
             </div>
         </div>
     </section>
+	
+	
     
-    <!-- Pricing Section -->
-    <section class="pricing section-spacing" id="pricing">
-        <div class="container">
-            <h2 class="section-heading text-center fade-in">Transparent, Scalable Pricing</h2>
+	  <!-- Pricing Section -->
+	  <section class="pricing section-spacing" id="pricing">
+	      <div class="container">
+	          <h2 class="section-heading fade-in">Simple, Transparent Pricing</h2>
+        
+	          <!-- Currency Picker -->
+	          <div class="currency-picker-container fade-in stagger-1" style="margin-bottom: 2rem; text-align: left;">
+	              <p class="currency-label" style="display: inline-block; margin-right: 1rem; font-weight: 500; margin-bottom: 0;">Select your currency:</p>
+	              <div class="currency-picker" style="display: inline-flex; flex-wrap: wrap; gap: 0.5rem;">
+	                  <button class="currency-btn active" data-currency="USD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/us.svg" alt="USA Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>USD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="CAD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/ca.svg" alt="Canada Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>CAD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="EUR" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/eu.svg" alt="EU Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>EUR</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="GBP" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/gb.svg" alt="UK Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>GBP</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="AUD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/au.svg" alt="Australia Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>AUD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="HKD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/hk.svg" alt="Japan Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>HKD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="SGD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/sg.svg" alt="Singapore Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>SGD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="JPY" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/jp.svg" alt="Japan Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>JPY</span>
+	                  </button>
+					  
+	              </div>
+	          </div>
+        
+	          <!-- Pricing Table -->
+	          <table class="pricing-table fade-in stagger-2">
+	              <thead>
+	                  <tr>
+	                      <th>Package</th>
+	                      <th>Price per post</th>
+	                      <th>Add "Listen to this Article"</th>
+	                  </tr>
+	              </thead>
+	              <tbody>
+	                  <tr>
+	                      <td>Transform 3–10 blog posts</td>
+	                      <td class="price">$279<span class="price-note"> each</span></td>
+	                      <td class="price">$79<span class="price-note"> each</span></td>
+	                  </tr>
+	                  <tr>
+	                      <td>Transform 11-49 blog posts</td>
+	                      <td class="price">$249<span class="price-note"> each</span></td>
+	                      <td class="price">$69<span class="price-note"> each</span></td>
+	                  </tr>
+	                  <tr>
+	                      <td>Transform 50+ blog posts</td>
+	                      <td class="price">$199<span class="price-note"> each</span></td>
+	                      <td class="price">$59<span class="price-note"> each</span></td>
+	                  </tr>
+	              </tbody>
+	          </table>
+			  
+			  
+			<div style="text-align: right;"><p>
+			    <p style="font-size: 10pt; margin: 0;">100% Satisfaction Guaranteed or Your Money Back&nbsp;&nbsp;&nbsp;<br></p>
+			</div>
+			  
+			  
+			  
+
+	          <!-- Add additional CSS for currency picker -->
+	          <style>
+	              .currency-picker-container {
+	                  margin-bottom: 2rem;
+	              }
             
-            <table class="pricing-table fade-in stagger-1">
-                <thead>
-                    <tr>
-                        <th>Package</th>
-                        <th>Price per post</th>
-                        <th>Total posts</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Transform 1–10 blog posts</td>
-                        <td class="price">$279<span class="price-note"> each</span></td>
-                        <td>1 to 10</td>
-                    </tr>
-                    <tr>
-                        <td>Transform 10+ blog posts</td>
-                        <td class="price">$249<span class="price-note"> each</span></td>
-                        <td>11 and up</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+	              .currency-label {
+	                  font-weight: 500;
+	                  margin-bottom: 0.5rem;
+	                  display: block;
+	              }
+            
+	              .currency-picker {
+	                  display: flex;
+	                  flex-wrap: wrap;
+	                  gap: 0.5rem;
+	              }
+            
+	              .currency-btn {
+	                  background: none;
+	                  border: 1px solid var(--light-gray);
+	                  border-radius: 4px;
+	                  padding: 0.5rem 0.8rem;
+	                  cursor: pointer;
+	                  display: flex;
+	                  align-items: center;
+	                  gap: 0.5rem;
+	                  transition: var(--fast-transition);
+	              }
+            
+	              .currency-btn img {
+	                  width: 20px;
+	                  height: 15px;
+	                  object-fit: cover;
+	              }
+            
+	              .currency-btn.active {
+	                  background-color: var(--primary);
+	                  color: white;
+	                  border-color: var(--primary);
+	              }
+            
+	              .price-loading {
+	                  opacity: 0.5;
+	              }
+            
+	              @media (max-width: 768px) {
+	                  .currency-picker-container {
+	                      text-align: left;
+	                  }
+	              }
+	          </style>
+	      </div>
+	  </section>
+
+   <script>
+       // Price data in USD (base currency)
+       const priceData = {
+           transform1to10: {
+               price: 279,
+               audioPrice: 79
+           },
+           transform11to49: {
+               price: 249,
+               audioPrice: 69
+           },
+           transform50plus: {
+               price: 199,
+               audioPrice: 59
+           }
+       };
+       
+       // Currency symbols
+       const currencySymbols = {
+           'USD': '$',
+           'CAD': 'C$',
+           'EUR': '€',
+           'GBP': '£',
+           'AUD': 'A$',
+           'SGD': 'S$',
+           'JPY': '¥',
+           'CHF': 'CHF',
+           'HKD': 'HK$'
+       };
+       
+       // Fallback exchange rates if API fails
+       const fallbackRates = {
+           'USD': 1,
+           'CAD': 1.35,
+           'EUR': 0.93,
+           'GBP': 0.79,
+           'AUD': 1.53,
+           'SGD': 1.35,
+           'JPY': 157.5,
+           'CHF': 0.89,
+           'HKD': 7.82
+       };
+       
+       let currentCurrency = 'USD';
+       
+       // Function to update prices based on selected currency
+       function updatePrices(currency) {
+           const priceElements = document.querySelectorAll('.price');
+           
+           // Show loading state
+           priceElements.forEach(el => {
+               el.classList.add('price-loading');
+           });
+           
+           // Get exchange rate
+           const rate = fallbackRates[currency];
+           
+           // Update each price with converted value
+           const priceNodes = document.querySelectorAll('.pricing-table tbody tr');
+           
+           priceNodes.forEach((row, index) => {
+               let categoryKey;
+               if (index === 0) categoryKey = 'transform1to10';
+               else if (index === 1) categoryKey = 'transform11to49';
+               else categoryKey = 'transform50plus';
+               
+               const priceCell = row.querySelector('td:nth-child(2)');
+               const audioPriceCell = row.querySelector('td:nth-child(3)');
+               
+               const convertedPrice = Math.round(priceData[categoryKey].price * rate);
+               const convertedAudioPrice = Math.round(priceData[categoryKey].audioPrice * rate);
+               
+               const symbol = currencySymbols[currency] || currency + ' ';
+               
+               priceCell.innerHTML = `<span class="price">${symbol}${convertedPrice}<span class="price-note"> each</span></span>`;
+               audioPriceCell.innerHTML = `<span class="price">${symbol}${convertedAudioPrice}<span class="price-note"> each</span></span>`;
+           });
+           
+           // Remove loading state
+           document.querySelectorAll('.price').forEach(el => {
+               el.classList.remove('price-loading');
+           });
+       }
+       
+       // Set up event listeners for currency buttons
+       document.addEventListener('DOMContentLoaded', () => {
+           const currencyButtons = document.querySelectorAll('.currency-btn');
+           
+           currencyButtons.forEach(button => {
+               button.addEventListener('click', () => {
+                   const currency = button.getAttribute('data-currency');
+                   
+                   // Don't do anything if it's already the active currency
+                   if (currency === currentCurrency) return;
+                   
+                   // Update active state
+                   currencyButtons.forEach(btn => btn.classList.remove('active'));
+                   button.classList.add('active');
+                   
+                   // Update prices
+                   currentCurrency = currency;
+                   updatePrices(currency);
+               });
+           });
+       });
+   </script>
     
     <!-- CTA Section -->
     <section class="cta" id="contact">
         <div class="container">
             <h2 class="fade-in">Ready to Elevate Your Blog?</h2>
-            <p class="fade-in stagger-1">Start with a single post or transform your entire content library. Our process is seamless and the results speak for themselves.</p>
+            <p class="fade-in stagger-1">Start with a few posts or transform your entire content library. Our process is seamless and the results speak for themselves.</p>
             <div class="cta-buttons fade-in stagger-2">
-                <a href="#" class="btn">Book a Free Consultation</a>
+                <a href="#" class="btn btn-outlined">Book a Free Consultation</a>
                 <a href="#" class="btn btn-outlined">Submit Your First Blog Post</a>
                 <a href="#comparison" class="btn btn-outlined">See More Examples</a>
             </div>
@@ -1377,14 +1633,7 @@
             <div class="footer-grid">
                 <div class="footer-about">
                     <div class="footer-logo">
-                        <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="10" y="10" width="80" height="70" rx="10" fill="white" />
-                            <circle cx="50" cy="35" r="10" fill="#ff373d" />
-                            <path d="M50 25 L50 10 L60 25 Z" fill="#ff373d" />
-                            <path d="M40 45 L30 65 L50 55 L70 65 L60 45 Z" fill="#ff373d" />
-                            <path d="M40 65 L35 75 L45 70 Z" fill="#ff373d" />
-                            <path d="M60 65 L65 75 L55 70 Z" fill="#ff373d" />
-                        </svg>
+                        <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/Primacy_logo_small_white.png?v=1742777076" alt="Primacy Small Logo" style="height: 35px; margin-right: 10px;">
                         <span>PRIMACY.IO</span>
                     </div>
                     <p>Transform your Shopify blog into engaging content that converts visitors into customers and builds lasting brand loyalty.</p>
