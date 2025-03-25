@@ -1062,62 +1062,228 @@
         </div>
     </header>
     
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-background"></div>
-        <div class="container hero-content">
-            <h1 class="hero-heading" style="margin-bottom: 3rem;">Is Shopify's Blog Holding You Back?</h1>
-            <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
-                <div class="hero-text">
-                    <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
-                    <div class="hero-cta">
-                        <a href="#contact" class="btn">Let's Fix That</a>
-                    </div>
-                </div>
-                <div class="hero-image" style="text-align: right;">
-                    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopifyblog.png?v=1742772724" alt="Standard Shopify Blog" style="max-width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <p>Scroll</p>
-            <div class="scroll-arrow">
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
-    </section>
-    
-    <!-- About Section -->
-    <section class="about section-spacing" id="about">
-        <div class="container">
-            <h2 class="section-heading fade-in">Transform Your Content</h2>
-            <table class="content-table" style="width: 100%; border-collapse: collapse; margin-top: 2rem;">
-                <tr>
-                    <td style="width: 50%; padding-right: 2rem; vertical-align: top;">
-                        <div class="about-content fade-in stagger-1">
-                            <p>At <strong>Primacy</strong>, we transform your existing blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
-                            <p>Our approach focuses on creating visually engaging, interactive content that keeps readers on your page longer and drives conversions.  We update each blog post with standalone HTML, CSS and Javascript. There are no apps to install and no monthy fees.</p>
-							
-							
-							
-							<div class="shopify-partner" style="text-align: left;">
-							    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopify-partner.png?v=1742826953" alt="Shopify Partner" style="width: 39%; height: auto;">
-							    <p style="font-size: 10pt; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Enhancing your store's blog experience with expert solutions.<br></p>
-							</div>
-							
-							
-                            <a href="https://biodynamic.coffee/blogs/lifestyle/unlocking-the-perfect-brew-the-ideal-rest-period-for-specialty-coffee" class="btn" style="margin-top: 1.5rem;" target="_blank">View Blog Post</a>
-                        </div>
-                    </td>
-                    <td style="width: 50%; vertical-align: top;">
-                        <div class="about-image-wrapper fade-in stagger-2">
-                            <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/blog-post-example.png?v=1742769108" alt="Blog Post Example" class="about-image" style="width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </section>
+       <style>
+           /* Add these mobile styles at the end of your existing CSS */
+           @media (max-width: 768px) {
+               /* Hero Section Mobile Styles */
+               .hero-grid {
+                   display: flex !important;
+                   flex-direction: column;
+                   gap: 2rem !important;
+               }
+            
+               .hero-image {
+                   text-align: center !important;
+                   order: -1;
+               }
+            
+               .hero-heading {
+                   margin-bottom: 1rem !important;
+               }
+            
+               .hero-cta {
+                   margin-top: 2rem !important;
+                   text-align: center;
+               }
+            
+               /* About Section Mobile Styles */
+               .content-table, 
+               .content-table tbody, 
+               .content-table tr, 
+               .content-table td {
+                   display: block;
+                   width: 100%;
+               }
+            
+               .content-table td {
+                   padding: 0 !important;
+                   margin-bottom: 2rem;
+               }
+            
+               .about-image {
+                   margin-top: 1.5rem;
+               }
+            
+               .shopify-partner {
+                   text-align: center !important;
+                   margin-top: 2rem;
+               }
+            
+               .shopify-partner img {
+                   width: 200px !important;
+                   margin: 0 auto 1rem;
+               }
+           }
+       </style>
+   </head>
+   <body>
+	  <!-- Hero Section Updates -->
+	  <section class="hero" id="home">
+	      <div class="hero-background"></div>
+	      <div class="container hero-content">
+	          <h1 class="hero-heading" style="margin-bottom: 3rem;">Is Shopify's Blog Holding You Back?</h1>
+	          <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+	              <div class="hero-text">
+	                  <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
+	                  <div class="hero-cta">
+	                      <a href="#contact" class="btn">Let's Fix That</a>
+	                  </div>
+	              </div>
+	              <div class="hero-image" style="text-align: right;">
+	                  <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopifyblog.png?v=1742772724" alt="Standard Shopify Blog" style="max-width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+	              </div>
+	          </div>
+	      </div>
+	      <div class="scroll-indicator">
+	          <p>Scroll</p>
+	          <div class="scroll-arrow">
+	              <i class="fas fa-chevron-down"></i>
+	          </div>
+	      </div>
+	  </section>
+
+	  <!-- About Section Updates -->
+	  <section class="about section-spacing" id="about">
+	      <div class="container">
+	          <h2 class="section-heading fade-in">Transform Your Content</h2>
+	          <table class="content-table" style="width: 100%; border-collapse: collapse; margin-top: 2rem;">
+	              <tr>
+	                  <td style="width: 50%; padding-right: 2rem; vertical-align: top;">
+	                      <div class="about-content fade-in stagger-1">
+	                          <p>At <strong>Primacy</strong>, we transform your existing blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
+	                          <p>Our approach focuses on creating visually engaging, interactive content that keeps readers on your page longer and drives conversions.  We update each blog post with standalone HTML, CSS and Javascript. There are no apps to install and no monthy fees.</p>
+                        
+	                          <div class="shopify-partner" style="text-align: left;">
+	                              <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopify-partner.png?v=1742826953" alt="Shopify Partner" style="width: 39%; height: auto;">
+	                              <p style="font-size: 10pt; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Enhancing your store's blog experience with expert solutions.<br></p>
+	                          </div>
+                        
+	                          <a href="https://biodynamic.coffee/blogs/lifestyle/unlocking-the-perfect-brew-the-ideal-rest-period-for-specialty-coffee" class="btn about-cta" style="margin-top: 1.5rem;" target="_blank">View Blog Post</a>
+	                      </div>
+	                  </td>
+	                  <td style="width: 100%; vertical-align: top;">
+	                      <div class="about-image-wrapper fade-in stagger-2">
+	                          <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/blog-post-example.png?v=1742769108" alt="Blog Post Example" class="about-image" style="width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+	                      </div>
+	                  </td>
+	              </tr>
+	          </table>
+	      </div>
+	  </section>
+
+	  <!-- Add this CSS to enhance mobile responsiveness -->
+	  <style>
+	      /* Mobile Responsive Adjustments */
+	      @media (max-width: 768px) {
+	          /* Hero Section Mobile Styles */
+	          .hero-grid {
+	              grid-template-columns: 1fr !important;
+	              gap: 2rem !important;
+	          }
+        
+	          .hero-text {
+	              order: 1;
+	          }
+        
+	          .hero-image {
+	              order: 0;
+	              text-align: left !important;
+	              margin-bottom: 1rem;
+	          }
+        
+	          .hero-heading {
+	              margin-bottom: 2rem !important;
+	              text-align: left;
+	          }
+        
+	          .hero-subheading {
+	              text-align: left;
+	          }
+        
+	          .hero-cta {
+	              text-align: left;
+	              margin-bottom: 2rem;
+	          }
+        
+	          /* About Section Mobile Styles */
+	          .content-table, .content-table tbody, .content-table tr {
+	              display: block;
+	              width: 100%;
+	          }
+        
+	          .content-table td {
+	              display: block;
+	              width: 100%;
+	              padding: 0 !important;
+	              margin-bottom: 2rem;
+	          }
+        
+	          .about-image-wrapper {
+	              margin-bottom: 1.5rem;
+	          }
+        
+	          .about-content {
+	              text-align: left;
+	              width: 100%;
+	              box-sizing: border-box;
+	          }
+        
+	          .about-content p {
+	              width: 100%;
+	              max-width: none;
+	          }
+        
+	          .shopify-partner {
+	              text-align: left !important;
+	              margin: 2rem 0;
+	              width: 100%;
+	          }
+        
+	          .about-cta {
+	              display: inline-block;
+	              margin-top: 1.5rem !important;
+	          }
+        
+	          /* Fix section headings on mobile */
+	          .section-heading {
+	              text-align: left;
+	          }
+        
+	          .section-heading::after {
+	              left: 50% !important;
+	              transform: translateX(-50%) !important;
+	          }
+        
+	          /* Features Section Mobile Styles */
+	          .features-grid {
+	              grid-template-columns: 1fr !important;
+	              gap: 1.5rem !important;
+	          }
+        
+	          .feature-card {
+	              width: 100%;
+	              box-sizing: border-box;
+	          }
+        
+	          .feature-content {
+	              text-align: left;
+	              width: 100%;
+	          }
+        
+	          .feature-content p {
+	              width: 100%;
+	          }
+	      }
+		  
+		  @media (max-width: 768px) {
+		    .content-table td {
+		      width: 100% !important;
+		      padding: 0 !important;
+		    }
+		  }
+		  
+		  
+	  </style>
     
     <!-- Features Section -->
     <section class="features" id="features">
