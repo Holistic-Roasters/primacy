@@ -731,7 +731,7 @@
             margin: 40px 0;
             border-radius: 10px;
             overflow: hidden;
-            background-color: var(--terre-white);
+            background-color: var(--terre-beige);
         }
 
         .growth-stage {
@@ -901,14 +901,19 @@
             font-weight: 800;
             color: var(--terre-blue);
             margin-bottom: 10px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease, transform 1s ease;
         }
-
+        
         .infographic-number.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        .infographic-text-highlight {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--terre-blue);
+            margin-bottom: 10px;
+            animation: fadeInUp 1.2s ease-out;
         }
 
         .infographic-label {
@@ -1080,7 +1085,7 @@
             </div>
 
             <!-- Animated Lavender Growth Cycle -->
-            <div class="blog-section fade-in">
+            <div class="blog-section fade-in growth-cycle-section">
                 <h2>Lavender Growth Cycle</h2>
                 <p>Watch how lavender develops through its complete growth cycle:</p>
 
@@ -1472,8 +1477,8 @@
 
         <div class="cta-section">
             <div class="cta-content">
-                <h2 style="text-align: center;">Experience Lavender at Terre Bleu</h2>
-                <p style="text-align: center;">Want to see lavender in all its glory? Visit our farm during bloom season to experience acres of purple beauty, learn from our experts, and take home your own lavender plants.</p>
+                <h2 style="text-align: left;">Experience Lavender at Terre Bleu</h2>
+                <p style="text-align: left;">Want to see lavender in all its glory? Visit our farm during bloom season to experience acres of purple beauty, learn from our experts, and take home your own lavender plants.</p>
                 <a href="https://www.terrebleu.ca/collections/all" class="cta-button">Shop Lavender Products</a>
             </div>
         </div>
@@ -1626,11 +1631,19 @@
             window.addEventListener('scroll', checkFade);
             checkFade(); // Check on initial load
             
-            // Animated Growth Cycle
+            // Animated Growth Cycle - Only for Chrome Desktop
             let currentStage = 1;
             const totalStages = 6;
             const stageElements = document.querySelectorAll('.growth-stage');
             const stageNavItems = document.querySelectorAll('.stage-nav-item');
+            let stageCycleInterval;
+            
+            // Function to detect Chrome browser on desktop
+            function isDesktopChrome() {
+                const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                return isChrome && !isMobile;
+            }
             
             function showStage(stageNum) {
                 // Hide all stages
@@ -1651,25 +1664,6 @@
                 currentStage = stageNum;
             }
             
-            // Initialize with the first stage
-            showStage(1);
-            
-            // Add click event listeners to navigation items
-            stageNavItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const stage = parseInt(this.getAttribute('data-stage'));
-                    showStage(stage);
-                    
-                    // Clear auto cycling when user interacts
-                    clearInterval(stageCycleInterval);
-                    
-                    // Restart the interval after 30 seconds of inactivity
-                    setTimeout(function() {
-                        stageCycleInterval = setInterval(cycleToNextStage, 5000);
-                    }, 30000);
-                });
-            });
-            
             // Function to cycle to next stage
             function cycleToNextStage() {
                 let nextStage = currentStage + 1;
@@ -1679,11 +1673,70 @@
                 showStage(nextStage);
             }
             
-            // Auto-play stages every 5 seconds
-            let stageCycleInterval = setInterval(cycleToNextStage, 5000);
+            // Initialize growth cycle animation only for Chrome Desktop
+            if (isDesktopChrome()) {
+                // Initialize with the first stage
+                showStage(1);
+                
+                // Add click event listeners to navigation items
+                stageNavItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const stage = parseInt(this.getAttribute('data-stage'));
+                        showStage(stage);
+                        
+                        // Clear auto cycling when user interacts
+                        clearInterval(stageCycleInterval);
+                        
+                        // Restart the interval after 30 seconds of inactivity
+                        setTimeout(function() {
+                            stageCycleInterval = setInterval(cycleToNextStage, 5000);
+                        }, 30000);
+                    });
+                });
+                
+                // Auto-play stages every 5 seconds
+                stageCycleInterval = setInterval(cycleToNextStage, 5000);
+                
+                // Show the growth cycle container
+                document.querySelector('.growth-cycle-container').style.display = 'block';
+                document.querySelector('.growth-cycle-section').style.display = 'block';
+            } else {
+                // Hide the growth cycle animation for non-Chrome or mobile browsers
+                document.querySelector('.growth-cycle-container').style.display = 'none';
+                document.querySelector('.growth-cycle-section').style.display = 'none';
+            }
             
             // Animate infographic numbers
             const infographicNumbers = document.querySelectorAll('.infographic-number');
+            
+            // Animate infographic numbers
+            function animateNumbers() {
+                infographicNumbers.forEach(numberElement => {
+                    // Set a default value if data-count attribute is missing
+                    const targetNumber = numberElement.hasAttribute('data-count') ? 
+                                        parseInt(numberElement.getAttribute('data-count')) : 0;
+                    
+                    // Validate the target number is actually a number
+                    if (isNaN(targetNumber)) {
+                        console.error('Invalid data-count attribute', numberElement);
+                        return; // Skip this element
+                    }
+                    
+                    let currentNumber = 0;
+                    const duration = 2000; // 2 seconds
+                    const interval = 50; // Update every 50ms
+                    const increment = targetNumber / (duration / interval);
+                    
+                    const timer = setInterval(() => {
+                        currentNumber += increment;
+                        if (currentNumber >= targetNumber) {
+                            currentNumber = targetNumber;
+                            clearInterval(timer);
+                        }
+                        numberElement.textContent = Math.floor(currentNumber);
+                    }, interval);
+                });
+            }
             
             function animateNumbers() {
                 infographicNumbers.forEach(numberElement => {
