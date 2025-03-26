@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="icon" href="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/Primacy_Flavicon.png?v=1742838697" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primacy.io - Transform Your Shopify Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #ff373d;
+            --primary-light: #ff6a6e;
+            --secondary: #ff040c;
+            --accent: #ff9da0;
+            --light: #ffffff;
+            --off-white: #f7f7f7;
+            --light-gray: #e6e6e6;
+            --mid-gray: #999;
+            --dark-gray: #555;
+            --dark: #333333;
+            --black: #121212;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --fast-transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            overflow-x: hidden;
+            font-weight: 300;
+        }
+        
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: -0.02em;
+        }
+        
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: -0.02em;
+        }
+        
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            letter-spacing: -0.01em;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            font-size: clamp(1rem, 1.1vw, 1.2rem);
+        }
+        
+        strong, b {
+            font-weight: 600;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--fast-transition);
+        }
+        
+        a:hover {
+            color: var(--secondary);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 5vw, 5rem);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            z-index: 1;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 100%;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .btn:hover {
+            color: var(--light);
+        }
+        
+        .btn:hover::after {
+            left: 0;
+            width: 100%;
+        }
+        
+        .btn-outlined {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outlined::after {
+            background-color: var(--primary);
+        }
+        
+        .btn-outlined:hover {
+            color: var(--light);
+        }
+        
+        .section-spacing {
+            padding: clamp(5rem, 12vw, 10rem) 0;
+        }
+        
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        
+        .full-width {
+            width: 100%;
+        }
+        
+        .uppercase {
+            text-transform: uppercase;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+        
+        .grid {
+            display: grid;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .relative {
+            position: relative;
+        }
+        
+        .z-10 {
+            z-index: 10;
+        }
+        
+        .mb-1 {
+            margin-bottom: 1rem;
+        }
+        
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+        
+        .mb-4 {
+            margin-bottom: 4rem;
+        }
+        
+        .mb-8 {
+            margin-bottom: 8rem;
+        }
+        
+        .mt-1 {
+            margin-top: 1rem;
+        }
+        
+        .mt-2 {
+            margin-top: 2rem;
+        }
+        
+        .mt-4 {
+            margin-top: 4rem;
+        }
+        
+        .mt-8 {
+            margin-top: 8rem;
+        }
+        
+        @media (max-width: 768px) {
+        .content-table, .content-table tbody, .content-table tr, .content-table td {
+            display: block;
+            width: 100%;
+        }
+        
+        .content-table td {
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+    }
+        
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            transition: var(--fast-transition);
+            background-color: white;
+        }
+        
+        header.scrolled {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        header.scrolled .nav-links a {
+            color: var(--dark);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: var(--light);
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            transition: var(--fast-transition);
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            transition: var(--fast-transition);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: currentColor;
+            transition: var(--fast-transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--fast-transition);
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--primary);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+        }
+        
+        .mobile-nav-links li {
+            margin-bottom: 2rem;
+        }
+        
+        .mobile-nav-links a {
+            color: var(--light);
+            font-size: 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background-color: var(--dark);
+            color: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .hero-heading {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            line-height: 1;
+            max-width: 1200px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .hero-subheading {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            max-width: 700px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .hero-cta {
+            margin-top: 3rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            z-index: 0;
+        }
+        
+        .hero-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--light);
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 1s 1.2s forwards;
+        }
+        
+        .scroll-indicator p {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scroll-arrow {
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* About Section */
+        .about {
+            padding: clamp(5rem, 15vw, 12rem) 0;
+        }
+        
+        .section-heading {
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: -1rem;
+            left: 0;
+        }
+        
+        .text-center .section-heading::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .about-content p {
+            font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+            max-width: 800px;
+        }
+        
+        /* Features Section */
+        .features {
+            background-color: var(--off-white);
+            padding: clamp(5rem, 15vw, 12rem) 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--fast-transition);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            font-size: 1.5rem;
+        }
+        
+        .feature-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .feature-content p {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Comparison Section */
+        .comparison {
+            padding: clamp(5rem, 15vw, 12rem) 0;
+        }
+        
+        .comparison-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 3rem;
+        }
+        
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--mid-gray);
+            cursor: pointer;
+            position: relative;
+            transition: var(--fast-transition);
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+        }
+        
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            bottom: -1px;
+            left: 0;
+            transition: var(--fast-transition);
+        }
+        
+        .tab-button.active::after {
+            width: 100%;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.6s forwards;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        .comparison-card {
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: var(--fast-transition);
+        }
+        
+        .comparison-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .comparison-image {
+            height: 300px;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .comparison-image-placeholder {
+            font-size: 1.2rem;
+            color: var(--mid-gray);
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .comparison-details {
+            padding: 2rem;
+            background-color: var(--light);
+        }
+        
+        .comparison-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .comparison-description {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .comparison-features {
+            list-style: none;
+        }
+        
+        .comparison-features li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .comparison-features li::before {
+            content: '•';
+            color: var(--primary);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Accordion */
+        .accordion {
+            margin-top: 4rem;
+        }
+        
+        .accordion-item {
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .accordion-header {
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--fast-transition);
+        }
+        
+        .accordion-header h3 {
+            font-size: 1.2rem;
+            margin: 0;
+            transition: var(--fast-transition);
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: var(--fast-transition);
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+        
+        .accordion-item.active .accordion-header h3 {
+            color: var(--primary);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 1000px;
+            transition: max-height 1s ease-in-out;
+        }
+        
+        .accordion-body {
+            padding: 0 0 2rem;
+            color: var(--dark-gray);
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            background-color: var(--off-white);
+            padding: clamp(5rem, 15vw, 12rem) 0;
+        }
+        
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .pricing-table th, .pricing-table td {
+            padding: 1.5rem 2rem;
+            text-align: left;
+        }
+        
+        .pricing-table th {
+            background-color: var(--primary);
+            color: var(--light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .pricing-table tr:not(:last-child) {
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .pricing-table tr:hover {
+            background-color: rgba(255, 55, 61, 0.05);
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .price-note {
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: clamp(5rem, 12vw, 8rem) 0;
+            background-color: var(--primary);
+            color: var(--light);
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 2rem;
+        }
+        
+        .cta p {
+            font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta .btn {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+        
+        .cta .btn::after {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .cta .btn-outlined {
+            background-color: transparent;
+            color: var(--light);
+            border-color: var(--light);
+        }
+        
+        .cta .btn-outlined::after {
+            background-color: var(--light);
+        }
+        
+        .cta .btn-outlined:hover {
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 5rem 0 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .footer-logo {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo img {
+            height: 35px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+        
+        .footer-about p {
+            color: var(--mid-gray);
+            max-width: 400px;
+        }
+        
+        .footer-heading {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--mid-gray);
+            transition: var(--fast-transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: var(--mid-gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Additional Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-1 {
+            transition-delay: 0.1s;
+        }
+        
+        .stagger-2 {
+            transition-delay: 0.2s;
+        }
+        
+        .stagger-3 {
+            transition-delay: 0.3s;
+        }
+        
+        .stagger-4 {
+            transition-delay: 0.4s;
+        }
+        
+        /* Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            pointer-events: none;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+            opacity: 0;
+        }
+        
+        .cursor-active {
+            opacity: 1;
+        }
+        
+        /* Scroll progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background-color: var(--primary);
+            width: 0;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor Effect -->
+    <div class="custom-cursor"></div>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#comparison">Before & After</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/primacy_logo_bw.png?v=1742777076" alt="Primacy Logo" style="height: 40px;">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#comparison">Before & After</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+    
+       <style>
+           /* Add these mobile styles at the end of your existing CSS */
+		   @media (max-width: 768px) {
+		       .hero-content {
+		           padding-top: 80px; /* Add padding to account for fixed header */
+		       }
+    
+		       .hero {
+		           height: auto; /* Allow height to adjust based on content */
+		           min-height: 100vh; /* Still take up at least full viewport height */
+		       }
+    
+		       .hero-heading {
+		           margin-top: 2rem; /* Add some space at the top */
+		           font-size: clamp(2.2rem, 7vw, 3rem); /* Slightly reduce font size on mobile */
+		       }
+		   }
+		   @media (max-width: 768px) {
+               /* Hero Section Mobile Styles */
+               .hero-grid {
+                   display: flex !important;
+                   flex-direction: column;
+                   gap: 2rem !important;
+               }
+            
+               .hero-image {
+                   text-align: center !important;
+                   order: -1;
+               }
+            
+               .hero-heading {
+                   margin-bottom: 1rem !important;
+               }
+            
+               .hero-cta {
+                   margin-top: 2rem !important;
+                   text-align: center;
+               }
+            
+               /* About Section Mobile Styles */
+               .content-table, 
+               .content-table tbody, 
+               .content-table tr, 
+               .content-table td {
+                   display: block;
+                   width: 100%;
+               }
+            
+               .content-table td {
+                   padding: 0 !important;
+                   margin-bottom: 2rem;
+               }
+            
+               .about-image {
+                   margin-top: 1.5rem;
+               }
+            
+               .shopify-partner {
+                   text-align: center !important;
+                   margin-top: 2rem;
+               }
+            
+               .shopify-partner img {
+                   width: 200px !important;
+                   margin: 0 auto 1rem;
+               }
+           }
+       </style>
+   </head>
+   <body>
+	  <!-- Hero Section Updates -->
+	  <section class="hero" id="home">
+	      <div class="hero-background"></div>
+	      <div class="container hero-content">
+	          <h1 class="hero-heading" style="margin-bottom: 3rem;">Is Shopify's Blog Holding You Back?</h1>
+	          <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+	              <div class="hero-text">
+	                  <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
+	                  <div class="hero-cta">
+	                      <a href="#contact" class="btn">Let's Fix That</a>
+	                  </div>
+	              </div>
+	              <div class="hero-image" style="text-align: right;">
+	                  <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopifyblog.png?v=1742772724" alt="Standard Shopify Blog" style="max-width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+	              </div>
+	          </div>
+	      </div>
+	      <div class="scroll-indicator">
+	          <p>Scroll</p>
+	          <div class="scroll-arrow">
+	              <i class="fas fa-chevron-down"></i>
+	          </div>
+	      </div>
+	  </section>
+
+	  <!-- About Section Updates -->
+	  <section class="about section-spacing" id="about">
+	      <div class="container">
+	          <h2 class="section-heading fade-in">Transform Your Content</h2>
+	          <table class="content-table" style="width: 100%; border-collapse: collapse; margin-top: 2rem;">
+	              <tr>
+	                  <td style="width: 50%; padding-right: 2rem; vertical-align: top;">
+	                      <div class="about-content fade-in stagger-1">
+	                          <p>At <strong>Primacy</strong>, we transform your existing blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
+	                          <p>Our approach focuses on creating visually engaging, interactive content that keeps readers on your page longer and drives conversions.  We update each blog post with standalone HTML, CSS and Javascript. There are no apps to install and no monthly fees.</p>
+                        
+	                          <div class="shopify-partner" style="text-align: left;">
+	                              <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopify-partner.png?v=1742826953" alt="Shopify Partner" style="width: 39%; height: auto;">
+	                              <p style="font-size: 8pt; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Enhancing your store's blog experience with expert solutions<br></p>
+	                          </div>
+                        
+	                          <a href="https://biodynamic.coffee/blogs/lifestyle/unlocking-the-perfect-brew-the-ideal-rest-period-for-specialty-coffee" class="btn about-cta" style="margin-top: 1.5rem;" target="_blank">View Blog Post</a>
+	                      </div>
+	                  </td>
+	                  <td style="width: 100%; vertical-align: top;">
+	                      <div class="about-image-wrapper fade-in stagger-2">
+	                          <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/blog-post-example.png?v=1742769108" alt="Blog Post Example" class="about-image" style="width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+	                      </div>
+	                  </td>
+	              </tr>
+	          </table>
+	      </div>
+	  </section>
+
+	  <!-- Add this CSS to enhance mobile responsiveness -->
+	  <style>
+	      /* Mobile Responsive Adjustments */
+	      @media (max-width: 768px) {
+	          /* Hero Section Mobile Styles */
+	          .hero-grid {
+	              grid-template-columns: 1fr !important;
+	              gap: 2rem !important;
+	          }
+        
+	          .hero-text {
+	              order: 1;
+	          }
+        
+	          .hero-image {
+	              order: 0;
+	              text-align: left !important;
+	              margin-bottom: 1rem;
+	          }
+        
+	          .hero-heading {
+	              margin-bottom: 2rem !important;
+	              text-align: left;
+	          }
+        
+	          .hero-subheading {
+	              text-align: left;
+	          }
+        
+	          .hero-cta {
+	              text-align: left;
+	              margin-bottom: 2rem;
+	          }
+        
+	          /* About Section Mobile Styles */
+	          .content-table, .content-table tbody, .content-table tr {
+	              display: block;
+	              width: 100%;
+	          }
+        
+	          .content-table td {
+	              display: block;
+	              width: 100%;
+	              padding: 0 !important;
+	              margin-bottom: 2rem;
+	          }
+        
+	          .about-image-wrapper {
+	              margin-bottom: 1.5rem;
+	          }
+        
+	          .about-content {
+	              text-align: left;
+	              width: 100%;
+	              box-sizing: border-box;
+	          }
+        
+	          .about-content p {
+	              width: 100%;
+	              max-width: none;
+	          }
+        
+	          .shopify-partner {
+	              text-align: left !important;
+	              margin: 2rem 0;
+	              width: 100%;
+	          }
+        
+	          .about-cta {
+	              display: inline-block;
+	              margin-top: 1.5rem !important;
+	          }
+        
+	          /* Fix section headings on mobile */
+	          .section-heading {
+	              text-align: left;
+	          }
+        
+	          .section-heading::after {
+	              left: 50% !important;
+	              transform: translateX(-50%) !important;
+	          }
+        
+	          /* Features Section Mobile Styles */
+	          .features-grid {
+	              grid-template-columns: 1fr !important;
+	              gap: 1.5rem !important;
+	          }
+        
+	          .feature-card {
+	              width: 100%;
+	              box-sizing: border-box;
+	          }
+        
+	          .feature-content {
+	              text-align: left;
+	              width: 100%;
+	          }
+        
+	          .feature-content p {
+	              width: 100%;
+	          }
+	      }
+		  
+		  @media (max-width: 768px) {
+		    .content-table td {
+		      width: 100% !important;
+		      padding: 0 !important;
+		    }
+		  }
+		  
+		  
+	  </style>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-heading fade-in">Why Upgrade Your Shopify Blog?</h2>
+            
+            <div class="features-grid fade-in stagger-1">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Engage readers with custom layouts</h3>
+                        <p><strong>Move beyond static templates and create visually rich experiences designed to keep readers scrolling.</strong></p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Seamlessly integrate media</h3>
+                        <p><strong>Say goodbye to clunky embeds. We make videos, audio, galleries, and visuals feel native and intuitive.</strong></p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-pointer"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Add interaction where it matters</h3>
+                        <p><strong>Tabs, scroll effects, interactive graphs & sliders, and expandable tips—give your audience something to <em>explore</em>, not just read.</strong></p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Reinforce your brand identity</h3>
+                        <p><strong>We align each post with your brand's tone, visual style, and voice—without compromising performance.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+	<!-- Comparison Section -->
+	    <section class="comparison section-spacing" id="comparison">
+	        <div class="container">
+	            <h2 class="section-heading fade-in">Before & After: See the Difference</h2>
+            
+	            <div class="comparison-tabs fade-in stagger-1">
+	                <button class="tab-button active" data-tab="tab1">Coffee Blog</button>
+	                <button class="tab-button" data-tab="tab2">Health Blog (w.audio)</button>
+	                <button class="tab-button" data-tab="tab3">Buying Guide</button>
+	            </div>
+            
+	            <div class="tab-content active" id="tab1">
+	                <div class="comparison-grid">
+	                    <div class="comparison-card fade-in stagger-2">
+	                        <div class="comparison-image">
+                            
+								<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/udfy1ffmua.js" async type="module"></script><style>wistia-player[media-id='udfy1ffmua']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/udfy1ffmua/swatch'); display: block; filter: blur(5px); padding-top:57.5%; }</style> <wistia-player media-id="udfy1ffmua" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
+							
+	                        </div> 
+								
+								
+	                        <div class="comparison-details">
+	                            <h3 class="comparison-title">Before</h3>
+	                            <p class="comparison-description">A standard Shopify blog post with limited formatting options and static presentation.</p>
+	                            <ul class="comparison-features">
+	                                <li>Basic text formatting</li>
+	                                <li>Limited image placement</li>
+	                                <li>No interactive elements</li>
+	                                <li>Generic layout</li>
+	                            </ul>
+	                        </div>
+	                    </div>
+                    
+	                    <div class="comparison-card fade-in stagger-3">
+	                        <div class="comparison-image">
+									<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/mndegy99lq.js" async type="module"></script><style>wistia-player[media-id='mndegy99lq']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/mndegy99lq/swatch'); display: block; filter: blur(5px); padding-top:57.5%; }</style> <wistia-player media-id="mndegy99lq" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
+							
+		                        </div>
+	                        <div class="comparison-details">
+	                            <h3 class="comparison-title">After</h3>
+	                            <p class="comparison-description">The same content transformed with custom layouts and interactive elements.</p>
+	                            <ul class="comparison-features">
+	                                <li>Engaging visual hierarchy</li>
+	                                <li>Interactive graphs and charts</li>
+	                                <li>Tabs & tables to structure information</li>
+	                                <li>Compelling customized slider  </li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+                
+	                <div class="accordion fade-in stagger-4">
+	                    <div class="accordion-item">
+	                        <div class="accordion-header">
+	                            <h3>What improved in this example?</h3>
+	                            <div class="accordion-icon">
+	                                <i class="fas fa-plus"></i>
+	                            </div>
+	                        </div>
+	                        <div class="accordion-content">
+	                            <div class="accordion-body">
+	                                <p>This product review transformation focused on creating a more engaging and interactive experience:</p>
+	                                <ul>
+	                                    <li>Enhanced mobile responsiveness for better viewing on all devices</li>
+	                                    <li>Improved visual hierarchy with "The Quick Scoop" section and CTA </li>
+	                                    <li>Interactive graphs and charts to invite users to engaged more fully with the information</li>
+	                                    <li>Implemented tabs and table sections to better organize detailed information</li>
+	                                    <li>Customized slider lets customers vidualize days when coffee is at its peak </li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+            
+	            <div class="tab-content" id="tab2">
+	                <div class="comparison-grid">
+	                    <div class="comparison-card">
+		                    <div class="comparison-card fade-in stagger-3">
+		                        <div class="comparison-image">
+	                                
+									
+									
+<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/ofe041rfgp.js" async type="module"></script><style>wistia-player[media-id='ofe041rfgp']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/ofe041rfgp/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="ofe041rfgp" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>									
+									
+									
+	                            </div>
+	                        </div>
+	                        <div class="comparison-details">
+	                            <h3 class="comparison-title">Before</h3>
+	                            <p class="comparison-description">A basic text-based blog with external YouTube video integrated.</p>
+	                            <ul class="comparison-features">
+	                                <li>Static text with YouTube video</li>
+	                                <li>Basic information without additional context</li>
+	                                <li>No clear calls-to-action (CTAs)</li>
+	                            </ul>
+	                        </div>
+	                    </div>
+                    
+	                    <div class="comparison-card">
+		                    <div class="comparison-card fade-in stagger-3">
+		                        <div class="comparison-image">
+									
+<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/rct813mqwt.js" async type="module"></script><style>wistia-player[media-id='rct813mqwt']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/rct813mqwt/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="rct813mqwt" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
+
+
+	                            </div>
+	                        </div>
+	                        <div class="comparison-details">
+	                            <h3 class="comparison-title">After</h3>
+	                            <p class="comparison-description">A visually appealing blog that invites users to engaged with and understand the content.</p>
+	                            <ul class="comparison-features">
+	                                <li>Added narration</li>
+									<li>Additional context to clarify health benefits</li>
+	                                <li>Improved layout with tabs</li>
+	                                <li>Added icons and graphics for clarity & visual appeal</li>
+	                                <li>Clear calls-to-action (CTAs)</li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+                
+	                <div class="accordion">
+	                    <div class="accordion-item">
+	                        <div class="accordion-header">
+	                            <h3>What improved in this example?</h3>
+	                            <div class="accordion-icon">
+	                                <i class="fas fa-plus"></i>
+	                            </div>
+	                        </div>
+	                        <div class="accordion-content">
+	                            <div class="accordion-body">
+	                                <p>This health-related blog post became the company's top performing marketing content with:</p>
+	                                <ul>
+	                                    <li>Added narration for users to listen to the blog</li>
+	                                    <li>Additional content and information, including referencers for added credibility</li>
+	                                    <li>Implemented tabs to organize information in clear sections of interest </li>
+	                                    <li>Created icons and graphs to make information more digestible</li>
+	                                    <li>Added clear CTAs to relevant products related to the content</li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+            
+	            <div class="tab-content" id="tab3">
+	                <div class="comparison-grid">
+	                    <div class="comparison-card">
+		                    <div class="comparison-card fade-in stagger-3">
+		                        <div class="comparison-image">
+
+
+<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/3y5wnockfp.js" async type="module"></script><style>wistia-player[media-id='3y5wnockfp']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/3y5wnockfp/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="3y5wnockfp" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
+
+
+	                            </div>
+	                        </div>
+	                        <div class="comparison-details">
+	                            <h3 class="comparison-title">Before</h3>
+	                            <p class="comparison-description">A basic buying guide with text and images.</p>
+	                            <ul class="comparison-features">
+	                                <li>Text-heavy content blocks</li>
+	                                <li>Static information presentation</li>
+	                                <li>Limited visual appeal</li>
+	                                <li>Generic formatting</li>
+	                            </ul>
+	                        </div>
+	                    </div>
+                    
+	                    <div class="comparison-card">
+		                    <div class="comparison-card fade-in stagger-3">
+		                        <div class="comparison-image">
+	                      
+						  
+						  
+						  <script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/3viv4y0wl5.js" async type="module"></script><style>wistia-player[media-id='3viv4y0wl5']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/3viv4y0wl5/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="3viv4y0wl5" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
+						  
+						  
+	                            </div>
+	                        </div>
+	                        <div class="comparison-details">
+	                            <h3 class="comparison-title">After</h3>
+	                            <p class="comparison-description">An aesthetic and useful buying guide for improved credibility.</p>
+	                            <ul class="comparison-features">
+	                                <li>Custom infographics and icons</li>
+	                                <li>Additional information to help buyers understand grind sizes</li>
+	                                <li>Implemented star ratings to help customers compare benefits</li>
+	                                <li>Added a clear summary table and CTA</li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+                
+				
+				
+				
+	                <div class="accordion">
+	                    <div class="accordion-item">
+	                        <div class="accordion-header">
+	                            <h3>What improved in this example?</h3>
+	                            <div class="accordion-icon">
+	                                <i class="fas fa-plus"></i>
+	                            </div>
+	                        </div>
+	                        <div class="accordion-content">
+	                            <div class="accordion-body">
+	                                <p>This buying guide transformation focused on creating a more engaging and visually appealing experience:</p>
+	                                <ul>
+	                                    <li>Custom graphics and icons allow users to explore concepts visually</li>
+	                                    <li>Star ratings help customers easily compare the benefits of each product type </li>
+	                                    <li>Implemented expandable sections for deeper explorations of topics</li>
+	                                    <li>Professional layout enhancements consistent across the company's website</li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+					
+					
+	            </div>
+	        </div>
+	    </section>
+	
+    
+	  <!-- Pricing Section -->
+	  <section class="pricing section-spacing" id="pricing">
+	      <div class="container">
+	          <h2 class="section-heading fade-in">Simple, Transparent Pricing</h2>
+        
+	          <!-- Currency Picker -->
+	          <div class="currency-picker-container fade-in stagger-1" style="margin-bottom: 2rem; text-align: left;">
+	              <p class="currency-label" style="display: inline-block; margin-right: 1rem; font-weight: 500; margin-bottom: 0;">Select your currency:</p>
+	              <div class="currency-picker" style="display: inline-flex; flex-wrap: wrap; gap: 0.5rem;">
+	                  <button class="currency-btn active" data-currency="USD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/us.svg" alt="USA Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>USD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="CAD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/ca.svg" alt="Canada Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>CAD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="EUR" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/eu.svg" alt="EU Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>EUR</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="GBP" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/gb.svg" alt="UK Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>GBP</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="AUD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/au.svg" alt="Australia Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>AUD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="HKD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/hk.svg" alt="Japan Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>HKD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="SGD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/sg.svg" alt="Singapore Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>SGD</span>
+	                  </button>
+	                  <button class="currency-btn" data-currency="JPY" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/jp.svg" alt="Japan Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                      <span>JPY</span>
+	                  </button>
+					  
+	              </div>
+	          </div>
+        
+	          <!-- Pricing Table -->
+	          <table class="pricing-table fade-in stagger-2">
+	              <thead>
+	                  <tr>
+	                      <th>Package</th>
+	                      <th>Price per post</th>
+	                      <th>Add audio narration</th>
+	                  </tr>
+	              </thead>
+	              <tbody>
+	                  <tr>
+	                      <td>Transform 3–10 blog posts</td>
+	                      <td class="price">$279</td>
+	                      <td class="price">$79</td>
+	                  </tr>
+	                  <tr>
+	                      <td>Transform 11-49 blog posts</td>
+	                      <td class="price">$249</td>
+	                      <td class="price">$69</td>
+	                  </tr>
+	                  <tr>
+	                      <td>Transform 50+ blog posts</td>
+	                      <td class="price">$199</td>
+	                      <td class="price">$59</td>
+	                  </tr>
+	              </tbody>
+	          </table>
+			  
+			  
+			<div style="text-align: right;"><p>
+			    <p style="font-size: 10pt; margin: 0;">100% Satisfaction Guaranteed or Your Money Back&nbsp;&nbsp;&nbsp;<br></p>
+			</div>
+			  
+			  
+			  
+
+	          <!-- Add additional CSS for currency picker -->
+	          <style>
+	              .currency-picker-container {
+	                  margin-bottom: 2rem;
+	              }
+            
+	              .currency-label {
+	                  font-weight: 500;
+	                  margin-bottom: 0.5rem;
+	                  display: block;
+	              }
+            
+	              .currency-picker {
+	                  display: flex;
+	                  flex-wrap: wrap;
+	                  gap: 0.5rem;
+	              }
+            
+	              .currency-btn {
+	                  background: none;
+	                  border: 1px solid var(--light-gray);
+	                  border-radius: 4px;
+	                  padding: 0.5rem 0.8rem;
+	                  cursor: pointer;
+	                  display: flex;
+	                  align-items: center;
+	                  gap: 0.5rem;
+	                  transition: var(--fast-transition);
+	              }
+            
+	              .currency-btn img {
+	                  width: 20px;
+	                  height: 15px;
+	                  object-fit: cover;
+	              }
+            
+	              .currency-btn.active {
+	                  background-color: var(--primary);
+	                  color: white;
+	                  border-color: var(--primary);
+	              }
+            
+	              .price-loading {
+	                  opacity: 0.5;
+	              }
+            
+	              @media (max-width: 768px) {
+	                  .currency-picker-container {
+	                      text-align: left;
+	                  }
+	              }
+	          </style>
+	      </div>
+	  </section>
+
+   <script>
+       // Price data in USD (base currency)
+       const priceData = {
+           transform1to10: {
+               price: 279,
+               audioPrice: 79
+           },
+           transform11to49: {
+               price: 249,
+               audioPrice: 69
+           },
+           transform50plus: {
+               price: 199,
+               audioPrice: 59
+           }
+       };
+       
+       // Currency symbols
+       const currencySymbols = {
+           'USD': '$',
+           'CAD': 'C$',
+           'EUR': '€',
+           'GBP': '£',
+           'AUD': 'A$',
+           'SGD': 'S$',
+           'JPY': '¥',
+           'CHF': 'CHF',
+           'HKD': 'HK$'
+       };
+       
+       // Fallback exchange rates if API fails
+       const fallbackRates = {
+           'USD': 1,
+           'CAD': 1.35,
+           'EUR': 0.93,
+           'GBP': 0.79,
+           'AUD': 1.53,
+           'SGD': 1.35,
+           'JPY': 157.5,
+           'CHF': 0.89,
+           'HKD': 7.82
+       };
+       
+       let currentCurrency = 'USD';
+       
+       // Function to update prices based on selected currency
+       function updatePrices(currency) {
+           const priceElements = document.querySelectorAll('.price');
+           
+           // Show loading state
+           priceElements.forEach(el => {
+               el.classList.add('price-loading');
+           });
+           
+           // Get exchange rate
+           const rate = fallbackRates[currency];
+           
+           // Update each price with converted value
+           const priceNodes = document.querySelectorAll('.pricing-table tbody tr');
+           
+           priceNodes.forEach((row, index) => {
+               let categoryKey;
+               if (index === 0) categoryKey = 'transform1to10';
+               else if (index === 1) categoryKey = 'transform11to49';
+               else categoryKey = 'transform50plus';
+               
+               const priceCell = row.querySelector('td:nth-child(2)');
+               const audioPriceCell = row.querySelector('td:nth-child(3)');
+               
+               const convertedPrice = Math.round(priceData[categoryKey].price * rate);
+               const convertedAudioPrice = Math.round(priceData[categoryKey].audioPrice * rate);
+               
+               const symbol = currencySymbols[currency] || currency + ' ';
+               
+               priceCell.innerHTML = `<span class="price">${symbol}${convertedPrice}<span class="price-note"> each</span></span>`;
+               audioPriceCell.innerHTML = `<span class="price">${symbol}${convertedAudioPrice}<span class="price-note"> each</span></span>`;
+           });
+           
+           // Remove loading state
+           document.querySelectorAll('.price').forEach(el => {
+               el.classList.remove('price-loading');
+           });
+       }
+       
+       // Set up event listeners for currency buttons
+       document.addEventListener('DOMContentLoaded', () => {
+           const currencyButtons = document.querySelectorAll('.currency-btn');
+           
+           currencyButtons.forEach(button => {
+               button.addEventListener('click', () => {
+                   const currency = button.getAttribute('data-currency');
+                   
+                   // Don't do anything if it's already the active currency
+                   if (currency === currentCurrency) return;
+                   
+                   // Update active state
+                   currencyButtons.forEach(btn => btn.classList.remove('active'));
+                   button.classList.add('active');
+                   
+                   // Update prices
+                   currentCurrency = currency;
+                   updatePrices(currency);
+               });
+           });
+       });
+   </script>
+    
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2 class="fade-in">Ready to Elevate Your Blog?</h2>
+            <p class="fade-in stagger-1">Start with a few posts or transform your entire content library. Our process is seamless and the results speak for themselves.</p>
+            <div class="cta-buttons fade-in stagger-2">
+				
+				<a href="https://calendly.com/gkalinin-primacy/15min?preview_source=et_card&month=2025-03" 
+				   class="btn btn-outlined" 
+				   onclick="window.open(this.href, 'popupWindow', 'width=1000,height=1200,scrollbars=yes'); return false;">
+				   Book a Free Consultation
+				</a>
+				
+                <a href="#contact" class="btn btn-outlined">Submit Your Blog</a>
+                <a href="#comparison" class="btn btn-outlined">See More Examples</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/Primacy_logo_small_white.png?v=1742777076" alt="Primacy Small Logo" style="height: 35px; margin-right: 10px;">
+                        <span>PRIMACY.IO</span>
+                    </div>
+                    <p>Transform your Shopify blog into engaging content that converts visitors into customers and builds lasting brand loyalty.</p>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#comparison">Before & After</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:gkalinin@primacy.io">gkalinin@primacy.io</a></li>
+                        <li><a href="#contact">Schedule a Call</a></li>
+                        <!-- <li><a href="#">Support</a></li> -->
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Primacy.io. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Header Scroll Effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-nav-links a');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+        
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+        
+        // Tab System
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(button.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+        
+        // Accordion
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                // Toggle active class on the clicked item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Scroll Animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight * 0.9) {
+                    element.classList.add('active');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', fadeInOnScroll);
+        window.addEventListener('load', fadeInOnScroll);
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            
+            if (!cursor.classList.contains('cursor-active')) {
+                setTimeout(() => {
+                    cursor.classList.add('cursor-active');
+                }, 100);
+            }
+        });
+        
+        document.addEventListener('mouseout', () => {
+            cursor.classList.remove('cursor-active');
+        });
+        
+        // Add hover effect for interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .accordion-header, .tab-button');
+        
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+        
+        // Scroll Progress Bar
+        const scrollProgress = document.querySelector('.scroll-progress');
+        
+        window.addEventListener('scroll', () => {
+            const totalHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (window.pageYOffset / totalHeight) * 100;
+            scrollProgress.style.width = `${progress}%`;
+        });
+    </script>
+		
+		<!-- 1. Add this code right before the closing </body> tag in your index.html -->
+
+		<!-- Modal Contact Form -->
+		<div class="modal-overlay" id="contact-modal-overlay">
+		    <div class="contact-modal">
+		        <div class="modal-header">
+		            <h3>Get in Touch</h3>
+		            <p>Let's transform your Shopify blog together</p>
+		            <button class="modal-close" id="modal-close-btn">
+		                <i class="fas fa-times"></i>
+		            </button>
+		        </div>
+        
+		        <div class="modal-body">
+		            <div class="success-message" id="success-message">
+		                <i class="fas fa-check-circle"></i> Your message has been sent! We'll be in touch shortly.
+		            </div>
+            
+					<!-- Update the form tag to use FormSubmit service -->
+					<form id="contact-form" action="https://formsubmit.co/gkalinin@primacy.io" method="POST">
+					    <!-- Keep all your existing form fields, but update them to include name attributes -->
+					    <div class="form-group">
+					        <label for="name" class="form-label required">Name</label>
+					        <input type="text" id="name" name="name" class="form-control" required>
+					        <div class="form-error" id="name-error">Please enter your name</div>
+					    </div>
+    
+					    <div class="form-group">
+					        <label for="email" class="form-label required">Email Address</label>
+					        <input type="email" id="email" name="email" class="form-control" required>
+					        <div class="form-error" id="email-error">Please enter a valid email address</div>
+					    </div>
+    
+					    <div class="form-group">
+					        <label for="blog-link" class="form-label required">Link to Your Shopify Blog</label>
+					        <input type="url" id="blog-link" name="blog-link" class="form-control" required>
+					        <div class="form-error" id="blog-link-error">Please enter a valid URL to your Shopify blog</div>
+					    </div>
+    
+					   <!--    <div class="form-group">
+					        <label for="post-count" class="form-label">Number of Blog Posts to Transform (optional)</label>
+					        <input type="number" id="post-count" name="post-count" class="form-control" min="1">
+					    </div> -->
+    
+					    <div class="form-group">
+					        <label for="comments" class="form-label">Comments</label>
+					        <textarea id="comments" name="comments" class="form-control"></textarea>
+					    </div>
+    
+					    <!-- FormSubmit configuration fields -->
+					    <input type="hidden" name="_subject" value="New Contact Form Submission from Primacy">
+					    <input type="hidden" name="_captcha" value="false">
+					    <input type="hidden" name="_template" value="table">
+					    <input type="hidden" name="_next" value="https://biodynamic.coffee">
+    
+					    <div class="form-footer">
+					        <button type="submit" id="submit-btn" class="btn">Submit</button>
+					    </div>
+    
+					    <p class="form-note">We respect your privacy and will never share your information.</p>
+					</form>
+
+					<!-- For FormSubmit, you can completely remove the handleSubmit function since it handles the submission natively.
+					     However, you might want to keep the validation -->
+					<script>
+					// Keep only the validateForm function and the input validation on blur
+					// Add this code to override the default form submission for validation
+						contactForm.addEventListener('submit', function(e) {
+						    // Validate form
+						    if (!validateForm()) {
+						        e.preventDefault(); // Stop the form from submitting
+						        // Shake the form if invalid
+						        contactForm.classList.add('shake');
+						        setTimeout(() => {
+						            contactForm.classList.remove('shake');
+						        }, 600);
+						    }
+						    // If valid, FormSubmit will handle the rest
+						});
+					</script> 
+
+		<!-- 2. Add this CSS to your existing <style> section in the <head> of your index.html -->
+		<style>
+		    /* Contact Form Modal Styles */
+		    .modal-overlay {
+		        position: fixed;
+		        top: 0;
+		        left: 0;
+		        width: 100%;
+		        height: 100%;
+		        background-color: rgba(0, 0, 0, 0.7);
+		        display: flex;
+		        justify-content: center;
+		        align-items: center;
+		        z-index: 1000;
+		        opacity: 0;
+		        visibility: hidden;
+		        transition: opacity 0.3s ease, visibility 0.3s ease;
+		    }
+    
+		    .modal-overlay.active {
+		        opacity: 1;
+		        visibility: visible;
+		    }
+    
+		    .contact-modal {
+		        background-color: var(--light);
+		        border-radius: 8px;
+		        width: 90%;
+		        max-width: 600px;
+		        max-height: 90vh;
+		        overflow-y: auto;
+		        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		        transform: translateY(30px);
+		        opacity: 0;
+		        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+		        position: relative;
+		    }
+    
+		    .modal-overlay.active .contact-modal {
+		        transform: translateY(0);
+		        opacity: 1;
+		    }
+    
+		    .modal-header {
+		        background-color: var(--primary);
+		        color: var(--light);
+		        padding: 1.5rem 2rem;
+		        position: relative;
+		        border-radius: 8px 8px 0 0;
+		    }
+    
+		    .modal-header h3 {
+		        margin-bottom: 0.5rem;
+		        font-size: 1.8rem;
+		    }
+    
+		    .modal-header p {
+		        opacity: 0.9;
+		        margin-bottom: 0;
+		    }
+    
+		    .modal-close {
+		        position: absolute;
+		        top: 1.5rem;
+		        right: 1.5rem;
+		        background: none;
+		        border: none;
+		        color: var(--light);
+		        font-size: 1.5rem;
+		        cursor: pointer;
+		        transition: var(--fast-transition);
+		    }
+    
+		    .modal-close:hover {
+		        transform: rotate(90deg);
+		    }
+    
+		    .modal-body {
+		        padding: 2rem;
+		    }
+    
+		    .form-group {
+		        margin-bottom: 1.5rem;
+		    }
+    
+		    .form-label {
+		        display: block;
+		        margin-bottom: 0.5rem;
+		        font-weight: 500;
+		        font-size: 1rem;
+		    }
+    
+		    .required::after {
+		        content: ' *';
+		        color: var(--primary);
+		    }
+    
+		    .form-control {
+		        width: 100%;
+		        padding: 0.75rem 1rem;
+		        font-size: 1rem;
+		        border: 1px solid var(--light-gray);
+		        border-radius: 4px;
+		        transition: var(--fast-transition);
+		        font-family: 'Inter', sans-serif;
+		    }
+    
+		    .form-control:focus {
+		        outline: none;
+		        border-color: var(--primary);
+		        box-shadow: 0 0 0 3px rgba(255, 55, 61, 0.2);
+		    }
+    
+		    textarea.form-control {
+		        min-height: 120px;
+		        resize: vertical;
+		    }
+    
+		    .form-error {
+		        color: var(--primary);
+		        font-size: 0.85rem;
+		        margin-top: 0.5rem;
+		        display: none;
+		    }
+    
+		    .form-error.visible {
+		        display: block;
+		    }
+    
+		    .form-control.error {
+		        border-color: var(--primary);
+		    }
+    
+		    .form-footer {
+		        margin-top: 2rem;
+		        display: flex;
+		        justify-content: flex-end;
+		    }
+    
+		    .form-note {
+		        font-size: 0.85rem;
+		        color: var(--mid-gray);
+		        margin-top: 1rem;
+		        text-align: center;
+		    }
+    
+		    /* Number Input Styling */
+		    input[type=number] {
+		        -moz-appearance: textfield; /* Firefox */
+		    }
+    
+		    input::-webkit-outer-spin-button,
+		    input::-webkit-inner-spin-button {
+		        -webkit-appearance: none;
+		        margin: 0;
+		    }
+    
+		    /* Success Message */
+		    .success-message {
+		        background-color: #e8f5e9;
+		        color: #2e7d32;
+		        padding: 1rem;
+		        border-radius: 4px;
+		        margin-bottom: 1.5rem;
+		        display: none;
+		    }
+    
+		    .success-message.visible {
+		        display: block;
+		    }
+    
+		    /* Animation */
+		    @keyframes shake {
+		        0%, 100% {
+		            transform: translateX(0);
+		        }
+		        10%, 30%, 50%, 70%, 90% {
+		            transform: translateX(-5px);
+		        }
+		        20%, 40%, 60%, 80% {
+		            transform: translateX(5px);
+		        }
+		    }
+    
+		    .shake {
+		        animation: shake 0.6s;
+		    }
+    
+		    /* Form Loading */
+		    .form-loading {
+		        display: none;
+		        text-align: center;
+		        padding: 2rem;
+		    }
+    
+		    .form-loading.visible {
+		        display: block;
+		    }
+    
+		    .spinner {
+		        width: 40px;
+		        height: 40px;
+		        border: 4px solid rgba(255, 55, 61, 0.2);
+		        border-radius: 50%;
+		        border-top-color: var(--primary);
+		        display: inline-block;
+		        animation: spin 1s ease-in-out infinite;
+		    }
+    
+		    @keyframes spin {
+		        to {
+		            transform: rotate(360deg);
+		        }
+		    }
+		</style>
+
+		<!-- 3. Add this JavaScript code right before the closing </body> tag, after adding the HTML above -->
+		<script>
+		    // Contact Form Modal Functionality
+		    document.addEventListener('DOMContentLoaded', function() {
+		        // Get all buttons that should open the contact form
+		        const contactButtons = document.querySelectorAll('a[href="#contact"]');
+		        const modalOverlay = document.getElementById('contact-modal-overlay');
+		        const modalCloseBtn = document.getElementById('modal-close-btn');
+		        const contactForm = document.getElementById('contact-form');
+		        const formLoading = document.getElementById('form-loading');
+		        const successMessage = document.getElementById('success-message');
+        
+		        // Form Inputs
+		        const nameInput = document.getElementById('name');
+		        const emailInput = document.getElementById('email');
+		        const blogLinkInput = document.getElementById('blog-link');
+		        const postCountInput = document.getElementById('post-count');
+		        const commentsInput = document.getElementById('comments');
+        
+		        // Error Elements
+		        const nameError = document.getElementById('name-error');
+		        const emailError = document.getElementById('email-error');
+		        const blogLinkError = document.getElementById('blog-link-error');
+        
+		        // Open Modal Function
+		        function openModal() {
+		            modalOverlay.classList.add('active');
+		            // Reset the form when opening
+		            contactForm.reset();
+		            successMessage.classList.remove('visible');
+            
+		            // Reset form errors
+		            const errorElements = document.querySelectorAll('.form-error');
+		            errorElements.forEach(error => error.classList.remove('visible'));
+            
+		            const inputElements = document.querySelectorAll('.form-control');
+		            inputElements.forEach(input => input.classList.remove('error'));
+		        }
+        
+		        // Close Modal Function
+		        function closeModal() {
+		            modalOverlay.classList.remove('active');
+		        }
+        
+		        // Validate Email Function
+		        function isValidEmail(email) {
+		            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		            return emailRegex.test(email);
+		        }
+        
+		        // Validate URL Function
+		        function isValidUrl(url) {
+		            try {
+		                new URL(url);
+		                return true;
+		            } catch (e) {
+		                return false;
+		            }
+		        }
+        
+		        // Form Validation Function
+		        function validateForm() {
+		            let isValid = true;
+            
+		            // Validate Name
+		            if (!nameInput.value.trim()) {
+		                nameInput.classList.add('error');
+		                nameError.classList.add('visible');
+		                isValid = false;
+		            } else {
+		                nameInput.classList.remove('error');
+		                nameError.classList.remove('visible');
+		            }
+            
+		            // Validate Email
+		            if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
+		                emailInput.classList.add('error');
+		                emailError.classList.add('visible');
+		                isValid = false;
+		            } else {
+		                emailInput.classList.remove('error');
+		                emailError.classList.remove('visible');
+		            }
+            
+		            // Validate Blog Link
+		            if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) {
+		                blogLinkInput.classList.add('error');
+		                blogLinkError.classList.add('visible');
+		                isValid = false;
+		            } else {
+		                blogLinkInput.classList.remove('error');
+		                blogLinkError.classList.remove('visible');
+		            }
+            
+		            return isValid;
+		        }
+        
+		        // Handle Form Submission
+		        function handleSubmit(e) {
+		            e.preventDefault();
+            
+		            // Validate form
+		            if (!validateForm()) {
+		                // Shake the form if invalid
+		                contactForm.classList.add('shake');
+		                setTimeout(() => {
+		                    contactForm.classList.remove('shake');
+		                }, 600);
+		                return;
+		            }
+            
+		            // Show loading state
+		            contactForm.style.display = 'none';
+		            formLoading.classList.add('visible');
+            
+		            // Prepare email content
+		            const name = nameInput.value.trim();
+		            const email = emailInput.value.trim();
+		            const blogLink = blogLinkInput.value.trim();
+		            const postCount = postCountInput.value.trim();
+		            const comments = commentsInput.value.trim();
+            
+		            // Create mailto URL with form data
+		            const subject = encodeURIComponent('New Contact Form Submission from ' + name);
+		            let body = encodeURIComponent(
+		                'Name: ' + name + '\n' +
+		                'Email: ' + email + '\n' +
+		                'Shopify Blog Link: ' + blogLink + '\n' +
+		                (postCount ? 'Number of Posts: ' + postCount + '\n' : '') +
+		                (comments ? 'Comments: ' + comments : '')
+		            );
+            
+		            // Create a mailto link and trigger it
+		            const mailtoLink = 'mailto:gkalinin@primacy.io?subject=' + subject + '&body=' + body;
+            
+		            // Create a hidden link and click it
+		            const link = document.createElement('a');
+		            link.href = mailtoLink;
+		            link.style.display = 'none';
+		            document.body.appendChild(link);
+		            link.click();
+		            document.body.removeChild(link);
+            
+		            // Hide loading state and show success message
+		            setTimeout(() => {
+		                formLoading.classList.remove('visible');
+		                contactForm.style.display = 'block';
+		                successMessage.classList.add('visible');
+                
+		                // Reset form
+		                contactForm.reset();
+                
+		                // Close modal after delay
+		                setTimeout(() => {
+		                    closeModal();
+		                }, 3000);
+		            }, 1000);
+		        }
+        
+		        // Event Listeners for all "Contact" buttons/links
+		        contactButtons.forEach(button => {
+		            button.addEventListener('click', function(e) {
+		                e.preventDefault();
+		                openModal();
+		            });
+		        });
+        
+		        // Close button event listener
+		        modalCloseBtn.addEventListener('click', closeModal);
+        
+		        // Close modal when clicking outside the form
+		        modalOverlay.addEventListener('click', (e) => {
+		            if (e.target === modalOverlay) {
+		                closeModal();
+		            }
+		        });
+        
+		        // Close modal with Escape key
+		        document.addEventListener('keydown', (e) => {
+		            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+		                closeModal();
+		            }
+		        });
+        
+		        // Input validation on blur
+		        nameInput.addEventListener('blur', () => {
+		            if (!nameInput.value.trim()) {
+		                nameInput.classList.add('error');
+		                nameError.classList.add('visible');
+		            } else {
+		                nameInput.classList.remove('error');
+		                nameError.classList.remove('visible');
+		            }
+		        });
+        
+		        emailInput.addEventListener('blur', () => {
+		            if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
+		                emailInput.classList.add('error');
+		                emailError.classList.add('visible');
+		            } else {
+		                emailInput.classList.remove('error');
+		                emailError.classList.remove('visible');
+		            }
+		        });
+        
+		        blogLinkInput.addEventListener('blur', () => {
+		            if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) {
+		                blogLinkInput.classList.add('error');
+		                blogLinkError.classList.add('visible');
+		            } else {
+		                blogLinkInput.classList.remove('error');
+		                blogLinkError.classList.remove('visible');
+		            }
+		        });
+		    });
+		</script>
+</body>
+</html>
