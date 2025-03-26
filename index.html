@@ -1064,7 +1064,22 @@
     
        <style>
            /* Add these mobile styles at the end of your existing CSS */
-           @media (max-width: 768px) {
+		   @media (max-width: 768px) {
+		       .hero-content {
+		           padding-top: 80px; /* Add padding to account for fixed header */
+		       }
+    
+		       .hero {
+		           height: auto; /* Allow height to adjust based on content */
+		           min-height: 100vh; /* Still take up at least full viewport height */
+		       }
+    
+		       .hero-heading {
+		           margin-top: 2rem; /* Add some space at the top */
+		           font-size: clamp(2.2rem, 7vw, 3rem); /* Slightly reduce font size on mobile */
+		       }
+		   }
+		   @media (max-width: 768px) {
                /* Hero Section Mobile Styles */
                .hero-grid {
                    display: flex !important;
