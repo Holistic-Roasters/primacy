@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planting Lavender - Terre Bleu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
     <style>
         :root {
             --terre-blue: #24417E;
@@ -74,11 +76,25 @@
             background: linear-gradient(rgba(36, 65, 126, 0.7), rgba(36, 65, 126, 0.7)), url('https://www.terrebleu.ca/cdn/shop/articles/plantinglavender_fennario_eb092e0b-36c3-4993-ba40-c54e40eb833a.jpg?v=1739548682&width=1600') no-repeat center center;
             background-size: cover;
             margin-bottom: 50px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 1;
         }
 
         .hero-content {
             max-width: 800px;
             padding: 0 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .hero h1 {
@@ -86,12 +102,51 @@
             margin-bottom: 20px;
             font-weight: 800;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
         }
 
         .hero p {
             font-size: 18px;
             margin-bottom: 30px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .floating-bees {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .bee {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23FFC107' d='M150.46 243.34c-1.08 0-2.15-.23-3.15-.68-3.06-1.38-4.86-4.58-4.38-7.86 1.66-11.61 8.34-22.29 17.14-30.95 15.76-15.53 31.61-20.02 47.3-24.47 13.58-3.85 27.23-7.73 41.42-19.73 0 0 0 0 .01-.01 3.2-2.7 7.96-2.29 10.65.91 2.69 3.2 2.29 7.96-.91 10.65-17.33 14.63-34.54 19.43-49.79 23.7-14.18 4.02-26.41 7.48-38.39 19.28-6.23 6.15-10.93 13.67-12.02 21.08-.39 2.71-2.69 4.75-5.34 5.02-.51.04-1.03.06-1.54.06z'/%3E%3Cpath fill='%23FFC107' d='M361.54 243.34c-.51 0-1.03-.02-1.54-.06-2.64-.27-4.95-2.31-5.34-5.02-1.09-7.41-5.79-14.93-12.02-21.08-11.98-11.8-24.21-15.27-38.39-19.28-15.25-4.27-32.46-9.07-49.79-23.7-3.2-2.69-3.6-7.45-.91-10.65 2.69-3.2 7.45-3.6 10.65-.91.01.01.01.01.01.01 14.19 12 27.84 15.88 41.42 19.73 15.69 4.45 31.54 8.94 47.3 24.47 8.8 8.66 15.48 19.34 17.14 30.95.48 3.29-1.32 6.48-4.38 7.86-1.01.46-2.08.68-3.15.68z'/%3E%3Cpath fill='%233E3E3F' d='M256 297.61c-25.15 0-50.3-9.57-69.43-28.7-13.94-13.94-63.02-79.17-49.52-140.42 6.75-30.57 30.46-54.94 66.65-68.52C225.01 52.05 244.79 48 256 48s30.99 4.05 52.3 11.97c36.19 13.58 59.9 37.95 66.66 68.52 13.5 61.25-35.59 126.48-49.52 140.42-19.14 19.13-44.29 28.7-69.44 28.7z'/%3E%3Cpath fill='%23333333' d='M210.88 98.28c-32.56 12.22-53.74 33.72-59.64 60.59-11.73 53.15 30.8 110.14 47.17 126.51 22.09 22.09 57.26 32.28 89.9 24.87l-77.43-212z'/%3E%3Cpath fill='%23FFC107' d='M256 333.91c-25.55 0-52.02-8.16-73.14-21.92-2.2-1.44-3.41-4-3.12-6.6l13.38-122.25c.45-4.13 4.18-7.09 8.31-6.64 4.13.45 7.09 4.17 6.64 8.31l-11.9 108.8c36 22.46 92.15 23.1 128.78 1.71l-12.67-115.6c-.45-4.13 2.51-7.86 6.64-8.31 4.15-.45 7.86 2.51 8.31 6.64l14.15 129.2c.28 2.6-.93 5.15-3.13 6.59-21.12 13.77-47.59 21.07-73.15 21.07z'/%3E%3C/svg%3E");
+            background-size: cover;
+            opacity: 0.8;
+            animation: floating 15s linear infinite;
+            display: none; /* Hide bees */
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 30px) rotate(15deg);
+            }
+            50% {
+                transform: translate(100px, -20px) rotate(-10deg);
+            }
+            75% {
+                transform: translate(150px, 10px) rotate(5deg);
+            }
+            100% {
+                transform: translate(200px, 0) rotate(0deg);
+            }
         }
 
         .blog-content {
@@ -624,6 +679,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            z-index: 1000;
         }
 
         .back-to-top.visible {
@@ -633,6 +689,316 @@
 
         .back-to-top:hover {
             background-color: var(--terre-light-blue);
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Growth Cycle Animation Styles */
+        .growth-cycle-container {
+            position: relative;
+            width: 100%;
+            height: 500px; /* Increased from 400px to 500px */
+            margin: 40px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: var(--terre-white);
+        }
+
+        .growth-stage {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .growth-stage.active {
+            opacity: 1;
+        }
+
+        .stage-content {
+            display: flex;
+            width: 90%;
+            max-width: 900px;
+        }
+
+        .stage-image {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stage-image img, .stage-image svg {
+            max-width: 100%;
+            max-height: 300px;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+        }
+
+        .stage-info {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stage-info h3 {
+            color: var(--terre-blue);
+            margin-bottom: 15px;
+        }
+
+        .stage-month {
+            font-size: 14px;
+            color: var(--terre-light-blue);
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .stage-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .stage-nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px 5px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--terre-blue);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stage-nav-item::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            background-color: var(--terre-lavender);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stage-nav-item.active {
+            color: var(--terre-lavender);
+        }
+
+        .stage-nav-item.active::after {
+            transform: scaleX(1);
+        }
+
+        .stage-nav-item:hover {
+            background-color: var(--terre-light-lavender);
+            color: var(--terre-blue);
+        }
+
+        /* Animated Infographic Styles */
+        .infographic-container {
+            margin: 50px 0;
+            position: relative;
+        }
+
+        .infographic-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .infographic {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .infographic {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .infographic-item {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .infographic-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .infographic-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .infographic-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .infographic-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--terre-blue);
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .infographic-number.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .infographic-label {
+            font-size: 18px;
+            color: var(--terre-light-blue);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .infographic-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .progress-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+        }
+
+        .progress-circle-bg {
+            fill: none;
+            stroke: #e6e6e6;
+            stroke-width: 8;
+        }
+
+        .progress-circle-fill {
+            fill: none;
+            stroke: var(--terre-lavender);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 251;
+            stroke-dashoffset: 251;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 2s ease;
+        }
+
+        /* Water meter animation */
+        .water-meter {
+            position: relative;
+            width: 80px;
+            height: 160px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            background-color: rgba(200, 225, 255, 0.3);
+            overflow: hidden;
+            border: 3px solid var(--terre-blue);
+        }
+
+        .water-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--terre-light-blue);
+            height: 0%;
+            transition: height 1.5s ease-in-out;
+        }
+
+        .water-level::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: wave 2s linear infinite;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .water-meter-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: var(--terre-blue);
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
         }
     </style>
 </head>
@@ -711,6 +1077,203 @@
                     <li><strong>Watch for signs of over/under watering</strong> - If the lower leaves start turning yellow, you might be overwatering—cut back a little. If the plant starts to wilt, it likely needs more water.</li>
                 </ol>
                 <img src="https://cdn.shopify.com/s/files/1/2493/4696/files/3_a8697813-f70d-4614-952e-f7b69b907120_1024x1024.png?v=1679596703" alt="Planting lavender" style="width: 100%; max-width: 600px; display: block; margin: 20px 0; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            </div>
+
+            <!-- Animated Lavender Growth Cycle -->
+            <div class="blog-section fade-in">
+                <h2>Lavender Growth Cycle</h2>
+                <p>Watch how lavender develops through its complete growth cycle:</p>
+
+                <div class="growth-cycle-container">
+                    <div class="growth-stage" id="stage1">
+                        <div class="stage-content">
+                            <div class="stage-image">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100,180 L100,120" stroke="#8B4513" stroke-width="6" />
+                                    <circle cx="100" cy="110" r="10" fill="#9088D4" />
+                                    <path d="M90,100 C90,90 110,90 110,100" stroke="#228B22" stroke-width="3" fill="none" />
+                                </svg>
+                            </div>
+                            <div class="stage-info">
+                                <div class="stage-month">EARLY SPRING</div>
+                                <h3>Seedling Stage</h3>
+                                <p>Lavender begins as a small seedling with just a few leaves. During this vulnerable stage, it needs consistent moisture and protection from extreme temperatures.</p>
+                                <p>This is when the plant establishes its roots, which will be critical for its future health and drought resistance.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="growth-stage" id="stage2">
+                        <div class="stage-content">
+                            <div class="stage-image">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100,180 L100,100" stroke="#8B4513" stroke-width="6" />
+                                    <path d="M80,100 C70,85 90,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M120,100 C130,85 110,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M90,90 C85,75 100,65 105,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M110,90 C115,75 100,65 95,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                </svg>
+                            </div>
+                            <div class="stage-info">
+                                <div class="stage-month">LATE SPRING</div>
+                                <h3>Vegetative Growth</h3>
+                                <p>The plant focuses on developing its foliage and structure. Lavender's signature silver-green leaves spread out to form a bushy shape.</p>
+                                <p>This is the time to ensure good air circulation and proper spacing, as crowded plants may develop fungal issues. No fertilizer needed during this stage!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="growth-stage" id="stage3">
+                        <div class="stage-content">
+                            <div class="stage-image">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100,180 L100,100" stroke="#8B4513" stroke-width="6" />
+                                    <path d="M80,100 C70,85 90,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M120,100 C130,85 110,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M90,90 C85,75 100,65 105,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M110,90 C115,75 100,65 95,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M95,65 L95,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M105,65 L105,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M100,60 L100,30" stroke="#8B4513" stroke-width="2" />
+                                    <ellipse cx="95" cy="30" rx="5" ry="10" fill="#9088D4" />
+                                    <ellipse cx="105" cy="30" rx="5" ry="10" fill="#9088D4" />
+                                    <ellipse cx="100" cy="25" rx="5" ry="10" fill="#9088D4" />
+                                </svg>
+                            </div>
+                            <div class="stage-info">
+                                <div class="stage-month">EARLY SUMMER</div>
+                                <h3>Bud Formation</h3>
+                                <p>As days lengthen and temperatures rise, lavender begins to send up flower stalks. The characteristic buds form at the tips of these stalks.</p>
+                                <p>This is a perfect time to reduce watering, which encourages stronger fragrance development. The plant is now establishing its drought-tolerance.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="growth-stage" id="stage4">
+                        <div class="stage-content">
+                            <div class="stage-image">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100,180 L100,100" stroke="#8B4513" stroke-width="6" />
+                                    <path d="M80,100 C70,85 90,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M120,100 C130,85 110,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M90,90 C85,75 100,65 105,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M110,90 C115,75 100,65 95,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M95,65 L95,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M105,65 L105,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M100,60 L100,30" stroke="#8B4513" stroke-width="2" />
+                                    <ellipse cx="95" cy="30" rx="7" ry="15" fill="#9088D4" />
+                                    <ellipse cx="105" cy="30" rx="7" ry="15" fill="#9088D4" />
+                                    <ellipse cx="100" cy="25" rx="7" ry="15" fill="#9088D4" />
+                                </svg>
+                            </div>
+                            <div class="stage-info">
+                                <div class="stage-month">MID SUMMER</div>
+                                <h3>Full Bloom</h3>
+                                <p>This is the glory stage! The flower stalks elongate and buds open to reveal vibrant purple blooms. The plant is at its most aromatic and attracts plenty of beneficial pollinators.</p>
+                                <p>For the most fragrant harvests, pick flowers when they're about halfway open. Morning harvesting after the dew has dried yields the strongest essential oils.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="growth-stage" id="stage5">
+                        <div class="stage-content">
+                            <div class="stage-image">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100,180 L100,100" stroke="#8B4513" stroke-width="6" />
+                                    <path d="M80,100 C70,85 90,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M120,100 C130,85 110,70 100,85" stroke="#228B22" stroke-width="3" fill="#228B22" />
+                                    <path d="M90,90 C85,75 100,65 105,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M110,90 C115,75 100,65 95,75" stroke="#228B22" stroke-width="2" fill="#228B22" />
+                                    <path d="M95,65 L95,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M105,65 L105,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M100,60 L100,30" stroke="#8B4513" stroke-width="2" />
+                                    <ellipse cx="95" cy="30" rx="5" ry="10" fill="#A596DB" opacity="0.7" />
+                                    <ellipse cx="105" cy="30" rx="5" ry="10" fill="#A596DB" opacity="0.7" />
+                                    <ellipse cx="100" cy="25" rx="5" ry="10" fill="#A596DB" opacity="0.7" />
+                                    <path d="M90,40 L85,45" stroke="#333" stroke-width="0.5" />
+                                    <path d="M110,40 L115,45" stroke="#333" stroke-width="0.5" />
+                                    <circle cx="85" cy="45" r="1" fill="#333" />
+                                    <circle cx="115" cy="45" r="1" fill="#333" />
+                                </svg>
+                            </div>
+                            <div class="stage-info">
+                                <div class="stage-month">LATE SUMMER</div>
+                                <h3>Seed Formation</h3>
+                                <p>After blooming, the plant focuses energy on producing seeds. The flowers begin to fade, and tiny seeds develop within the spent blooms.</p>
+                                <p>This is the perfect time for pruning - remove about one-third of the current year's growth to maintain the plant's compact shape and encourage bushiness in the next growing season.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="growth-stage" id="stage6">
+                        <div class="stage-content">
+                            <div class="stage-image">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100,180 L100,100" stroke="#8B4513" stroke-width="6" />
+                                    <path d="M80,100 C70,85 90,70 100,85" stroke="#556B2F" stroke-width="3" fill="#556B2F" />
+                                    <path d="M120,100 C130,85 110,70 100,85" stroke="#556B2F" stroke-width="3" fill="#556B2F" />
+                                    <path d="M90,90 C85,75 100,65 105,75" stroke="#556B2F" stroke-width="2" fill="#556B2F" />
+                                    <path d="M110,90 C115,75 100,65 95,75" stroke="#556B2F" stroke-width="2" fill="#556B2F" />
+                                    <path d="M95,65 L95,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M105,65 L105,35" stroke="#8B4513" stroke-width="2" />
+                                    <path d="M100,60 L100,30" stroke="#8B4513" stroke-width="2" />
+                                    <ellipse cx="95" cy="30" rx="3" ry="6" fill="#8B4513" />
+                                    <ellipse cx="105" cy="30" rx="3" ry="6" fill="#8B4513" />
+                                    <ellipse cx="100" cy="25" rx="3" ry="6" fill="#8B4513" />
+                                </svg>
+                            </div>
+                            <div class="stage-info">
+                                <div class="stage-month">FALL & WINTER</div>
+                                <h3>Dormancy</h3>
+                                <p>Lavender enters its dormant period as temperatures drop. Growth slows dramatically, and the plant concentrates energy in its woody base and roots.</p>
+                                <p>No need to fertilize during dormancy. Good drainage becomes even more critical during winter months - excess moisture during dormancy is the primary cause of lavender loss in cold climates.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stage-nav">
+                        <div class="stage-nav-item active" data-stage="1">Seedling</div>
+                        <div class="stage-nav-item" data-stage="2">Vegetative</div>
+                        <div class="stage-nav-item" data-stage="3">Bud Formation</div>
+                        <div class="stage-nav-item" data-stage="4">Bloom</div>
+                        <div class="stage-nav-item" data-stage="5">Seed Formation</div>
+                        <div class="stage-nav-item" data-stage="6">Dormancy</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animated Success Metrics Infographic -->
+            <div class="blog-section fade-in">
+                <h2 style="text-align: left;" class="infographic-title">Keys to Lavender Success</h2>
+                
+                <div class="infographic">
+                    <div class="infographic-item">
+                        <div class="infographic-icon">
+                            <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/sun.png?v=1742965285" alt="Sun icon" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="infographic-number" data-count="8">0</div>
+                        <div class="infographic-label">Hours of Sunlight</div>
+                        <p class="infographic-text">For optimal growth and bloom production, lavender needs a minimum of 6-8 hours of direct sunlight daily.</p>
+                    </div>
+                    
+                    <div class="infographic-item">
+                        <div class="infographic-icon">
+                            <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/watering-can.png?v=1742965285" alt="Watering can icon" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="infographic-number" data-count="30">0</div>
+                        <div class="infographic-label">% Water Needs</div>
+                        <p class="infographic-text">Lavender thrives with minimal watering once established. Overwatering is the most common cause of lavender failure.</p>
+                    </div>
+                    
+                    <div class="infographic-item">
+                        <div class="infographic-icon">
+                            <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/pruning.png?v=1742965285" alt="Pruning shears icon" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="infographic-number" data-count="33">0</div>
+                        <div class="infographic-label">% Pruning</div>
+                        <p class="infographic-text">Annual pruning by 1/3 after flowering keeps lavender compact and promotes longevity. Never cut into old wood.</p>
+                    </div>
+                </div>
             </div>
 
             <div class="blog-section">
@@ -839,6 +1402,61 @@
             </div>
 
             <div class="blog-section">
+                <h2>Lavender Varieties to Consider</h2>
+                <p>Different lavender varieties offer unique characteristics. Here are some top choices for Ontario gardens:</p>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            English Lavender (Lavandula angustifolia)
+                            <span class="accordion-icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>The most cold-hardy variety, perfect for Canadian gardens. Popular cultivars include 'Hidcote' (compact, deep purple), 'Munstead' (early bloomer), and 'Royal Velvet' (long stems, great for cutting). English lavender has the sweetest fragrance and is ideal for culinary use.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            Lavandin (Lavandula x intermedia)
+                            <span class="accordion-icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>A hybrid between English and Portuguese lavender, with exceptional vigor and large flower heads. Popular cultivars include 'Grosso' (high oil content), 'Provence' (classic French fields), and 'Phenomenal' (excellent cold hardiness). Great for dried bouquets and crafts.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            French Lavender (Lavandula dentata)
+                            <span class="accordion-icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Distinguished by its toothed leaves, this variety is less cold-hardy but offers a longer blooming season. It works well in containers that can be moved indoors for winter protection. Its unique camphor-like scent makes it distinctive in the garden.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            Spanish Lavender (Lavandula stoechas)
+                            <span class="accordion-icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Recognized by its distinctive "rabbit ear" bracts atop each flower spike. This showy variety blooms earlier than other types but is the least cold-hardy. Excellent for containers and southern gardens, or as an annual in colder regions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-section">
                 <h2>Harvesting Your Lavender</h2>
                 <p>For the most fragrant and vibrant blooms:</p>
                 <ul class="icon-list">
@@ -854,8 +1472,8 @@
 
         <div class="cta-section">
             <div class="cta-content">
-                <h2 style="text-align: left;">Experience Lavender at Terre Bleu</h2>
-                <p style="text-align: left;">Want to see lavender in all its glory? Visit our farm during bloom season to experience acres of purple beauty, learn from our experts, and take home your own lavender plants.</p>
+                <h2 style="text-align: center;">Experience Lavender at Terre Bleu</h2>
+                <p style="text-align: center;">Want to see lavender in all its glory? Visit our farm during bloom season to experience acres of purple beauty, learn from our experts, and take home your own lavender plants.</p>
                 <a href="https://www.terrebleu.ca/collections/all" class="cta-button">Shop Lavender Products</a>
             </div>
         </div>
@@ -879,61 +1497,6 @@
             </div>
             
             <p>Just remember to give each plant enough space for proper air circulation!</p>
-        </div>
-
-        <div class="blog-section">
-            <h2>Lavender Varieties to Consider</h2>
-            <p>Different lavender varieties offer unique characteristics. Here are some top choices for Ontario gardens:</p>
-            
-            <div class="accordion">
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        English Lavender (Lavandula angustifolia)
-                        <span class="accordion-icon">+</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>The most cold-hardy variety, perfect for Canadian gardens. Popular cultivars include 'Hidcote' (compact, deep purple), 'Munstead' (early bloomer), and 'Royal Velvet' (long stems, great for cutting). English lavender has the sweetest fragrance and is ideal for culinary use.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        Lavandin (Lavandula x intermedia)
-                        <span class="accordion-icon">+</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>A hybrid between English and Portuguese lavender, with exceptional vigor and large flower heads. Popular cultivars include 'Grosso' (high oil content), 'Provence' (classic French fields), and 'Phenomenal' (excellent cold hardiness). Great for dried bouquets and crafts.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        French Lavender (Lavandula dentata)
-                        <span class="accordion-icon">+</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>Distinguished by its toothed leaves, this variety is less cold-hardy but offers a longer blooming season. It works well in containers that can be moved indoors for winter protection. Its unique camphor-like scent makes it distinctive in the garden.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        Spanish Lavender (Lavandula stoechas)
-                        <span class="accordion-icon">+</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>Recognized by its distinctive "rabbit ear" bracts atop each flower spike. This showy variety blooms earlier than other types but is the least cold-hardy. Excellent for containers and southern gardens, or as an annual in colder regions.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="blog-section">
@@ -998,8 +1561,8 @@
     </div>
 
     <script>
-        // Accordion functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Accordion functionality
             const accordionHeaders = document.querySelectorAll('.accordion-header');
             
             accordionHeaders.forEach(header => {
@@ -1045,6 +1608,158 @@
                     behavior: 'smooth'
                 });
             });
+
+            // Fade in elements on scroll
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            function checkFade() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkFade);
+            checkFade(); // Check on initial load
+            
+            // Animated Growth Cycle
+            let currentStage = 1;
+            const totalStages = 6;
+            const stageElements = document.querySelectorAll('.growth-stage');
+            const stageNavItems = document.querySelectorAll('.stage-nav-item');
+            
+            function showStage(stageNum) {
+                // Hide all stages
+                stageElements.forEach(stage => {
+                    stage.classList.remove('active');
+                });
+                
+                // Show the selected stage
+                document.getElementById('stage' + stageNum).classList.add('active');
+                
+                // Update navigation
+                stageNavItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                stageNavItems[stageNum - 1].classList.add('active');
+                
+                currentStage = stageNum;
+            }
+            
+            // Initialize with the first stage
+            showStage(1);
+            
+            // Add click event listeners to navigation items
+            stageNavItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const stage = parseInt(this.getAttribute('data-stage'));
+                    showStage(stage);
+                    
+                    // Clear auto cycling when user interacts
+                    clearInterval(stageCycleInterval);
+                    
+                    // Restart the interval after 30 seconds of inactivity
+                    setTimeout(function() {
+                        stageCycleInterval = setInterval(cycleToNextStage, 5000);
+                    }, 30000);
+                });
+            });
+            
+            // Function to cycle to next stage
+            function cycleToNextStage() {
+                let nextStage = currentStage + 1;
+                if (nextStage > totalStages) {
+                    nextStage = 1;
+                }
+                showStage(nextStage);
+            }
+            
+            // Auto-play stages every 5 seconds
+            let stageCycleInterval = setInterval(cycleToNextStage, 5000);
+            
+            // Animate infographic numbers
+            const infographicNumbers = document.querySelectorAll('.infographic-number');
+            
+            function animateNumbers() {
+                infographicNumbers.forEach(numberElement => {
+                    const targetNumber = parseInt(numberElement.getAttribute('data-count'));
+                    let currentNumber = 0;
+                    const duration = 2000; // 2 seconds
+                    const interval = 50; // Update every 50ms
+                    const increment = targetNumber / (duration / interval);
+                    
+                    const timer = setInterval(() => {
+                        currentNumber += increment;
+                        if (currentNumber >= targetNumber) {
+                            currentNumber = targetNumber;
+                            clearInterval(timer);
+                        }
+                        numberElement.textContent = Math.floor(currentNumber);
+                    }, interval);
+                    
+                    numberElement.classList.add('visible');
+                });
+            }
+            
+            // Animate progress circles
+            const progressCircles = document.querySelectorAll('.progress-circle-fill');
+            
+            function animateProgressCircles() {
+                progressCircles.forEach(circle => {
+                    const percentage = parseInt(circle.getAttribute('data-percentage'));
+                    const circumference = 2 * Math.PI * 40; // 2πr where r=40
+                    const offset = circumference - (percentage / 100 * circumference);
+                    
+                    // Initial state
+                    circle.style.strokeDasharray = circumference;
+                    circle.style.strokeDashoffset = circumference;
+                    
+                    // Trigger animation
+                    setTimeout(() => {
+                        circle.style.strokeDashoffset = offset;
+                    }, 500);
+                });
+            }
+            
+            // Animate water level
+            function animateWaterLevel() {
+                const waterLevel = document.getElementById('waterLevel');
+                
+                if (waterLevel) {
+                    setTimeout(() => {
+                        waterLevel.style.height = '30%';
+                    }, 500);
+                }
+            }
+            
+            // Use Intersection Observer for infographic animations
+            const infographicObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateNumbers();
+                        animateProgressCircles();
+                        animateWaterLevel();
+                        infographicObserver.disconnect(); // Only animate once
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            const infographic = document.querySelector('.infographic');
+            if (infographic) {
+                infographicObserver.observe(infographic);
+            }
+
+            // Add GSAP animations if available
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Removed parallax effect on hero image
+            }
         });
     </script>
 </body>
