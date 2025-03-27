@@ -2066,7 +2066,7 @@
 					    <input type="hidden" name="_subject" value="New Contact Form Submission from Primacy">
 					    <input type="hidden" name="_captcha" value="false">
 					    <input type="hidden" name="_template" value="table">
-					    <input type="hidden" name="_next" value="https://biodynamic.coffee">
+					    <input type="hidden" name="_next" value="https://primacy.io">
     
 					    <div class="form-footer">
 					        <button type="submit" id="submit-btn" class="btn">Submit</button>
@@ -2080,23 +2080,18 @@
 					<script>
 					// Keep only the validateForm function and the input validation on blur
 					// Add this code to override the default form submission for validation
-					contactForm.addEventListener('submit', function(e) {
-					    // Validate form
-					    if (!validateForm()) {
-					        e.preventDefault(); // Stop the form from submitting
-        
-					        // Shake the form if invalid
-					        contactForm.classList.add('shake');
-					        setTimeout(() => {
-					            contactForm.classList.remove('shake');
-					        }, 600);
-					    } else {
-					        // Show loading state
-					        // Note: With FormSubmit this will only show briefly as the page will redirect
-					        contactForm.style.display = 'none';
-					        formLoading.classList.add('visible');
-					    }
-					});
+						contactForm.addEventListener('submit', function(e) {
+						    // Validate form
+						    if (!validateForm()) {
+						        e.preventDefault(); // Stop the form from submitting
+						        // Shake the form if invalid
+						        contactForm.classList.add('shake');
+						        setTimeout(() => {
+						            contactForm.classList.remove('shake');
+						        }, 600);
+						    }
+						    // If valid, FormSubmit will handle the rest
+						});
 					</script>
 
 		<!-- 2. Add this CSS to your existing <style> section in the <head> of your index.html -->
@@ -2411,10 +2406,6 @@
             
 		            return isValid;
 		        }
-        
-		        // Handle Form Submission
-		        function handleSubmit(e) {
-		            e.preventDefault();
             
 		            // Validate form
 		            if (!validateForm()) {
@@ -2485,8 +2476,7 @@
 		        // Close button event listener
 		        modalCloseBtn.addEventListener('click', closeModal);
         
-		        // Submit form event listener
-		        contactForm.addEventListener('submit', handleSubmit);
+		        
         
 		        // Close modal when clicking outside the form
 		        modalOverlay.addEventListener('click', (e) => {
@@ -2534,5 +2524,66 @@
 		        });
 		    });
 		</script>
+			<!-- Add this script to the bottom of your page, right before the closing </body> tag -->
+			<script>
+			  document.addEventListener('DOMContentLoaded', function() {
+			    // Get all elements that should trigger the contact form
+			    const contactButtons = document.querySelectorAll('a[href="#contact"]');
+			    const modalOverlay = document.getElementById('contact-modal-overlay');
+			    const modalCloseBtn = document.getElementById('modal-close-btn');
+    
+			    console.log('Found ' + contactButtons.length + ' contact buttons'); // Debugging
+    
+			    // Open Modal Function - defined separately for clarity
+			    function openModal() {
+			      console.log('Opening modal'); // Debugging
+			      if (modalOverlay) {
+			        modalOverlay.style.visibility = 'visible';
+			        modalOverlay.style.opacity = '1';
+			        modalOverlay.classList.add('active');
+			      } else {
+			        console.error('Modal overlay element not found');
+			      }
+			    }
+    
+			    // Close Modal Function
+			    function closeModal() {
+			      console.log('Closing modal'); // Debugging
+			      if (modalOverlay) {
+			        modalOverlay.classList.remove('active');
+			        setTimeout(() => {
+			          modalOverlay.style.visibility = 'hidden';
+			          modalOverlay.style.opacity = '0';
+			        }, 300);
+			      }
+			    }
+    
+			    // Add click event listener to each contact button
+			    contactButtons.forEach((button, index) => {
+			      console.log('Adding listener to button ' + index); // Debugging
+			      button.addEventListener('click', function(e) {
+			        console.log('Contact button clicked'); // Debugging
+			        e.preventDefault();
+			        openModal();
+			      });
+			    });
+    
+			    // Direct trigger for testing - you can remove this after fixing the issue
+			    window.openContactModal = openModal;
+    
+			    // Close button event listener
+			    if (modalCloseBtn) {
+			      modalCloseBtn.addEventListener('click', closeModal);
+			    } else {
+			      console.error('Modal close button not found');
+			    }
+    
+			    // Test button click event for debugging - you can remove after fixing
+			    setTimeout(() => {
+			      console.log('Contact buttons after delay:');
+			      console.log(contactButtons);
+			    }, 2000);
+			  });
+			</script>
 </body>
 </html>
