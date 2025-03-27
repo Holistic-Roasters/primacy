@@ -2075,243 +2075,240 @@
 					    <p class="form-note">We respect your privacy and will never share your information.</p>
 					</form>
 
-					<!-- Modal Contact Form -->
-					<div class="modal-overlay" id="contact-modal-overlay">
-					    <div class="contact-modal">
-					        <div class="modal-header">
-					            <h3>Get in Touch</h3>
-					            <p>Let's transform your Shopify blog together</p>
-					            <button class="modal-close" id="modal-close-btn">
-					                <i class="fas fa-times"></i>
-					            </button>
-					        </div>
-
-					        <div class="modal-body">
-					            <div class="success-message" id="success-message">
-					                <i class="fas fa-check-circle"></i> Your message has been sent! We'll be in touch shortly.
-					            </div>
-            
-					            <div id="form-loading" class="form-loading">
-					                <div class="spinner"></div>
-					                <p>Sending your message...</p>
-					            </div>
-
-					            <!-- Form using FormSubmit service -->
-					            <form id="contact-form" action="https://formsubmit.co/gkalinin@primacy.io" method="POST">
-					                <div class="form-group">
-					                    <label for="name" class="form-label required">Name</label>
-					                    <input type="text" id="name" name="name" class="form-control" required>
-					                    <div class="form-error" id="name-error">Please enter your name</div>
-					                </div>
-
-					                <div class="form-group">
-					                    <label for="email" class="form-label required">Email Address</label>
-					                    <input type="email" id="email" name="email" class="form-control" required>
-					                    <div class="form-error" id="email-error">Please enter a valid email address</div>
-					                </div>
-
-					                <div class="form-group">
-					                    <label for="blog-link" class="form-label required">Link to Your Shopify Blog</label>
-					                    <input type="url" id="blog-link" name="blog-link" class="form-control" required>
-					                    <div class="form-error" id="blog-link-error">Please enter a valid URL to your Shopify blog</div>
-					                </div>
-
-					                <div class="form-group">
-					                    <label for="comments" class="form-label">Comments</label>
-					                    <textarea id="comments" name="comments" class="form-control"></textarea>
-					                </div>
-
-					                <!-- FormSubmit configuration fields -->
-					                <input type="hidden" name="_subject" value="New Contact Form Submission from Primacy">
-					                <input type="hidden" name="_captcha" value="false">
-					                <input type="hidden" name="_template" value="table">
-					                <input type="hidden" name="_next" value="https://biodynamic.coffee">
-
-					                <div class="form-footer">
-					                    <button type="submit" id="submit-btn" class="btn">Submit</button>
-					                </div>
-
-					                <p class="form-note">We respect your privacy and will never share your information.</p>
-					            </form>
-					        </div>
-					    </div>
-					</div>
-
+					<!-- For FormSubmit, you can completely remove the handleSubmit function since it handles the submission natively.
+					     However, you might want to keep the validation -->
 					<script>
-					    // Contact Form Modal Functionality
-					    document.addEventListener('DOMContentLoaded', function() {
-					        // Get all buttons that should open the contact form
-					        const contactButtons = document.querySelectorAll('a[href="#contact"]');
-					        const modalOverlay = document.getElementById('contact-modal-overlay');
-					        const modalCloseBtn = document.getElementById('modal-close-btn');
-					        const contactForm = document.getElementById('contact-form');
-					        const formLoading = document.getElementById('form-loading');
-					        const successMessage = document.getElementById('success-message');
-        
-					        // Form Inputs
-					        const nameInput = document.getElementById('name');
-					        const emailInput = document.getElementById('email');
-					        const blogLinkInput = document.getElementById('blog-link');
-					        const commentsInput = document.getElementById('comments');
-        
-					        // Error Elements
-					        const nameError = document.getElementById('name-error');
-					        const emailError = document.getElementById('email-error');
-					        const blogLinkError = document.getElementById('blog-link-error');
-        
-					        // Open Modal Function
-					        function openModal() {
-					            modalOverlay.classList.add('active');
-					            // Reset the form when opening
-					            contactForm.reset();
-					            successMessage.classList.remove('visible');
-            
-					            // Reset form errors
-					            const errorElements = document.querySelectorAll('.form-error');
-					            errorElements.forEach(error => error.classList.remove('visible'));
-            
-					            const inputElements = document.querySelectorAll('.form-control');
-					            inputElements.forEach(input => input.classList.remove('error'));
-            
-					            // Make sure form is visible and loading spinner is hidden
-					            contactForm.style.display = 'block';
-					            formLoading.classList.remove('visible');
-					        }
-        
-					        // Close Modal Function
-					        function closeModal() {
-					            modalOverlay.classList.remove('active');
-					        }
-        
-					        // Validate Email Function
-					        function isValidEmail(email) {
-					            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-					            return emailRegex.test(email);
-					        }
-        
-					        // Validate URL Function
-					        function isValidUrl(url) {
-					            try {
-					                new URL(url);
-					                return true;
-					            } catch (e) {
-					                return false;
-					            }
-					        }
-        
-					        // Form Validation Function
-					        function validateForm() {
-					            let isValid = true;
-            
-					            // Validate Name
-					            if (!nameInput.value.trim()) {
-					                nameInput.classList.add('error');
-					                nameError.classList.add('visible');
-					                isValid = false;
-					            } else {
-					                nameInput.classList.remove('error');
-					                nameError.classList.remove('visible');
-					            }
-            
-					            // Validate Email
-					            if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
-					                emailInput.classList.add('error');
-					                emailError.classList.add('visible');
-					                isValid = false;
-					            } else {
-					                emailInput.classList.remove('error');
-					                emailError.classList.remove('visible');
-					            }
-            
-					            // Validate Blog Link
-					            if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) {
-					                blogLinkInput.classList.add('error');
-					                blogLinkError.classList.add('visible');
-					                isValid = false;
-					            } else {
-					                blogLinkInput.classList.remove('error');
-					                blogLinkError.classList.remove('visible');
-					            }
-            
-					            return isValid;
-					        }
-        
-					        // Submit form event listener with validation
-					        contactForm.addEventListener('submit', function(e) {
-					            // Validate form
-					            if (!validateForm()) {
-					                e.preventDefault(); // Stop the form from submitting
-                
-					                // Shake the form if invalid
-					                contactForm.classList.add('shake');
-					                setTimeout(() => {
-					                    contactForm.classList.remove('shake');
-					                }, 600);
-					            } else {
-					                // Show loading state
-					                contactForm.style.display = 'none';
-					                formLoading.classList.add('visible');
-					                // FormSubmit will handle the rest
-					            }
-					        });
-        
-					        // Event Listeners for all "Contact" buttons/links
-					        contactButtons.forEach(button => {
-					            button.addEventListener('click', function(e) {
-					                e.preventDefault();
-					                openModal();
-					            });
-					        });
-        
-					        // Close button event listener
-					        modalCloseBtn.addEventListener('click', closeModal);
-        
-					        // Close modal when clicking outside the form
-					        modalOverlay.addEventListener('click', (e) => {
-					            if (e.target === modalOverlay) {
-					                closeModal();
-					            }
-					        });
-        
-					        // Close modal with Escape key
-					        document.addEventListener('keydown', (e) => {
-					            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-					                closeModal();
-					            }
-					        });
-        
-					        // Input validation on blur
-					        nameInput.addEventListener('blur', () => {
-					            if (!nameInput.value.trim()) {
-					                nameInput.classList.add('error');
-					                nameError.classList.add('visible');
-					            } else {
-					                nameInput.classList.remove('error');
-					                nameError.classList.remove('visible');
-					            }
-					        });
-        
-					        emailInput.addEventListener('blur', () => {
-					            if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
-					                emailInput.classList.add('error');
-					                emailError.classList.add('visible');
-					            } else {
-					                emailInput.classList.remove('error');
-					                emailError.classList.remove('visible');
-					            }
-					        });
-        
-					        blogLinkInput.addEventListener('blur', () => {
-					            if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) {
-					                blogLinkInput.classList.add('error');
-					                blogLinkError.classList.add('visible');
-					            } else {
-					                blogLinkInput.classList.remove('error');
-					                blogLinkError.classList.remove('visible');
-					            }
-					        });
-					    });
+					// Keep only the validateForm function and the input validation on blur
+					// Add this code to override the default form submission for validation
+						contactForm.addEventListener('submit', function(e) {
+						    // Validate form
+						    if (!validateForm()) {
+						        e.preventDefault(); // Stop the form from submitting
+						        // Shake the form if invalid
+						        contactForm.classList.add('shake');
+						        setTimeout(() => {
+						            contactForm.classList.remove('shake');
+						        }, 600);
+						    }
+						    // If valid, FormSubmit will handle the rest
+						});
 					</script>
+
+		<!-- 2. Add this CSS to your existing <style> section in the <head> of your index.html -->
+		<style>
+		    /* Contact Form Modal Styles */
+		    .modal-overlay {
+		        position: fixed;
+		        top: 0;
+		        left: 0;
+		        width: 100%;
+		        height: 100%;
+		        background-color: rgba(0, 0, 0, 0.7);
+		        display: flex;
+		        justify-content: center;
+		        align-items: center;
+		        z-index: 1000;
+		        opacity: 0;
+		        visibility: hidden;
+		        transition: opacity 0.3s ease, visibility 0.3s ease;
+		    }
+    
+		    .modal-overlay.active {
+		        opacity: 1;
+		        visibility: visible;
+		    }
+    
+		    .contact-modal {
+		        background-color: var(--light);
+		        border-radius: 8px;
+		        width: 90%;
+		        max-width: 600px;
+		        max-height: 90vh;
+		        overflow-y: auto;
+		        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		        transform: translateY(30px);
+		        opacity: 0;
+		        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+		        position: relative;
+		    }
+    
+		    .modal-overlay.active .contact-modal {
+		        transform: translateY(0);
+		        opacity: 1;
+		    }
+    
+		    .modal-header {
+		        background-color: var(--primary);
+		        color: var(--light);
+		        padding: 1.5rem 2rem;
+		        position: relative;
+		        border-radius: 8px 8px 0 0;
+		    }
+    
+		    .modal-header h3 {
+		        margin-bottom: 0.5rem;
+		        font-size: 1.8rem;
+		    }
+    
+		    .modal-header p {
+		        opacity: 0.9;
+		        margin-bottom: 0;
+		    }
+    
+		    .modal-close {
+		        position: absolute;
+		        top: 1.5rem;
+		        right: 1.5rem;
+		        background: none;
+		        border: none;
+		        color: var(--light);
+		        font-size: 1.5rem;
+		        cursor: pointer;
+		        transition: var(--fast-transition);
+		    }
+    
+		    .modal-close:hover {
+		        transform: rotate(90deg);
+		    }
+    
+		    .modal-body {
+		        padding: 2rem;
+		    }
+    
+		    .form-group {
+		        margin-bottom: 1.5rem;
+		    }
+    
+		    .form-label {
+		        display: block;
+		        margin-bottom: 0.5rem;
+		        font-weight: 500;
+		        font-size: 1rem;
+		    }
+    
+		    .required::after {
+		        content: ' *';
+		        color: var(--primary);
+		    }
+    
+		    .form-control {
+		        width: 100%;
+		        padding: 0.75rem 1rem;
+		        font-size: 1rem;
+		        border: 1px solid var(--light-gray);
+		        border-radius: 4px;
+		        transition: var(--fast-transition);
+		        font-family: 'Inter', sans-serif;
+		    }
+    
+		    .form-control:focus {
+		        outline: none;
+		        border-color: var(--primary);
+		        box-shadow: 0 0 0 3px rgba(255, 55, 61, 0.2);
+		    }
+    
+		    textarea.form-control {
+		        min-height: 120px;
+		        resize: vertical;
+		    }
+    
+		    .form-error {
+		        color: var(--primary);
+		        font-size: 0.85rem;
+		        margin-top: 0.5rem;
+		        display: none;
+		    }
+    
+		    .form-error.visible {
+		        display: block;
+		    }
+    
+		    .form-control.error {
+		        border-color: var(--primary);
+		    }
+    
+		    .form-footer {
+		        margin-top: 2rem;
+		        display: flex;
+		        justify-content: flex-end;
+		    }
+    
+		    .form-note {
+		        font-size: 0.85rem;
+		        color: var(--mid-gray);
+		        margin-top: 1rem;
+		        text-align: center;
+		    }
+    
+		    /* Number Input Styling */
+		    input[type=number] {
+		        -moz-appearance: textfield; /* Firefox */
+		    }
+    
+		    input::-webkit-outer-spin-button,
+		    input::-webkit-inner-spin-button {
+		        -webkit-appearance: none;
+		        margin: 0;
+		    }
+    
+		    /* Success Message */
+		    .success-message {
+		        background-color: #e8f5e9;
+		        color: #2e7d32;
+		        padding: 1rem;
+		        border-radius: 4px;
+		        margin-bottom: 1.5rem;
+		        display: none;
+		    }
+    
+		    .success-message.visible {
+		        display: block;
+		    }
+    
+		    /* Animation */
+		    @keyframes shake {
+		        0%, 100% {
+		            transform: translateX(0);
+		        }
+		        10%, 30%, 50%, 70%, 90% {
+		            transform: translateX(-5px);
+		        }
+		        20%, 40%, 60%, 80% {
+		            transform: translateX(5px);
+		        }
+		    }
+    
+		    .shake {
+		        animation: shake 0.6s;
+		    }
+    
+		    /* Form Loading */
+		    .form-loading {
+		        display: none;
+		        text-align: center;
+		        padding: 2rem;
+		    }
+    
+		    .form-loading.visible {
+		        display: block;
+		    }
+    
+		    .spinner {
+		        width: 40px;
+		        height: 40px;
+		        border: 4px solid rgba(255, 55, 61, 0.2);
+		        border-radius: 50%;
+		        border-top-color: var(--primary);
+		        display: inline-block;
+		        animation: spin 1s ease-in-out infinite;
+		    }
+    
+		    @keyframes spin {
+		        to {
+		            transform: rotate(360deg);
+		        }
+		    }
+		</style>
 
 		<!-- 3. Add this JavaScript code right before the closing </body> tag, after adding the HTML above -->
 		<script>
@@ -2409,10 +2406,6 @@
             
 		            return isValid;
 		        }
-        
-		        // Handle Form Submission
-		        function handleSubmit(e) {
-		            e.preventDefault();
             
 		            // Validate form
 		            if (!validateForm()) {
@@ -2483,6 +2476,8 @@
 		        // Close button event listener
 		        modalCloseBtn.addEventListener('click', closeModal);
         
+		        
+        
 		        // Close modal when clicking outside the form
 		        modalOverlay.addEventListener('click', (e) => {
 		            if (e.target === modalOverlay) {
@@ -2529,5 +2524,66 @@
 		        });
 		    });
 		</script>
+			<!-- Add this script to the bottom of your page, right before the closing </body> tag -->
+			<script>
+			  document.addEventListener('DOMContentLoaded', function() {
+			    // Get all elements that should trigger the contact form
+			    const contactButtons = document.querySelectorAll('a[href="#contact"]');
+			    const modalOverlay = document.getElementById('contact-modal-overlay');
+			    const modalCloseBtn = document.getElementById('modal-close-btn');
+    
+			    console.log('Found ' + contactButtons.length + ' contact buttons'); // Debugging
+    
+			    // Open Modal Function - defined separately for clarity
+			    function openModal() {
+			      console.log('Opening modal'); // Debugging
+			      if (modalOverlay) {
+			        modalOverlay.style.visibility = 'visible';
+			        modalOverlay.style.opacity = '1';
+			        modalOverlay.classList.add('active');
+			      } else {
+			        console.error('Modal overlay element not found');
+			      }
+			    }
+    
+			    // Close Modal Function
+			    function closeModal() {
+			      console.log('Closing modal'); // Debugging
+			      if (modalOverlay) {
+			        modalOverlay.classList.remove('active');
+			        setTimeout(() => {
+			          modalOverlay.style.visibility = 'hidden';
+			          modalOverlay.style.opacity = '0';
+			        }, 300);
+			      }
+			    }
+    
+			    // Add click event listener to each contact button
+			    contactButtons.forEach((button, index) => {
+			      console.log('Adding listener to button ' + index); // Debugging
+			      button.addEventListener('click', function(e) {
+			        console.log('Contact button clicked'); // Debugging
+			        e.preventDefault();
+			        openModal();
+			      });
+			    });
+    
+			    // Direct trigger for testing - you can remove this after fixing the issue
+			    window.openContactModal = openModal;
+    
+			    // Close button event listener
+			    if (modalCloseBtn) {
+			      modalCloseBtn.addEventListener('click', closeModal);
+			    } else {
+			      console.error('Modal close button not found');
+			    }
+    
+			    // Test button click event for debugging - you can remove after fixing
+			    setTimeout(() => {
+			      console.log('Contact buttons after delay:');
+			      console.log(contactButtons);
+			    }, 2000);
+			  });
+			</script>
 </body>
 </html>
