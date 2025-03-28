@@ -339,21 +339,24 @@
             transition: transform 0.3s ease;
             color: var(--primary-blue);
         }
+		
+	    .myth-fact-answer {
+	               padding: 0 25px; /* Keep horizontal padding */
+	               max-height: 0;
+	               overflow: hidden; /* Crucial */
+	               transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Adjust transition properties */
+	               color: var(--medium-text);
+	               background-color: var(--white);
+	               font-size: 1rem;
+	               /* Add this to prevent internal margins from causing issues */
+	               box-sizing: content-box; /* Let padding add to size, but max-height controls total */
+	           }
 
-        .myth-fact-answer {
-            padding: 0 25px;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.4s ease-out;
-            color: var(--medium-text);
-            background-color: var(--white);
-            font-size: 1rem;
-        }
-
-        .myth-fact.active .myth-fact-answer {
-            padding: 20px 25px;
-            max-height: 300px;
-        }
+			   .myth-fact.active .myth-fact-answer {
+			              padding: 20px 25px; /* Restore vertical padding when active */
+			              max-height: 300px; /* Or adjust if needed */
+			              box-sizing: border-box; /* Switch back for intuitive padding behavior when open */
+			          }
 
         .myth-fact.active .myth-fact-question .arrow {
             transform: rotate(90deg);
