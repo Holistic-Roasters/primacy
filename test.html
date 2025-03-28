@@ -746,34 +746,39 @@
             });
         }
         
-// Set up accordion functionality
+        // Set up accordion functionality (CSS Rotation Version)
         function setupAccordions() {
             const mythFactItems = document.querySelectorAll('.myth-fact');
             mythFactItems.forEach(item => {
                 const question = item.querySelector('.myth-fact-question');
                 if (question) { // Check if the question element exists
-                    const arrow = question.querySelector('.arrow'); // Find arrow span
-                    if (arrow) { // Check if arrow span exists
+                    // Find arrow span - not strictly needed now but good practice
+                    const arrow = question.querySelector('.arrow');
+                    if (arrow) {
+                        // Optional: Ensure all arrows start pointing right if not already ▶
+                        arrow.innerHTML = '▶'; // Or just put ▶ directly in HTML
+
                         question.addEventListener('click', function() {
+                            const wasActive = item.classList.contains('active');
+
                             // Close other open items first (Accordion style)
                             mythFactItems.forEach(otherItem => {
                                 if (otherItem !== item && otherItem.classList.contains('active')) {
                                     otherItem.classList.remove('active');
-                                    const otherArrow = otherItem.querySelector('.arrow');
-                                    if (otherArrow) {
-                                        // Use innerHTML for entities: Reset other arrows to right arrow
-                                        otherArrow.innerHTML = '▶'; // Right Arrow HTML Entity
-                                    }
+                                    // No need to change other arrows via JS anymore
                                 }
                             });
 
-                            // Toggle this item
-                            item.classList.toggle('active');
+                            // Toggle this item's active class
+                            // If it wasn't active before, make it active. If it was, remove active.
+                            if (!wasActive) {
+                                item.classList.add('active');
+                            } else {
+                                item.classList.remove('active');
+                            }
 
-                            // Update the arrow using innerHTML for entities
-                            arrow.innerHTML = item.classList.contains('active') ? '▼' : '▶';
-                            // '▼' is Down Arrow HTML Entity
-                            // '▶' is Right Arrow HTML Entity
+                            // --- REMOVED ARROW CHARACTER SWAPPING LOGIC ---
+                            // The CSS handles the visual change based on the 'active' class now.
                         });
                     }
                 }
