@@ -358,6 +358,19 @@
         .myth-fact.active .myth-fact-question .arrow {
             transform: rotate(90deg);
         }
+		
+        /* Existing .myth-fact-question .arrow rule */
+        .myth-fact-question .arrow {
+            font-size: 1.2rem; /* Or your preferred size */
+            transition: transform 0.3s ease; /* Keep the transition */
+            color: var(--primary-blue);
+            display: inline-block; /* Needed for transform */
+        }
+
+        /* Add this rule for the rotation when active */
+        .myth-fact.active .myth-fact-question .arrow {
+            transform: rotate(90deg);
+        }
 
         /* Dosage Interaction */
         .dosage-calculator {
