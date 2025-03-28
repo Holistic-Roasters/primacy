@@ -311,34 +311,12 @@
         margin: 3rem 0;
         padding: 2rem 0;
         /* Removed borders */
-        /* border-top: 1px solid var(--ritual-border-color); */
-        /* border-bottom: 1px solid var(--ritual-border-color); */
         position: relative;
         background-color: #fff; /* Ensure white background for contrast */
         border-radius: 8px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
-    /* --- REMOVED HORIZONTAL LINE --- */
-    /* #ritual-prenatal-primer-container .timeline-graphic::before {
-        content: ''; position: absolute; top: 30px; left: 10%; right: 10%; height: 3px;
-        background-color: var(--ritual-light-blue); z-index: 1;
-    } */
-    /* --- Adjust vertical line on mobile to compensate for no horizontal line --- */
-     @media (max-width: 768px) {
-         #ritual-prenatal-primer-container .timeline-graphic::before { /* Vertical line */
-            content: ''; /* Still need the pseudo-element */
-            position: absolute;
-            top: 5%; /* Start near top */
-            bottom: 5%; /* End near bottom */
-            left: 50%;
-            width: 3px;
-            height: 90%; /* Adjust height as needed */
-            background-color: var(--ritual-light-blue);
-            transform: translateX(-50%);
-            z-index: 1;
-         }
-     }
-
+    /* Horizontal line removed previously */
 
     #ritual-prenatal-primer-container .timeline-point {
         text-align: center;
@@ -390,7 +368,7 @@
         color: var(--ritual-text-dark);
     }
 
-    /* --- Nutrient Tabs Section (Keep previous style) --- */
+    /* --- Nutrient Tabs Section --- */
     #ritual-prenatal-primer-container .nutrient-tabs {
         margin-top: 2rem;
         border: 1px solid var(--ritual-border-color);
@@ -425,11 +403,22 @@
         padding: 2rem; display: none; animation: fadeIn 0.5s ease;
     }
     #ritual-prenatal-primer-container .tab-content.active { display: block; }
+    /* UPDATED NUTRIENT ICON CENTERING */
     #ritual-prenatal-primer-container .nutrient-icon {
         width: 50px; height: 50px; border-radius: 50%; background-color: var(--ritual-light-blue);
-        color: var(--ritual-blue); display: flex; justify-content: center; align-items: center;
-        font-size: 1.5rem; float: left; margin-right: 1.5rem; margin-bottom: 0.5rem;
+        color: var(--ritual-blue);
+        display: flex; /* Use flexbox for centering */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        font-size: 1.5rem;
+        float: left; margin-right: 1.5rem; margin-bottom: 0.5rem;
     }
+    /* Ensure the icon itself doesn't have weird line-height */
+    #ritual-prenatal-primer-container .nutrient-icon > i {
+        line-height: 1;
+        display: block; /* Prevents potential inline spacing issues */
+    }
+
     /* Simple RDI Bar Graph (Keep previous style) */
     #ritual-prenatal-primer-container .rdi-graph { margin: 1.5rem 0; }
     #ritual-prenatal-primer-container .rdi-bar-container { margin-bottom: 0.5rem; }
@@ -444,10 +433,9 @@
      #ritual-prenatal-primer-container .rdi-bar.pregnancy > div { background-color: var(--ritual-blue); color: white; }
 
 
-    /* --- Choosing Ritual Section (UPDATED LAYOUT) --- */
+    /* --- Choosing Ritual Section (Single Column Layout) --- */
     #ritual-prenatal-primer-container .feature-cards {
         display: grid;
-        /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
         grid-template-columns: 1fr; /* Force single column layout */
         gap: 2rem; /* Keep vertical gap */
         margin-top: 2rem;
@@ -606,30 +594,42 @@
         #ritual-prenatal-primer-container .timeline-graphic {
             flex-direction: column; align-items: center; padding: 2rem 1rem;
         }
-        /* Vertical line style moved outside this media query block to apply correctly */
+        /* --- REMOVE VERTICAL TIMELINE LINE ON MOBILE --- */
+        #ritual-prenatal-primer-container .timeline-graphic::before {
+           display: none; /* Hide the vertical line */
+        }
         #ritual-prenatal-primer-container .timeline-point {
-             margin-bottom: 3.5rem; max-width: none; width: 100%;
-             padding-top: 0; /* Reset padding */ padding-left: 40px; /* Space for line */ text-align: left;
+             margin-bottom: 2.5rem; /* Reduced margin as there's no line */
+             max-width: none; width: 100%;
+             padding-top: 80px; /* Keep space for icon above */
+             padding-left: 0; /* Reset padding */
+             text-align: center; /* Center text now */
         }
          #ritual-prenatal-primer-container .timeline-point:last-child { margin-bottom: 0; }
         #ritual-prenatal-primer-container .timeline-icon {
-             position: absolute; left: calc(50% - 20px); /* Adjust for padding */ top: 0; transform: translate(-50%, 0); /* Center horizontally */
-             margin: 0; width: 50px; height: 50px; font-size: 1.3rem;
+            position: absolute;
+            left: 50%; /* Center the icon */
+            top: 0;
+            transform: translateX(-50%); /* Center horizontally */
+            margin: 0; width: 50px; height: 50px; font-size: 1.3rem;
          }
          #ritual-prenatal-primer-container .timeline-text {
             padding-top: 10px; /* Add some space below icon */
-            padding-left: 45px; /* Space text away from center line */
-            text-align: left; /* Align text left */
+            padding-left: 0; /* Reset padding */
+            text-align: center; /* Center text */
             margin-left: 0; /* Reset margin */
          }
 
         #ritual-prenatal-primer-container .tab-nav { padding: 0; }
         #ritual-prenatal-primer-container .tab-button { padding: 0.8rem 1rem; font-size: 0.9rem; }
         #ritual-prenatal-primer-container .tab-content { padding: 1.5rem; }
-        #ritual-prenatal-primer-container .nutrient-icon { float: none; margin: 0 auto 1rem auto; display: block; }
+        #ritual-prenatal-primer-container .nutrient-icon {
+             float: none;
+             margin: 0 auto 1rem auto; /* Center the circle */
+             display: flex; /* Keep flex for centering */
+        }
 
-        /* Feature cards already handled by main style change */
-        /* #ritual-prenatal-primer-container .feature-cards { grid-template-columns: 1fr; gap: 1.5rem; } */
+        /* Feature cards already single column */
          #ritual-prenatal-primer-container .bio-entry {
              flex-direction: column; /* Stack image and text */
              align-items: center; /* Center items */
@@ -650,11 +650,11 @@
          #ritual-prenatal-primer-container .article-read-time { margin-bottom: 2rem; }
          #ritual-prenatal-primer-container .ritual-button { padding: 10px 20px; font-size: 0.9rem; }
 
-         #ritual-prenatal-primer-container .timeline-point { padding-left: 0; text-align: center; }
-         #ritual-prenatal-primer-container .timeline-icon { left: 50%; transform: translateX(-50%); }
-         #ritual-prenatal-primer-container .timeline-text {
-             margin-left: 0; text-align: center; padding-top: 70px; padding-left: 0; width: 90%; margin: 0 auto;
-          }
+         /* Timeline point/text already centered */
+         /* #ritual-prenatal-primer-container .timeline-point { padding-left: 0; text-align: center; } */
+         /* #ritual-prenatal-primer-container .timeline-icon { left: 50%; transform: translateX(-50%); } */
+         /* #ritual-prenatal-primer-container .timeline-text { margin-left: 0; text-align: center; padding-top: 70px; padding-left: 0; width: 90%; margin: 0 auto; } */
+
           #ritual-prenatal-primer-container .primer-conclusion { padding: 2rem 1rem; }
           #ritual-prenatal-primer-container .primer-conclusion p { font-size: 1rem; }
           #ritual-prenatal-primer-container .essential-takeaways { padding: 1rem 1.5rem; }
@@ -671,7 +671,7 @@
 
     <article>
         <!-- === HERO IMAGE === -->
-         <img src="https://primacy.io/header2.jpg" alt="Ritual Essential Prenatal vitamins close up in bottle" class="primer-hero-image">
+         <img src="https://primacy.io/header.jpg" alt="Ritual Essential Prenatal vitamins close up in bottle" class="primer-hero-image">
 
         <!-- === MAIN CONTENT AREA === -->
         <div class="primer-content-wrapper">
@@ -752,7 +752,6 @@
                     <h2><i class="fas fa-calendar-alt icon"></i>When Should You Start Taking Prenatals?</h2>
                     <p>The ideal time? Start taking a prenatal vitamin **at least one month (and ideally three months)** prior to trying to conceive. Key development happens very early, often before pregnancy is confirmed.</p>
 
-                    <!-- REMOVED HR (horizontal rule) from here -->
                     <h3>Visualizing the Journey:</h3>
                     <div class="timeline-graphic" id="timeline">
                         <div class="timeline-point" data-stage="planning">
@@ -793,7 +792,8 @@
                     </nav>
 
                     <div id="tab-folate" class="tab-content active">
-                        <i class="fas fa-dna nutrient-icon"></i>
+                        <!-- Ensure i tag is direct child for centering -->
+                        <span class="nutrient-icon"><i class="fas fa-dna"></i></span>
                         <h3>Folate (as 5-MTHF)</h3>
                         <p><strong>Why it's important:</strong> Critical for supporting neural tube development, especially early on. Also vital for DNA synthesis.</p>
                         <p><strong>Form Matters:</strong> Folic acid (synthetic) requires conversion. Up to 1/3 of people have a genetic variation (MTHFR) making this difficult. <strong>5-MTHF Folate</strong> is bioavailable and cell-identical, ready for your body to use.* That's why Ritual uses it.</p>
@@ -810,7 +810,7 @@
                     </div>
 
                     <div id="tab-choline" class="tab-content">
-                        <i class="fas fa-brain nutrient-icon"></i>
+                        <span class="nutrient-icon"><i class="fas fa-brain"></i></span>
                         <h3>Choline</h3>
                         <p><strong>Why it's important:</strong> Supports fetal brain development and plays a role in cell membrane structure and neural tube health.</p>
                         <p><strong>Often Missing:</strong> Despite its importance, many prenatals lack Choline. The AMA recommends ensuring adequate intake.</p>
@@ -828,7 +828,7 @@
                     </div>
 
                     <div id="tab-iron" class="tab-content">
-                         <i class="fas fa-tint nutrient-icon" style="transform: rotate(-45deg);"></i>
+                         <span class="nutrient-icon" style="transform: rotate(-45deg);"><i class="fas fa-tint"></i></span>
                         <h3>Iron</h3>
                         <p><strong>Why it's important:</strong> Essential for making hemoglobin to carry oxygen to you and baby. Needs increase significantly due to expanded blood volume.</p>
                         <p><strong>Gentle Form:</strong> Iron can cause nausea. Ritual uses gentle, chelated Iron (Ferrous Bisglycinate) to support a better experience.*</p>
@@ -845,7 +845,7 @@
                     </div>
 
                     <div id="tab-dha" class="tab-content">
-                         <i class="fas fa-fish nutrient-icon"></i>
+                         <span class="nutrient-icon"><i class="fas fa-fish"></i></span>
                         <h3>Omega-3 DHA</h3>
                         <p><strong>Why it's important:</strong> Crucial fatty acid for fetal brain and eye development, especially later in pregnancy.</p>
                         <p><strong>Vegan Source:</strong> Traditionally from fish oil. Ritual sources DHA from microalgae using an environmentally friendly process – no fishy aftertaste!*</p>
@@ -853,7 +853,7 @@
                     </div>
 
                     <div id="tab-iodine" class="tab-content">
-                        <i class="fas fa-atom nutrient-icon"></i>
+                        <span class="nutrient-icon"><i class="fas fa-atom"></i></span>
                         <h3>Iodine</h3>
                         <p><strong>Why it's important:</strong> Needed for thyroid hormone production, which regulates metabolism and is vital for fetal brain development.</p>
                         <p><strong>Increased Needs:</strong> Requirements rise significantly during pregnancy.</p>
@@ -870,7 +870,7 @@
                     </div>
 
                     <div id="tab-vitamind" class="tab-content">
-                        <i class="fas fa-sun nutrient-icon"></i>
+                        <span class="nutrient-icon"><i class="fas fa-sun"></i></span>
                         <h3>Vitamin D3</h3>
                         <p><strong>Why it's important:</strong> Supports immune function, bone health (calcium absorption), and cell growth.*</p>
                         <p><strong>Vegan Source:</strong> Ritual uses Vitamin D3 sourced from lichen.</p>
@@ -878,7 +878,7 @@
                     </div>
 
                     <div id="tab-b12" class="tab-content">
-                         <i class="fas fa-pills nutrient-icon"></i>
+                         <span class="nutrient-icon"><i class="fas fa-pills"></i></span>
                         <h3>Vitamin B12</h3>
                         <p><strong>Why it's important:</strong> Essential for red blood cell formation, neurological function, and DNA synthesis, working closely with Folate.*</p>
                          <p><strong>Key for Vegans/Vegetarians:</strong> Found primarily in animal foods, making supplementation important for plant-based diets.</p>
@@ -886,7 +886,7 @@
                     </div>
 
                     <div id="tab-other" class="tab-content">
-                        <i class="fas fa-ellipsis-h nutrient-icon"></i>
+                        <span class="nutrient-icon"><i class="fas fa-ellipsis-h"></i></span>
                         <h3>Other Key Nutrients</h3>
                         <p>Ritual's Essential Prenatal also includes these important nutrients to help fill gaps:*</p>
                         <ul class="no-bullet" style="margin-top: 1rem;">
@@ -917,7 +917,7 @@
                     <h2><i class="fas fa-check-circle icon"></i>Why Choose Ritual Essential Prenatal?</h2>
                     <p>Beyond the science-backed nutrients in bioavailable forms, here’s more about what makes Ritual different:</p>
 
-                    <!-- UPDATED CARD LAYOUT -->
+                    <!-- Single Column Card Layout -->
                     <div class="feature-cards">
                         <div class="feature-card">
                             <i class="fas fa-map-marked-alt feature-icon"></i>
@@ -1131,7 +1131,7 @@
             // Add dummy functionality or links to Share buttons if desired
             // Example: container.querySelectorAll('.share-section a').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); alert('Sharing action placeholder'); }));
 
-            console.log("Ritual Prenatal Primer script loaded and enhancements applied (V4 - Layout Tweaks).");
+            console.log("Ritual Prenatal Primer script loaded and enhancements applied (V5 - Mobile Tweaks).");
 
         } // End if(container)
     }); // End DOMContentLoaded
