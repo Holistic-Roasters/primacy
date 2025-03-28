@@ -746,25 +746,37 @@
             });
         }
         
-        // Set up accordion functionality
+// Set up accordion functionality
         function setupAccordions() {
             const mythFactItems = document.querySelectorAll('.myth-fact');
             mythFactItems.forEach(item => {
                 const question = item.querySelector('.myth-fact-question');
-                question.addEventListener('click', function() {
-                    // Close other open items first
-                    mythFactItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.classList.contains('active')) {
-                            otherItem.classList.remove('active');
-                            otherItem.querySelector('.arrow').textContent = '▶';
-                        }
-                    });
-                    
-                    // Toggle this item
-                    item.classList.toggle('active');
-                    const arrow = this.querySelector('.arrow');
-                    arrow.textContent = item.classList.contains('active') ? '▼' : '▶';
-                });
+                if (question) { // Check if the question element exists
+                    const arrow = question.querySelector('.arrow'); // Find arrow span
+                    if (arrow) { // Check if arrow span exists
+                        question.addEventListener('click', function() {
+                            // Close other open items first (Accordion style)
+                            mythFactItems.forEach(otherItem => {
+                                if (otherItem !== item && otherItem.classList.contains('active')) {
+                                    otherItem.classList.remove('active');
+                                    const otherArrow = otherItem.querySelector('.arrow');
+                                    if (otherArrow) {
+                                        // Use innerHTML for entities: Reset other arrows to right arrow
+                                        otherArrow.innerHTML = '▶'; // Right Arrow HTML Entity
+                                    }
+                                }
+                            });
+
+                            // Toggle this item
+                            item.classList.toggle('active');
+
+                            // Update the arrow using innerHTML for entities
+                            arrow.innerHTML = item.classList.contains('active') ? '▼' : '▶';
+                            // '▼' is Down Arrow HTML Entity
+                            // '▶' is Right Arrow HTML Entity
+                        });
+                    }
+                }
             });
         }
         
@@ -906,56 +918,73 @@
             <p>Creatine is one of the safest and most studied sports supplements available. Decades of research consistently show it's safe for long-term use in healthy individuals when taken at recommended dosages.</p>
             <p>However, myths still circulate. Let's address some common ones:</p>
 
-            <!-- Interactive Myth vs Fact Section -->
-            <div class="myth-fact-section">
-                <h3>Myth vs. Fact</h3>
-                <div class="myth-fact">
-                    <div class="myth-fact-question">
-                        <span>Myth: Creatine causes kidney damage.</span>
-                        <span class="arrow">▶</span>
-                    </div>
-                    <div class="myth-fact-answer">
-                        <p><b>Fact:</b> Extensive research in healthy individuals has shown <span class="highlight">no evidence</span> that recommended creatine doses harm kidney function. People with pre-existing kidney conditions should consult their doctor before use, as with any supplement.</p>
-                    </div>
-                </div>
-                <div class="myth-fact">
-                    <div class="myth-fact-question">
-                        <span>Myth: Creatine causes dehydration and cramping.</span>
-                        <span class="arrow">▶</span>
-                    </div>
-                    <div class="myth-fact-answer">
-                        <p><b>Fact:</b> Controlled studies do <span class="highlight">not support</span> the idea that creatine causes dehydration or cramping. In fact, it might even help with thermoregulation. Proper hydration is always important for athletes, regardless of creatine use.</p>
-                    </div>
-                </div>
-                <div class="myth-fact">
-                    <div class="myth-fact-question">
-                        <span>Myth: Creatine is a steroid.</span>
-                        <span class="arrow">▶</span>
-                    </div>
-                    <div class="myth-fact-answer">
-                        <p><b>Fact:</b> Absolutely not! Creatine is a <span class="highlight">naturally occurring compound</span> made from amino acids. It has a completely different chemical structure and mechanism of action than anabolic steroids.</p>
-                    </div>
-                </div>
-                <div class="myth-fact">
-                    <div class="myth-fact-question">
-                        <span>Myth: You lose all your gains when you stop taking creatine.</span>
-                        <span class="arrow">▶</span>
-                    </div>
-                    <div class="myth-fact-answer">
-                        <p><b>Fact:</b> You will lose the extra water weight stored in the muscles, and your natural creatine levels will return to baseline over several weeks. However, the actual <span class="highlight">muscle strength and size gains</span> made through harder training (facilitated by creatine) will largely remain if you continue training properly.</p>
-                    </div>
-                </div>
-            </div>
+		        <!-- Interactive Myth vs Fact Section -->
+		        <div class="myth-fact-section">
+		             <h3>Myth vs. Fact</h3>
+		            <div class="myth-fact">
+		                <div class="myth-fact-question">
+		                    <span>Myth: Creatine causes kidney damage.</span>
+		                    <span class="arrow">▶</span>
+		                </div>
+		                <div class="myth-fact-answer">
+		                    <p><b>Fact:</b> Extensive research in healthy individuals has shown <span class="highlight">no evidence</span> that recommended creatine doses harm kidney function. People with pre-existing kidney conditions should consult their doctor before use, as with any supplement.</p>
+		                </div>
+		            </div>
+		            <div class="myth-fact">
+		                <div class="myth-fact-question">
+		                     <span>Myth: Creatine causes dehydration and cramping.</span>
+		                     <span class="arrow">▶</span>
+		                </div>
+		                <div class="myth-fact-answer">
+		                    <p><b>Fact:</b> Controlled studies do <span class="highlight">not support</span> the idea that creatine causes dehydration or cramping. In fact, it might even help with thermoregulation. Proper hydration is always important for athletes, regardless of creatine use.</p>
+		                </div>
+		            </div>
+		             <div class="myth-fact">
+		                <div class="myth-fact-question">
+		                     <span>Myth: Creatine is a steroid.</span>
+		                     <span class="arrow">▶</span>
+		                </div>
+		                <div class="myth-fact-answer">
+		                    <p><b>Fact:</b> Absolutely not! Creatine is a <span class="highlight">naturally occurring compound</span> made from amino acids. It has a completely different chemical structure and mechanism of action than anabolic steroids.</p>
+		                </div>
+		            </div>
+		             <div class="myth-fact">
+		                <div class="myth-fact-question">
+		                     <span>Myth: You lose all your gains when you stop taking creatine.</span>
+		                     <span class="arrow">▶</span>
+		                </div>
+		                <div class="myth-fact-answer">
+		                    <p><b>Fact:</b> You will lose the extra water weight stored in the muscles, and your natural creatine levels will return to baseline over several weeks. However, the actual <span class="highlight">muscle strength and size gains</span> made through harder training (facilitated by creatine) will largely remain if you continue training properly.</p>
+		                </div>
+		            </div>
+		        </div>
 
-            <p>The most common side effect is slight weight gain (1-2 kg) initially, primarily due to water retention within the muscles. Some individuals might experience mild stomach discomfort if they take too much at once on an empty stomach.</p>
+		        <p>The most common side effect is slight weight gain (1-2 kg) initially, primarily due to water retention within the muscles. Some individuals might experience mild stomach discomfort if they take too much at once on an empty stomach.</p>
 
-            <h2>Choosing the Right Creatine: The Garden of Life Standard</h2>
+		        <h2>Choosing the Right Creatine: The Garden of Life Standard</h2>
 
-            <div class="two-column">
-                <div class="column">
-                    <p>When choosing *any* supplement, quality and purity matter. At Garden of Life, we believe in clean, traceable ingredients. When selecting a creatine supplement, look for:</p>
+		        <p>When choosing *any* supplement, quality and purity matter. At Garden of Life, we believe in clean, traceable ingredients. When selecting a creatine supplement, look for:</p>
+		        <ul>
+		            <li>✅ <span class="highlight">Third-Party Certifications:</span> Look for seals like NSF Certified for Sport or Informed Choice/Informed Sport. These verify that the product contains what it says it does and is tested for banned substances.</li>
+		            <li>✅ <span class="highlight">High-Quality Creatine Monohydrate:</span> Often sourced from reputable manufacturers (e.g., Creapure® is a well-known high-purity brand, though others are good too).</li>
+		            <li>✅ <span class="highlight">Minimal Additives:</span> Choose products with just creatine monohydrate, avoiding unnecessary fillers, artificial colors, or sweeteners if possible, especially if you prefer unflavored options to mix yourself.</li>
+		        </ul>
 
-                    <ul>
-                        <li>✅ <span class="highlight">Third-Party Certifications:</span> Look for seals like NSF Certified for Sport or Informed Choice/Informed Sport. These verify that the product contains what it says it does and is tested for banned substances.</li>
-                        <li>✅ <span class="highlight">High-Quality Creatine Monohydrate:</span> Often sourced from reputable manufacturers (e.g., Creapure® is a well-known high-purity brand, though others are good too).</li>
-                        <li>✅ <span class="highlight">Minimal Additives:</span> Choose products with just creatine monohydrate, avoiding unnecessary fillers, artificial colors, or sweeteners if possible, especially if you prefer unflavored options to mix yourself.</li>
+		        <!-- Inline image - using previous URL -->
+		        <img src="https://www.gardenoflife.com/media/catalog/product/6/5/658010134040-6_1.jpg?optimize=medium&fit=bounds&height=&width=&canvas=:" alt="Clean supplement bottles on a shelf" class="inline-image">
+
+		        <h2>Ready to Power Up Your Performance?</h2>
+
+		        <p>Creatine is a scientifically proven, safe, and natural way to enhance your strength, power, and athletic performance. By helping your muscles produce energy more efficiently, it allows you to train harder and achieve your goals faster. Remember to combine supplementation with consistent training and a healthy diet for the best results.</p>
+		        <p>As always, it's a good idea to chat with your doctor or a registered dietitian before starting any new supplement, especially if you have any underlying health conditions.</p>
+
+		        <a href="https://www.gardenoflife.com/products" target="_blank" class="button button-center">Explore Garden of Life</a>
+
+		        
+				<div style="text-align: center;">
+				 <p>Empowering Extraordinary Health®</p>
+				</div>
+
+		    </div>
+	</body>
+</html>
