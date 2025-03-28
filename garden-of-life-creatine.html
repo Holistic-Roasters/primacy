@@ -312,7 +312,7 @@
         }
 
         .myth-fact-question {
-            padding: 18px 25px;
+            padding: 14px 25px;
             background-color: var(--white);
             color: var(--primary-blue);
             font-weight: 600;
@@ -355,6 +355,19 @@
             max-height: 300px;
         }
 
+        .myth-fact.active .myth-fact-question .arrow {
+            transform: rotate(90deg);
+        }
+		
+        /* Existing .myth-fact-question .arrow rule */
+        .myth-fact-question .arrow {
+            font-size: 1.2rem; /* Or your preferred size */
+            transition: transform 0.3s ease; /* Keep the transition */
+            color: var(--primary-blue);
+            display: inline-block; /* Needed for transform */
+        }
+
+        /* Add this rule for the rotation when active */
         .myth-fact.active .myth-fact-question .arrow {
             transform: rotate(90deg);
         }
@@ -746,25 +759,42 @@
             });
         }
         
-        // Set up accordion functionality
+        // Set up accordion functionality (CSS Rotation Version)
         function setupAccordions() {
             const mythFactItems = document.querySelectorAll('.myth-fact');
             mythFactItems.forEach(item => {
                 const question = item.querySelector('.myth-fact-question');
-                question.addEventListener('click', function() {
-                    // Close other open items first
-                    mythFactItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.classList.contains('active')) {
-                            otherItem.classList.remove('active');
-                            otherItem.querySelector('.arrow').textContent = '▶';
-                        }
-                    });
-                    
-                    // Toggle this item
-                    item.classList.toggle('active');
-                    const arrow = this.querySelector('.arrow');
-                    arrow.textContent = item.classList.contains('active') ? '▼' : '▶';
-                });
+                if (question) { // Check if the question element exists
+                    // Find arrow span - not strictly needed now but good practice
+                    const arrow = question.querySelector('.arrow');
+                    if (arrow) {
+                        // Optional: Ensure all arrows start pointing right if not already ▶
+                        arrow.innerHTML = '▶'; // Or just put ▶ directly in HTML
+
+                        question.addEventListener('click', function() {
+                            const wasActive = item.classList.contains('active');
+
+                            // Close other open items first (Accordion style)
+                            mythFactItems.forEach(otherItem => {
+                                if (otherItem !== item && otherItem.classList.contains('active')) {
+                                    otherItem.classList.remove('active');
+                                    // No need to change other arrows via JS anymore
+                                }
+                            });
+
+                            // Toggle this item's active class
+                            // If it wasn't active before, make it active. If it was, remove active.
+                            if (!wasActive) {
+                                item.classList.add('active');
+                            } else {
+                                item.classList.remove('active');
+                            }
+
+                            // --- REMOVED ARROW CHARACTER SWAPPING LOGIC ---
+                            // The CSS handles the visual change based on the 'active' class now.
+                        });
+                    }
+                }
             });
         }
         
