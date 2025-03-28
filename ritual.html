@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Primer to Prenatal Vitamins | Ritual</title>
+    <!-- Preconnect for potential font loading or other resources if needed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Using Google Fonts as an approximation for Ritual's likely font stack -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for Icons (Ensure this is acceptable within the Shopify environment) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* --- CSS Reset (Minimal) --- */
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        /* Define base font for the whole page if needed, but we'll scope mostly */
+    }
+
+    /* --- Scoped Styles for the Ritual Blog Post --- */
+    #ritual-prenatal-primer-container {
+        /* --- Variables based on Ritual's Palette (approximated) --- */
+        --ritual-yellow: #FFDC73; /* Ritual's signature yellow */
+        --ritual-blue: #1A3A5F; /* Deep blue */
+        --ritual-light-blue: #E0E7F0; /* Lighter background blue */
+        --ritual-off-white: #F8F8F8; /* Off-white background */
+        --ritual-text-dark: #333333;
+        --ritual-text-medium: #555555;
+        --ritual-text-light: #777777;
+        --ritual-accent-green: #5DBE80; /* For positive indicators */
+        --ritual-border-color: #E0E0E0;
+        --ritual-button-blue: #1A3A5F; /* Button blue from screenshot */
+        --ritual-button-blue-hover: #2a4a6f; /* Darker blue for hover */
+
+        /* --- Base Styling within the container --- */
+        font-family: 'Lato', sans-serif;
+        color: var(--ritual-text-dark);
+        line-height: 1.7;
+        background-color: #fff; /* Ensure container has a white background */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        max-width: 100%; /* Ensure it doesn't overflow parent */
+    }
+
+    /* --- Typography --- */
+    #ritual-prenatal-primer-container h1,
+    #ritual-prenatal-primer-container h2,
+    #ritual-prenatal-primer-container h3,
+    #ritual-prenatal-primer-container h4 {
+        font-family: 'Montserrat', sans-serif;
+        color: var(--ritual-blue);
+        margin-bottom: 1.5rem;
+        line-height: 1.3;
+    }
+
+    #ritual-prenatal-primer-container h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1rem; /* Reduced margin */
+        padding-top: 1rem; /* Reduced padding */
+    }
+
+    #ritual-prenatal-primer-container .article-category {
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+        color: var(--ritual-text-light);
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+    }
+     #ritual-prenatal-primer-container .article-read-time {
+        text-align: center;
+        font-family: 'Lato', sans-serif;
+        color: var(--ritual-text-light);
+        font-size: 0.9rem;
+        margin-bottom: 3rem;
+     }
+
+
+    #ritual-prenatal-primer-container h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-top: 3rem;
+        padding-bottom: 0rem;
+        position: relative;
+    }
+
+    #ritual-prenatal-primer-container h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--ritual-blue);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+     #ritual-prenatal-primer-container h4 { /* For smaller headings like in cards */
+        font-size: 1.2rem;
+        color: var(--ritual-blue);
+        margin-bottom: 0.75rem;
+    }
+
+
+    #ritual-prenatal-primer-container p {
+        margin-bottom: 1.5rem;
+        color: var(--ritual-text-medium);
+        font-size: 1.05rem;
+    }
+
+    #ritual-prenatal-primer-container a {
+        color: var(--ritual-blue);
+        text-decoration: underline;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    #ritual-prenatal-primer-container a:hover {
+        color: var(--ritual-yellow);
+        text-decoration: none;
+    }
+
+    #ritual-prenatal-primer-container strong {
+        font-weight: 700;
+        color: var(--ritual-text-dark);
+    }
+
+    #ritual-prenatal-primer-container ul,
+    #ritual-prenatal-primer-container ol {
+        margin-left: 20px;
+        margin-bottom: 1.5rem;
+        padding-left: 15px;
+    }
+     #ritual-prenatal-primer-container li {
+         margin-bottom: 0.75rem;
+         color: var(--ritual-text-medium);
+     }
+    #ritual-prenatal-primer-container ul.no-bullet {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    /* --- Layout & Sections --- */
+    #ritual-prenatal-primer-container .primer-content-wrapper {
+        max-width: 800px; /* Max width for main text content */
+        margin: 0 auto; /* Center content */
+        padding: 0 15px; /* Padding for smaller screens */
+    }
+
+    #ritual-prenatal-primer-container .primer-section {
+        padding: 2rem 0; /* Vertical spacing between sections */
+    }
+     /* Revised full-width background section styling */
+     #ritual-prenatal-primer-container .primer-section.bg-light,
+     #ritual-prenatal-primer-container .primer-section.bg-blue {
+        padding: 3rem 15px; /* Add padding for section background */
+        margin: 2rem 0; /* Vertical margin */
+     }
+     #ritual-prenatal-primer-container .primer-section.bg-light {
+         background-color: var(--ritual-off-white);
+     }
+     #ritual-prenatal-primer-container .primer-section.bg-blue {
+         background-color: var(--ritual-light-blue); /* Use light blue for expert bg */
+     }
+     /* Inner container for content within full-width bg sections */
+     #ritual-prenatal-primer-container .primer-section.bg-light .section-content,
+     #ritual-prenatal-primer-container .primer-section.bg-blue .section-content {
+         max-width: 800px;
+         margin: 0 auto;
+     }
+
+
+    /* --- Hero Section --- */
+    #ritual-prenatal-primer-container .primer-hero-image {
+        width: 100%; /* Make image span width */
+        max-width: 1200px; /* Limit max width */
+        height: auto;
+        margin: 0 auto 2rem auto; /* Center image */
+        display: block;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease-out forwards;
+        animation-delay: 0.1s; /* Start animation early */
+    }
+
+    /* --- General Visual Elements --- */
+     #ritual-prenatal-primer-container .essential-takeaways {
+        border: 1px solid var(--ritual-blue);
+        padding: 1.5rem 2rem;
+        margin: 2.5rem 0;
+        border-radius: 4px;
+        position: relative; /* For potential icon */
+        background-color: #fff;
+     }
+     #ritual-prenatal-primer-container .essential-takeaways h4 {
+         margin-bottom: 1rem;
+         font-size: 1.1rem;
+         color: var(--ritual-blue);
+         font-weight: 700;
+     }
+      #ritual-prenatal-primer-container .essential-takeaways ul {
+          list-style: disc; /* Use standard bullets */
+          margin-left: 20px;
+          margin-bottom: 0;
+          padding-left: 5px;
+      }
+       #ritual-prenatal-primer-container .essential-takeaways li {
+          font-size: 1rem;
+          color: var(--ritual-text-medium);
+          margin-bottom: 0.5rem;
+       }
+       #ritual-prenatal-primer-container .essential-takeaways li::marker {
+           color: var(--ritual-blue); /* Style the bullet color */
+       }
+
+    #ritual-prenatal-primer-container .callout-box {
+        border-left: 3px solid var(--ritual-blue);
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        background-color: var(--ritual-off-white);
+        border-radius: 0 4px 4px 0;
+    }
+     #ritual-prenatal-primer-container .callout-box h4 {
+         margin-bottom: 0.5rem;
+         font-size: 1.1rem;
+         color: var(--ritual-blue);
+     }
+      #ritual-prenatal-primer-container .callout-box p {
+          font-size: 0.95rem;
+          margin-bottom: 1rem;
+      }
+       #ritual-prenatal-primer-container .callout-box p:last-child {
+           margin-bottom: 0;
+       }
+
+
+     #ritual-prenatal-primer-container blockquote {
+         border-left: 4px solid var(--ritual-blue);
+         padding-left: 1.5rem;
+         margin: 2.5rem 0;
+         font-size: 1.2rem;
+         font-style: italic;
+         color: var(--ritual-blue); /* Match text color */
+     }
+      #ritual-prenatal-primer-container blockquote p {
+         margin-bottom: 0.5rem; /* Reduce space inside quote */
+         font-size: inherit; /* Inherit size from blockquote */
+         color: inherit; /* Inherit color */
+      }
+       #ritual-prenatal-primer-container blockquote footer {
+          font-size: 1rem;
+          font-style: normal;
+          color: var(--ritual-text-medium);
+          font-weight: 600;
+       }
+
+
+    #ritual-prenatal-primer-container .icon {
+        color: var(--ritual-yellow);
+        margin-right: 0.5rem;
+        font-size: 1.2em; /* Make icons slightly larger */
+        vertical-align: middle;
+    }
+
+    /* Button Styles to match original */
+    #ritual-prenatal-primer-container .ritual-button {
+        display: inline-block;
+        background-color: var(--ritual-button-blue);
+        color: #fff; /* White text */
+        padding: 12px 25px;
+        border-radius: 25px; /* Pill shape */
+        text-decoration: none;
+        font-weight: 700;
+        font-family: 'Montserrat', sans-serif;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-top: 1rem;
+        font-size: 0.95rem; /* Adjust size */
+    }
+
+    #ritual-prenatal-primer-container .ritual-button:hover {
+        background-color: var(--ritual-button-blue-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+     /* Yellow button variant for final CTA */
+    #ritual-prenatal-primer-container .ritual-button.yellow {
+         background-color: var(--ritual-yellow);
+         color: var(--ritual-blue);
+     }
+      #ritual-prenatal-primer-container .ritual-button.yellow:hover {
+          background-color: #FAD050; /* Slightly darker yellow */
+          color: var(--ritual-blue);
+      }
+
+
+    /* --- Timeline Section (Adapting previous style) --- */
+    #ritual-prenatal-primer-container .timeline-graphic {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        margin: 3rem 0;
+        padding: 2rem 0;
+        /* Removed borders */
+        /* border-top: 1px solid var(--ritual-border-color); */
+        /* border-bottom: 1px solid var(--ritual-border-color); */
+        position: relative;
+        background-color: #fff; /* Ensure white background for contrast */
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    /* --- REMOVED HORIZONTAL LINE --- */
+    /* #ritual-prenatal-primer-container .timeline-graphic::before {
+        content: ''; position: absolute; top: 30px; left: 10%; right: 10%; height: 3px;
+        background-color: var(--ritual-light-blue); z-index: 1;
+    } */
+    /* --- Adjust vertical line on mobile to compensate for no horizontal line --- */
+     @media (max-width: 768px) {
+         #ritual-prenatal-primer-container .timeline-graphic::before { /* Vertical line */
+            content: ''; /* Still need the pseudo-element */
+            position: absolute;
+            top: 5%; /* Start near top */
+            bottom: 5%; /* End near bottom */
+            left: 50%;
+            width: 3px;
+            height: 90%; /* Adjust height as needed */
+            background-color: var(--ritual-light-blue);
+            transform: translateX(-50%);
+            z-index: 1;
+         }
+     }
+
+
+    #ritual-prenatal-primer-container .timeline-point {
+        text-align: center;
+        flex: 1;
+        max-width: 220px; /* Slightly wider */
+        position: relative;
+        z-index: 2;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease-out forwards;
+        padding-top: 80px; /* Space for icon */
+    }
+    #ritual-prenatal-primer-container .timeline-point:nth-child(1) { animation-delay: 0.2s; }
+    #ritual-prenatal-primer-container .timeline-point:nth-child(2) { animation-delay: 0.4s; }
+    #ritual-prenatal-primer-container .timeline-point:nth-child(3) { animation-delay: 0.6s; }
+
+    #ritual-prenatal-primer-container .timeline-icon {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: var(--ritual-yellow);
+        color: var(--ritual-blue);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        border: 3px solid #fff; /* Creates separation from the background/line */
+        box-shadow: 0 0 0 3px var(--ritual-yellow); /* Outer ring */
+    }
+     #ritual-prenatal-primer-container .timeline-point.active .timeline-icon { /* Style for potentially highlighting current stage */
+        background-color: var(--ritual-blue);
+        color: var(--ritual-yellow);
+        box-shadow: 0 0 0 3px var(--ritual-blue);
+     }
+
+    #ritual-prenatal-primer-container .timeline-text {
+        font-size: 0.95rem;
+        color: var(--ritual-text-medium);
+        font-weight: 400; /* Normal weight */
+    }
+    #ritual-prenatal-primer-container .timeline-text strong {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-weight: 700;
+        color: var(--ritual-text-dark);
+    }
+
+    /* --- Nutrient Tabs Section (Keep previous style) --- */
+    #ritual-prenatal-primer-container .nutrient-tabs {
+        margin-top: 2rem;
+        border: 1px solid var(--ritual-border-color);
+        border-radius: 8px;
+        overflow: hidden; /* Clip content */
+        background-color: #fff;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    #ritual-prenatal-primer-container .tab-nav {
+        display: flex;
+        background-color: var(--ritual-light-blue);
+        border-bottom: 1px solid var(--ritual-border-color);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 10px;
+    }
+    #ritual-prenatal-primer-container .tab-nav::-webkit-scrollbar { display: none; }
+    #ritual-prenatal-primer-container .tab-nav { -ms-overflow-style: none; scrollbar-width: none; }
+    #ritual-prenatal-primer-container .tab-button {
+        padding: 1rem 1.5rem; border: none; background: none; cursor: pointer;
+        font-size: 1rem; font-weight: 600; font-family: 'Montserrat', sans-serif;
+        color: var(--ritual-text-medium); position: relative; transition: color 0.3s ease;
+        white-space: nowrap; flex-shrink: 0;
+    }
+    #ritual-prenatal-primer-container .tab-button::after {
+        content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px;
+        background-color: var(--ritual-yellow); transform: scaleX(0); transition: transform 0.3s ease;
+    }
+    #ritual-prenatal-primer-container .tab-button.active { color: var(--ritual-blue); }
+    #ritual-prenatal-primer-container .tab-button.active::after { transform: scaleX(1); }
+    #ritual-prenatal-primer-container .tab-content {
+        padding: 2rem; display: none; animation: fadeIn 0.5s ease;
+    }
+    #ritual-prenatal-primer-container .tab-content.active { display: block; }
+    #ritual-prenatal-primer-container .nutrient-icon {
+        width: 50px; height: 50px; border-radius: 50%; background-color: var(--ritual-light-blue);
+        color: var(--ritual-blue); display: flex; justify-content: center; align-items: center;
+        font-size: 1.5rem; float: left; margin-right: 1.5rem; margin-bottom: 0.5rem;
+    }
+    /* Simple RDI Bar Graph (Keep previous style) */
+    #ritual-prenatal-primer-container .rdi-graph { margin: 1.5rem 0; }
+    #ritual-prenatal-primer-container .rdi-bar-container { margin-bottom: 0.5rem; }
+    #ritual-prenatal-primer-container .rdi-label { display: block; font-size: 0.9rem; color: var(--ritual-text-medium); margin-bottom: 0.25rem; }
+    #ritual-prenatal-primer-container .rdi-bar { height: 20px; border-radius: 10px; background-color: var(--ritual-light-blue); position: relative; overflow: hidden; }
+    #ritual-prenatal-primer-container .rdi-bar > div {
+        height: 100%; border-radius: 10px; background-color: var(--ritual-yellow);
+        position: absolute; top: 0; left: 0; transition: width 1s ease-out; width: 0;
+        display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;
+        font-size: 0.8rem; font-weight: 600; color: var(--ritual-blue); white-space: nowrap;
+    }
+     #ritual-prenatal-primer-container .rdi-bar.pregnancy > div { background-color: var(--ritual-blue); color: white; }
+
+
+    /* --- Choosing Ritual Section (UPDATED LAYOUT) --- */
+    #ritual-prenatal-primer-container .feature-cards {
+        display: grid;
+        /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
+        grid-template-columns: 1fr; /* Force single column layout */
+        gap: 2rem; /* Keep vertical gap */
+        margin-top: 2rem;
+    }
+    #ritual-prenatal-primer-container .feature-card {
+        background-color: #fff; border-radius: 8px; padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07); text-align: center;
+        border-top: 4px solid var(--ritual-yellow); transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards;
+    }
+    /* Keep animation delays as they are */
+    #ritual-prenatal-primer-container .feature-card:nth-child(1) { animation-delay: 0.2s; }
+    #ritual-prenatal-primer-container .feature-card:nth-child(2) { animation-delay: 0.4s; }
+    #ritual-prenatal-primer-container .feature-card:nth-child(3) { animation-delay: 0.6s; }
+    #ritual-prenatal-primer-container .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+    #ritual-prenatal-primer-container .feature-icon { font-size: 2.5rem; color: var(--ritual-blue); margin-bottom: 1rem; display: block; }
+    #ritual-prenatal-primer-container .feature-card h4 { font-size: 1.2rem; color: var(--ritual-blue); margin-bottom: 0.75rem; }
+    #ritual-prenatal-primer-container .feature-card p { font-size: 0.95rem; color: var(--ritual-text-medium); margin-bottom: 0; }
+
+    /* --- References Section --- */
+    #ritual-prenatal-primer-container .references-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--ritual-border-color);
+    }
+    #ritual-prenatal-primer-container .references-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    #ritual-prenatal-primer-container .references-section ol {
+        margin-left: 0;
+        padding-left: 0;
+        list-style: none; /* Remove default numbering */
+        font-size: 0.9rem;
+        color: var(--ritual-text-light);
+    }
+    #ritual-prenatal-primer-container .references-section li {
+        margin-bottom: 1rem;
+        padding-left: 25px; /* Indent text */
+        position: relative;
+    }
+     #ritual-prenatal-primer-container .references-section li::before {
+        content: counter(ref-list) "."; /* Custom counter */
+        counter-increment: ref-list;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 600;
+        color: var(--ritual-text-medium);
+     }
+     #ritual-prenatal-primer-container .references-section {
+        counter-reset: ref-list; /* Initialize counter */
+     }
+
+    /* --- Expert/Author Sections --- */
+     #ritual-prenatal-primer-container .expert-author-section {
+         margin-top: 3rem;
+         padding-top: 2rem;
+         /* Removed border-top as it's within bg-blue */
+     }
+     #ritual-prenatal-primer-container .expert-author-section h3 {
+         font-size: 1.4rem;
+         text-align: center;
+         margin-bottom: 2rem;
+     }
+     #ritual-prenatal-primer-container .bio-entry {
+         display: flex;
+         align-items: flex-start; /* Align items to the top */
+         margin-bottom: 2.5rem;
+         background-color: #fff;
+         padding: 1.5rem;
+         border-radius: 8px;
+         box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+     }
+      #ritual-prenatal-primer-container .bio-image {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-right: 1.5rem;
+          flex-shrink: 0; /* Prevent image from shrinking */
+      }
+       #ritual-prenatal-primer-container .bio-content h4 {
+          margin-bottom: 0.25rem;
+          font-size: 1.15rem;
+       }
+       #ritual-prenatal-primer-container .bio-content .title {
+           font-size: 0.9rem;
+           font-weight: 600;
+           color: var(--ritual-text-light);
+           margin-bottom: 0.75rem;
+           display: block;
+       }
+        #ritual-prenatal-primer-container .bio-content p {
+           font-size: 0.95rem;
+           line-height: 1.6;
+           margin-bottom: 0;
+           color: var(--ritual-text-medium);
+        }
+         #ritual-prenatal-primer-container .bio-content a {
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 0.75rem;
+         }
+
+     /* --- Share Section --- */
+      #ritual-prenatal-primer-container .share-section {
+          margin-top: 2rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--ritual-border-color);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+      }
+       #ritual-prenatal-primer-container .share-section span {
+           font-weight: 600;
+           color: var(--ritual-text-medium);
+           font-size: 1rem;
+       }
+       #ritual-prenatal-primer-container .share-section a {
+           font-size: 1.4rem;
+           color: var(--ritual-blue);
+           text-decoration: none;
+           transition: color 0.3s ease;
+       }
+        #ritual-prenatal-primer-container .share-section a:hover {
+            color: var(--ritual-yellow);
+        }
+
+
+    /* --- Conclusion / CTA (keep previous) --- */
+    #ritual-prenatal-primer-container .primer-conclusion {
+        text-align: center; padding: 3rem 1rem;
+        background: linear-gradient(135deg, var(--ritual-blue) 0%, #2a4a6f 100%);
+        color: #fff; border-radius: 8px; margin-top: 3rem;
+    }
+     #ritual-prenatal-primer-container .primer-conclusion h2 { color: #fff; border-bottom: none; margin-bottom: 1rem; }
+     #ritual-prenatal-primer-container .primer-conclusion h2::after { display: none; }
+     #ritual-prenatal-primer-container .primer-conclusion p { color: var(--ritual-light-blue); max-width: 600px; margin: 0 auto 1.5rem auto; font-size: 1.1rem; }
+
+
+    /* --- Animations --- */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+        #ritual-prenatal-primer-container h1 { font-size: 2.2rem; }
+        #ritual-prenatal-primer-container h2 { font-size: 1.8rem; }
+        #ritual-prenatal-primer-container h3 { font-size: 1.3rem; }
+        #ritual-prenatal-primer-container .primer-content-wrapper { padding: 0 10px; }
+         #ritual-prenatal-primer-container .primer-section.bg-light,
+         #ritual-prenatal-primer-container .primer-section.bg-blue { padding: 2.5rem 10px; } /* Adjust padding */
+
+        #ritual-prenatal-primer-container .timeline-graphic {
+            flex-direction: column; align-items: center; padding: 2rem 1rem;
+        }
+        /* Vertical line style moved outside this media query block to apply correctly */
+        #ritual-prenatal-primer-container .timeline-point {
+             margin-bottom: 3.5rem; max-width: none; width: 100%;
+             padding-top: 0; /* Reset padding */ padding-left: 40px; /* Space for line */ text-align: left;
+        }
+         #ritual-prenatal-primer-container .timeline-point:last-child { margin-bottom: 0; }
+        #ritual-prenatal-primer-container .timeline-icon {
+             position: absolute; left: calc(50% - 20px); /* Adjust for padding */ top: 0; transform: translate(-50%, 0); /* Center horizontally */
+             margin: 0; width: 50px; height: 50px; font-size: 1.3rem;
+         }
+         #ritual-prenatal-primer-container .timeline-text {
+            padding-top: 10px; /* Add some space below icon */
+            padding-left: 45px; /* Space text away from center line */
+            text-align: left; /* Align text left */
+            margin-left: 0; /* Reset margin */
+         }
+
+        #ritual-prenatal-primer-container .tab-nav { padding: 0; }
+        #ritual-prenatal-primer-container .tab-button { padding: 0.8rem 1rem; font-size: 0.9rem; }
+        #ritual-prenatal-primer-container .tab-content { padding: 1.5rem; }
+        #ritual-prenatal-primer-container .nutrient-icon { float: none; margin: 0 auto 1rem auto; display: block; }
+
+        /* Feature cards already handled by main style change */
+        /* #ritual-prenatal-primer-container .feature-cards { grid-template-columns: 1fr; gap: 1.5rem; } */
+         #ritual-prenatal-primer-container .bio-entry {
+             flex-direction: column; /* Stack image and text */
+             align-items: center; /* Center items */
+             text-align: center;
+         }
+         #ritual-prenatal-primer-container .bio-image {
+             margin-right: 0;
+             margin-bottom: 1rem;
+         }
+         #ritual-prenatal-primer-container .bio-content .title {
+             text-align: center;
+         }
+    }
+
+     @media (max-width: 480px) {
+         #ritual-prenatal-primer-container h1 { font-size: 1.8rem; }
+         #ritual-prenatal-primer-container h2 { font-size: 1.5rem; }
+         #ritual-prenatal-primer-container .article-read-time { margin-bottom: 2rem; }
+         #ritual-prenatal-primer-container .ritual-button { padding: 10px 20px; font-size: 0.9rem; }
+
+         #ritual-prenatal-primer-container .timeline-point { padding-left: 0; text-align: center; }
+         #ritual-prenatal-primer-container .timeline-icon { left: 50%; transform: translateX(-50%); }
+         #ritual-prenatal-primer-container .timeline-text {
+             margin-left: 0; text-align: center; padding-top: 70px; padding-left: 0; width: 90%; margin: 0 auto;
+          }
+          #ritual-prenatal-primer-container .primer-conclusion { padding: 2rem 1rem; }
+          #ritual-prenatal-primer-container .primer-conclusion p { font-size: 1rem; }
+          #ritual-prenatal-primer-container .essential-takeaways { padding: 1rem 1.5rem; }
+          #ritual-prenatal-primer-container blockquote { font-size: 1.1rem; padding-left: 1rem; }
+          #ritual-prenatal-primer-container .bio-entry { padding: 1rem; }
+     }
+
+</style>
+</head>
+<body>
+
+<!-- IMPORTANT: Wrap the entire blog post content in this container -->
+<div id="ritual-prenatal-primer-container">
+
+    <article>
+        <!-- === HERO IMAGE === -->
+         <img src="https://primacy.io/header2.jpg" alt="Ritual Essential Prenatal vitamins close up in bottle" class="primer-hero-image">
+
+        <!-- === MAIN CONTENT AREA === -->
+        <div class="primer-content-wrapper">
+
+            <!-- Category, Title, Read Time -->
+            <p class="article-category">Pregnancy + Parenthood</p>
+            <h1>A Primer to Prenatal Vitamins</h1>
+            <p class="article-read-time">7 min read</p>
+
+
+            <!-- === ESSENTIAL TAKEAWAYS BOX === -->
+            <aside class="essential-takeaways">
+                <h4>Essential Takeaways</h4>
+                <ul>
+                    <li>There's no bad time to start a prenatal but the ideal time is three months prior to pregnancy.*</li>
+                    <li>But all prenatal multivitamins aren't created equal—nutrient forms matter.</li>
+                </ul>
+            </aside>
+
+            <!-- === INTRO TEXT === -->
+            <section class="primer-section">
+                <p>Most experts agree that taking a <a href="https://ritual.com/products/essential-prenatal-multivitamin">prenatal multivitamin</a> is a must for pregnancy, but many of us might not understand why. If you only take one thing away from this guide, let it be this: Nutritional experts recommend starting a prenatal multivitamin regimen a few months before pregnancy. (Our rule of thumb? Take one when thinking, trying, and when it's time.)*</p>
+            </section>
+
+             <!-- === MEET ESSENTIAL PRENATAL CALLOUT === -->
+             <aside class="callout-box">
+                <h4>Meet Essential Prenatal</h4>
+                <p>Support baby's neural tube and brain development, red blood cell formation and bone health with 12 traceable key nutrients.*</p>
+                <a href="https://ritual.com/products/essential-prenatal-multivitamin" target="_blank" class="ritual-button">Get 20% Off Essential Prenatal</a>
+             </aside>
+
+
+            <!-- === WHY AREN'T JUST FOR PREGNANCY SECTION === -->
+            <section class="primer-section">
+                <h2>Prenatal Multivitamins Aren't Just For During Pregnancy</h2>
+                <p>Reaching a nutritional status requires consistent intake, which may include a mix of a <a href="https://ritual.com/articles/8-healthy-eating-tips-that-are-actually-doable">healthy diet and supplementation</a>. It's important to help maintain essential nutrient levels before pregnancy, since those initial first weeks of pregnancy are critical (and someone might not even realize they're expecting yet). That's why eating a mostly-balanced diet—and starting a <a href="https://ritual.com/products/essential-prenatal-multivitamin">prenatal multivitamin</a> early—can have a positive impact.*</p>
+                <p>Nevertheless, while nutrition plays a foundational role during pregnancy, the approach shouldn't vary all that much from supporting the body with a healthy diet during any other life stage. In other words, eating plenty of whole, unprocessed foods is generally a wise wellness strategy to abide by—but pregnancy may be an especially good time to <a href="https://ritual.com/articles/the-importance-of-nutrient-density">double-down on those habits</a>.</p>
+
+                <!-- Quote -->
+                 <blockquote>
+                    <p>"Most pregnant women† don't find out they are pregnant until around 4-7 weeks, which is past the first 28 days. In the first 28 days, the organs are rapidly forming."</p>
+                    <footer>— Dr. Jason Rothbart, OBGYN and Ritual Scientific Advisory Board member</footer>
+                 </blockquote>
+                 <p>(Already expecting? Taking a <a href="https://ritual.com/products/essential-prenatal-multivitamin">prenatal multivitamin</a> is still important, regardless of what trimester a pregnant person may be in.)*</p>
+
+            </section>
+
+            <!-- === FOOD COMES FIRST SECTION === -->
+            <section class="primer-section">
+                <h2>Food Comes First</h2>
+                 <p>According to Dr. Mastaneh Sharafi, PhD, a registered dietitian and Ritual's VP of Scientific Affairs, meeting nutrient needs doesn't require a complicated approach: "Aim for a diet rich in whole grains, vegetables, and fruits, then use supplementation to help fill the gaps." By embracing a <a href="https://ritual.com/articles/food-first-nutrition-philosophy">food-first approach to nutrition</a>—one that considers both <a href="https://ritual.com/articles/what-are-macronutrients">macronutrients</a> (carbs, healthy fats, protein) and micronutrients (vitamins and minerals)—can help set the stage for success.* That said…</p>
+            </section>
+
+            <!-- === DID YOU KNOW (PROTEIN) CALLOUT === -->
+             <aside class="callout-box">
+                <h4>Did you know?</h4>
+                <p>A prenatal multivitamin can help support micronutrient needs, but it's important to consider macronutrients, too. It's why we developed a daily protein shake specifically for this life stage.</p>
+                 <a href="https://ritual.com/products/essential-protein-pregnancy-postpartum" target="_blank" class="ritual-button">Shop Protein</a>
+             </aside>
+
+             <!-- Quote -->
+             <blockquote>
+                 <p>"Supplementing the diet with extra essential nutrients is important not just after you become pregnant, but when you start to think about pregnancy."</p>
+                 <footer>— Robin Berzin MD, Founder and CEO of Parsley Health</footer>
+             </blockquote>
+
+             <!-- === EATING FOR TWO SECTION === -->
+            <section class="primer-section">
+                <h2>Eating For Two May Not (Always) Be Enough</h2>
+                <p>Usually when we hear about "eating for two," we think in terms of calories, not nutrients. However, it's worth noting that "some key nutrients like <a href="https://ritual.com/articles/vitamin-d-what-to-know">vitamin D3</a>, <a href="https://ritual.com/articles/folate-vs-folic-acid">folate</a>, <a href="https://ritual.com/articles/what-is-choline">choline</a>, and <a href="https://ritual.com/articles/iron-supplement-side-effects">iron</a> can be more tricky to get enough of solely from our diets," according to Dr. Blanche Ip, PhD in Biochemical and Molecular Nutrition and Ritual Advisory Board Member. <a href="https://ritual.com/articles/omega-3-dha-benefits">Omega-3 DHA</a> is another example—studies show that less than 5% of pregnant women consume the recommended daily value.* (1)</p>
+                <p>Supplementation can help support some of these key nutrient needs—which is why taking a prenatal multivitamin early is ideal. A prenatal multivitamin's <a href="https://ritual.com/products/essential-prenatal-multivitamin">formula</a> may help fill the gaps in the diet with key micronutrients necessary to support the nutrient needs of pregnancy. (Psst—<a href="https://ritual.com/articles/protein-powder-during-pregnancy">protein demands</a> are also important to mind during pregnancy and postpartum.)*</p>
+            </section>
+
+
+             <!-- === WHEN TO START SECTION (Interactive Timeline) === -->
+            <section class="primer-section bg-light">
+                 <div class="section-content">
+                    <h2><i class="fas fa-calendar-alt icon"></i>When Should You Start Taking Prenatals?</h2>
+                    <p>The ideal time? Start taking a prenatal vitamin **at least one month (and ideally three months)** prior to trying to conceive. Key development happens very early, often before pregnancy is confirmed.</p>
+
+                    <!-- REMOVED HR (horizontal rule) from here -->
+                    <h3>Visualizing the Journey:</h3>
+                    <div class="timeline-graphic" id="timeline">
+                        <div class="timeline-point" data-stage="planning">
+                            <div class="timeline-icon"><i class="fas fa-seedling"></i></div>
+                            <div class="timeline-text"><strong>Planning / Trying (Ideal Start)</strong>Build nutrient stores, support conception health.</div>
+                        </div>
+                        <div class="timeline-point active" data-stage="early"> <!-- Mark 'early' as visually active for example -->
+                             <div class="timeline-icon"><i class="fas fa-hourglass-start"></i></div>
+                            <div class="timeline-text"><strong>Early Pregnancy (Critical Window)</strong>Support rapid fetal development like neural tube formation.</div>
+                        </div>
+                         <div class="timeline-point" data-stage="ongoing">
+                             <div class="timeline-icon"><i class="fas fa-baby-carriage"></i></div>
+                            <div class="timeline-text"><strong>Pregnancy & Postpartum</strong>Meet increased demands, support recovery, especially if breastfeeding.</div>
+                        </div>
+                    </div>
+                     <p>If you're already pregnant, start ASAP. Continue throughout pregnancy and postpartum, particularly when breastfeeding, to replenish nutrients.</p>
+                </div>
+            </section>
+
+
+            <!-- === KEY NUTRIENTS SECTION (TABS) === -->
+            <section class="primer-section" id="nutrient-essentials">
+                 <h2><i class="fas fa-flask icon"></i>Let's Talk About Nutrients</h2>
+                 <p>As for what to look for in a prenatal multivitamin? There's a few central markers of a high-quality formula—<a href="https://ritual.com/traceability">traceable ingredients</a>, bioavailability, <a href="https://ritual.com/articles/whats-a-delayed-release-capsule">delayed-release capsules</a> (designed to dissolve later in the small intestine, an ideal place for absorption) and of course, key nutrients to help fill gaps in the diet. We recommend choosing a prenatal with the following <strong>12 key nutrients:</strong> choline (approximately 90% of Americans, including pregnant and <a href="https://ritual.com/articles/postpartum-nutrition-needs">breastfeeding women</a>, are not consuming enough choline), folate, omega-3 (we're partial to <a href="https://ritual.com/articles/where-does-algal-oil-come-from">vegan algal oil</a> over fish oil), vitamin B12, iodine, biotin, vitamin D (vitamin D3, to be specific), iron, boron, vitamin E, vitamin K2, and magnesium.* (2)</p>
+                 <p>When taken together, these key nutrients help support nutrient needs in a variety of ways—from supporting normal neural tube development (folate, choline), brain development (omega-3 DHA, choline, folate), red blood cell formation (iron, folate, vitamin B12), and bone health (vitamin D3, vitamin K2, magnesium, boron) to supporting normal DNA synthesis (folate, vitamin B12) and antioxidant support (vitamin E from mixed tocopherols). *</p>
+
+
+                <div class="nutrient-tabs">
+                    <nav class="tab-nav">
+                        <button class="tab-button active" data-tab="folate"><i class="fas fa-dna icon"></i>Folate</button>
+                        <button class="tab-button" data-tab="choline"><i class="fas fa-brain icon"></i>Choline</button>
+                        <button class="tab-button" data-tab="iron"><i class="fas fa-tint icon"></i>Iron</button>
+                        <button class="tab-button" data-tab="dha"><i class="fas fa-fish icon"></i>DHA</button>
+                        <button class="tab-button" data-tab="iodine"><i class="fas fa-atom icon"></i>Iodine</button>
+                        <button class="tab-button" data-tab="vitamind"><i class="fas fa-sun icon"></i>Vitamin D</button>
+                        <button class="tab-button" data-tab="b12"><i class="fas fa-capsules icon"></i>Vitamin B12</button>
+                        <button class="tab-button" data-tab="other"><i class="fas fa-ellipsis-h icon"></i>Others</button>
+                    </nav>
+
+                    <div id="tab-folate" class="tab-content active">
+                        <i class="fas fa-dna nutrient-icon"></i>
+                        <h3>Folate (as 5-MTHF)</h3>
+                        <p><strong>Why it's important:</strong> Critical for supporting neural tube development, especially early on. Also vital for DNA synthesis.</p>
+                        <p><strong>Form Matters:</strong> Folic acid (synthetic) requires conversion. Up to 1/3 of people have a genetic variation (MTHFR) making this difficult. <strong>5-MTHF Folate</strong> is bioavailable and cell-identical, ready for your body to use.* That's why Ritual uses it.</p>
+                         <div class="rdi-graph">
+                            <div class="rdi-bar-container">
+                                <span class="rdi-label">Folate Needs (mcg DFE)</span>
+                                <div class="rdi-bar"><div data-value="67%" style="width: 67%; background-color: var(--ritual-yellow);">Non-Pregnant (400mcg)</div></div>
+                            </div>
+                             <div class="rdi-bar-container">
+                                 <div class="rdi-bar pregnancy"><div data-value="100%" style="width: 100%;">Pregnant (600mcg)</div></div>
+                             </div>
+                         </div>
+                        <p><small>Source: National Institutes of Health (NIH)</small></p>
+                    </div>
+
+                    <div id="tab-choline" class="tab-content">
+                        <i class="fas fa-brain nutrient-icon"></i>
+                        <h3>Choline</h3>
+                        <p><strong>Why it's important:</strong> Supports fetal brain development and plays a role in cell membrane structure and neural tube health.</p>
+                        <p><strong>Often Missing:</strong> Despite its importance, many prenatals lack Choline. The AMA recommends ensuring adequate intake.</p>
+                        <p><strong>Ritual includes:</strong> 55mg of Choline Bitartrate to help support needs during pregnancy.*</p>
+                         <div class="rdi-graph">
+                            <div class="rdi-bar-container">
+                                <span class="rdi-label">Choline Needs (mg)</span>
+                                <div class="rdi-bar"><div data-value="94%" style="width: 94%; background-color: var(--ritual-yellow);">Non-Pregnant (425mg)</div></div>
+                            </div>
+                             <div class="rdi-bar-container">
+                                 <div class="rdi-bar pregnancy"><div data-value="100%" style="width: 100%;">Pregnant (450mg)</div></div>
+                             </div>
+                         </div>
+                         <p><small>Source: National Institutes of Health (NIH)</small></p>
+                    </div>
+
+                    <div id="tab-iron" class="tab-content">
+                         <i class="fas fa-tint nutrient-icon" style="transform: rotate(-45deg);"></i>
+                        <h3>Iron</h3>
+                        <p><strong>Why it's important:</strong> Essential for making hemoglobin to carry oxygen to you and baby. Needs increase significantly due to expanded blood volume.</p>
+                        <p><strong>Gentle Form:</strong> Iron can cause nausea. Ritual uses gentle, chelated Iron (Ferrous Bisglycinate) to support a better experience.*</p>
+                         <div class="rdi-graph">
+                             <div class="rdi-bar-container">
+                                <span class="rdi-label">Iron Needs (mg)</span>
+                                <div class="rdi-bar"><div data-value="67%" style="width: 67%; background-color: var(--ritual-yellow);">Non-Pregnant (18mg)</div></div>
+                             </div>
+                             <div class="rdi-bar-container">
+                                 <div class="rdi-bar pregnancy"><div data-value="100%" style="width: 100%;">Pregnant (27mg)</div></div>
+                             </div>
+                         </div>
+                          <p><small>Source: National Institutes of Health (NIH)</small></p>
+                    </div>
+
+                    <div id="tab-dha" class="tab-content">
+                         <i class="fas fa-fish nutrient-icon"></i>
+                        <h3>Omega-3 DHA</h3>
+                        <p><strong>Why it's important:</strong> Crucial fatty acid for fetal brain and eye development, especially later in pregnancy.</p>
+                        <p><strong>Vegan Source:</strong> Traditionally from fish oil. Ritual sources DHA from microalgae using an environmentally friendly process – no fishy aftertaste!*</p>
+                        <p><strong>Ritual provides:</strong> 350mg of vegan DHA per serving.*</p>
+                    </div>
+
+                    <div id="tab-iodine" class="tab-content">
+                        <i class="fas fa-atom nutrient-icon"></i>
+                        <h3>Iodine</h3>
+                        <p><strong>Why it's important:</strong> Needed for thyroid hormone production, which regulates metabolism and is vital for fetal brain development.</p>
+                        <p><strong>Increased Needs:</strong> Requirements rise significantly during pregnancy.</p>
+                         <div class="rdi-graph">
+                             <div class="rdi-bar-container">
+                                <span class="rdi-label">Iodine Needs (mcg)</span>
+                                <div class="rdi-bar"><div data-value="68%" style="width: 68%; background-color: var(--ritual-yellow);">Non-Pregnant (150mcg)</div></div>
+                             </div>
+                             <div class="rdi-bar-container">
+                                 <div class="rdi-bar pregnancy"><div data-value="100%" style="width: 100%;">Pregnant (220mcg)</div></div>
+                             </div>
+                         </div>
+                          <p><small>Source: National Institutes of Health (NIH)</small></p>
+                    </div>
+
+                    <div id="tab-vitamind" class="tab-content">
+                        <i class="fas fa-sun nutrient-icon"></i>
+                        <h3>Vitamin D3</h3>
+                        <p><strong>Why it's important:</strong> Supports immune function, bone health (calcium absorption), and cell growth.*</p>
+                        <p><strong>Vegan Source:</strong> Ritual uses Vitamin D3 sourced from lichen.</p>
+                        <p><strong>Ritual provides:</strong> 50mcg (2000 IU) to help meet needs.*</p>
+                    </div>
+
+                    <div id="tab-b12" class="tab-content">
+                         <i class="fas fa-pills nutrient-icon"></i>
+                        <h3>Vitamin B12</h3>
+                        <p><strong>Why it's important:</strong> Essential for red blood cell formation, neurological function, and DNA synthesis, working closely with Folate.*</p>
+                         <p><strong>Key for Vegans/Vegetarians:</strong> Found primarily in animal foods, making supplementation important for plant-based diets.</p>
+                        <p><strong>Ritual uses:</strong> Methylcobalamin, an active, bioavailable form.*</p>
+                    </div>
+
+                    <div id="tab-other" class="tab-content">
+                        <i class="fas fa-ellipsis-h nutrient-icon"></i>
+                        <h3>Other Key Nutrients</h3>
+                        <p>Ritual's Essential Prenatal also includes these important nutrients to help fill gaps:*</p>
+                        <ul class="no-bullet" style="margin-top: 1rem;">
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Biotin:</strong> Supports metabolism.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Boron:</strong> Supports bone health.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Vitamin E:</strong> Provides antioxidant support (from mixed tocopherols).*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Vitamin K2:</strong> Supports bone health.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Magnesium:</strong> Supports bone health and enzyme function.*</li>
+                        </ul>
+                    </div>
+
+                </div> <!-- end nutrient-tabs -->
+            </section>
+
+             <!-- === LESS IS MORE / FORM MATTERS SECTION === -->
+            <section class="primer-section">
+                <h2>Reminder—Form Matters</h2>
+                 <p>Notice anything missing [from the nutrient list]? That's because when it comes to micronutrition, sometimes <a href="https://ritual.com/articles/less-is-more-multivitamin">less really is more</a>—a philosophy that extends beyond specific nutrients like vitamin C and calcium into extras, like artificial colorants (ingredients not used in our multivitamins). Something else not found? Common allergens. Essential Prenatal is also gluten-free, non-GMO, and vegan-friendly.*</p>
+                <p>We covered Folate and DHA forms above. The bottom line? You deserve to know what's going into your body and why—especially when navigating (or preparing for) pregnancy. And as always, if you have any specific questions about prenatal multivitamins or <a href="https://ritual.com/articles/pregnancy-nutrition-myths">pregnancy nutrition</a> in general, we suggest reaching out to a trusted health care provider.*</p>
+                 <p>Already gave birth? Check out <a href="https://ritual.com/products/essential-postnatal-multivitamin">Essential Postnatal multivitamin</a>, which was formulated for the new nutrient demands on a mother for 6 months postpartum, and throughout lactation. (And learn more about <a href="https://ritual.com/articles/when-to-switch-prenatal-to-postnatal-vitamins">when to make the switch from taking prenatal vitamins to postnatal vitamins</a>.)*</p>
+                 <p><small>†As a health company that adheres to standardized nutrition research—which is often reliant on assigned sex at birth—we face some unique challenges regarding our gender-specific messaging. Our decision to use gendered terms is, unfortunately, a result of these limitations in nutrition research. In cases where complying with the binary distinction is necessary for scientific accuracy purposes, we want to make it very clear that we recognize a person's gender identity might differ from their assigned sex.</small></p>
+
+            </section>
+
+             <!-- === CHOOSING YOUR PRENATAL (RITUAL FOCUS) === -->
+            <section class="primer-section bg-light">
+                 <div class="section-content">
+                    <h2><i class="fas fa-check-circle icon"></i>Why Choose Ritual Essential Prenatal?</h2>
+                    <p>Beyond the science-backed nutrients in bioavailable forms, here’s more about what makes Ritual different:</p>
+
+                    <!-- UPDATED CARD LAYOUT -->
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <i class="fas fa-map-marked-alt feature-icon"></i>
+                            <h4>Traceable Ingredients</h4>
+                            <p>Know what you're putting in your body and why. We share the source, supplier, and purpose of our high-quality ingredients.</p>
+                            <a href="https://ritual.com/traceability" target="_blank" class="ritual-button" style="margin-top: 1.5rem; font-size: 0.9rem; padding: 8px 18px;">Explore Traceability</a>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-capsules feature-icon"></i>
+                            <h4>Smart Capsule Design</h4>
+                            <p>Our beadlet-in-oil, delayed-release capsule dissolves later in the gut, designed to be gentle. Includes a minty or citrus essence.</p>
+                             <img src="https://primacy.io/PDP-EPRE-Pill.png" alt="Ritual prenatal capsule cross-section" style="max-width: 100px; margin: 1rem auto 0 auto; display: block;">
+                        </div>
+                        <div class="feature-card">
+                             <i class="fas fa-vial feature-icon"></i>
+                            <h4>Clean & Tested</h4>
+                            <p>Vegan, Non-GMO Project Verified, gluten & major allergen-free. Third-party tested for heavy metals, microbes, and identity/purity.</p>
+                             <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--ritual-text-light);">(USP Verified, Non-GMO Project Verified)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- === REFERENCES SECTION === -->
+            <section class="primer-section references-section">
+                <h3>References:</h3>
+                 <ol>
+                     <li>Zhang Z, Fulgoni VL, Kris-Etherton PM, Mitmesser SH. Dietary intakes of EPA and DHA omega-3 fatty acids among US childbearing-age and pregnant women: an analysis of NHANES 2001-2014. Nutrients. 2018;10:416.</li>
+                     <li>USDA, Agricultural Research Service. Usual Nutrient Intake from Food and Beverages, by Pregnancy/Lactation Status, What We Eat in America, NHANES 2013-2016. 2020.</li>
+                 </ol>
+             </section>
+
+             <!-- === MEET EXPERTS/AUTHOR SECTION === -->
+             <section class="primer-section bg-blue expert-author-section"> <!-- Use light blue bg -->
+                  <div class="section-content">
+                     <h3>Meet Our Experts</h3>
+                     <p style="text-align:center; margin-top:-1.5rem; margin-bottom: 2rem; color: var(--ritual-text-medium);">This article features advice from members of our Scientific Advisory Board.</p>
+
+                     <div class="bio-entry">
+                         <img src="https://primacy.io/Rothbart.jpg" alt="Dr. Jason Rothbart" class="bio-image">
+                         <div class="bio-content">
+                             <h4>Dr. Jason Rothbart, MD, FACOG</h4>
+                             <span class="title">Physician, Cedars-Sinai</span>
+                             <p>Dr. Jason Rothbart is a board certified obstetrician/gynecologist offering a comprehensive practice of Obstetrics and Gynecology.</p>
+                         </div>
+                     </div>
+
+                      <div class="bio-entry">
+                         <img src="https://primacy.io/Berzin.jpg" alt="Dr. Robin Berzin" class="bio-image">
+                         <div class="bio-content">
+                             <h4>Dr. Robin Berzin, MD</h4>
+                              <span class="title">Doctor & CEO, Parsley Health</span>
+                             <p>Robin Berzin, MD is the founder and CEO of Parsley Health, a primary care medicine provider with a data-driven, whole body approach.</p>
+                         </div>
+                     </div>
+
+                      <h3>Meet the Author</h3>
+                       <div class="bio-entry">
+                         <img src="https://primacy.io/Hoff.jpg" alt="Victoria Hoff" class="bio-image">
+                         <div class="bio-content">
+                             <h4>Victoria Hoff</h4>
+                             <span class="title">Writer</span>
+                             <p>Victoria Hoff is an accomplished writer, journalist, and former wellness editor who has covered a wide variety of health, nutrition, and wellness topics during her tenure. She graduated Magna Cum Laude with a Bachelor of Arts from New York University, and after writing for Vogue, Elle, Byrdie, The/Thirty, and more, channeled her editorial skills into a marketing career.</p>
+                             <a href="https://www.linkedin.com/in/victoriahoff/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                         </div>
+                     </div>
+
+                 </div>
+             </section>
+
+
+             <!-- === SHARE SECTION === -->
+             <section class="primer-section share-section">
+                 <span>Share</span>
+                 <a href="#" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                 <a href="#" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                 <a href="#" title="Share on Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                 <a href="#" title="Share via Email"><i class="fas fa-envelope"></i></a>
+             </section>
+
+             <!-- === CONCLUSION / FINAL CTA === -->
+            <section class="primer-conclusion">
+                <h2>Ready to Support Your Journey?</h2>
+                <p>Choosing a prenatal vitamin is an important investment in your health and your baby's future. Ritual Essential Prenatal delivers key nutrients in ideal forms, with traceable ingredients you can trust.</p>
+                 <a href="https://ritual.com/products/essential-prenatal-multivitamin" target="_blank" class="ritual-button yellow">Shop Essential Prenatal</a>
+            </section>
+
+        </div> <!-- End .primer-content-wrapper -->
+    </article>
+
+</div> <!-- End #ritual-prenatal-primer-container -->
+
+<script>
+    // Wrap all JS in an IIFE and DOMContentLoaded listener to ensure isolation and readiness
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('ritual-prenatal-primer-container');
+
+        // Only run script if the container exists on the page
+        if (container) {
+
+            // --- Tab Functionality ---
+            const tabButtons = container.querySelectorAll('.tab-button');
+            const tabContents = container.querySelectorAll('.tab-content');
+
+            if (tabButtons.length > 0 && tabContents.length > 0) {
+                // Set the first tab as active initially based on HTML class
+                const initialActiveTabButton = container.querySelector('.tab-button.active');
+                 if (initialActiveTabButton) {
+                    const initialActiveTabId = initialActiveTabButton.getAttribute('data-tab');
+                    const initialActiveTabContent = container.querySelector(`#tab-${initialActiveTabId}`);
+                    if (initialActiveTabContent) {
+                       initialActiveTabContent.style.display = 'block'; // Show initial content
+                       // Animate bars for initial tab after slight delay
+                       setTimeout(() => animateRdiBars(initialActiveTabContent), 300);
+                    }
+                 }
+
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabId = button.getAttribute('data-tab');
+                        const newlyActiveTabContent = container.querySelector(`#tab-${tabId}`);
+
+                        // Update button active states
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        // Update content visibility
+                        tabContents.forEach(content => {
+                            if (content.id === `tab-${tabId}`) {
+                                content.style.display = 'block'; // Use style.display for simplicity
+                                content.classList.add('active'); // Keep class for potential CSS hooks
+                                // Animate bars for newly active tab
+                                setTimeout(() => animateRdiBars(newlyActiveTabContent), 50);
+                            } else {
+                                content.style.display = 'none';
+                                content.classList.remove('active');
+                            }
+                        });
+                         // Optional: Scroll tab into view if needed on mobile
+                         button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    });
+                });
+            }
+
+             // --- RDI Bar Graph Animation Function ---
+             function animateRdiBars(tabContentElement) {
+                 if (!tabContentElement) return; // Guard clause
+                 const bars = tabContentElement.querySelectorAll('.rdi-bar > div');
+                 bars.forEach(bar => {
+                     const value = bar.getAttribute('data-value');
+                     // Trigger reflow to restart animation if needed
+                     bar.style.width = '0';
+                     requestAnimationFrame(() => { // Ensure style is applied before animating
+                         requestAnimationFrame(() => {
+                              bar.style.width = value;
+                         });
+                     });
+                 });
+             }
+
+            // --- Simple Animation Trigger on Scroll (using Intersection Observer) ---
+             const animatedElements = container.querySelectorAll('.primer-hero-image, .timeline-point, .feature-card, .essential-takeaways, .callout-box, blockquote'); // Add new elements
+
+             if ("IntersectionObserver" in window) {
+                 const observer = new IntersectionObserver((entries, observer) => {
+                     entries.forEach(entry => {
+                         if (entry.isIntersecting) {
+                             entry.target.style.opacity = '1';
+                             entry.target.style.transform = 'translateY(0)';
+                             observer.unobserve(entry.target); // Unobserve after animation
+                         }
+                     });
+                 }, { threshold: 0.1 }); // Trigger when 10% visible
+
+                 animatedElements.forEach(el => {
+                    // Set initial state for animation
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'; // Add transition inline for elements animated by JS
+                    observer.observe(el);
+                 });
+             } else {
+                 // Fallback for older browsers: just show elements immediately
+                 animatedElements.forEach(el => {
+                     el.style.opacity = '1';
+                     el.style.transform = 'translateY(0)';
+                 });
+             }
+
+            // --- Smooth scroll for internal link (if any exist) ---
+            const internalLinks = container.querySelectorAll('a[href^="#"]');
+            internalLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    // Check if it's a valid internal link within the container
+                    if (targetId.length > 1 && targetId.startsWith('#')) {
+                         const targetElement = container.querySelector(targetId);
+                         if (targetElement) {
+                             e.preventDefault(); // Prevent default anchor jump
+                             targetElement.scrollIntoView({
+                                 behavior: 'smooth',
+                                 block: 'start' // Align to top
+                             });
+                         }
+                    }
+                });
+            });
+
+            // Add dummy functionality or links to Share buttons if desired
+            // Example: container.querySelectorAll('.share-section a').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); alert('Sharing action placeholder'); }));
+
+            console.log("Ritual Prenatal Primer script loaded and enhancements applied (V4 - Layout Tweaks).");
+
+        } // End if(container)
+    }); // End DOMContentLoaded
+</script>
+
+</body>
+</html>
