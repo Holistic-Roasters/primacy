@@ -489,6 +489,16 @@
      #ritual-prenatal-primer-container .references-section {
         counter-reset: ref-list; /* Initialize counter */
      }
+     /* Style links within references */
+     #ritual-prenatal-primer-container .references-section li a {
+        font-weight: normal; /* Keep reference links normal weight */
+        color: var(--ritual-blue); /* Use blue for link text */
+        text-decoration: underline;
+     }
+      #ritual-prenatal-primer-container .references-section li a:hover {
+         color: var(--ritual-yellow);
+         text-decoration: none;
+      }
 
     /* --- Expert/Author Sections --- */
      #ritual-prenatal-primer-container .expert-author-section {
@@ -496,11 +506,21 @@
          padding-top: 2rem;
          /* Removed border-top as it's within bg-blue */
      }
-     #ritual-prenatal-primer-container .expert-author-section h3 {
+     #ritual-prenatal-primer-container .expert-author-section h3 { /* For main section headings like "Meet Our Experts" */
          font-size: 1.4rem;
          text-align: center;
          margin-bottom: 2rem;
      }
+     /* Styling for link within the h3 */
+      #ritual-prenatal-primer-container .expert-author-section h3 a {
+        color: inherit; /* Inherit blue from h3 */
+        text-decoration: none; /* Remove underline from heading link */
+      }
+      #ritual-prenatal-primer-container .expert-author-section h3 a:hover {
+        color: var(--ritual-yellow);
+        text-decoration: underline;
+      }
+
      #ritual-prenatal-primer-container .bio-entry {
          display: flex;
          align-items: flex-start; /* Align items to the top */
@@ -518,10 +538,18 @@
           margin-right: 1.5rem;
           flex-shrink: 0; /* Prevent image from shrinking */
       }
-       #ritual-prenatal-primer-container .bio-content h4 {
+       #ritual-prenatal-primer-container .bio-content h4 { /* For names */
           margin-bottom: 0.25rem;
           font-size: 1.15rem;
        }
+        #ritual-prenatal-primer-container .bio-content h4 a { /* Link on the expert's name */
+            color: inherit; /* Inherit blue from h4 */
+            text-decoration: none; /* No underline on name */
+        }
+         #ritual-prenatal-primer-container .bio-content h4 a:hover {
+            color: var(--ritual-yellow);
+            text-decoration: underline;
+         }
        #ritual-prenatal-primer-container .bio-content .title {
            font-size: 0.9rem;
            font-weight: 600;
@@ -535,11 +563,18 @@
            margin-bottom: 0;
            color: var(--ritual-text-medium);
         }
-         #ritual-prenatal-primer-container .bio-content a {
+         #ritual-prenatal-primer-container .bio-content a { /* General link style in bio, like LinkedIn */
             font-size: 0.9rem;
             display: inline-block;
             margin-top: 0.75rem;
+            color: var(--ritual-blue); /* Ensure standard link color */
+            text-decoration: underline; /* Keep underline for clarity */
          }
+          #ritual-prenatal-primer-container .bio-content a:hover {
+             color: var(--ritual-yellow);
+             text-decoration: none;
+          }
+
 
      /* --- Share Section --- */
       #ritual-prenatal-primer-container .share-section {
@@ -690,46 +725,55 @@
                     <li>But all prenatal multivitamins aren't created equal—nutrient forms matter.</li>
                 </ul>
             </aside>
+			
+			<section class="section"><!-- Audio player section -->
+			<div class="audio-container">
+	<p><strong>Listen while you browse:<br></strong>Google's Deep Dive Podcast on Prenatal Vitamins: A Comprehensive Guide to Key Nutrients</p>
+			<audio controls="controls">
+			        <source src="https://primacy.io/Google-Prenatal-Nutrients_Podcast.MP3" type="audio/mpeg">
+			        Your browser does not support the audio element.
+			      </source></audio>
+			</div>
 
             <!-- === INTRO TEXT === -->
             <section class="primer-section">
-                <p>Most experts agree that taking a <a href="https://ritual.com/products/essential-prenatal-multivitamin">prenatal multivitamin</a> is a must for pregnancy, but many of us might not understand why. If you only take one thing away from this guide, let it be this: Nutritional experts recommend starting a prenatal multivitamin regimen a few months before pregnancy. (Our rule of thumb? Take one when thinking, trying, and when it's time.)*</p>
+                <p>Most experts agree that taking a <a href="https://ritual.com/products/essential-prenatal" target="_blank">prenatal multivitamin</a> is a must for <a href="https://ritual.com/life-stages/pregnancy" target="_blank">pregnancy</a>, but many of us might not understand why. If you only take one thing away from this guide, let it be this: Nutritional experts recommend starting a prenatal multivitamin regimen a few months before pregnancy. (Our <a href="https://ritual.com/articles/when-to-start-prenatal-vitamins" target="_blank">rule of thumb</a>? Take one when thinking, trying, and when it's time.)*</p>
             </section>
 
              <!-- === MEET ESSENTIAL PRENATAL CALLOUT === -->
              <aside class="callout-box">
                 <h4>Meet Essential Prenatal</h4>
-                <p>Support baby's neural tube and brain development, red blood cell formation and bone health with 12 traceable key nutrients.*</p>
-                <a href="https://ritual.com/products/essential-prenatal-multivitamin" target="_blank" class="ritual-button">Get 20% Off Essential Prenatal</a>
+                <p>Support baby's neural tube and brain development, red blood cell formation and bone health with <a href="https://ritual.com/products/essential-prenatal#12-key-nutrients" target="_blank">12 key nutrients</a>.*</p>
+                <a href="https://ritual.com/products/essential-prenatal" target="_blank" class="ritual-button">Get 20% Off Essential Prenatal</a>
              </aside>
 
 
             <!-- === WHY AREN'T JUST FOR PREGNANCY SECTION === -->
             <section class="primer-section">
                 <h2>Prenatal Multivitamins Aren't Just For During Pregnancy</h2>
-                <p>Reaching a nutritional status requires consistent intake, which may include a mix of a <a href="https://ritual.com/articles/8-healthy-eating-tips-that-are-actually-doable">healthy diet and supplementation</a>. It's important to help maintain essential nutrient levels before pregnancy, since those initial first weeks of pregnancy are critical (and someone might not even realize they're expecting yet). That's why eating a mostly-balanced diet—and starting a <a href="https://ritual.com/products/essential-prenatal-multivitamin">prenatal multivitamin</a> early—can have a positive impact.*</p>
-                <p>Nevertheless, while nutrition plays a foundational role during pregnancy, the approach shouldn't vary all that much from supporting the body with a healthy diet during any other life stage. In other words, eating plenty of whole, unprocessed foods is generally a wise wellness strategy to abide by—but pregnancy may be an especially good time to <a href="https://ritual.com/articles/the-importance-of-nutrient-density">double-down on those habits</a>.</p>
+                <p>Reaching a nutritional status requires consistent intake, which may include a mix of a <a href="https://ritual.com/articles/healthy-diet-and-supplements" target="_blank">healthy diet and supplementation</a>. It's important to help maintain essential nutrient levels before pregnancy, since those initial first weeks of pregnancy are critical (and someone might not even realize they're expecting yet). That's why eating a mostly-balanced diet—and starting a <a href="https://ritual.com/products/essential-prenatal" target="_blank">prenatal multivitamin</a> early—can have a positive impact.*</p>
+                <p>Nevertheless, while <a href="https://ritual.com/articles/nutrition-during-pregnancy" target="_blank">nutrition plays a foundational role during pregnancy</a>, the approach shouldn't vary all that much from supporting the body with a healthy diet during any other life stage. In other words, eating plenty of whole, unprocessed foods is generally a wise wellness strategy to abide by—but pregnancy may be an especially good time to <a href="https://ritual.com/articles/the-importance-of-nutrient-density">double-down on those habits</a>.</p>
 
                 <!-- Quote -->
                  <blockquote>
                     <p>"Most pregnant women† don't find out they are pregnant until around 4-7 weeks, which is past the first 28 days. In the first 28 days, the organs are rapidly forming."</p>
                     <footer>— Dr. Jason Rothbart, OBGYN and Ritual Scientific Advisory Board member</footer>
                  </blockquote>
-                 <p>(Already expecting? Taking a <a href="https://ritual.com/products/essential-prenatal-multivitamin">prenatal multivitamin</a> is still important, regardless of what trimester a pregnant person may be in.)*</p>
+                 <p>(Already expecting? Taking a <a href="https://ritual.com/products/essential-prenatal" target="_blank">prenatal multivitamin</a> is still important, regardless of what trimester a pregnant person may be in.)*</p>
 
             </section>
 
             <!-- === FOOD COMES FIRST SECTION === -->
             <section class="primer-section">
                 <h2>Food Comes First</h2>
-                 <p>According to Dr. Mastaneh Sharafi, PhD, a registered dietitian and Ritual's VP of Scientific Affairs, meeting nutrient needs doesn't require a complicated approach: "Aim for a diet rich in whole grains, vegetables, and fruits, then use supplementation to help fill the gaps." By embracing a <a href="https://ritual.com/articles/food-first-nutrition-philosophy">food-first approach to nutrition</a>—one that considers both <a href="https://ritual.com/articles/what-are-macronutrients">macronutrients</a> (carbs, healthy fats, protein) and micronutrients (vitamins and minerals)—can help set the stage for success.* That said…</p>
+                 <p>According to Dr. Mastaneh Sharafi, PhD, a registered dietitian and Ritual's VP of Scientific Affairs, meeting nutrient needs doesn't require a complicated approach: "Aim for a diet rich in whole grains, vegetables, and fruits, then use supplementation to help fill the gaps." By embracing a <a href="https://ritual.com/articles/food-first-approach-to-nutrition" target="_blank">food-first approach to nutrition</a>—one that considers both <a href="https://ritual.com/articles/macronutrients-and-micronutrients" target="_blank">macronutrients (carbs, healthy fats, protein) and micronutrients</a> (vitamins and minerals)—can help set the stage for success.* That said…</p>
             </section>
 
             <!-- === DID YOU KNOW (PROTEIN) CALLOUT === -->
              <aside class="callout-box">
                 <h4>Did you know?</h4>
                 <p>A prenatal multivitamin can help support micronutrient needs, but it's important to consider macronutrients, too. It's why we developed a daily protein shake specifically for this life stage.</p>
-                 <a href="https://ritual.com/products/essential-protein-pregnancy-postpartum" target="_blank" class="ritual-button">Shop Protein</a>
+                 <a href="https://ritual.com/products/essential-protein-pregnancy-and-postpartum" target="_blank" class="ritual-button">Shop Protein</a>
              </aside>
 
              <!-- Quote -->
@@ -741,8 +785,8 @@
              <!-- === EATING FOR TWO SECTION === -->
             <section class="primer-section">
                 <h2>Eating For Two May Not (Always) Be Enough</h2>
-                <p>Usually when we hear about "eating for two," we think in terms of calories, not nutrients. However, it's worth noting that "some key nutrients like <a href="https://ritual.com/articles/vitamin-d-what-to-know">vitamin D3</a>, <a href="https://ritual.com/articles/folate-vs-folic-acid">folate</a>, <a href="https://ritual.com/articles/what-is-choline">choline</a>, and <a href="https://ritual.com/articles/iron-supplement-side-effects">iron</a> can be more tricky to get enough of solely from our diets," according to Dr. Blanche Ip, PhD in Biochemical and Molecular Nutrition and Ritual Advisory Board Member. <a href="https://ritual.com/articles/omega-3-dha-benefits">Omega-3 DHA</a> is another example—studies show that less than 5% of pregnant women consume the recommended daily value.* (1)</p>
-                <p>Supplementation can help support some of these key nutrient needs—which is why taking a prenatal multivitamin early is ideal. A prenatal multivitamin's <a href="https://ritual.com/products/essential-prenatal-multivitamin">formula</a> may help fill the gaps in the diet with key micronutrients necessary to support the nutrient needs of pregnancy. (Psst—<a href="https://ritual.com/articles/protein-powder-during-pregnancy">protein demands</a> are also important to mind during pregnancy and postpartum.)*</p>
+                <p>Usually when we hear about "eating for two," we think in terms of calories, not nutrients. However, it's worth noting that "some key nutrients like <a href="https://ritual.com/products/essential-prenatal#vitamin-d3" target="_blank">vitamin D3</a>, <a href="https://ritual.com/products/essential-prenatal#folate" target="_blank">folate</a>, <a href="https://ritual.com/products/essential-prenatal#choline" target="_blank">choline</a>, and <a href="https://ritual.com/products/essential-prenatal#iron" target="_blank">iron</a> can be more tricky to get enough of solely from our diets," according to Dr. Blanche Ip, PhD in Biochemical and Molecular Nutrition and Ritual Advisory Board Member. <a href="https://ritual.com/products/essential-prenatal#omega-3-dha" target="_blank">Omega-3 DHA</a> is another example—studies show that less than 5% of pregnant women consume the recommended daily value.* (1)</p>
+                <p>Supplementation can help support some of these key nutrient needs—which is why taking a prenatal multivitamin early is ideal. A prenatal multivitamin's <a href="https://ritual.com/products/essential-prenatal#formula" target="_blank">formula</a> may help fill the gaps in the diet with key micronutrients necessary to support the nutrient needs of pregnancy. (Psst—<a href="https://ritual.com/articles/protein-powder-during-pregnancy">protein demands</a> are also important to mind during pregnancy and postpartum.)*</p>
             </section>
 
 
@@ -775,7 +819,7 @@
             <!-- === KEY NUTRIENTS SECTION (TABS) === -->
             <section class="primer-section" id="nutrient-essentials">
                  <h2><i class="fas fa-flask icon"></i>Let's Talk About Nutrients</h2>
-                 <p>As for what to look for in a prenatal multivitamin? There's a few central markers of a high-quality formula—<a href="https://ritual.com/traceability">traceable ingredients</a>, bioavailability, <a href="https://ritual.com/articles/whats-a-delayed-release-capsule">delayed-release capsules</a> (designed to dissolve later in the small intestine, an ideal place for absorption) and of course, key nutrients to help fill gaps in the diet. We recommend choosing a prenatal with the following <strong>12 key nutrients:</strong> choline (approximately 90% of Americans, including pregnant and <a href="https://ritual.com/articles/postpartum-nutrition-needs">breastfeeding women</a>, are not consuming enough choline), folate, omega-3 (we're partial to <a href="https://ritual.com/articles/where-does-algal-oil-come-from">vegan algal oil</a> over fish oil), vitamin B12, iodine, biotin, vitamin D (vitamin D3, to be specific), iron, boron, vitamin E, vitamin K2, and magnesium.* (2)</p>
+                 <p>As for what to look for in a prenatal multivitamin? There's a few central markers of a high-quality formula—<a href="https://ritual.com/our-ingredients" target="_blank">traceable ingredients</a>, bioavailability, <a href="https://ritual.com/products/essential-prenatal#delayed-release-capsules" target="_blank">delayed-release capsules</a> (designed to dissolve later in the small intestine, an ideal place for absorption) and of course, key nutrients to help fill gaps in the diet. We recommend choosing a prenatal with the following <strong><a href="https://ritual.com/products/essential-prenatal#12-key-nutrients" target="_blank">12 key nutrients:</a></strong> <a href="https://ritual.com/products/essential-prenatal#choline" target="_blank">choline</a> (approximately 90% of Americans, including pregnant and <a href="https://ritual.com/articles/postpartum-nutrition-needs">breastfeeding women</a>, are not consuming enough choline), <a href="https://ritual.com/products/essential-prenatal#folate" target="_blank">folate</a>, <a href="https://ritual.com/products/essential-prenatal#omega-3-dha" target="_blank">omega-3</a> (we're partial to <a href="https://ritual.com/articles/where-does-algal-oil-come-from">vegan algal oil</a> over fish oil), <a href="https://ritual.com/products/essential-prenatal#vitamin-b12" target="_blank">vitamin B12</a>, <a href="https://ritual.com/products/essential-prenatal#iodine" target="_blank">iodine</a>, <a href="https://ritual.com/products/essential-prenatal#biotin" target="_blank">biotin</a>, <a href="https://ritual.com/products/essential-prenatal#vitamin-d3" target="_blank">vitamin D</a> (vitamin D3, to be specific), <a href="https://ritual.com/products/essential-prenatal#iron" target="_blank">iron</a>, <a href="https://ritual.com/products/essential-prenatal#boron" target="_blank">boron</a>, <a href="https://ritual.com/products/essential-prenatal#vitamin-e" target="_blank">vitamin E</a>, <a href="https://ritual.com/products/essential-prenatal#vitamin-k2" target="_blank">vitamin K2</a>, and <a href="https://ritual.com/products/essential-prenatal#magnesium" target="_blank">magnesium</a>.* (2)</p>
                  <p>When taken together, these key nutrients help support nutrient needs in a variety of ways—from supporting normal neural tube development (folate, choline), brain development (omega-3 DHA, choline, folate), red blood cell formation (iron, folate, vitamin B12), and bone health (vitamin D3, vitamin K2, magnesium, boron) to supporting normal DNA synthesis (folate, vitamin B12) and antioxidant support (vitamin E from mixed tocopherols). *</p>
 
 
@@ -794,7 +838,7 @@
                     <div id="tab-folate" class="tab-content active">
                         <!-- Ensure i tag is direct child for centering -->
                         <span class="nutrient-icon"><i class="fas fa-dna"></i></span>
-                        <h3>Folate (as 5-MTHF)</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#folate" target="_blank">Folate</a> (as 5-MTHF)</h3>
                         <p><strong>Why it's important:</strong> Critical for supporting neural tube development, especially early on. Also vital for DNA synthesis.</p>
                         <p><strong>Form Matters:</strong> Folic acid (synthetic) requires conversion. Up to 1/3 of people have a genetic variation (MTHFR) making this difficult. <strong>5-MTHF Folate</strong> is bioavailable and cell-identical, ready for your body to use.* That's why Ritual uses it.</p>
                          <div class="rdi-graph">
@@ -811,7 +855,7 @@
 
                     <div id="tab-choline" class="tab-content">
                         <span class="nutrient-icon"><i class="fas fa-brain"></i></span>
-                        <h3>Choline</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#choline" target="_blank">Choline</a></h3>
                         <p><strong>Why it's important:</strong> Supports fetal brain development and plays a role in cell membrane structure and neural tube health.</p>
                         <p><strong>Often Missing:</strong> Despite its importance, many prenatals lack Choline. The AMA recommends ensuring adequate intake.</p>
                         <p><strong>Ritual includes:</strong> 55mg of Choline Bitartrate to help support needs during pregnancy.*</p>
@@ -829,7 +873,7 @@
 
                     <div id="tab-iron" class="tab-content">
                          <span class="nutrient-icon" style="transform: rotate(-45deg);"><i class="fas fa-tint"></i></span>
-                        <h3>Iron</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#iron" target="_blank">Iron</a></h3>
                         <p><strong>Why it's important:</strong> Essential for making hemoglobin to carry oxygen to you and baby. Needs increase significantly due to expanded blood volume.</p>
                         <p><strong>Gentle Form:</strong> Iron can cause nausea. Ritual uses gentle, chelated Iron (Ferrous Bisglycinate) to support a better experience.*</p>
                          <div class="rdi-graph">
@@ -846,7 +890,7 @@
 
                     <div id="tab-dha" class="tab-content">
                          <span class="nutrient-icon"><i class="fas fa-fish"></i></span>
-                        <h3>Omega-3 DHA</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#omega-3-dha" target="_blank">Omega-3 DHA</a></h3>
                         <p><strong>Why it's important:</strong> Crucial fatty acid for fetal brain and eye development, especially later in pregnancy.</p>
                         <p><strong>Vegan Source:</strong> Traditionally from fish oil. Ritual sources DHA from microalgae using an environmentally friendly process – no fishy aftertaste!*</p>
                         <p><strong>Ritual provides:</strong> 350mg of vegan DHA per serving.*</p>
@@ -854,7 +898,7 @@
 
                     <div id="tab-iodine" class="tab-content">
                         <span class="nutrient-icon"><i class="fas fa-atom"></i></span>
-                        <h3>Iodine</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#iodine" target="_blank">Iodine</a></h3>
                         <p><strong>Why it's important:</strong> Needed for thyroid hormone production, which regulates metabolism and is vital for fetal brain development.</p>
                         <p><strong>Increased Needs:</strong> Requirements rise significantly during pregnancy.</p>
                          <div class="rdi-graph">
@@ -871,7 +915,7 @@
 
                     <div id="tab-vitamind" class="tab-content">
                         <span class="nutrient-icon"><i class="fas fa-sun"></i></span>
-                        <h3>Vitamin D3</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#vitamin-d3" target="_blank">Vitamin D3</a></h3>
                         <p><strong>Why it's important:</strong> Supports immune function, bone health (calcium absorption), and cell growth.*</p>
                         <p><strong>Vegan Source:</strong> Ritual uses Vitamin D3 sourced from lichen.</p>
                         <p><strong>Ritual provides:</strong> 50mcg (2000 IU) to help meet needs.*</p>
@@ -879,7 +923,7 @@
 
                     <div id="tab-b12" class="tab-content">
                          <span class="nutrient-icon"><i class="fas fa-pills"></i></span>
-                        <h3>Vitamin B12</h3>
+                        <h3><a href="https://ritual.com/products/essential-prenatal#vitamin-b12" target="_blank">Vitamin B12</a></h3>
                         <p><strong>Why it's important:</strong> Essential for red blood cell formation, neurological function, and DNA synthesis, working closely with Folate.*</p>
                          <p><strong>Key for Vegans/Vegetarians:</strong> Found primarily in animal foods, making supplementation important for plant-based diets.</p>
                         <p><strong>Ritual uses:</strong> Methylcobalamin, an active, bioavailable form.*</p>
@@ -890,11 +934,11 @@
                         <h3>Other Key Nutrients</h3>
                         <p>Ritual's Essential Prenatal also includes these important nutrients to help fill gaps:*</p>
                         <ul class="no-bullet" style="margin-top: 1rem;">
-                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Biotin:</strong> Supports metabolism.*</li>
-                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Boron:</strong> Supports bone health.*</li>
-                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Vitamin E:</strong> Provides antioxidant support (from mixed tocopherols).*</li>
-                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Vitamin K2:</strong> Supports bone health.*</li>
-                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong>Magnesium:</strong> Supports bone health and enzyme function.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong><a href="https://ritual.com/products/essential-prenatal#biotin" target="_blank">Biotin</a>:</strong> Supports metabolism.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong><a href="https://ritual.com/products/essential-prenatal#boron" target="_blank">Boron</a>:</strong> Supports bone health.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong><a href="https://ritual.com/products/essential-prenatal#vitamin-e" target="_blank">Vitamin E</a>:</strong> Provides antioxidant support (from mixed tocopherols).*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong><a href="https://ritual.com/products/essential-prenatal#vitamin-k2" target="_blank">Vitamin K2</a>:</strong> Supports bone health.*</li>
+                            <li><i class="fas fa-check icon" style="color: var(--ritual-accent-green);"></i><strong><a href="https://ritual.com/products/essential-prenatal#magnesium" target="_blank">Magnesium</a>:</strong> Supports bone health and enzyme function.*</li>
                         </ul>
                     </div>
 
@@ -905,8 +949,8 @@
             <section class="primer-section">
                 <h2>Reminder—Form Matters</h2>
                  <p>Notice anything missing [from the nutrient list]? That's because when it comes to micronutrition, sometimes <a href="https://ritual.com/articles/less-is-more-multivitamin">less really is more</a>—a philosophy that extends beyond specific nutrients like vitamin C and calcium into extras, like artificial colorants (ingredients not used in our multivitamins). Something else not found? Common allergens. Essential Prenatal is also gluten-free, non-GMO, and vegan-friendly.*</p>
-                <p>We covered Folate and DHA forms above. The bottom line? You deserve to know what's going into your body and why—especially when navigating (or preparing for) pregnancy. And as always, if you have any specific questions about prenatal multivitamins or <a href="https://ritual.com/articles/pregnancy-nutrition-myths">pregnancy nutrition</a> in general, we suggest reaching out to a trusted health care provider.*</p>
-                 <p>Already gave birth? Check out <a href="https://ritual.com/products/essential-postnatal-multivitamin">Essential Postnatal multivitamin</a>, which was formulated for the new nutrient demands on a mother for 6 months postpartum, and throughout lactation. (And learn more about <a href="https://ritual.com/articles/when-to-switch-prenatal-to-postnatal-vitamins">when to make the switch from taking prenatal vitamins to postnatal vitamins</a>.)*</p>
+                <p>We covered Folate and DHA forms above. The bottom line? You deserve to know what's going into your body and why—especially when navigating (or preparing for) pregnancy. And as always, if you have any specific questions about <a href="https://ritual.com/articles/prenatal-multivitamins-and-pregnancy-nutrition" target="_blank">prenatal multivitamins or pregnancy nutrition</a> in general, we suggest reaching out to a trusted health care provider.*</p>
+                 <p>Already gave birth? Check out <a href="https://ritual.com/products/essential-postnatal" target="_blank">Essential Postnatal multivitamin</a>, which was formulated for the new nutrient demands on a mother for 6 months postpartum, and throughout lactation. (And learn more about <a href="https://ritual.com/articles/when-to-switch-from-prenatal-to-postnatal-vitamins" target="_blank">when to make the switch from taking prenatal vitamins to postnatal vitamins</a>.)*</p>
                  <p><small>†As a health company that adheres to standardized nutrition research—which is often reliant on assigned sex at birth—we face some unique challenges regarding our gender-specific messaging. Our decision to use gendered terms is, unfortunately, a result of these limitations in nutrition research. In cases where complying with the binary distinction is necessary for scientific accuracy purposes, we want to make it very clear that we recognize a person's gender identity might differ from their assigned sex.</small></p>
 
             </section>
@@ -923,18 +967,18 @@
                             <i class="fas fa-map-marked-alt feature-icon"></i>
                             <h4>Traceable Ingredients</h4>
                             <p>Know what you're putting in your body and why. We share the source, supplier, and purpose of our high-quality ingredients.</p>
-                            <a href="https://ritual.com/traceability" target="_blank" class="ritual-button" style="margin-top: 1.5rem; font-size: 0.9rem; padding: 8px 18px;">Explore Traceability</a>
+                            <a href="https://ritual.com/our-ingredients" target="_blank" class="ritual-button" style="margin-top: 1.5rem; font-size: 0.9rem; padding: 8px 18px;">Explore Traceability</a>
                         </div>
                         <div class="feature-card">
                             <i class="fas fa-capsules feature-icon"></i>
                             <h4>Smart Capsule Design</h4>
-                            <p>Our beadlet-in-oil, delayed-release capsule dissolves later in the gut, designed to be gentle. Includes a minty or citrus essence.</p>
+                            <p>Our beadlet-in-oil, <a href="https://ritual.com/products/essential-prenatal#delayed-release-capsules" target="_blank">delayed-release capsule</a> dissolves later in the gut, designed to be gentle. Includes a minty or citrus essence.</p>
                              <img src="https://primacy.io/PDP-EPRE-Pill.png" alt="Ritual prenatal capsule cross-section" style="max-width: 100px; margin: 1rem auto 0 auto; display: block;">
                         </div>
                         <div class="feature-card">
                              <i class="fas fa-vial feature-icon"></i>
                             <h4>Clean & Tested</h4>
-                            <p>Vegan, Non-GMO Project Verified, gluten & major allergen-free. Third-party tested for heavy metals, microbes, and identity/purity.</p>
+                            <p>Vegan, Non-GMO Project Verified, gluten & major allergen-free. Third-party tested for heavy metals, microbes, and identity/purity. Explore <a href="https://ritual.com/our-standards" target="_blank">Our Standards</a>.</p>
                              <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--ritual-text-light);">(USP Verified, Non-GMO Project Verified)</p>
                         </div>
                     </div>
@@ -947,20 +991,24 @@
                 <h3>References:</h3>
                  <ol>
                      <li>Zhang Z, Fulgoni VL, Kris-Etherton PM, Mitmesser SH. Dietary intakes of EPA and DHA omega-3 fatty acids among US childbearing-age and pregnant women: an analysis of NHANES 2001-2014. Nutrients. 2018;10:416.</li>
-                     <li>USDA, Agricultural Research Service. Usual Nutrient Intake from Food and Beverages, by Pregnancy/Lactation Status, What We Eat in America, NHANES 2013-2016. 2020.</li>
+                     <li><a href="https://www.ars.usda.gov/ARSUserFiles/80400530/pdf/1316/Table_1_NIN_GEN_13.pdf" target="_blank">USDA, Agricultural Research Service. Usual Nutrient Intake from Food and Beverages, by Pregnancy/Lactation Status, What We Eat in America, NHANES 2013-2016.</a> 2020.</li>
+                     <!-- Added more references from the list -->
+                     <li>Academy of Nutrition and Dietetics: <a href="https://www.eatright.org/health/pregnancy/prenatal-wellness/eating-right-during-pregnancy" target="_blank">Eating Right During Pregnancy</a></li>
+                     <li>American College of Obstetricians and Gynecologists (ACOG): <a href="https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2018/07/folic-acid-supplementation-during-pregnancy" target="_blank">Folic acid supplementation in pregnancy</a></li>
+                     <li><a href="https://www.ars.usda.gov/" target="_blank">USDA, Agricultural Research Service</a>. FoodData Central, 2019.</li>
                  </ol>
              </section>
 
              <!-- === MEET EXPERTS/AUTHOR SECTION === -->
              <section class="primer-section bg-blue expert-author-section"> <!-- Use light blue bg -->
                   <div class="section-content">
-                     <h3>Meet Our Experts</h3>
+                     <h3><a href="https://ritual.com/science" target="_blank">Meet Our Experts</a></h3>
                      <p style="text-align:center; margin-top:-1.5rem; margin-bottom: 2rem; color: var(--ritual-text-medium);">This article features advice from members of our Scientific Advisory Board.</p>
 
                      <div class="bio-entry">
                          <img src="https://primacy.io/Rothbart.jpg" alt="Dr. Jason Rothbart" class="bio-image">
                          <div class="bio-content">
-                             <h4>Dr. Jason Rothbart, MD, FACOG</h4>
+                             <h4><a href="https://www.cedars-sinai.org/find-a-doctor/jason-rothbart.html" target="_blank">Dr. Jason Rothbart, MD, FACOG</a></h4>
                              <span class="title">Physician, Cedars-Sinai</span>
                              <p>Dr. Jason Rothbart is a board certified obstetrician/gynecologist offering a comprehensive practice of Obstetrics and Gynecology.</p>
                          </div>
@@ -969,7 +1017,7 @@
                       <div class="bio-entry">
                          <img src="https://primacy.io/Berzin.jpg" alt="Dr. Robin Berzin" class="bio-image">
                          <div class="bio-content">
-                             <h4>Dr. Robin Berzin, MD</h4>
+                             <h4><a href="https://www.parsleyhealth.com/team/robin-berzin-md/" target="_blank">Dr. Robin Berzin, MD</a></h4>
                               <span class="title">Doctor & CEO, Parsley Health</span>
                              <p>Robin Berzin, MD is the founder and CEO of Parsley Health, a primary care medicine provider with a data-driven, whole body approach.</p>
                          </div>
@@ -1003,7 +1051,7 @@
             <section class="primer-conclusion">
                 <h2>Ready to Support Your Journey?</h2>
                 <p>Choosing a prenatal vitamin is an important investment in your health and your baby's future. Ritual Essential Prenatal delivers key nutrients in ideal forms, with traceable ingredients you can trust.</p>
-                 <a href="https://ritual.com/products/essential-prenatal-multivitamin" target="_blank" class="ritual-button yellow">Shop Essential Prenatal</a>
+                 <a href="https://ritual.com/products/essential-prenatal" target="_blank" class="ritual-button yellow">Shop Essential Prenatal</a>
             </section>
 
         </div> <!-- End .primer-content-wrapper -->
@@ -1131,7 +1179,7 @@
             // Add dummy functionality or links to Share buttons if desired
             // Example: container.querySelectorAll('.share-section a').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); alert('Sharing action placeholder'); }));
 
-            console.log("Ritual Prenatal Primer script loaded and enhancements applied (V5 - Mobile Tweaks).");
+            console.log("Ritual Prenatal Primer script loaded and enhancements applied (V6 - Links Integrated).");
 
         } // End if(container)
     }); // End DOMContentLoaded
