@@ -43,28 +43,28 @@
             text-align: left;
             margin-bottom: 0.8em;
             font-weight: 700;
-            color: #444; /* Kept as dark grey */
+            color: #444;
         }
 
         #if-blog-post-container h2 {
             font-size: calc(1.8rem + 0.5vw);
-            margin-top: 2em; /* Reduced */
-            border-bottom: 3px solid #E8F5E9; /* Kept light green border */
+            margin-top: 2em;
+            /* border-bottom: 3px solid #E8F5E9; */ /* Original Light Green */
+            border-bottom: 3px solid #e0e0e0; /* Changed to light grey */
             padding-bottom: 0.4em;
-            color: #444; /* Kept as dark grey */
+            color: #444;
         }
 
         #if-blog-post-container h3 {
             font-size: calc(1.3rem + 0.3vw);
-            /* color: #558B2F; */ /* Original Green */
-            color: #86B1CF; /* Changed to requested blue */
+            color: #86B1CF; /* Blue */
             margin-bottom: 0.6em;
         }
 
         #if-blog-post-container p {
             margin-bottom: 1.3em;
             font-size: calc(0.95rem + 0.1vw);
-            color: #555; /* Kept as grey */
+            color: #555;
         }
 
         #if-blog-post-container ul,
@@ -75,23 +75,22 @@
         #if-blog-post-container li { margin-bottom: 0.6em; }
 
         #if-blog-post-container a {
-            /* color: #4CAF50; */ /* Original Green */
-            color: #86B1CF; /* Changed to requested blue */
+            color: #86B1CF; /* Blue */
             text-decoration: none;
             transition: color 0.3s ease, border-bottom 0.3s ease;
             border-bottom: 1px solid transparent;
         }
         #if-blog-post-container a:hover {
-            color: #EE9236; /* Kept orange hover */
+            color: #EE9236; /* Orange hover */
             border-bottom: 1px solid #EE9236;
         }
 
-        #if-blog-post-container strong { font-weight: 600; color: #333; } /* Kept as dark grey/black */
+        #if-blog-post-container strong { font-weight: 600; color: #333; }
 
         /* Layout & Visual Elements (Scoped) */
         #if-blog-post-container .section {
-            margin-bottom: 1.8em; /* Further Reduced Spacing */
-            padding: 1.5em 0; /* Reduced Padding */
+            margin-bottom: 1.8em;
+            padding: 1.5em 0;
             border-bottom: 1px solid #f0f0f0;
             opacity: 0;
             transform: translateY(20px);
@@ -106,11 +105,13 @@
         #if-blog-post-container .centered-text { text-align: center; }
 
         #if-blog-post-container .highlight-box {
-            background-color: #F1F8E9; /* Kept light green background */
+            /* background-color: #F1F8E9; */ /* Original Light Green */
+            background-color: #E0F2F7; /* Light Blue */
             padding: 1.8em;
             border-radius: 12px;
-            margin: 1.8em 0; /* Adjusted margin slightly */
-            border-left: 6px solid #8BC34A; /* Kept green border */
+            margin: 1.8em 0;
+            /* border-left: 6px solid #8BC34A; */ /* Original Green */
+            border-left: 6px solid #86B1CF; /* Changed to Blue */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         #if-blog-post-container .highlight-box p:last-child { margin-bottom: 0; }
@@ -123,15 +124,15 @@
              border-left: 6px solid #EE9236; /* Kept orange border */
              font-size: 0.95rem;
              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-             color: #4E342E; /* Kept brown text */
+             color: #4E342E;
         }
-         #if-blog-post-container .warning-box strong { color: #D84315; } /* Kept orange strong text */
+         #if-blog-post-container .warning-box strong { color: #D84315; }
 
         #if-blog-post-container img.responsive-img {
             max-width: 100%; /* Ensures responsiveness */
             height: auto; /* Maintains aspect ratio */
             display: block;
-            margin: 1.8em auto; /* Default: Center images, reduced margin slightly */
+            margin: 1.8em auto;
             border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
@@ -144,7 +145,7 @@
 
         /* Specific override for the 'break-fast' image - Increased Specificity */
         #if-blog-post-container img.left-aligned-img {
-            margin-left: 0 !important; /* Added !important for certainty */
+            margin-left: 0 !important;
             margin-right: auto !important;
             display: block !important;
         }
@@ -155,7 +156,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.8em;
-            margin-top: 1.8em; /* Adjusted slightly */
+            margin-top: 1.8em;
         }
         #if-blog-post-container .myth-card {
             background-color: #fff;
@@ -172,8 +173,7 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 4px;
-            /* background: #4CAF50; */ /* Original Green */
-            background: #86B1CF; /* Changed to requested blue */
+            background: #86B1CF; /* Blue */
             opacity: 0.9;
         }
         #if-blog-post-container .myth-card:hover {
@@ -195,20 +195,20 @@
              height: 22px;
              flex-shrink: 0;
          }
-        #if-blog-post-container .myth-card p { font-size: 0.95rem; color: #666; } /* Kept grey text */
+        #if-blog-post-container .myth-card p { font-size: 0.95rem; color: #666; }
          #if-blog-post-container .myth-card .truth {
             margin-top: 1em;
             font-weight: 600;
-            /* color: #4CAF50; */ /* Original Green */
-            color: #86B1CF; /* Changed to requested blue */
-            border-left: 3px solid #8BC34A; /* Kept green border */
+            color: #86B1CF; /* Blue */
+            /* border-left: 3px solid #8BC34A; */ /* Original Green */
+            border-left: 3px solid #86B1CF; /* Changed to Blue */
             padding-left: 10px;
             font-size: 0.95rem;
         }
 
         /* IF Schedules Tabs (Scoped) - Enhanced */
         #if-blog-post-container .if-tabs {
-            margin-top: 1.8em; /* Adjusted */
+            margin-top: 1.8em;
             border: 1px solid #e0e0e0;
             border-radius: 12px;
             overflow: hidden;
@@ -232,7 +232,7 @@
             background-color: transparent;
             font-size: 1rem;
             font-weight: 600;
-            color: #666; /* Kept grey default tab text */
+            color: #666;
             transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             white-space: nowrap;
             flex-shrink: 0;
@@ -243,16 +243,16 @@
         }
         #if-blog-post-container .tab-button:hover {
             background-color: #f0f0f0;
-            color: #333; /* Kept dark hover text */
+            color: #333;
         }
         #if-blog-post-container .tab-button.active {
-            background-color: #E8F5E9; /* Kept light green background */
-            /* color: #388E3C; */ /* Original Green */
-            color: #86B1CF; /* Changed to requested blue */
+            /* background-color: #E8F5E9; */ /* Original Light Green */
+            background-color: #E0F2F7; /* Light Blue */
+            color: #86B1CF; /* Blue */
             border-bottom: 3px solid #EE9236; /* Kept orange active border */
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        #if-blog-post-container .tab-content { padding: 1.8em; } /* Adjusted padding */
+        #if-blog-post-container .tab-content { padding: 1.8em; }
         #if-blog-post-container .tab-pane { display: none; }
         #if-blog-post-container .tab-pane.active {
             display: block;
@@ -267,7 +267,7 @@
              gap: 1.5em;
              list-style: none;
              padding-left: 0;
-             margin-top: 1em; /* Added slightly */
+             margin-top: 1em;
          }
          #if-blog-post-container .food-item {
              background: #fcfcfc;
@@ -293,19 +293,16 @@
              width: 28px;
              height: 28px;
              margin-right: 12px;
-             /* fill: #8BC34A; */ /* Original Green */
-             fill: #86B1CF; /* Changed to requested blue */
+             fill: #86B1CF; /* Blue */
              flex-shrink: 0;
              transition: fill 0.3s ease;
          }
           #if-blog-post-container .food-item:hover svg.food-icon-svg {
-             /* fill: #4CAF50; */ /* Original Green */
-             fill: #86B1CF; /* Changed to requested blue (or slightly darker blue if preferred) */
+             fill: #86B1CF; /* Blue (no change on hover needed if icons represent categories) */
          }
-         #if-blog-post-container .food-item span { font-size: 0.95rem; color: #444; } /* Kept dark grey text */
+         #if-blog-post-container .food-item span { font-size: 0.95rem; color: #444; }
          #if-blog-post-container .food-item strong {
-              /* color: #558B2F; */ /* Original Green */
-             color: #86B1CF; /* Changed to requested blue */
+             color: #86B1CF; /* Blue */
          }
 
 
@@ -314,7 +311,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
             gap: 2em;
-            margin-top: 1.8em; /* Adjusted */
+            margin-top: 1.8em;
         }
         #if-blog-post-container .benefit-card {
             text-align: center;
@@ -332,7 +329,8 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 5px;
-            background: linear-gradient(90deg, #8BC34A, #AED581); /* Kept green gradient */
+            /* background: linear-gradient(90deg, #8BC34A, #AED581); */ /* Original Green Gradient */
+            background: linear-gradient(90deg, #86B1CF, #A0CDE8); /* Blue gradient */
             opacity: 0.9;
         }
          #if-blog-post-container .benefit-card:hover {
@@ -347,13 +345,12 @@
          }
         #if-blog-post-container .benefit-card h3 {
             font-size: 1.4rem;
-            /* color: #558B2F; */ /* Original Green */
-            color: #86B1CF; /* Changed to requested blue */
+            color: #86B1CF; /* Blue */
             margin-bottom: 0.6em;
         }
         #if-blog-post-container .benefit-card p {
             font-size: 0.9rem;
-            color: #666; /* Kept grey text */
+            color: #666;
             line-height: 1.6;
         }
 
@@ -362,10 +359,11 @@
              display: flex;
              justify-content: space-around;
              align-items: center;
-             background: linear-gradient(135deg, #F1F8E9, #ffffff); /* Kept light green gradient */
-             padding: 2em 1.5em; /* Adjusted */
+             /* background: linear-gradient(135deg, #F1F8E9, #ffffff); */ /* Original Light Green Gradient */
+             background: linear-gradient(135deg, #E0F2F7, #ffffff); /* Light Blue Gradient */
+             padding: 2em 1.5em;
              border-radius: 12px;
-             margin: 2em 0; /* Adjusted */
+             margin: 2em 0;
              flex-wrap: wrap;
              gap: 1.5em;
              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -382,8 +380,7 @@
              width: 45px;
              height: 45px;
              fill: none;
-             /* stroke: #4CAF50; */ /* Original Green */
-             stroke: #86B1CF; /* Changed to requested blue */
+             stroke: #86B1CF; /* Blue */
              stroke-width: 1.5;
              margin-bottom: 0.7em;
          }
@@ -401,8 +398,7 @@
              display: block;
              font-weight: 600;
              font-size: 0.95rem;
-             /* color: #558B2F; */ /* Original Green */
-             color: #86B1CF; /* Changed to requested blue */
+             color: #86B1CF; /* Blue */
          }
 
         /* "Is IF Right For You?" Checklist (Scoped) - Enhanced */
@@ -410,15 +406,14 @@
              background-color: #fff;
              padding: 2em 2.5em;
              border-radius: 12px;
-             margin: 2em 0; /* Adjusted */
+             margin: 2em 0;
              border: 1px solid #e5e5e5;
              box-shadow: 0 5px 20px rgba(0,0,0,0.06);
          }
          #if-blog-post-container .if-checklist h3 {
              margin-bottom: 1.2em;
              text-align: center;
-             /* color: #558B2F; */ /* Original Green */
-             color: #86B1CF; /* Changed to requested blue */
+             color: #86B1CF; /* Blue */
          }
          #if-blog-post-container .checklist-item {
              display: flex;
@@ -433,7 +428,7 @@
          }
           #if-blog-post-container .checklist-item label {
              font-size: 1rem;
-             color: #555; /* Kept grey label text */
+             color: #555;
              position: relative;
              padding-left: 35px;
              cursor: pointer;
@@ -450,10 +445,8 @@
             transition: border-color 0.3s ease, background-color 0.3s ease;
          }
          #if-blog-post-container .checklist-item input[type="checkbox"]:checked + label::before {
-            /* background-color: #4CAF50; */ /* Original Green */
-            background-color: #86B1CF; /* Changed to requested blue */
-            /* border-color: #4CAF50; */ /* Original Green */
-            border-color: #86B1CF; /* Changed to requested blue */
+            background-color: #86B1CF; /* Blue */
+            border-color: #86B1CF; /* Blue */
          }
          #if-blog-post-container .checklist-item label::after { /* Checkmark inside */
             content: '';
@@ -468,25 +461,24 @@
          }
          #if-blog-post-container .checklist-item input[type="checkbox"]:checked + label::after { opacity: 1; }
          #if-blog-post-container .checklist-item:hover label::before {
-            /* border-color: #8BC34A; */ /* Original Green */
+             /* border-color: #8BC34A; */ /* Original Green */
              border-color: #ADD8E6; /* Light blue hover border for checkbox */
          }
          #if-blog-post-container .checklist-note {
              font-size: 0.9rem;
-             color: #777; /* Kept grey note text */
+             color: #777;
              margin-top: 1.8em;
              text-align: center;
          }
 
         /* Organifi CTA (Scoped) - Enhanced */
          #if-blog-post-container .organifi-cta {
-             /* background: linear-gradient(120deg, #4CAF50, #66BB6A); */ /* Original Green Gradient */
-             background: linear-gradient(120deg, #86B1CF, #A0CDE8); /* Changed to blue gradient */
-             color: #fff; /* Kept white text */
+             background: linear-gradient(120deg, #86B1CF, #A0CDE8); /* Blue gradient */
+             color: #fff;
              padding: 2.5em 2em;
              border-radius: 16px;
              text-align: center;
-             margin: 2em 0 1.5em 0; /* Adjusted top margin */
+             margin: 2em 0 1.5em 0;
              box-shadow: 0 10px 30px rgba(134, 177, 207, 0.3); /* Adjusted shadow color */
              position: relative;
              overflow: hidden;
@@ -500,13 +492,12 @@
          }
          #if-blog-post-container .organifi-cta > * { position: relative; z-index: 1; }
          #if-blog-post-container .organifi-cta h3 {
-             color: #fff; /* Kept white heading */
+             color: #fff;
              font-size: calc(1.6rem + 0.5vw);
              margin-bottom: 0.5em;
              font-weight: 700;
          }
          #if-blog-post-container .organifi-cta p {
-             /* color: #E8F5E9; */ /* Original Light Greenish text */
              color: #E0F2F7; /* Light blueish text */
              margin-bottom: 1.8em;
              font-size: calc(1rem + 0.2vw);
@@ -516,16 +507,15 @@
          }
          #if-blog-post-container .cta-button {
              display: inline-block;
-             background-color: #fff; /* Kept white background */
-             /* color: #4CAF50; */ /* Original Green */
-             color: #86B1CF; /* Changed to requested blue */
+             background-color: #fff;
+             color: #86B1CF; /* Blue */
              padding: 14px 35px;
              border-radius: 30px;
              font-weight: bold;
              text-decoration: none;
              transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
              font-size: 1.05rem;
-             border: 2px solid #fff; /* Kept white border */
+             border: 2px solid #fff;
              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
          }
          #if-blog-post-container .cta-button:hover {
@@ -541,14 +531,13 @@
             background-color: #fdfdfd;
             padding: 2em 2.5em;
             border-radius: 12px;
-             margin-top: 2em; /* Adjusted */
+             margin-top: 2em;
              border: 1px solid #f0f0f0;
              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
          }
           #if-blog-post-container .summary-section h3 {
              margin-bottom: 1em;
-             /* color: #558B2F; */ /* Original Green */
-             color: #86B1CF; /* Changed to requested blue */
+             color: #86B1CF; /* Blue */
              display: flex;
              align-items: center;
              font-weight: 600;
@@ -569,7 +558,7 @@
             padding-left: 30px;
             position: relative;
             font-size: 0.95rem;
-             color: #555; /* Keep text grey */
+             color: #555;
          }
          #if-blog-post-container .summary-section li::before { /* Checkmark */
             content: '';
@@ -578,23 +567,22 @@
             top: 5px;
             width: 8px;
             height: 14px;
-            /* border: solid #4CAF50; */ /* Original Green */
-            border: solid #86B1CF; /* Changed to requested blue */
+            border: solid #86B1CF; /* Blue */
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
          }
 
         /* References - Enhanced */
         #if-blog-post-container .references {
-            margin-top: 2em; /* Adjusted */
+            margin-top: 2em;
             font-size: 0.9rem;
-            color: #777; /* Kept grey text */
+            color: #777;
             border-top: 1px solid #eee;
-            padding-top: 1.5em; /* Adjusted */
+            padding-top: 1.5em;
         }
         #if-blog-post-container .references h3 {
             font-size: 1.2rem;
-            color: #666; /* Kept grey heading */
+            color: #666;
             margin-bottom: 0.7em;
         }
         #if-blog-post-container .references ol {
@@ -606,10 +594,8 @@
              line-height: 1.5;
          }
         #if-blog-post-container .references a {
-            /* color: #8BC34A; */ /* Original Green */
-            color: #86B1CF; /* Changed to requested blue */
-            /* border-bottom: 1px dotted #8BC34A; */ /* Original Green */
-            border-bottom: 1px dotted #86B1CF; /* Changed to requested blue */
+            color: #86B1CF; /* Blue */
+            border-bottom: 1px dotted #86B1CF; /* Blue dotted */
         }
          #if-blog-post-container .references a:hover {
             color: #EE9236; /* Kept orange hover */
@@ -622,7 +608,7 @@
             #if-blog-post-container h2 { font-size: calc(1.6rem + 1vw); margin-top: 1.8em; }
             #if-blog-post-container h3 { font-size: calc(1.2rem + 0.5vw); }
             #if-blog-post-container p { font-size: calc(0.9rem + 0.1vw); }
-            #if-blog-post-container .section { margin-bottom: 1.5em; padding: 1.2em 0; } /* Further reduce on smaller screens */
+            #if-blog-post-container .section { margin-bottom: 1.5em; padding: 1.2em 0; }
             #if-blog-post-container .if-tabs { margin-left: -20px; margin-right: -20px; border-radius: 0; border-left: none; border-right: none;}
             #if-blog-post-container .tab-content { padding: 1.5em; }
              #if-blog-post-container .if-diagram { padding: 1.5em; flex-direction: column; }
@@ -640,7 +626,7 @@
             #if-blog-post-container h1 { font-size: calc(1.8rem + 2vw); }
             #if-blog-post-container h2 { font-size: calc(1.4rem + 1.5vw); margin-top: 1.5em; }
             #if-blog-post-container h3 { font-size: calc(1.1rem + 1vw); }
-            #if-blog-post-container .section { margin-bottom: 1.2em; padding: 1em 0; } /* Even less on smallest screens */
+            #if-blog-post-container .section { margin-bottom: 1.2em; padding: 1em 0; }
             #if-blog-post-container .myth-busters, #if-blog-post-container .benefits-grid { grid-template-columns: 1fr; gap: 1.5em; margin-top: 1.5em; }
             #if-blog-post-container .tab-button { padding: 12px 18px; font-size: 0.9rem; }
             #if-blog-post-container .organifi-cta { padding: 2em 1.5em; border-radius: 12px; margin-top: 1.5em; }
@@ -663,8 +649,8 @@
     <section class="section hero-section">
         <h1>Fast-Track Your Way to Weight Management</h1>
         <p style="font-size: 1.2rem; color: #666;">The Simple, Science-Backed Guide to Intermittent Fasting</p>
-        <!-- Image below is already responsive due to .responsive-img class -->
-        <img src="https://primacy.io/intermittent_fasting2.png" alt="Clock on a plate symbolizing intermittent fasting" class="responsive-img" style="max-width: 1000px;">
+        <!-- Image responsiveness handled by .responsive-img class. Inline style removed. -->
+        <img src="https://primacy.io/intermittent_fasting2.png" alt="Clock on a plate symbolizing intermittent fasting" class="responsive-img">
         <p>It's a widely accepted myth that major transformations take time or require painful sacrifices. But what if a full-body reset could happen with just a few simple, strategic tweaks to your eating schedule? Welcome to the world of Intermittent Fasting (IF).</p>
     </section>
 
@@ -794,8 +780,8 @@
     <!-- Helpful Tips -->
     <section class="section">
         <h2>Tips for a Successful Fasting Journey</h2>
-         <!-- Image below is already responsive due to .responsive-img class -->
-         <img src="https://cdn.shopify.com/s/files/1/0940/8252/files/break-fast-right-way-intermittent-fasting_1024x1024.jpg?v=1543995719" alt="Healthy foods like avocado, eggs, and greens" class="responsive-img left-aligned-img" style="max-width: 1000px;">
+         <!-- Image responsiveness handled by .responsive-img & .left-aligned-img classes. Inline style removed. -->
+         <img src="https://cdn.shopify.com/s/files/1/0940/8252/files/break-fast-right-way-intermittent-fasting_1024x1024.jpg?v=1543995719" alt="Healthy foods like avocado, eggs, and greens" class="responsive-img left-aligned-img">
         <h3>Fueling Your Eating Window Wisely</h3>
         <p>Your eating window isn't a free-for-all! Focus on nutrient-dense foods to maximize benefits.</p>
         <p><strong>Stock your kitchen with quality choices:</strong></p>
