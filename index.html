@@ -26,13 +26,18 @@
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             --fast-transition: all 0.3s ease;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        html {
+             scroll-behavior: smooth; /* Ensure smooth scrolling globally */
+             scroll-padding-top: 80px; /* Offset for fixed header */
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
@@ -41,54 +46,54 @@
             overflow-x: hidden;
             font-weight: 300;
         }
-        
+
         h1, h2, h3, h4 {
             font-weight: 600;
             line-height: 1.2;
             margin-bottom: 1.5rem;
         }
-        
+
         h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             letter-spacing: -0.02em;
         }
-        
+
         h2 {
             font-size: clamp(2rem, 4vw, 3rem);
             letter-spacing: -0.02em;
         }
-        
+
         h3 {
             font-size: clamp(1.5rem, 3vw, 2rem);
             letter-spacing: -0.01em;
         }
-        
+
         p {
             margin-bottom: 1.5rem;
             font-size: clamp(1rem, 1.1vw, 1.2rem);
         }
-        
+
         strong, b {
             font-weight: 600;
         }
-        
+
         a {
             color: var(--primary);
             text-decoration: none;
             transition: var(--fast-transition);
         }
-        
+
         a:hover {
             color: var(--secondary);
         }
-        
+
         .container {
             width: 100%;
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 clamp(1rem, 5vw, 5rem);
         }
-        
+
         .btn {
             display: inline-block;
             background-color: var(--primary);
@@ -106,7 +111,7 @@
             transition: var(--transition);
             z-index: 1;
         }
-        
+
         .btn::after {
             content: '';
             position: absolute;
@@ -118,141 +123,65 @@
             transition: var(--transition);
             z-index: -1;
         }
-        
+
         .btn:hover {
             color: var(--light);
         }
-        
+
         .btn:hover::after {
             left: 0;
             width: 100%;
         }
-        
+
         .btn-outlined {
             background-color: transparent;
             color: var(--primary);
             border: 1px solid var(--primary);
         }
-        
+
         .btn-outlined::after {
             background-color: var(--primary);
         }
-        
+
         .btn-outlined:hover {
             color: var(--light);
         }
-        
+
         .section-spacing {
             padding: clamp(5rem, 12vw, 10rem) 0;
         }
-        
+
         /* Utility Classes */
         .text-center {
             text-align: center;
         }
-        
-        .full-width {
-            width: 100%;
+        /* Apply centered ::after only when .text-center is explicitly used */
+        .text-center.section-heading::after {
+            left: 50%;
+            transform: translateX(-50%);
         }
-        
-        .uppercase {
-            text-transform: uppercase;
-        }
-        
-        .flex {
-            display: flex;
-        }
-        
-        .items-center {
-            align-items: center;
-        }
-        
-        .justify-between {
-            justify-content: space-between;
-        }
-        
-        .justify-center {
-            justify-content: center;
-        }
-        
-        .grid {
-            display: grid;
-        }
-        
-        .grid-2 {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 4rem;
-        }
-        
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        
-        .grid-4 {
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-        
-        .relative {
-            position: relative;
-        }
-        
-        .z-10 {
-            z-index: 10;
-        }
-        
-        .mb-1 {
-            margin-bottom: 1rem;
-        }
-        
-        .mb-2 {
-            margin-bottom: 2rem;
-        }
-        
-        .mb-4 {
-            margin-bottom: 4rem;
-        }
-        
-        .mb-8 {
-            margin-bottom: 8rem;
-        }
-        
-        .mt-1 {
-            margin-top: 1rem;
-        }
-        
-        .mt-2 {
-            margin-top: 2rem;
-        }
-        
-        .mt-4 {
-            margin-top: 4rem;
-        }
-        
-        .mt-8 {
-            margin-top: 8rem;
-        }
-        
-        @media (max-width: 768px) {
-        .content-table, .content-table tbody, .content-table tr, .content-table td {
-            display: block;
-            width: 100%;
-        }
-        
-        .content-table td {
-            padding: 0;
-            margin-bottom: 2rem;
-        }
-    }
-        
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-        
+
+        .full-width { width: 100%; }
+        .uppercase { text-transform: uppercase; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .grid { display: grid; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); gap: 4rem; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .relative { position: relative; }
+        .z-10 { z-index: 10; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mb-4 { margin-bottom: 4rem; }
+        .mb-8 { margin-bottom: 8rem; }
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mt-4 { margin-top: 4rem; }
+        .mt-8 { margin-top: 8rem; }
+
         /* Header & Navigation */
         header {
             position: fixed;
@@ -263,47 +192,48 @@
             transition: var(--fast-transition);
             background-color: white;
         }
-        
+
         header.scrolled {
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         header.scrolled .nav-links a {
             color: var(--dark);
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2rem 0;
+            padding: 1.5rem 0; /* Slightly reduce padding */
+            min-height: 80px; /* Ensure header has min height */
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
-            color: var(--light);
+            color: var(--dark);
             font-weight: 600;
             font-size: 1.5rem;
             letter-spacing: 0.05em;
             transition: var(--fast-transition);
         }
-        
+
         .logo img {
             height: 40px;
             margin-right: 10px;
             object-fit: contain;
         }
-        
+
         .nav-links {
             display: flex;
             list-style: none;
         }
-        
+
         .nav-links li {
             margin-left: 2.5rem;
         }
-        
+
         .nav-links a {
             color: var(--dark);
             font-weight: 500;
@@ -313,7 +243,7 @@
             position: relative;
             transition: var(--fast-transition);
         }
-        
+
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -324,11 +254,11 @@
             background-color: currentColor;
             transition: var(--fast-transition);
         }
-        
+
         .nav-links a:hover::after {
             width: 100%;
         }
-        
+
         .mobile-menu-toggle {
             display: none;
             background: none;
@@ -338,7 +268,7 @@
             cursor: pointer;
             transition: var(--fast-transition);
         }
-        
+
         .mobile-menu {
             position: fixed;
             top: 0;
@@ -353,11 +283,11 @@
             align-items: center;
             transition: var(--transition);
         }
-        
+
         .mobile-menu.active {
             right: 0;
         }
-        
+
         .mobile-menu-close {
             position: absolute;
             top: 2rem;
@@ -368,16 +298,16 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
-        
+
         .mobile-nav-links {
             list-style: none;
             text-align: center;
         }
-        
+
         .mobile-nav-links li {
             margin-bottom: 2rem;
         }
-        
+
         .mobile-nav-links a {
             color: var(--light);
             font-size: 2rem;
@@ -385,62 +315,70 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-toggle {
-                display: block;
-            }
-        }
-        
+
         /* Hero Section */
         .hero {
-            height: 100vh;
-            min-height: 700px;
+            /* height: 100vh; */ /* Let content define height more naturally */
+            min-height: 100vh; /* Ensure it's at least viewport height */
             background-color: var(--dark);
             color: var(--light);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding-top: 80px; /* Add padding for fixed header globally */
         }
-        
+
         .hero-content {
-            position: absolute;
-            top: 50%;
-            left: 0;
+            position: relative;
             width: 100%;
-            transform: translateY(-50%);
             z-index: 1;
         }
-        
+
         .hero-heading {
-            font-size: clamp(3rem, 8vw, 8rem);
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 700;
             line-height: 1;
             max-width: 1200px;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             opacity: 0;
             transform: translateY(50px);
             animation: fadeUp 1s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
+
         .hero-subheading {
             font-size: clamp(1.2rem, 2vw, 1.5rem);
             max-width: 700px;
+            margin-bottom: 0;
             opacity: 0;
             transform: translateY(50px);
             animation: fadeUp 1s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
+
         .hero-cta {
             margin-top: 3rem;
             opacity: 0;
             transform: translateY(50px);
             animation: fadeUp 1s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
+
+         .hero-grid {
+             display: grid;
+             grid-template-columns: 1fr 1fr;
+             gap: 3rem;
+             align-items: center;
+         }
+
+        .hero-image {
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
         .hero-background {
             position: absolute;
             top: 0;
@@ -450,7 +388,7 @@
             background-color: var(--primary);
             z-index: 0;
         }
-        
+
         .hero-background::after {
             content: '';
             position: absolute;
@@ -460,7 +398,7 @@
             height: 100%;
             background: radial-gradient(circle at center, rgba(255,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
         }
-        
+
         .scroll-indicator {
             position: absolute;
             bottom: 2rem;
@@ -474,62 +412,48 @@
             opacity: 0;
             animation: fadeIn 1s 1.2s forwards;
         }
-        
+
         .scroll-indicator p {
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 0.5rem;
         }
-        
+
         .scroll-arrow {
             font-size: 1.5rem;
             animation: bounce 2s infinite;
         }
-        
+
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
+
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        
+
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
-        
+
         /* About Section */
         .about {
             padding: clamp(5rem, 15vw, 12rem) 0;
         }
-        
+
+        /* Section Headings - Default to Left Align */
         .section-heading {
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(2rem, 5vw, 3.5rem);
             margin-bottom: 4rem;
             position: relative;
+            text-align: left; /* Default alignment */
         }
-        
+
         .section-heading::after {
             content: '';
             position: absolute;
@@ -537,32 +461,71 @@
             height: 3px;
             background-color: var(--primary);
             bottom: -1rem;
-            left: 0;
+            left: 0; /* Default position */
+            transform: none; /* Default transform */
         }
-        
-        .text-center .section-heading::after {
-            left: 50%;
-            transform: translateX(-50%);
+
+        .content-table {
+             width: 100%;
+             border-collapse: collapse;
+             margin-top: 2rem;
+         }
+
+        .content-table td {
+             width: 50%;
+             padding-right: 2rem;
+             vertical-align: top;
         }
-        
+        .content-table td:last-child {
+            padding-right: 0;
+        }
+
         .about-content p {
             font-size: clamp(1.1rem, 1.3vw, 1.3rem);
             max-width: 800px;
         }
-        
+
+        .shopify-partner {
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .shopify-partner img {
+            width: 39%;
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+        .shopify-partner p {
+            font-size: 8pt;
+            margin: 0;
+            color: var(--mid-gray);
+        }
+
+        .about-image-wrapper img {
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-cta {
+            margin-top: 2rem !important;
+        }
+
+
         /* Features Section */
         .features {
             background-color: var(--off-white);
             padding: clamp(5rem, 15vw, 12rem) 0;
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
             margin-top: 3rem;
         }
-        
+
         .feature-card {
             background-color: white;
             padding: 2rem;
@@ -572,12 +535,12 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-        
+
         .feature-icon {
             width: 60px;
             height: 60px;
@@ -589,53 +552,51 @@
             margin-bottom: 1.5rem;
             color: var(--light);
             font-size: 1.5rem;
+            flex-shrink: 0;
         }
-        
+
         .feature-content h3 {
             color: var(--primary);
             margin-bottom: 1rem;
             font-size: 1.25rem;
         }
-        
+
         .feature-content p {
             color: var(--dark-gray);
             font-size: 1rem;
             margin-bottom: 0;
         }
-        
-        @media (max-width: 768px) {
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
+
+
         /* Comparison Section */
         .comparison {
             padding: clamp(5rem, 15vw, 12rem) 0;
         }
-        
+
         .comparison-tabs {
             display: flex;
             border-bottom: 1px solid var(--light-gray);
             margin-bottom: 3rem;
+            flex-wrap: wrap;
         }
-        
+
         .tab-button {
             background: none;
             border: none;
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             font-size: 1.1rem;
             font-weight: 500;
             color: var(--mid-gray);
             cursor: pointer;
             position: relative;
             transition: var(--fast-transition);
+            white-space: nowrap;
         }
-        
+
         .tab-button.active {
             color: var(--primary);
         }
-        
+
         .tab-button::after {
             content: '';
             position: absolute;
@@ -646,104 +607,106 @@
             left: 0;
             transition: var(--fast-transition);
         }
-        
+
         .tab-button.active::after {
             width: 100%;
         }
-        
+
         .tab-content {
             display: none;
         }
-        
+
         .tab-content.active {
             display: block;
             animation: fadeIn 0.6s forwards;
         }
-        
+
         .comparison-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
         }
-        
+
         .comparison-card {
             border-radius: 4px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: var(--fast-transition);
         }
-        
+
         .comparison-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
-        
+
         .comparison-image {
-            height: 300px;
+            height: auto;
+            aspect-ratio: 16 / 9;
             background-color: var(--light-gray);
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
-        
+        .comparison-image wistia-player {
+            width: 100%;
+            height: 100%;
+        }
+
         .comparison-image-placeholder {
             font-size: 1.2rem;
             color: var(--mid-gray);
             text-align: center;
             padding: 2rem;
         }
-        
+
         .comparison-details {
             padding: 2rem;
             background-color: var(--light);
         }
-        
+
         .comparison-title {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--primary);
         }
-        
+
         .comparison-description {
             color: var(--dark-gray);
             margin-bottom: 1.5rem;
         }
-        
+
         .comparison-features {
             list-style: none;
+            padding-left: 0;
         }
-        
+
         .comparison-features li {
             margin-bottom: 0.8rem;
             padding-left: 1.5rem;
             position: relative;
         }
-        
+
         .comparison-features li::before {
             content: '•';
             color: var(--primary);
             font-size: 1.5rem;
             position: absolute;
             left: 0;
-            top: -0.5rem;
+            top: 50%;
+            transform: translateY(-55%);
+            line-height: 1;
         }
-        
-        @media (max-width: 768px) {
-            .comparison-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-        
+
         /* Accordion */
         .accordion {
             margin-top: 4rem;
         }
-        
+
         .accordion-item {
             border-bottom: 1px solid var(--light-gray);
         }
-        
+
         .accordion-header {
             padding: 1.5rem 0;
             display: flex;
@@ -752,62 +715,420 @@
             cursor: pointer;
             transition: var(--fast-transition);
         }
-        
+
         .accordion-header h3 {
             font-size: 1.2rem;
             margin: 0;
             transition: var(--fast-transition);
+            padding-right: 1rem;
         }
-        
+
         .accordion-icon {
             font-size: 1.2rem;
             transition: var(--fast-transition);
+            flex-shrink: 0;
         }
-        
+
         .accordion-item.active .accordion-icon {
             transform: rotate(45deg);
         }
-        
+
         .accordion-item.active .accordion-header h3 {
             color: var(--primary);
         }
-        
+
         .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
         }
-        
+
         .accordion-item.active .accordion-content {
             max-height: 1000px;
             transition: max-height 1s ease-in-out;
         }
-        
+
         .accordion-body {
             padding: 0 0 2rem;
             color: var(--dark-gray);
         }
-        
+        .accordion-body ul {
+            list-style-position: inside;
+            padding-left: 1rem;
+        }
+        .accordion-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Primacy Infographic Component Styles */
+        #primacy-infographic-component {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            box-sizing: border-box;
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 40px 20px;
+        }
+
+        #primacy-infographic-component *,
+        #primacy-infographic-component *::before,
+        #primacy-infographic-component *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #primacy-infographic-component .primacy-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        #primacy-infographic-component .primacy-logo {
+            margin-bottom: 10px;
+        }
+
+        #primacy-infographic-component .primacy-logo img {
+            max-width: 110px;
+        }
+
+        #primacy-infographic-component .primacy-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #333333;
+            display: inline-block;
+            position: relative;
+        }
+
+        #primacy-infographic-component .primacy-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: #e94747;
+        }
+
+        #primacy-infographic-component .primacy-subtitle {
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #primacy-infographic-component .primacy-infographic {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        #primacy-infographic-component .primacy-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            border-top: 3px solid #e94747;
+        }
+
+        #primacy-infographic-component .primacy-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #primacy-infographic-component .primacy-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #primacy-infographic-component .primacy-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        #primacy-infographic-component .primacy-section-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: #e94747;
+            background: rgba(233, 71, 71, 0.1);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        #primacy-infographic-component .primacy-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333333;
+        }
+
+        #primacy-infographic-component .primacy-stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        #primacy-infographic-component .primacy-stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #primacy-infographic-component .primacy-stat-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #primacy-infographic-component .primacy-stat-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+        }
+
+        #primacy-infographic-component .primacy-stat-title i {
+            margin-right: 10px;
+            color: #e94747;
+        }
+
+        #primacy-infographic-component .primacy-stat-highlight {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #e94747;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        #primacy-infographic-component .primacy-stat-highlight.percentage::after {
+            content: "%";
+            font-size: 1.5rem;
+            margin-left: 5px;
+            opacity: 0.7;
+        }
+
+        #primacy-infographic-component .primacy-stat-highlight.time::after {
+            content: "min";
+            font-size: 1.5rem;
+            margin-left: 5px;
+            opacity: 0.7;
+        }
+
+        #primacy-infographic-component .primacy-stat-highlight.times::before {
+            content: "×";
+            font-size: 1.5rem;
+            margin-right: 5px;
+            opacity: 0.7;
+        }
+
+        #primacy-infographic-component .primacy-stat-description {
+            font-size: 0.95rem;
+            color: #1a1a1a;
+            opacity: 0.8;
+        }
+
+        #primacy-infographic-component .primacy-compare-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        #primacy-infographic-component .primacy-compare-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #1a1a1a;
+        }
+
+        #primacy-infographic-component .primacy-compare-value {
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        #primacy-infographic-component .primacy-compare-label {
+            opacity: 0.7;
+        }
+
+        #primacy-infographic-component .primacy-vs {
+            font-weight: 700;
+            color: #e94747;
+            margin: 0 5px;
+        }
+
+        #primacy-infographic-component .primacy-progress-container {
+            margin-top: 15px;
+        }
+
+        #primacy-infographic-component .primacy-progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        #primacy-infographic-component .primacy-progress-bar {
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        #primacy-infographic-component .primacy-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #e94747, #333333);
+            border-radius: 5px;
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+
+        #primacy-infographic-component .primacy-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #primacy-infographic-component .primacy-control-btn {
+            background: white;
+            border: 1px solid #eee;
+            color: #333333;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #primacy-infographic-component .primacy-control-btn:hover {
+            background: #e94747;
+            color: white;
+            border-color: #e94747;
+        }
+
+        #primacy-infographic-component .primacy-control-btn.active {
+            background: #e94747;
+            color: white;
+            border-color: #e94747;
+        }
+
+        #primacy-infographic-component .primacy-footer {
+            margin-top: 80px;
+            text-align: center;
+            padding: 20px;
+            color: #1a1a1a;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        #primacy-infographic-component .primacy-link {
+            color: #e94747;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        #primacy-infographic-component .primacy-link:hover {
+            text-decoration: underline;
+        }
+
+        #primacy-infographic-component .bounce {
+            animation: bounce 2s infinite;
+        }
+
+
         /* Pricing Section */
         .pricing {
             background-color: var(--off-white);
             padding: clamp(5rem, 15vw, 12rem) 0;
         }
-        
-        .pricing-table {
-            width: 100%;
-            border-collapse: collapse;
+
+        .currency-picker-container {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .currency-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .currency-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .currency-btn {
+            background: none;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--fast-transition);
+        }
+
+        .currency-btn img {
+            width: 20px;
+            height: 15px;
+            object-fit: cover;
+        }
+
+        .currency-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .price-loading {
+            opacity: 0.5;
+        }
+
+        .pricing-table-wrapper {
+            overflow-x: auto;
             background-color: var(--light);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
             border-radius: 4px;
         }
-        
+
+        .pricing-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
         .pricing-table th, .pricing-table td {
             padding: 1.5rem 2rem;
             text-align: left;
+            white-space: nowrap;
         }
-        
+
         .pricing-table th {
             background-color: var(--primary);
             color: var(--light);
@@ -815,26 +1136,38 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        
-        .pricing-table tr:not(:last-child) {
+
+        .pricing-table tbody tr:not(:last-child) {
             border-bottom: 1px solid var(--light-gray);
         }
-        
-        .pricing-table tr:hover {
+
+        .pricing-table tbody tr:hover {
             background-color: rgba(255, 55, 61, 0.05);
         }
-        
+
         .price {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
         }
-        
+
         .price-note {
             font-size: 0.9rem;
             color: var(--mid-gray);
+            display: block;
+            margin-top: 0.2rem;
         }
-        
+
+        .satisfaction-guarantee {
+             text-align: right;
+             margin-top: 1rem;
+         }
+        .satisfaction-guarantee p {
+             font-size: 10pt;
+             margin: 0;
+             color: var(--mid-gray);
+         }
+
         /* CTA Section */
         .cta {
             padding: clamp(5rem, 12vw, 8rem) 0;
@@ -842,102 +1175,108 @@
             color: var(--light);
             text-align: center;
         }
-        
+
         .cta h2 {
             font-size: clamp(2rem, 4vw, 3.5rem);
             margin-bottom: 2rem;
         }
-        
+
         .cta p {
             font-size: clamp(1.1rem, 1.3vw, 1.3rem);
             max-width: 700px;
             margin: 0 auto 3rem;
         }
-        
+
         .cta-buttons {
             display: flex;
             gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
         }
-        
+
         .cta .btn {
             background-color: var(--light);
             color: var(--primary);
         }
-        
+
         .cta .btn::after {
             background-color: rgba(255, 255, 255, 0.2);
         }
-        
+
         .cta .btn-outlined {
             background-color: transparent;
             color: var(--light);
             border-color: var(--light);
         }
-        
+
         .cta .btn-outlined::after {
             background-color: var(--light);
         }
-        
+
         .cta .btn-outlined:hover {
             color: var(--primary);
         }
-        
+
         /* Footer */
         footer {
             background-color: var(--dark);
             color: var(--light);
             padding: 5rem 0 2rem;
         }
-        
+
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 4rem;
             margin-bottom: 4rem;
         }
-        
+
         .footer-logo {
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
         }
-        
+
         .footer-logo img {
             height: 35px;
             margin-right: 10px;
             object-fit: contain;
         }
-        
+
         .footer-about p {
             color: var(--mid-gray);
             max-width: 400px;
+            margin-bottom: 0;
         }
-        
+
         .footer-heading {
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
             color: var(--light);
+            font-weight: 600;
         }
-        
+
         .footer-links {
             list-style: none;
+            padding-left: 0;
         }
-        
+
         .footer-links li {
             margin-bottom: 1rem;
         }
-        
+
         .footer-links a {
             color: var(--mid-gray);
             transition: var(--fast-transition);
         }
-        
+
         .footer-links a:hover {
             color: var(--primary);
         }
-        
+
         .footer-bottom {
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -945,49 +1284,27 @@
             color: var(--mid-gray);
             font-size: 0.9rem;
         }
-        
-        @media (max-width: 1024px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 3rem;
-            }
+        .footer-bottom p {
+            margin-bottom: 0;
         }
-        
-        @media (max-width: 576px) {
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-        
+
         /* Additional Animations */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 1s ease, transform 1s ease;
         }
-        
+
         .fade-in.active {
             opacity: 1;
             transform: translateY(0);
         }
-        
-        .stagger-1 {
-            transition-delay: 0.1s;
-        }
-        
-        .stagger-2 {
-            transition-delay: 0.2s;
-        }
-        
-        .stagger-3 {
-            transition-delay: 0.3s;
-        }
-        
-        .stagger-4 {
-            transition-delay: 0.4s;
-        }
-        
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+
         /* Cursor */
         .custom-cursor {
             position: fixed;
@@ -998,15 +1315,18 @@
             pointer-events: none;
             mix-blend-mode: difference;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
+            transition: transform 0.1s ease, opacity 0.3s ease;
             z-index: 9999;
             opacity: 0;
         }
-        
+
         .cursor-active {
             opacity: 1;
         }
-        
+        @media (hover: none) {
+            .custom-cursor { display: none; }
+        }
+
         /* Scroll progress bar */
         .scroll-progress {
             position: fixed;
@@ -1018,18 +1338,367 @@
             z-index: 9999;
             transition: width 0.1s ease;
         }
+
+        /* Contact Form Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s linear;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0s 0s linear;
+        }
+
+        .contact-modal {
+            background-color: var(--light);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .contact-modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-header {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 1.5rem 2rem;
+            position: relative;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            color: var(--light);
+        }
+
+        .modal-header p {
+            opacity: 0.9;
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--fast-transition);
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            transition: var(--fast-transition);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 55, 61, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-error {
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-error.visible {
+            display: block;
+        }
+
+        .form-control.error {
+            border-color: var(--primary);
+        }
+
+        .form-footer {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-note {
+            font-size: 0.85rem;
+            color: var(--mid-gray);
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Number Input Styling */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Success Message */
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .success-message i {
+            font-size: 1.2rem;
+        }
+
+        .success-message.visible {
+            display: flex;
+        }
+
+        /* Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.6s;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            /* Hero Section Mobile */
+            .hero {
+                min-height: 100vh; /* Adjust instead of fixed height */
+                padding-top: 80px; /* Keep global padding */
+                padding-bottom: 4rem;
+                align-items: flex-start;
+            }
+            .hero-content {
+                 /* Padding handled by .hero */
+            }
+            .hero-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+            .hero-text {
+                order: 1;
+                text-align: center;
+            }
+            .hero-image {
+                order: 0;
+                text-align: center !important;
+                margin-bottom: 1rem;
+            }
+             .hero-heading {
+                 font-size: clamp(2.2rem, 10vw, 3.5rem);
+                 text-align: center;
+                 margin-top: 2rem; /* TWEAK: Added margin for space below nav */
+             }
+             .hero-subheading {
+                 text-align: center;
+             }
+             .hero-cta {
+                 text-align: center;
+                 margin-top: 2rem !important;
+                 margin-bottom: 2rem;
+             }
+             .scroll-indicator {
+                 bottom: 1rem;
+             }
+
+            /* About Section Mobile */
+            .content-table, .content-table tbody, .content-table tr, .content-table td {
+                display: block;
+                width: 100% !important;
+            }
+            .content-table td {
+                padding: 0 !important;
+                margin-bottom: 2rem;
+                width: 100%;
+            }
+            .content-table td:last-child {
+                margin-bottom: 0;
+            }
+            .about-image-wrapper {
+                margin-bottom: 1.5rem;
+            }
+            .about-content {
+                text-align: left;
+            }
+            .shopify-partner {
+                text-align: left !important;
+                margin: 2rem 0;
+            }
+
+             /* Section Heading Mobile - Center Align */
+             .section-heading {
+                 text-align: center !important; /* Force center */
+             }
+             .section-heading::after {
+                 left: 50% !important;
+                 transform: translateX(-50%) !important;
+             }
+
+             /* Features Mobile */
+            .features-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+            .feature-content {
+                text-align: left;
+            }
+
+             /* Comparison Mobile */
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .comparison-tabs {
+                 justify-content: center;
+             }
+
+             /* Infographic Mobile */
+             #primacy-infographic-component .primacy-stats-container {
+                grid-template-columns: 1fr;
+             }
+             #primacy-infographic-component .primacy-section {
+                 padding: 20px;
+             }
+             #primacy-infographic-component .primacy-title {
+                 font-size: 1.8rem;
+             }
+             #primacy-infographic-component .primacy-subtitle {
+                 font-size: 1rem;
+             }
+
+
+             /* Pricing Mobile */
+            .currency-picker-container {
+                text-align: center; /* Center on mobile */
+            }
+            .currency-picker {
+                justify-content: center;
+            }
+
+
+             /* CTA Mobile */
+            .cta h2 { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+            .cta p { font-size: clamp(1rem, 3vw, 1.1rem); }
+
+             /* Footer Mobile */
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                text-align: center;
+            }
+            .footer-about, .footer-links-column {
+                text-align: center;
+            }
+             .footer-logo {
+                 justify-content: center;
+             }
+            .footer-links {
+                 padding-left: 0;
+             }
+        }
     </style>
 </head>
 <body>
-    <!-- Cursor Effect -->
+    <!-- Cursor Effect (Hidden on touch devices via CSS) -->
     <div class="custom-cursor"></div>
-    
+
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress"></div>
-    
+
     <!-- Mobile Menu -->
     <div class="mobile-menu">
-        <button class="mobile-menu-close">
+        <button class="mobile-menu-close" aria-label="Close mobile menu">
             <i class="fas fa-times"></i>
         </button>
         <ul class="mobile-nav-links">
@@ -1040,13 +1709,13 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
     </div>
-    
+
     <!-- Header -->
     <header>
         <div class="container">
             <nav>
-                <a href="#" class="logo">
-                    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/primacy_logo_bw.png?v=1742777076" alt="Primacy Logo" style="height: 40px;">
+                <a href="#home" class="logo">
+                    <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/primacy_logo_bw.png?v=1742777076" alt="Primacy Logo">
                 </a>
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
@@ -1055,256 +1724,76 @@
                     <li><a href="#pricing">Pricing</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu-toggle">
+                <button class="mobile-menu-toggle" aria-label="Open mobile menu">
                     <i class="fas fa-bars"></i>
                 </button>
             </nav>
         </div>
     </header>
-    
-       <style>
-           /* Add these mobile styles at the end of your existing CSS */
-		   @media (max-width: 768px) {
-		       .hero-content {
-		           padding-top: 80px; /* Add padding to account for fixed header */
-		       }
-    
-		       .hero {
-		           height: auto; /* Allow height to adjust based on content */
-		           min-height: 100vh; /* Still take up at least full viewport height */
-		       }
-    
-		       .hero-heading {
-		           margin-top: 2rem; /* Add some space at the top */
-		           font-size: clamp(2.2rem, 7vw, 3rem); /* Slightly reduce font size on mobile */
-		       }
-		   }
-		   @media (max-width: 768px) {
-               /* Hero Section Mobile Styles */
-               .hero-grid {
-                   display: flex !important;
-                   flex-direction: column;
-                   gap: 2rem !important;
-               }
-            
-               .hero-image {
-                   text-align: center !important;
-                   order: -1;
-               }
-            
-               .hero-heading {
-                   margin-bottom: 1rem !important;
-               }
-            
-               .hero-cta {
-                   margin-top: 2rem !important;
-                   text-align: center;
-               }
-            
-               /* About Section Mobile Styles */
-               .content-table, 
-               .content-table tbody, 
-               .content-table tr, 
-               .content-table td {
-                   display: block;
-                   width: 100%;
-               }
-            
-               .content-table td {
-                   padding: 0 !important;
-                   margin-bottom: 2rem;
-               }
-            
-               .about-image {
-                   margin-top: 1.5rem;
-               }
-            
-               .shopify-partner {
-                   text-align: center !important;
-                   margin-top: 2rem;
-               }
-            
-               .shopify-partner img {
-                   width: 200px !important;
-                   margin: 0 auto 1rem;
-               }
-           }
-       </style>
-   </head>
-   <body>
-	  <!-- Hero Section Updates -->
-	  <section class="hero" id="home">
-	      <div class="hero-background"></div>
-	      <div class="container hero-content">
-	          <h1 class="hero-heading" style="margin-bottom: 3rem;">Is Shopify's Blog Holding You Back?</h1>
-	          <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
-	              <div class="hero-text">
-	                  <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
-	                  <div class="hero-cta">
-	                      <a href="#contact" class="btn">Let's Fix That</a>
-	                  </div>
-	              </div>
-	              <div class="hero-image" style="text-align: right;">
-	                  <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopifyblog.png?v=1742772724" alt="Standard Shopify Blog" style="max-width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
-	              </div>
-	          </div>
-	      </div>
-	      <div class="scroll-indicator">
-	          <p>Scroll</p>
-	          <div class="scroll-arrow">
-	              <i class="fas fa-chevron-down"></i>
-	          </div>
-	      </div>
-	  </section>
 
-	  <!-- About Section Updates -->
-	  <section class="about section-spacing" id="about">
-	      <div class="container">
-	          <h2 class="section-heading fade-in">Unlock Your Blog’s Full Potential</h2>
-	          <table class="content-table" style="width: 100%; border-collapse: collapse; margin-top: 2rem;">
-	              <tr>
-	                  <td style="width: 50%; padding-right: 2rem; vertical-align: top;">
-	                      <div class="about-content fade-in stagger-1">
-	                          <p>Engage and convert more readers today! Transform your blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
-	                          <p>Our approach focuses on creating aesthetically pleasing, interactive content that keeps readers on your page longer and drives higher conversion rates. We do the work and you enjoy the benefits – with no apps to install and no monthly fees to pay.</p>
-                        
-	                          <div class="shopify-partner" style="text-align: left;">
-	                              <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopify-partner.png?v=1742826953" alt="Shopify Partner" style="width: 39%; height: auto;">
-	                              <p style="font-size: 8pt; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Enhancing your store's blog experience with expert solutions<br></p>
-	                          </div>
-                        
-	                          <a href="https://biodynamic.coffee/blogs/lifestyle/unlocking-the-perfect-brew-the-ideal-rest-period-for-specialty-coffee" class="btn about-cta" style="margin-top: 1.5rem;" target="_blank">See What's Possible</a>
-	                      </div>
-	                  </td>
-	                  <td style="width: 100%; vertical-align: top;">
-	                      <div class="about-image-wrapper fade-in stagger-2">
-	                          <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/blog-post-example.png?v=1742769108" alt="Blog Post Example" class="about-image" style="width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-	                      </div>
-	                  </td>
-	              </tr>
-	          </table>
-	      </div>
-	  </section>
+      <!-- Hero Section -->
+      <section class="hero" id="home">
+          <div class="hero-background"></div>
+          <div class="container hero-content">
+              <h1 class="hero-heading">Is Shopify's Blog Holding You Back?</h1>
+              <div class="hero-grid">
+                  <div class="hero-text">
+                      <p class="hero-subheading">Shopify is built for selling, not storytelling. If your blog looks flat, lacks interactivity, or doesn't reflect your brand's personality, it's not your fault—it's the platform.</p>
+                      <div class="hero-cta">
+                          <a href="#contact" class="btn">Let's Fix That</a>
+                      </div>
+                  </div>
+                  <div class="hero-image">
+                      <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopifyblog.png?v=1742772724" alt="Standard Shopify Blog Example">
+                  </div>
+              </div>
+          </div>
+          <div class="scroll-indicator">
+              <p>Scroll</p>
+              <div class="scroll-arrow">
+                  <i class="fas fa-chevron-down"></i>
+              </div>
+          </div>
+      </section>
 
-	  <!-- Add this CSS to enhance mobile responsiveness -->
-	  <style>
-	      /* Mobile Responsive Adjustments */
-	      @media (max-width: 768px) {
-	          /* Hero Section Mobile Styles */
-	          .hero-grid {
-	              grid-template-columns: 1fr !important;
-	              gap: 2rem !important;
-	          }
-        
-	          .hero-text {
-	              order: 1;
-	          }
-        
-	          .hero-image {
-	              order: 0;
-	              text-align: left !important;
-	              margin-bottom: 1rem;
-	          }
-        
-	          .hero-heading {
-	              margin-bottom: 2rem !important;
-	              text-align: left;
-	          }
-        
-	          .hero-subheading {
-	              text-align: left;
-	          }
-        
-	          .hero-cta {
-	              text-align: left;
-	              margin-bottom: 2rem;
-	          }
-        
-	          /* About Section Mobile Styles */
-	          .content-table, .content-table tbody, .content-table tr {
-	              display: block;
-	              width: 100%;
-	          }
-        
-	          .content-table td {
-	              display: block;
-	              width: 100%;
-	              padding: 0 !important;
-	              margin-bottom: 2rem;
-	          }
-        
-	          .about-image-wrapper {
-	              margin-bottom: 1.5rem;
-	          }
-        
-	          .about-content {
-	              text-align: left;
-	              width: 100%;
-	              box-sizing: border-box;
-	          }
-        
-	          .about-content p {
-	              width: 100%;
-	              max-width: none;
-	          }
-        
-	          .shopify-partner {
-	              text-align: left !important;
-	              margin: 2rem 0;
-	              width: 100%;
-	          }
-        
-	          .about-cta {
-	              display: inline-block;
-	              margin-top: 1.5rem !important;
-	          }
-        
-	          /* Fix section headings on mobile */
-	          .section-heading {
-	              text-align: left;
-	          }
-        
-	          .section-heading::after {
-	              left: 50% !important;
-	              transform: translateX(-50%) !important;
-	          }
-        
-	          /* Features Section Mobile Styles */
-	          .features-grid {
-	              grid-template-columns: 1fr !important;
-	              gap: 1.5rem !important;
-	          }
-        
-	          .feature-card {
-	              width: 100%;
-	              box-sizing: border-box;
-	          }
-        
-	          .feature-content {
-	              text-align: left;
-	              width: 100%;
-	          }
-        
-	          .feature-content p {
-	              width: 100%;
-	          }
-	      }
-		  
-		  @media (max-width: 768px) {
-		    .content-table td {
-		      width: 100% !important;
-		      padding: 0 !important;
-		    }
-		  }
-		  
-		  
-	  </style>
-    
+      <!-- About Section -->
+      <section class="about section-spacing" id="about">
+          <div class="container">
+              <!-- TWEAK: Removed text-center class -->
+              <h2 class="section-heading fade-in">Unlock Your Blog’s Full Potential</h2>
+              <table class="content-table">
+                  <tbody>
+                      <tr>
+                          <td style="vertical-align: top;">
+                              <div class="about-content fade-in stagger-1">
+                                  <p>Engage and convert more readers today! Transform your blog posts into beautiful, interactive experiences that capture attention, build trust, and perform better across both standard and AI-powered search platforms.</p>
+                                  <p>Our approach focuses on creating aesthetically pleasing, interactive content that keeps readers on your page longer and drives higher conversion rates. We do the work and you enjoy the benefits – with no apps to install and no monthly fees to pay.</p>
+
+                                  <div class="shopify-partner">
+                                      <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/shopify-partner.png?v=1742826953" alt="Shopify Partner Badge">
+                                      <p>Enhancing your store's blog experience with expert solutions</p>
+                                  </div>
+
+                                  <a href="https://biodynamic.coffee/blogs/lifestyle/unlocking-the-perfect-brew-the-ideal-rest-period-for-specialty-coffee" class="btn about-cta" target="_blank" rel="noopener noreferrer">See What's Possible</a>
+                              </div>
+                          </td>
+                          <td style="vertical-align: top;">
+                              <div class="about-image-wrapper fade-in stagger-2">
+                                  <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/blog-post-example.png?v=1742769108" alt="Example of an enhanced blog post" class="about-image">
+                              </div>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </section>
+
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
+            <!-- TWEAK: Removed text-center class -->
             <h2 class="section-heading fade-in">Why Upgrade Your Shopify Blog?</h2>
-            
+
             <div class="features-grid fade-in stagger-1">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -1315,7 +1804,7 @@
                         <p><strong>Move beyond static templates to create dynamic, visually rich experiences that keep readers engaged longer.</strong></p>
                     </div>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-film"></i>
@@ -1325,7 +1814,7 @@
                         <p><strong>Say goodbye to clunky embeds. We make videos, audio, galleries, and visuals feel native and intuitive.</strong></p>
                     </div>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-hand-pointer"></i>
@@ -1335,7 +1824,7 @@
                         <p><strong>Tabs, interactive graphs & sliders, and expandable tips—give your audience something to <em>explore</em>, not just read.</strong></p>
                     </div>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-palette"></i>
@@ -1348,28 +1837,25 @@
             </div>
         </div>
     </section>
-		
+
 	<!-- Comparison Section -->
 	    <section class="comparison section-spacing" id="comparison">
 	        <div class="container">
+                <!-- TWEAK: Removed text-center class -->
 	            <h2 class="section-heading fade-in">Before & After: See the Difference</h2>
-            
+
 	            <div class="comparison-tabs fade-in stagger-1">
 	                <button class="tab-button active" data-tab="tab1">Coffee Blog</button>
 	                <button class="tab-button" data-tab="tab2">Health Blog</button>
 	                <button class="tab-button" data-tab="tab3">Buying Guide</button>
 	            </div>
-            
+
 	            <div class="tab-content active" id="tab1">
 	                <div class="comparison-grid">
 	                    <div class="comparison-card fade-in stagger-2">
 	                        <div class="comparison-image">
-                            
-								<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/udfy1ffmua.js" async type="module"></script><style>wistia-player[media-id='udfy1ffmua']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/udfy1ffmua/swatch'); display: block; filter: blur(5px); padding-top:57.5%; }</style> <wistia-player media-id="udfy1ffmua" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
-							
-	                        </div> 
-								
-								
+								<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/udfy1ffmua.js" async type="module"></script><wistia-player media-id="udfy1ffmua" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
+	                        </div>
 	                        <div class="comparison-details">
 	                            <h3 class="comparison-title">Before</h3>
 	                            <p class="comparison-description">A standard Shopify blog post with limited formatting options and static presentation.</p>
@@ -1381,12 +1867,11 @@
 	                            </ul>
 	                        </div>
 	                    </div>
-                    
+
 	                    <div class="comparison-card fade-in stagger-3">
 	                        <div class="comparison-image">
-									<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/mndegy99lq.js" async type="module"></script><style>wistia-player[media-id='mndegy99lq']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/mndegy99lq/swatch'); display: block; filter: blur(5px); padding-top:57.5%; }</style> <wistia-player media-id="mndegy99lq" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
-							
-		                        </div>
+								<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/mndegy99lq.js" async type="module"></script><wistia-player media-id="mndegy99lq" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
+		                    </div>
 	                        <div class="comparison-details">
 	                            <h3 class="comparison-title">After</h3>
 	                            <p class="comparison-description">The same content transformed with custom layouts and interactive elements.</p>
@@ -1394,12 +1879,12 @@
 	                                <li>Engaging visual hierarchy</li>
 	                                <li>Interactive graphs and charts</li>
 	                                <li>Tabs & tables to structure information</li>
-	                                <li>Compelling customized slider  </li>
+	                                <li>Compelling customized slider</li>
 	                            </ul>
 	                        </div>
 	                    </div>
 	                </div>
-                
+
 	                <div class="accordion fade-in stagger-4">
 	                    <div class="accordion-item">
 	                        <div class="accordion-header">
@@ -1413,29 +1898,22 @@
 	                                <p>This product review transformation focused on creating a more engaging and interactive experience:</p>
 	                                <ul>
 	                                    <li>Enhanced mobile responsiveness for better viewing on all devices</li>
-	                                    <li>Improved visual hierarchy with "The Quick Scoop" section and CTA </li>
+	                                    <li>Improved visual hierarchy with "The Quick Scoop" section and CTA</li>
 	                                    <li>Interactive graphs and charts to invite users to engaged more fully with the information</li>
 	                                    <li>Implemented tabs and table sections to better organize detailed information</li>
-	                                    <li>Customized slider lets customers vidualize days when coffee is at its peak </li>
+	                                    <li>Customized slider lets customers visualize days when coffee is at its peak</li>
 	                                </ul>
 	                            </div>
 	                        </div>
 	                    </div>
 	                </div>
 	            </div>
-            
+
 	            <div class="tab-content" id="tab2">
 	                <div class="comparison-grid">
 	                    <div class="comparison-card">
-		                    <div class="comparison-card fade-in stagger-3">
-		                        <div class="comparison-image">
-	                                
-									
-									
-<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/ofe041rfgp.js" async type="module"></script><style>wistia-player[media-id='ofe041rfgp']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/ofe041rfgp/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="ofe041rfgp" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>									
-									
-									
-	                            </div>
+	                        <div class="comparison-image">
+                                <script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/ofe041rfgp.js" async type="module"></script><wistia-player media-id="ofe041rfgp" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
 	                        </div>
 	                        <div class="comparison-details">
 	                            <h3 class="comparison-title">Before</h3>
@@ -1447,15 +1925,10 @@
 	                            </ul>
 	                        </div>
 	                    </div>
-                    
+
 	                    <div class="comparison-card">
-		                    <div class="comparison-card fade-in stagger-3">
-		                        <div class="comparison-image">
-									
-<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/tybsjkps8m.js" async type="module"></script><style>wistia-player[media-id='tybsjkps8m']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/tybsjkps8m/swatch'); display: block; filter: blur(5px); padding-top:57.5%; }</style> <wistia-player media-id="tybsjkps8m" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
-
-
-	                            </div>
+	                        <div class="comparison-image">
+                                <script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/tybsjkps8m.js" async type="module"></script><wistia-player media-id="tybsjkps8m" wistia-popover="true" aspect="1.7391304347826086"></wistia-player>
 	                        </div>
 	                        <div class="comparison-details">
 	                            <h3 class="comparison-title">After</h3>
@@ -1470,7 +1943,7 @@
 	                        </div>
 	                    </div>
 	                </div>
-                
+
 	                <div class="accordion">
 	                    <div class="accordion-item">
 	                        <div class="accordion-header">
@@ -1485,7 +1958,7 @@
 	                                <ul>
 	                                    <li>Added narration for users to listen to the blog</li>
 	                                    <li>Additional content and information, including referencers for added credibility</li>
-	                                    <li>Implemented tabs to organize information in clear sections of interest </li>
+	                                    <li>Implemented tabs to organize information in clear sections of interest</li>
 	                                    <li>Created icons and graphs to make information more digestible</li>
 	                                    <li>Added clear CTAs to relevant products related to the content</li>
 	                                </ul>
@@ -1494,18 +1967,12 @@
 	                    </div>
 	                </div>
 	            </div>
-            
+
 	            <div class="tab-content" id="tab3">
 	                <div class="comparison-grid">
 	                    <div class="comparison-card">
-		                    <div class="comparison-card fade-in stagger-3">
-		                        <div class="comparison-image">
-
-
-<script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/3y5wnockfp.js" async type="module"></script><style>wistia-player[media-id='3y5wnockfp']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/3y5wnockfp/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="3y5wnockfp" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
-
-
-	                            </div>
+	                        <div class="comparison-image">
+                                <script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/3y5wnockfp.js" async type="module"></script><wistia-player media-id="3y5wnockfp" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
 	                        </div>
 	                        <div class="comparison-details">
 	                            <h3 class="comparison-title">Before</h3>
@@ -1518,17 +1985,10 @@
 	                            </ul>
 	                        </div>
 	                    </div>
-                    
+
 	                    <div class="comparison-card">
-		                    <div class="comparison-card fade-in stagger-3">
-		                        <div class="comparison-image">
-	                      
-						  
-						  
-						  <script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/3viv4y0wl5.js" async type="module"></script><style>wistia-player[media-id='3viv4y0wl5']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/3viv4y0wl5/swatch'); display: block; filter: blur(5px); padding-top:53.75%; }</style> <wistia-player media-id="3viv4y0wl5" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
-						  
-						  
-	                            </div>
+	                        <div class="comparison-image">
+                                <script src="https://fast.wistia.com/player.js" async></script><script src="https://fast.wistia.com/embed/3viv4y0wl5.js" async type="module"></script><wistia-player media-id="3viv4y0wl5" wistia-popover="true" aspect="1.8604651162790697"></wistia-player>
 	                        </div>
 	                        <div class="comparison-details">
 	                            <h3 class="comparison-title">After</h3>
@@ -1542,10 +2002,7 @@
 	                        </div>
 	                    </div>
 	                </div>
-                
-				
-				
-				
+
 	                <div class="accordion">
 	                    <div class="accordion-item">
 	                        <div class="accordion-header">
@@ -1559,7 +2016,7 @@
 	                                <p>This buying guide transformation focused on creating a more engaging and visually appealing experience:</p>
 	                                <ul>
 	                                    <li>Custom graphics and icons allow users to explore concepts visually</li>
-	                                    <li>Star ratings help customers easily compare the benefits of each product type </li>
+	                                    <li>Star ratings help customers easily compare the benefits of each product type</li>
 	                                    <li>Implemented expandable sections for deeper explorations of topics</li>
 	                                    <li>Professional layout enhancements consistent across the company's website</li>
 	                                </ul>
@@ -1567,937 +2024,294 @@
 	                        </div>
 	                    </div>
 	                </div>
-					
-					
 	            </div>
 	        </div>
 	    </section>
-	
+
+    <!-- Primacy Infographic Component -->
     <div class="container">
-        <h2 class="section-heading fade-in">The Benefits of Interactive Design</h2></div>
+        <!-- TWEAK: Removed text-center class -->
+        <h2 class="section-heading fade-in">The Benefits of Interactive Design</h2>
+    </div>
+    <div id="primacy-infographic-component">
+        <div class="primacy-infographic">
+            <!-- Section 1: User Engagement -->
+            <section class="primacy-section" id="primacy-section1">
+                <div class="primacy-section-header">
+                    <div class="primacy-section-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h2 class="primacy-section-title">User Engagement</h2>
+                </div>
 
+                <div class="primacy-stats-container">
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-arrow-trend-up"></i>
+                            Interactive vs. Static Content
+                        </div>
+                        <div class="primacy-stat-highlight percentage" data-value="52.6">0</div>
+                        <p class="primacy-stat-description">higher engagement for interactive content</p>
+                    </div>
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-	    <meta charset="UTF-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <!-- Font Awesome for icons -->
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	</head>
-	<body>
-	    <!-- Primacy Infographic Component - Begin -->
-	    <div id="primacy-infographic-component">
-	    <style>
-	        /* Scoped styles for Primacy infographic */
-	        #primacy-infographic-component {
-	            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
-	            color: #1a1a1a;
-	            line-height: 1.6;
-	            box-sizing: border-box;
-	            max-width: 1200px;
-	            margin: 0 auto;
-	            padding: 40px 20px;
-	        }
-        
-	        #primacy-infographic-component *,
-	        #primacy-infographic-component *::before,
-	        #primacy-infographic-component *::after {
-	            box-sizing: border-box;
-	            margin: 0;
-	            padding: 0;
-	        }
-        
-	        #primacy-infographic-component .primacy-header {
-	            text-align: center;
-	            margin-bottom: 60px;
-	        }
-        
-	        #primacy-infographic-component .primacy-logo {
-	            margin-bottom: 10px;
-	        }
-        
-	        #primacy-infographic-component .primacy-logo img {
-	            max-width: 110px;
-	        }
-        
-	        #primacy-infographic-component .primacy-title {
-	            font-size: 2.2rem;
-	            font-weight: 800;
-	            margin-bottom: 20px;
-	            color: #333333;
-	            display: inline-block;
-	            position: relative;
-	        }
-        
-	        #primacy-infographic-component .primacy-title::after {
-	            content: '';
-	            position: absolute;
-	            bottom: -10px;
-	            left: 0;
-	            width: 60px;
-	            height: 4px;
-	            background-color: #e94747;
-	        }
-        
-	        #primacy-infographic-component .primacy-subtitle {
-	            font-size: 1.2rem;
-	            color: #1a1a1a;
-	            opacity: 0.8;
-	            max-width: 800px;
-	            margin: 0 auto;
-	        }
-        
-	        #primacy-infographic-component .primacy-infographic {
-	            display: flex;
-	            flex-direction: column;
-	            gap: 40px;
-	        }
-        
-	        #primacy-infographic-component .primacy-section {
-	            background: white;
-	            border-radius: 16px;
-	            padding: 30px;
-	            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	            transition: all 0.3s ease;
-	            opacity: 0;
-	            transform: translateY(20px);
-	            border-top: 3px solid #e94747;
-	        }
-        
-	        #primacy-infographic-component .primacy-section.active {
-	            opacity: 1;
-	            transform: translateY(0);
-	        }
-        
-	        #primacy-infographic-component .primacy-section:hover {
-	            transform: translateY(-5px);
-	            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-	        }
-        
-	        #primacy-infographic-component .primacy-section-header {
-	            display: flex;
-	            align-items: center;
-	            margin-bottom: 25px;
-	            border-bottom: 2px solid #f0f0f0;
-	            padding-bottom: 15px;
-	        }
-        
-	        #primacy-infographic-component .primacy-section-icon {
-	            font-size: 2rem;
-	            margin-right: 15px;
-	            color: #e94747;
-	            background: rgba(233, 71, 71, 0.1);
-	            width: 60px;
-	            height: 60px;
-	            display: flex;
-	            align-items: center;
-	            justify-content: center;
-	            border-radius: 12px;
-	        }
-        
-	        #primacy-infographic-component .primacy-section-title {
-	            font-size: 1.5rem;
-	            font-weight: 700;
-	            color: #333333;
-	        }
-        
-	        #primacy-infographic-component .primacy-stats-container {
-	            display: grid;
-	            grid-template-columns: repeat(2, 1fr);
-	            gap: 25px;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-card {
-	            background: white;
-	            border-radius: 12px;
-	            padding: 20px;
-	            transition: all 0.3s ease;
-	            cursor: pointer;
-	            border: 1px solid rgba(0, 0, 0, 0.05);
-	            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-card:hover {
-	            transform: scale(1.03);
-	            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-title {
-	            font-size: 1.1rem;
-	            font-weight: 600;
-	            margin-bottom: 15px;
-	            color: #1a1a1a;
-	            display: flex;
-	            align-items: center;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-title i {
-	            margin-right: 10px;
-	            color: #e94747;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-highlight {
-	            font-size: 2.4rem;
-	            font-weight: 800;
-	            color: #e94747;
-	            margin: 15px 0;
-	            display: flex;
-	            align-items: center;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-highlight.percentage::after {
-	            content: "%";
-	            font-size: 1.5rem;
-	            margin-left: 5px;
-	            opacity: 0.7;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-highlight.time::after {
-	            content: "min";
-	            font-size: 1.5rem;
-	            margin-left: 5px;
-	            opacity: 0.7;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-highlight.times::before {
-	            content: "×";
-	            font-size: 1.5rem;
-	            margin-right: 5px;
-	            opacity: 0.7;
-	        }
-        
-	        #primacy-infographic-component .primacy-stat-description {
-	            font-size: 0.95rem;
-	            color: #1a1a1a;
-	            opacity: 0.8;
-	        }
-        
-	        #primacy-infographic-component .primacy-compare-group {
-	            display: flex;
-	            align-items: center;
-	            gap: 10px;
-	            margin-top: 10px;
-	        }
-        
-	        #primacy-infographic-component .primacy-compare-item {
-	            display: flex;
-	            align-items: center;
-	            font-size: 0.9rem;
-	            color: #1a1a1a;
-	        }
-        
-	        #primacy-infographic-component .primacy-compare-value {
-	            font-weight: 700;
-	            margin-right: 5px;
-	        }
-        
-	        #primacy-infographic-component .primacy-compare-label {
-	            opacity: 0.7;
-	        }
-        
-	        #primacy-infographic-component .primacy-vs {
-	            font-weight: 700;
-	            color: #e94747;
-	            margin: 0 5px;
-	        }
-        
-	        #primacy-infographic-component .primacy-progress-container {
-	            margin-top: 15px;
-	        }
-        
-	        #primacy-infographic-component .primacy-progress-label {
-	            display: flex;
-	            justify-content: space-between;
-	            margin-bottom: 5px;
-	            font-size: 0.9rem;
-	        }
-        
-	        #primacy-infographic-component .primacy-progress-bar {
-	            height: 10px;
-	            background-color: rgba(0, 0, 0, 0.1);
-	            border-radius: 5px;
-	            overflow: hidden;
-	            margin-bottom: 15px;
-	        }
-        
-	        #primacy-infographic-component .primacy-progress-fill {
-	            height: 100%;
-	            background: linear-gradient(to right, #e94747, #333333);
-	            border-radius: 5px;
-	            width: 0;
-	            transition: width 1.5s ease-out;
-	        }
-        
-	        #primacy-infographic-component .primacy-controls {
-	            display: flex;
-	            justify-content: center;
-	            margin-top: 40px;
-	            gap: 15px;
-	        }
-        
-	        #primacy-infographic-component .primacy-control-btn {
-	            background: white;
-	            border: 1px solid #eee;
-	            color: #333333;
-	            padding: 10px 20px;
-	            border-radius: 30px;
-	            font-weight: 600;
-	            cursor: pointer;
-	            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	            transition: all 0.3s ease;
-	        }
-        
-	        #primacy-infographic-component .primacy-control-btn:hover {
-	            background: #e94747;
-	            color: white;
-	            border-color: #e94747;
-	        }
-        
-	        #primacy-infographic-component .primacy-control-btn.active {
-	            background: #e94747;
-	            color: white;
-	            border-color: #e94747;
-	        }
-        
-	        #primacy-infographic-component .primacy-footer {
-	            margin-top: 80px;
-	            text-align: center;
-	            padding: 20px;
-	            color: #1a1a1a;
-	            opacity: 0.7;
-	            font-size: 0.9rem;
-	        }
-        
-	        #primacy-infographic-component .primacy-link {
-	            color: #e94747;
-	            text-decoration: none;
-	            font-weight: 600;
-	        }
-        
-	        #primacy-infographic-component .primacy-link:hover {
-	            text-decoration: underline;
-	        }
-        
-	        @keyframes bounce {
-	            0%, 100% { transform: translateY(0); }
-	            50% { transform: translateY(-10px); }
-	        }
-        
-	        #primacy-infographic-component .bounce {
-	            animation: bounce 2s infinite;
-	        }
-        
-	        /* Responsive adjustments */
-	        @media (max-width: 768px) {
-	            #primacy-infographic-component .primacy-title {
-	                font-size: 1.8rem;
-	            }
-            
-	            #primacy-infographic-component .primacy-subtitle {
-	                font-size: 1rem;
-	            }
-            
-	            #primacy-infographic-component .primacy-stats-container {
-	                grid-template-columns: 1fr;
-	            }
-            
-	            #primacy-infographic-component .primacy-section {
-	                padding: 20px;
-	            }
-	        }
-	    </style>
-    
-	    <div class="primacy-container">
-        
-        
-	        <div class="primacy-infographic">
-	            <!-- Section 1: User Engagement -->
-	            <section class="primacy-section" id="primacy-section1">
-	                <div class="primacy-section-header">
-	                    <div class="primacy-section-icon">
-	                        <i class="fas fa-rocket"></i>
-	                    </div>
-	                    <h2 class="primacy-section-title">User Engagement</h2>
-	                </div>
-                
-	                <div class="primacy-stats-container">
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-arrow-trend-up"></i>
-	                            Interactive vs. Static Content
-	                        </div>
-	                        <div class="primacy-stat-highlight percentage" data-value="52.6">0</div>
-	                        <p class="primacy-stat-description">higher engagement for interactive content</p>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="far fa-clock"></i>
-	                            Time Spent Comparison
-	                        </div>
-	                        <div class="primacy-compare-group">
-	                            <div class="primacy-compare-item">
-	                                <span class="primacy-compare-value">13 min</span>
-	                                <span class="primacy-compare-label">interactive</span>
-	                            </div>
-	                            <span class="primacy-vs">vs</span>
-	                            <div class="primacy-compare-item">
-	                                <span class="primacy-compare-value">8.5 min</span>
-	                                <span class="primacy-compare-label">static</span>
-	                            </div>
-	                        </div>
-	                        <div class="primacy-progress-container">
-	                            <div class="primacy-progress-bar">
-	                                <div class="primacy-progress-fill" data-percentage="60"></div>
-	                            </div>
-	                        </div>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="far fa-image"></i>
-	                            Visual Impact
-	                        </div>
-	                        <div class="primacy-stat-highlight percentage" data-value="94">0</div>
-	                        <p class="primacy-stat-description">more views for articles with captivating visuals</p>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-paint-brush"></i>
-	                            Design & Retention
-	                        </div>
-	                        <div class="primacy-stat-highlight percentage" data-value="60">0</div>
-	                        <p class="primacy-stat-description">boost in user retention with well-designed interfaces</p>
-	                    </div>
-	                </div>
-	            </section>
-            
-	            <!-- Section 2: Conversion Rates -->
-	            <section class="primacy-section" id="primacy-section2">
-	                <div class="primacy-section-header">
-	                    <div class="primacy-section-icon">
-	                        <i class="fas fa-chart-line"></i>
-	                    </div>
-	                    <h2 class="primacy-section-title">Conversion Rates</h2>
-	                </div>
-                
-	                <div class="primacy-stats-container">
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-exchange"></i>
-	                            Interactive Content & Conversions
-	                        </div>
-	                        <div class="primacy-stat-highlight times" data-value="2">0</div>
-	                        <p class="primacy-stat-description">as many conversions as static content</p>
-                        
-	                        <div class="primacy-progress-container">
-	                            <div class="primacy-progress-label">
-	                                <span>Interactive: 70%</span>
-	                                <span>Static: 36%</span>
-	                            </div>
-	                            <div class="primacy-progress-bar">
-	                                <div class="primacy-progress-fill" data-percentage="70"></div>
-	                            </div>
-	                        </div>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-palette"></i>
-	                            Aesthetic UX/UI Impact
-	                        </div>
-	                        <div class="primacy-stat-highlight percentage" data-value="200">0</div>
-	                        <p class="primacy-stat-description">increase in conversions with strong visual interface</p>
-	                    </div>
-	                </div>
-	            </section>
-            
-	            <!-- Section 3: Additional Marketing Benefits -->
-	            <section class="primacy-section" id="primacy-section3">
-	                <div class="primacy-section-header">
-	                    <div class="primacy-section-icon">
-	                        <i class="far fa-lightbulb"></i>
-	                    </div>
-	                    <h2 class="primacy-section-title">Additional Marketing Benefits</h2>
-	                </div>
-                
-	                <div class="primacy-stats-container">
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-heart"></i>
-	                            Brand Loyalty & Recall
-	                        </div>
-	                        <p class="primacy-stat-description">Interactive and aesthetic designs enhance emotional connections and brand memory, leading to stronger customer relationships.</p>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-share-alt"></i>
-	                            Social Media Shareability
-	                        </div>
-	                        <div class="primacy-stat-highlight times" data-value="40">0</div>
-	                        <p class="primacy-stat-description">more likely to be shared than static content</p>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-search"></i>
-	                            SEO & Traffic Boost
-	                        </div>
-	                        <div class="primacy-stat-highlight percentage" data-value="157">0</div>
-	                        <p class="primacy-stat-description">increase in organic traffic with videos & interactive elements</p>
-	                    </div>
-                    
-	                    <div class="primacy-stat-card" data-animate="true">
-	                        <div class="primacy-stat-title">
-	                            <i class="fas fa-hand-holding-heart"></i>
-	                            Emotional Connection
-	                        </div>
-	                        <p class="primacy-stat-description">Consistent design fosters positive emotions, deeper engagement, and trust with your audience.</p>
-	                    </div>
-	                </div>
-	            </section>
-	        </div><br><br><br>
-        
-	       <!-- <div class="primacy-controls">
-	            <button class="primacy-control-btn active" data-section="all">View All</button>
-	            <button class="primacy-control-btn" data-section="primacy-section1">Engagement</button>
-	            <button class="primacy-control-btn" data-section="primacy-section2">Conversion</button>
-	            <button class="primacy-control-btn" data-section="primacy-section3">Benefits</button>
-	        </div> -->
-        
- 
-	 
- 
- 
-	    </div>
-    
-	    <script>
-	        (function() {
-	            // Self-executing function to avoid global scope pollution
-	            document.addEventListener('DOMContentLoaded', function() {
-	                // Get all elements within our component
-	                const component = document.getElementById('primacy-infographic-component');
-	                const sections = component.querySelectorAll('.primacy-section');
-	                const statHighlights = component.querySelectorAll('.primacy-stat-highlight[data-value]');
-	                const progressBars = component.querySelectorAll('.primacy-progress-fill[data-percentage]');
-	                const controlButtons = component.querySelectorAll('.primacy-control-btn');
-                
-	                // Add interaction to section icons
-	                component.querySelectorAll('.primacy-section-icon').forEach(icon => {
-	                    icon.classList.add('bounce');
-                    
-	                    icon.addEventListener('mouseenter', function() {
-	                        this.style.animation = 'none';
-	                    });
-                    
-	                    icon.addEventListener('mouseleave', function() {
-	                        this.style.animation = 'bounce 2s infinite';
-	                    });
-	                });
-                
-	                // Function to animate numbers counting up
-	                function animateValue(element, start, end, duration) {
-	                    let startTimestamp = null;
-	                    const step = (timestamp) => {
-	                        if (!startTimestamp) startTimestamp = timestamp;
-	                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-	                        const value = Math.floor(progress * (end - start) + start);
-	                        element.textContent = value;
-	                        if (progress < 1) {
-	                            window.requestAnimationFrame(step);
-	                        }
-	                    };
-	                    window.requestAnimationFrame(step);
-	                }
-                
-	                // Function to animate progress bars
-	                function animateProgressBars() {
-	                    progressBars.forEach(bar => {
-	                        const percentage = bar.getAttribute('data-percentage');
-	                        bar.style.width = percentage + '%';
-	                    });
-	                }
-                
-	                // Function to animate number counters
-	                function animateCounters() {
-	                    statHighlights.forEach(highlight => {
-	                        const value = parseFloat(highlight.getAttribute('data-value'));
-	                        animateValue(highlight, 0, value, 1500);
-	                    });
-	                }
-                
-	                // Function to handle section visibility based on scroll
-	                function handleScroll() {
-	                    sections.forEach(section => {
-	                        const sectionTop = section.getBoundingClientRect().top;
-	                        const windowHeight = window.innerHeight;
-                        
-	                        if (sectionTop < windowHeight * 0.75) {
-	                            section.classList.add('active');
-	                        }
-	                    });
-	                }
-                
-	                // Initialize with all sections visible
-	                setTimeout(() => {
-	                    sections.forEach(section => section.classList.add('active'));
-	                    animateProgressBars();
-	                    animateCounters();
-	                }, 300);
-                
-	                // Handle section filtering with the control buttons
-	                controlButtons.forEach(button => {
-	                    button.addEventListener('click', function() {
-	                        // Update active button
-	                        controlButtons.forEach(btn => btn.classList.remove('active'));
-	                        this.classList.add('active');
-                        
-	                        const targetSection = this.getAttribute('data-section');
-                        
-	                        // Show/hide sections based on selection
-	                        sections.forEach(section => {
-	                            if (targetSection === 'all' || section.id === targetSection) {
-	                                section.style.display = 'block';
-	                                setTimeout(() => {
-	                                    section.classList.add('active');
-	                                }, 100);
-	                            } else {
-	                                section.classList.remove('active');
-	                                // Hide after animation completes
-	                                setTimeout(() => {
-	                                    section.style.display = 'none';
-	                                }, 300);
-	                            }
-	                        });
-                        
-	                        // Re-trigger animations
-	                        setTimeout(() => {
-	                            animateProgressBars();
-	                            animateCounters();
-	                        }, 400);
-	                    });
-	                });
-                
-	                // Add interactivity to stat cards
-	                component.querySelectorAll('.primacy-stat-card').forEach(card => {
-	                    card.addEventListener('mouseenter', function() {
-	                        this.style.backgroundColor = 'rgba(248, 248, 248, 0.7)';
-                        
-	                        // Reset and retrigger animation if card is animated
-	                        if (this.getAttribute('data-animate') === 'true') {
-	                            const highlight = this.querySelector('.primacy-stat-highlight[data-value]');
-	                            if (highlight) {
-	                                const value = parseFloat(highlight.getAttribute('data-value'));
-	                                animateValue(highlight, 0, value, 1000);
-	                            }
-                            
-	                            const progressBar = this.querySelector('.primacy-progress-fill[data-percentage]');
-	                            if (progressBar) {
-	                                progressBar.style.width = '0';
-	                                setTimeout(() => {
-	                                    progressBar.style.width = progressBar.getAttribute('data-percentage') + '%';
-	                                }, 50);
-	                            }
-	                        }
-	                    });
-                    
-	                    card.addEventListener('mouseleave', function() {
-	                        this.style.backgroundColor = '';
-	                    });
-	                });
-                
-	                // Initialize scroll handler
-	                window.addEventListener('scroll', handleScroll);
-                
-	                // Trigger initial scroll check
-	                handleScroll();
-	            });
-	        })();
-	    </script>
-	    </div>
-	    <!-- Primacy Infographic Component - End -->
-	
-	
-	
-	
-	
-	
-	
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="far fa-clock"></i>
+                            Time Spent Comparison
+                        </div>
+                        <div class="primacy-compare-group">
+                            <div class="primacy-compare-item">
+                                <span class="primacy-compare-value">13 min</span>
+                                <span class="primacy-compare-label">interactive</span>
+                            </div>
+                            <span class="primacy-vs">vs</span>
+                            <div class="primacy-compare-item">
+                                <span class="primacy-compare-value">8.5 min</span>
+                                <span class="primacy-compare-label">static</span>
+                            </div>
+                        </div>
+                        <div class="primacy-progress-container">
+                            <div class="primacy-progress-bar">
+                                <div class="primacy-progress-fill" data-percentage="60"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="far fa-image"></i>
+                            Visual Impact
+                        </div>
+                        <div class="primacy-stat-highlight percentage" data-value="94">0</div>
+                        <p class="primacy-stat-description">more views for articles with captivating visuals</p>
+                    </div>
+
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-paint-brush"></i>
+                            Design & Retention
+                        </div>
+                        <div class="primacy-stat-highlight percentage" data-value="60">0</div>
+                        <p class="primacy-stat-description">boost in user retention with well-designed interfaces</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Conversion Rates -->
+            <section class="primacy-section" id="primacy-section2">
+                <div class="primacy-section-header">
+                    <div class="primacy-section-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h2 class="primacy-section-title">Conversion Rates</h2>
+                </div>
+
+                <div class="primacy-stats-container">
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-exchange"></i>
+                            Interactive Content & Conversions
+                        </div>
+                        <div class="primacy-stat-highlight times" data-value="2">0</div>
+                        <p class="primacy-stat-description">as many conversions as static content</p>
+
+                        <div class="primacy-progress-container">
+                            <div class="primacy-progress-label">
+                                <span>Interactive: 70%</span>
+                                <span>Static: 36%</span>
+                            </div>
+                            <div class="primacy-progress-bar">
+                                <div class="primacy-progress-fill" data-percentage="70"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-palette"></i>
+                            Aesthetic UX/UI Impact
+                        </div>
+                        <div class="primacy-stat-highlight percentage" data-value="200">0</div>
+                        <p class="primacy-stat-description">increase in conversions with strong visual interface</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Additional Marketing Benefits -->
+            <section class="primacy-section" id="primacy-section3">
+                <div class="primacy-section-header">
+                    <div class="primacy-section-icon">
+                        <i class="far fa-lightbulb"></i>
+                    </div>
+                    <h2 class="primacy-section-title">Additional Marketing Benefits</h2>
+                </div>
+
+                <div class="primacy-stats-container">
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-heart"></i>
+                            Brand Loyalty & Recall
+                        </div>
+                        <p class="primacy-stat-description">Interactive and aesthetic designs enhance emotional connections and brand memory, leading to stronger customer relationships.</p>
+                    </div>
+
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-share-alt"></i>
+                            Social Media Shareability
+                        </div>
+                        <div class="primacy-stat-highlight times" data-value="40">0</div>
+                        <p class="primacy-stat-description">more likely to be shared than static content</p>
+                    </div>
+
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-search"></i>
+                            SEO & Traffic Boost
+                        </div>
+                        <div class="primacy-stat-highlight percentage" data-value="157">0</div>
+                        <p class="primacy-stat-description">increase in organic traffic with videos & interactive elements</p>
+                    </div>
+
+                    <div class="primacy-stat-card" data-animate="true">
+                        <div class="primacy-stat-title">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            Emotional Connection
+                        </div>
+                        <p class="primacy-stat-description">Consistent design fosters positive emotions, deeper engagement, and trust with your audience.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+	<!-- Primacy Infographic Component - End -->
+
 	  <!-- Pricing Section -->
 	  <section class="pricing section-spacing" id="pricing">
 	      <div class="container">
+              <!-- TWEAK: Removed text-center class -->
 	          <h2 class="section-heading fade-in">Simple, Transparent Pricing</h2>
-        
+
 	          <!-- Currency Picker -->
-	          <div class="currency-picker-container fade-in stagger-1" style="margin-bottom: 2rem; text-align: left;">
-	              <p class="currency-label" style="display: inline-block; margin-right: 1rem; font-weight: 500; margin-bottom: 0;">Select your currency:</p>
-	              <div class="currency-picker" style="display: inline-flex; flex-wrap: wrap; gap: 0.5rem;">
-	                  <button class="currency-btn active" data-currency="USD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/us.svg" alt="USA Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	          <div class="currency-picker-container fade-in stagger-1">
+	              <p class="currency-label">Select your currency:</p>
+	              <div class="currency-picker">
+	                  <button class="currency-btn active" data-currency="USD">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/us.svg" alt="USA Flag">
 	                      <span>USD</span>
 	                  </button>
-	                  <button class="currency-btn" data-currency="CAD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/ca.svg" alt="Canada Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                  <button class="currency-btn" data-currency="CAD">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/ca.svg" alt="Canada Flag">
 	                      <span>CAD</span>
 	                  </button>
-	                  <button class="currency-btn" data-currency="EUR" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/eu.svg" alt="EU Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                  <button class="currency-btn" data-currency="EUR">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/eu.svg" alt="EU Flag">
 	                      <span>EUR</span>
 	                  </button>
-	                  <button class="currency-btn" data-currency="GBP" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/gb.svg" alt="UK Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                  <button class="currency-btn" data-currency="GBP">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/gb.svg" alt="UK Flag">
 	                      <span>GBP</span>
 	                  </button>
-	                  <button class="currency-btn" data-currency="AUD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/au.svg" alt="Australia Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                  <button class="currency-btn" data-currency="AUD">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/au.svg" alt="Australia Flag">
 	                      <span>AUD</span>
 	                  </button>
-	                  <button class="currency-btn" data-currency="HKD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/hk.svg" alt="Japan Flag" style="width: 20px; height: 15px; object-fit: cover;">
-	                      <span>HKD</span>
-	                  </button>
-	                  <button class="currency-btn" data-currency="SGD" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/sg.svg" alt="Singapore Flag" style="width: 20px; height: 15px; object-fit: cover;">
+                      <button class="currency-btn" data-currency="HKD">
+                          <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/hk.svg" alt="Hong Kong Flag">
+                          <span>HKD</span>
+                      </button>
+	                  <button class="currency-btn" data-currency="SGD">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/sg.svg" alt="Singapore Flag">
 	                      <span>SGD</span>
 	                  </button>
-	                  <button class="currency-btn" data-currency="JPY" style="background: none; border: 1px solid var(--light-gray); border-radius: 4px; padding: 0.5rem 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--fast-transition);">
-	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/jp.svg" alt="Japan Flag" style="width: 20px; height: 15px; object-fit: cover;">
+	                  <button class="currency-btn" data-currency="JPY">
+	                      <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/jp.svg" alt="Japan Flag">
 	                      <span>JPY</span>
 	                  </button>
-					  
 	              </div>
 	          </div>
-        
-	          <!-- Pricing Table -->
-	          <table class="pricing-table fade-in stagger-2">
-	              <thead>
-	                  <tr>
-	                      <th>Package</th>
-	                      <th>Price per post</th>
-	                      <th>Add audio podcast</th>
-	                  </tr>
-	              </thead>
-	              <tbody>
-	                  <tr>
-	                      <td>Transform 3–10 blog posts</td>
-	                      <td class="price">$279</td>
-	                      <td class="price">$79</td>
-	                  </tr>
-	                  <tr>
-	                      <td>Transform 11-49 blog posts</td>
-	                      <td class="price">$249</td>
-	                      <td class="price">$69</td>
-	                  </tr>
-	                  <tr>
-	                      <td>Transform 50+ blog posts</td>
-	                      <td class="price">$199</td>
-	                      <td class="price">$59</td>
-	                  </tr>
-	              </tbody>
-	          </table>
-			  
-			  
-			<div style="text-align: right;"><p>
-			    <p style="font-size: 10pt; margin: 0;">100% Satisfaction Guaranteed or Your Money Back&nbsp;&nbsp;&nbsp;<br></p>
-			</div>
-			  			  
 
-	          <!-- Add additional CSS for currency picker -->
-	          <style>
-	              .currency-picker-container {
-	                  margin-bottom: 2rem;
-	              }
-            
-	              .currency-label {
-	                  font-weight: 500;
-	                  margin-bottom: 0.5rem;
-	                  display: block;
-	              }
-            
-	              .currency-picker {
-	                  display: flex;
-	                  flex-wrap: wrap;
-	                  gap: 0.5rem;
-	              }
-            
-	              .currency-btn {
-	                  background: none;
-	                  border: 1px solid var(--light-gray);
-	                  border-radius: 4px;
-	                  padding: 0.5rem 0.8rem;
-	                  cursor: pointer;
-	                  display: flex;
-	                  align-items: center;
-	                  gap: 0.5rem;
-	                  transition: var(--fast-transition);
-	              }
-            
-	              .currency-btn img {
-	                  width: 20px;
-	                  height: 15px;
-	                  object-fit: cover;
-	              }
-            
-	              .currency-btn.active {
-	                  background-color: var(--primary);
-	                  color: white;
-	                  border-color: var(--primary);
-	              }
-            
-	              .price-loading {
-	                  opacity: 0.5;
-	              }
-            
-	              @media (max-width: 768px) {
-	                  .currency-picker-container {
-	                      text-align: left;
-	                  }
-	              }
-	          </style>
+	          <!-- Pricing Table Wrapper for Scroll -->
+              <div class="pricing-table-wrapper fade-in stagger-2">
+    	          <table class="pricing-table">
+    	              <thead>
+    	                  <tr>
+    	                      <th>Package</th>
+    	                      <th>Price per post</th>
+    	                      <th>Add audio podcast</th>
+    	                  </tr>
+    	              </thead>
+    	              <tbody>
+    	                  <tr data-category="transform1to10">
+    	                      <td>Transform 3–10 blog posts</td>
+    	                      <td class="price-cell">
+                                  <span class="price">$279</span>
+                              </td>
+    	                      <td class="audio-price-cell">
+                                  <span class="price">$69</span>
+                                  <!-- TWEAK: Removed "each" span -->
+                              </td>
+    	                  </tr>
+    	                  <tr data-category="transform11to49">
+    	                      <td>Transform 11-49 blog posts</td>
+    	                      <td class="price-cell">
+                                  <span class="price">$249</span>
+                              </td>
+    	                      <td class="audio-price-cell">
+                                  <span class="price">$59</span>
+                                   <!-- TWEAK: Removed "each" span -->
+                              </td>
+    	                  </tr>
+    	                  <tr data-category="transform50plus">
+    	                      <td>Transform 50+ blog posts</td>
+    	                      <td class="price-cell">
+                                  <span class="price">$199</span>
+                              </td>
+    	                      <td class="audio-price-cell">
+                                  <span class="price">$49</span>
+                                   <!-- TWEAK: Removed "each" span -->
+                              </td>
+    	                  </tr>
+    	              </tbody>
+    	          </table>
+              </div> <!-- End pricing-table-wrapper -->
+
+			  <div class="satisfaction-guarantee fade-in stagger-3">
+			      <p>100% Satisfaction Guaranteed or Your Money Back</p>
+			  </div>
+
 	      </div>
 	  </section>
 
-   <script>
-       // Price data in USD (base currency)
-       const priceData = {
-           transform1to10: {
-               price: 279,
-               audioPrice: 79
-           },
-           transform11to49: {
-               price: 249,
-               audioPrice: 69
-           },
-           transform50plus: {
-               price: 199,
-               audioPrice: 59
-           }
-       };
-       
-       // Currency symbols
-       const currencySymbols = {
-           'USD': '$',
-           'CAD': 'C$',
-           'EUR': '€',
-           'GBP': '£',
-           'AUD': 'A$',
-           'SGD': 'S$',
-           'JPY': '¥',
-           'CHF': 'CHF',
-           'HKD': 'HK$'
-       };
-       
-       // Fallback exchange rates if API fails
-       const fallbackRates = {
-           'USD': 1,
-           'CAD': 1.35,
-           'EUR': 0.93,
-           'GBP': 0.79,
-           'AUD': 1.53,
-           'SGD': 1.35,
-           'JPY': 157.5,
-           'CHF': 0.89,
-           'HKD': 7.82
-       };
-       
-       let currentCurrency = 'USD';
-       
-       // Function to update prices based on selected currency
-       function updatePrices(currency) {
-           const priceElements = document.querySelectorAll('.price');
-           
-           // Show loading state
-           priceElements.forEach(el => {
-               el.classList.add('price-loading');
-           });
-           
-           // Get exchange rate
-           const rate = fallbackRates[currency];
-           
-           // Update each price with converted value
-           const priceNodes = document.querySelectorAll('.pricing-table tbody tr');
-           
-           priceNodes.forEach((row, index) => {
-               let categoryKey;
-               if (index === 0) categoryKey = 'transform1to10';
-               else if (index === 1) categoryKey = 'transform11to49';
-               else categoryKey = 'transform50plus';
-               
-               const priceCell = row.querySelector('td:nth-child(2)');
-               const audioPriceCell = row.querySelector('td:nth-child(3)');
-               
-               const convertedPrice = Math.round(priceData[categoryKey].price * rate);
-               const convertedAudioPrice = Math.round(priceData[categoryKey].audioPrice * rate);
-               
-               const symbol = currencySymbols[currency] || currency + ' ';
-               
-               priceCell.innerHTML = `<span class="price">${symbol}${convertedPrice}<span class="price-note"> </span></span>`;
-               audioPriceCell.innerHTML = `<span class="price">${symbol}${convertedAudioPrice}<span class="price-note"> each</span></span>`;
-           });
-           
-           // Remove loading state
-           document.querySelectorAll('.price').forEach(el => {
-               el.classList.remove('price-loading');
-           });
-       }
-       
-       // Set up event listeners for currency buttons
-       document.addEventListener('DOMContentLoaded', () => {
-           const currencyButtons = document.querySelectorAll('.currency-btn');
-           
-           currencyButtons.forEach(button => {
-               button.addEventListener('click', () => {
-                   const currency = button.getAttribute('data-currency');
-                   
-                   // Don't do anything if it's already the active currency
-                   if (currency === currentCurrency) return;
-                   
-                   // Update active state
-                   currencyButtons.forEach(btn => btn.classList.remove('active'));
-                   button.classList.add('active');
-                   
-                   // Update prices
-                   currentCurrency = currency;
-                   updatePrices(currency);
-               });
-           });
-       });
-   </script>
-    
     <!-- CTA Section -->
-    <section class="cta" id="contact">
+    <section class="cta" id="contact-cta">
         <div class="container">
             <h2 class="fade-in">Ready to Elevate Your Blog?</h2>
             <p class="fade-in stagger-1">Start with a few posts or transform your entire content library. Our process is seamless and the results speak for themselves.</p>
             <div class="cta-buttons fade-in stagger-2">
-				
-				<a href="https://calendly.com/gkalinin-primacy/15min?preview_source=et_card&month=2025-03" 
-				   class="btn btn-outlined" 
-				   onclick="window.open(this.href, 'popupWindow', 'width=1000,height=1200,scrollbars=yes'); return false;">
+				<a href="https://calendly.com/gkalinin-primacy/15min?preview_source=et_card&month=2025-03"
+				   class="btn btn-outlined"
+				   target="_blank" rel="noopener noreferrer">
 				   Book a Free Consultation
 				</a>
-				
                 <a href="#contact" class="btn btn-outlined">Submit Your Blog</a>
                 <a href="#comparison" class="btn btn-outlined">See More Examples</a>
             </div>
         </div>
     </section>
-    
+
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-about">
                     <div class="footer-logo">
-                        <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/Primacy_logo_small_white.png?v=1742777076" alt="Primacy Small Logo" style="height: 35px; margin-right: 10px;">
+                        <img src="https://cdn.shopify.com/s/files/1/0484/7475/1135/files/Primacy_logo_small_white.png?v=1742777076" alt="Primacy Small Logo">
                         <span>PRIMACY.IO</span>
                     </div>
                     <p>Transform your Shopify blog into engaging content that converts visitors into customers and builds lasting brand loyalty.</p>
                 </div>
-                
+
                 <div class="footer-links-column">
                     <h4 class="footer-heading">Navigation</h4>
                     <ul class="footer-links">
@@ -2506,18 +2320,19 @@
                         <li><a href="#features">Features</a></li>
                         <li><a href="#comparison">Before & After</a></li>
                         <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-links-column">
                     <h4 class="footer-heading">Contact</h4>
                     <ul class="footer-links">
                         <li><a href="mailto:gkalinin@primacy.io">gkalinin@primacy.io</a></li>
-                        <li><a href="#contact">Schedule a Call</a></li>
-                        <!-- <li><a href="#">Support</a></li> -->
+                         <li><a href="https://calendly.com/gkalinin-primacy/15min?preview_source=et_card&month=2025-03" target="_blank" rel="noopener noreferrer">Schedule a Call</a></li>
+                        <li><a href="#contact">Submit Your Blog</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-links-column">
                     <h4 class="footer-heading">Legal</h4>
                     <ul class="footer-links">
@@ -2526,714 +2341,406 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2025 Primacy.io. All rights reserved.</p>
             </div>
         </div>
     </footer>
-    
+
+    <!-- Modal Contact Form -->
+    <div class="modal-overlay" id="contact-modal-overlay">
+        <div class="contact-modal">
+            <div class="modal-header">
+                <h3>Limited time offer</h3>
+                <p>We'll transform one of your Shopify blog posts for free. Just provide us with a link to your post and we'll take care of the rest. Offer ends April 15th, 2025</p>
+                <button class="modal-close" id="modal-close-btn" aria-label="Close contact form">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="success-message" id="success-message">
+                    <i class="fas fa-check-circle"></i> Your message has been sent! We'll be in touch shortly.
+                </div>
+
+                <form id="contact-form" action="https://formsubmit.co/gkalinin@primacy.io" method="POST">
+                    <div class="form-group">
+                        <label for="name" class="form-label required">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                        <div class="form-error" id="name-error">Please enter your name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label required">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                        <div class="form-error" id="email-error">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blog-link" class="form-label required">Link to Your Shopify Blog Post</label>
+                        <input type="url" id="blog-link" name="blog_post_link" class="form-control" placeholder="https://yourstore.com/blogs/news/your-post" required>
+                        <div class="form-error" id="blog-link-error">Please enter a valid URL (including https://)</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments" class="form-label">Comments (Optional)</label>
+                        <textarea id="comments" name="comments" class="form-control"></textarea>
+                    </div>
+
+                    <!-- FormSubmit configuration fields -->
+                    <input type="hidden" name="_subject" value="Primacy.io - Free Blog Post Transformation Request">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://primacy.io/thank-you.html"> <!-- REMEMBER TO CREATE THIS PAGE -->
+
+                    <div class="form-footer">
+                        <button type="submit" id="submit-btn" class="btn">Submit Request</button>
+                    </div>
+
+                    <p class="form-note">We respect your privacy and will never share your information.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        // Header Scroll Effect
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- General UI Elements ---
+
+            const header = document.querySelector('header');
+            if (header) {
+                window.addEventListener('scroll', () => {
+                    header.classList.toggle('scrolled', window.scrollY > 50);
+                });
             }
-        });
-        
-        // Mobile Menu Toggle
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const mobileMenuClose = document.querySelector('.mobile-menu-close');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const mobileMenuLinks = document.querySelectorAll('.mobile-nav-links a');
-        
-        mobileMenuToggle.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-        });
-        
-        mobileMenuClose.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-        });
-        
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-            });
-        });
-        
-        // Tab System
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons and contents
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-                
-                // Add active class to clicked button and corresponding content
-                button.classList.add('active');
-                document.getElementById(button.getAttribute('data-tab')).classList.add('active');
-            });
-        });
-        
-        // Accordion
-        const accordionItems = document.querySelectorAll('.accordion-item');
-        accordionItems.forEach(item => {
-            const header = item.querySelector('.accordion-header');
-            header.addEventListener('click', () => {
-                // Toggle active class on the clicked item
-                item.classList.toggle('active');
-            });
-        });
-        
-        // Scroll Animations
-        const fadeElements = document.querySelectorAll('.fade-in');
-        
-        const fadeInOnScroll = () => {
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight * 0.9) {
-                    element.classList.add('active');
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', fadeInOnScroll);
-        window.addEventListener('load', fadeInOnScroll);
-        
-        // Smooth Scrolling for Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
+
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-nav-links a');
+
+            if (mobileMenuToggle && mobileMenuClose && mobileMenu) {
+                mobileMenuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+                mobileMenuClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', () => mobileMenu.classList.remove('active'));
+                });
+            }
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            if (tabButtons.length > 0 && tabContents.length > 0) {
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        button.classList.add('active');
+                        const targetTab = document.getElementById(button.getAttribute('data-tab'));
+                        if (targetTab) targetTab.classList.add('active');
+                    });
+                });
+            }
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            if (accordionItems.length > 0) {
+                accordionItems.forEach(item => {
+                    const header = item.querySelector('.accordion-header');
+                    if (header) {
+                        header.addEventListener('click', () => item.classList.toggle('active'));
+                    }
+                });
+            }
+
+            // Scroll Animations (Fade In)
+             const fadeElements = document.querySelectorAll('.fade-in');
+             if (fadeElements.length > 0) {
+                 if ('IntersectionObserver' in window) {
+                     const observer = new IntersectionObserver((entries) => {
+                         entries.forEach(entry => {
+                             if (entry.isIntersecting) {
+                                 entry.target.classList.add('active');
+                                 observer.unobserve(entry.target);
+                             }
+                         });
+                     }, { threshold: 0.1 });
+                     fadeElements.forEach(element => observer.observe(element));
+                 } else { // Fallback for older browsers
+                     const fadeInOnScroll = () => {
+                         fadeElements.forEach(element => {
+                             if (!element.classList.contains('active')) {
+                                 const elementTop = element.getBoundingClientRect().top;
+                                 const windowHeight = window.innerHeight;
+                                 if (elementTop < windowHeight * 0.9) {
+                                     element.classList.add('active');
+                                 }
+                             }
+                         });
+                     };
+                     window.addEventListener('scroll', fadeInOnScroll);
+                     fadeInOnScroll(); // Initial check
+                 }
+             }
+
+            // Smooth Scrolling handled by CSS `scroll-behavior: smooth` and `scroll-padding-top`
+
+            // Custom Cursor (only activate if not touch device)
+            if (window.matchMedia('(hover: hover)').matches) {
+                const cursor = document.querySelector('.custom-cursor');
+                if (cursor) {
+                    let cursorTimeout;
+                    document.addEventListener('mousemove', (e) => {
+                        cursor.style.left = `${e.clientX}px`;
+                        cursor.style.top = `${e.clientY}px`;
+                        cursor.classList.add('cursor-active');
+                        clearTimeout(cursorTimeout);
+                        cursorTimeout = setTimeout(() => cursor.classList.remove('cursor-active'), 1500);
+                    });
+                    document.addEventListener('mouseleave', () => {
+                        cursor.classList.remove('cursor-active');
+                        clearTimeout(cursorTimeout);
+                    });
+                    const interactiveElements = document.querySelectorAll('a, button, .accordion-header, .tab-button, .primacy-stat-card, .currency-btn');
+                    interactiveElements.forEach(element => {
+                        element.addEventListener('mouseenter', () => cursor.style.transform = 'translate(-50%, -50%) scale(1.5)');
+                        element.addEventListener('mouseleave', () => cursor.style.transform = 'translate(-50%, -50%) scale(1)');
                     });
                 }
-            });
-        });
-        
-        // Custom Cursor
-        const cursor = document.querySelector('.custom-cursor');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
-            
-            if (!cursor.classList.contains('cursor-active')) {
-                setTimeout(() => {
-                    cursor.classList.add('cursor-active');
-                }, 100);
             }
-        });
-        
-        document.addEventListener('mouseout', () => {
-            cursor.classList.remove('cursor-active');
-        });
-        
-        // Add hover effect for interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .accordion-header, .tab-button');
-        
-        interactiveElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-            });
-        });
-        
-        // Scroll Progress Bar
-        const scrollProgress = document.querySelector('.scroll-progress');
-        
-        window.addEventListener('scroll', () => {
-            const totalHeight = document.body.scrollHeight - window.innerHeight;
-            const progress = (window.pageYOffset / totalHeight) * 100;
-            scrollProgress.style.width = `${progress}%`;
-        });
+
+            const scrollProgress = document.querySelector('.scroll-progress');
+            if (scrollProgress) {
+                window.addEventListener('scroll', () => {
+                    const totalHeight = document.body.scrollHeight - window.innerHeight;
+                    scrollProgress.style.width = totalHeight > 0 ? `${(window.pageYOffset / totalHeight) * 100}%` : '0%';
+                });
+            }
+
+            // --- Infographic Component Script ---
+            const infographicComponent = document.getElementById('primacy-infographic-component');
+            if (infographicComponent) {
+                const sections = infographicComponent.querySelectorAll('.primacy-section');
+
+                infographicComponent.querySelectorAll('.primacy-section-icon').forEach(icon => {
+                    if (!icon.classList.contains('bounce')) icon.classList.add('bounce');
+                });
+
+                function animateValue(element, start, end, duration) {
+                    let startTimestamp = null;
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                        let currentValue = Number.isInteger(end) ? Math.floor(progress * (end - start) + start) : (progress * (end - start) + start).toFixed(1);
+                        element.textContent = currentValue;
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            element.textContent = end;
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                }
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const section = entry.target;
+                                section.classList.add('active');
+                                const sectionHighlights = section.querySelectorAll('.primacy-stat-highlight[data-value]');
+                                const sectionProgress = section.querySelectorAll('.primacy-progress-fill[data-percentage]');
+
+                                sectionHighlights.forEach(highlight => {
+                                    if (!highlight.dataset.animated) {
+                                        animateValue(highlight, 0, parseFloat(highlight.getAttribute('data-value')), 1500);
+                                        highlight.dataset.animated = true;
+                                    }
+                                });
+                                sectionProgress.forEach(bar => {
+                                    if (!bar.dataset.animated) {
+                                        bar.style.width = bar.getAttribute('data-percentage') + '%';
+                                        bar.dataset.animated = true;
+                                    }
+                                });
+                            }
+                        });
+                    }, { threshold: 0.2 });
+                    sections.forEach(section => observer.observe(section));
+                } else { // Fallback
+                    setTimeout(() => {
+                        sections.forEach(section => {
+                            section.classList.add('active');
+                            section.querySelectorAll('.primacy-stat-highlight[data-value]').forEach(h => animateValue(h, 0, parseFloat(h.getAttribute('data-value')), 1500));
+                            section.querySelectorAll('.primacy-progress-fill[data-percentage]').forEach(p => p.style.width = p.getAttribute('data-percentage') + '%');
+                        });
+                    }, 300);
+                }
+
+                infographicComponent.querySelectorAll('.primacy-stat-card').forEach(card => {
+                     card.addEventListener('mouseenter', function() { this.style.backgroundColor = 'rgba(248, 248, 248, 0.7)'; });
+                     card.addEventListener('mouseleave', function() { this.style.backgroundColor = ''; });
+                });
+            }
+
+
+           // --- Pricing Currency Converter ---
+            const priceData = {
+                transform1to10: { price: 279, audioPrice: 79 },
+                transform11to49: { price: 249, audioPrice: 69 },
+                transform50plus: { price: 199, audioPrice: 59 }
+            };
+            const currencySymbols = { 'USD': '$', 'CAD': 'C$', 'EUR': '€', 'GBP': '£', 'AUD': 'A$', 'SGD': 'S$', 'JPY': '¥', 'HKD': 'HK$' };
+            const fallbackRates = { 'USD': 1, 'CAD': 1.35, 'EUR': 0.93, 'GBP': 0.79, 'AUD': 1.53, 'SGD': 1.35, 'JPY': 157.5, 'HKD': 7.82 };
+            let currentCurrency = 'USD';
+
+            function updatePrices(currency) {
+                const rate = fallbackRates[currency] || 1;
+                const symbol = currencySymbols[currency] || currency + ' ';
+
+                // --- CHANGE HERE: Set formatter options to always have 0 decimal places ---
+                const formatter = new Intl.NumberFormat(undefined, { // Use undefined for user's locale preference for number grouping etc.
+                   style: 'currency',
+                   currency: currency, // Let formatter know the currency context
+                   minimumFractionDigits: 0, // Force zero minimum decimal places
+                   maximumFractionDigits: 0  // Force zero maximum decimal places
+                });
+                // --- END CHANGE ---
+
+                document.querySelectorAll('.pricing-table tbody tr[data-category]').forEach(row => {
+                    const categoryKey = row.dataset.category;
+                    if (priceData[categoryKey]) {
+                        const priceCell = row.querySelector('.price-cell .price');
+                        const audioPriceCell = row.querySelector('.audio-price-cell .price');
+
+                        // --- CHANGE HERE: Calculate and explicitly round before formatting ---
+                        const convertedPriceRaw = priceData[categoryKey].price * rate;
+                        const convertedAudioPriceRaw = priceData[categoryKey].audioPrice * rate;
+
+                        const roundedPrice = Math.round(convertedPriceRaw);
+                        const roundedAudioPrice = Math.round(convertedAudioPriceRaw);
+                        // --- END CHANGE ---
+
+                        // Format the rounded numbers
+                        if (priceCell) {
+                           // Use formatter.format, but replace currency CODE/Symbol if needed,
+                           // as Intl might add spacing differently based on locale.
+                           let formatted = formatter.format(roundedPrice);
+                           // Simple replace might be needed if Intl adds the code (e.g., "USD") instead of symbol
+                           formatted = formatted.replace(currency, symbol);
+                           // Heuristic to ensure symbol is at the start if not already (common for $, £, €)
+                           if (['$', '£', '€'].includes(symbol) && !formatted.startsWith(symbol)) {
+                               formatted = symbol + formatted.replace(symbol, '').trim();
+                           }
+                           priceCell.textContent = formatted;
+                        }
+                        if (audioPriceCell) {
+                           let formattedAudio = formatter.format(roundedAudioPrice);
+                           formattedAudio = formattedAudio.replace(currency, symbol);
+                            if (['$', '£', '€'].includes(symbol) && !formattedAudio.startsWith(symbol)) {
+                                formattedAudio = symbol + formattedAudio.replace(symbol, '').trim();
+                            }
+                           audioPriceCell.textContent = formattedAudio;
+                        }
+                    }
+                });
+            }
+
+           const currencyButtons = document.querySelectorAll('.currency-btn');
+           if (currencyButtons.length > 0) {
+               currencyButtons.forEach(button => {
+                   button.addEventListener('click', () => {
+                       const currency = button.getAttribute('data-currency');
+                       if (currency !== currentCurrency) {
+                           currencyButtons.forEach(btn => btn.classList.remove('active'));
+                           button.classList.add('active');
+                           currentCurrency = currency;
+                           updatePrices(currency);
+                       }
+                   });
+               });
+               updatePrices(currentCurrency); // Initial set
+           }
+
+            // --- Contact Form Modal Functionality ---
+            const contactModalTriggers = document.querySelectorAll('a[href="#contact"]');
+            const modalOverlay = document.getElementById('contact-modal-overlay');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const contactForm = document.getElementById('contact-form');
+            const successMessage = document.getElementById('success-message'); // Although not shown with FormSubmit redirect
+
+            if (contactModalTriggers.length > 0 && modalOverlay && modalCloseBtn && contactForm) {
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const blogLinkInput = document.getElementById('blog-link');
+                const nameError = document.getElementById('name-error');
+                const emailError = document.getElementById('email-error');
+                const blogLinkError = document.getElementById('blog-link-error');
+                const allInputs = [nameInput, emailInput, blogLinkInput];
+                const allErrors = [nameError, emailError, blogLinkError];
+
+                function openModal() {
+                    modalOverlay.classList.add('active');
+                    contactForm.reset();
+                    contactForm.style.display = 'block';
+                    successMessage?.classList.remove('visible');
+                    allInputs.forEach(input => input?.classList.remove('error'));
+                    allErrors.forEach(error => error?.classList.remove('visible'));
+                    const submitBtn = document.getElementById('submit-btn');
+                     if(submitBtn) {
+                         submitBtn.textContent = 'Submit Request'; // Reset button text
+                         submitBtn.disabled = false;
+                     }
+                }
+
+                function closeModal() {
+                    modalOverlay.classList.remove('active');
+                }
+
+                function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+                function isValidUrl(url) { try { const parsed = new URL(url); return ['http:', 'https:'].includes(parsed.protocol); } catch (_) { return false; } }
+
+                function validateForm() {
+                    let isValid = true;
+                    allErrors.forEach(error => error?.classList.remove('visible')); // Clear errors first
+                    allInputs.forEach(input => input?.classList.remove('error'));
+
+                    if (!nameInput?.value.trim()) { nameInput?.classList.add('error'); nameError?.classList.add('visible'); isValid = false; }
+                    if (!emailInput?.value.trim() || !isValidEmail(emailInput.value.trim())) { emailInput?.classList.add('error'); emailError?.classList.add('visible'); isValid = false; }
+                    if (!blogLinkInput?.value.trim() || !isValidUrl(blogLinkInput.value.trim())) { blogLinkInput?.classList.add('error'); blogLinkError?.classList.add('visible'); isValid = false; }
+                    return isValid;
+                }
+
+                 contactModalTriggers.forEach(trigger => {
+                     trigger.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+                 });
+
+                modalCloseBtn?.addEventListener('click', closeModal);
+                modalOverlay?.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+                document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modalOverlay?.classList.contains('active')) closeModal(); });
+
+                 contactForm.addEventListener('submit', function(e) {
+                     if (!validateForm()) {
+                         e.preventDefault();
+                         contactForm.classList.add('shake');
+                         setTimeout(() => contactForm.classList.remove('shake'), 600);
+                     } else {
+                         const submitBtn = document.getElementById('submit-btn');
+                         if(submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
+                         // FormSubmit handles the rest
+                     }
+                 });
+
+                 // Optional real-time validation
+                 nameInput?.addEventListener('blur', () => { if (!nameInput.value.trim()) { nameInput.classList.add('error'); nameError?.classList.add('visible'); } else { nameInput.classList.remove('error'); nameError?.classList.remove('visible'); } });
+                 emailInput?.addEventListener('blur', () => { if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) { emailInput.classList.add('error'); emailError?.classList.add('visible'); } else { emailInput.classList.remove('error'); emailError?.classList.remove('visible'); } });
+                 blogLinkInput?.addEventListener('blur', () => { if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) { blogLinkInput.classList.add('error'); blogLinkError?.classList.add('visible'); } else { blogLinkInput.classList.remove('error'); blogLinkError?.classList.remove('visible'); } });
+            }
+
+        }); // End DOMContentLoaded
     </script>
-		
-		<!-- 1. Add this code right before the closing </body> tag in your index.html -->
 
-		<!-- Modal Contact Form -->
-		<div class="modal-overlay" id="contact-modal-overlay">
-		    <div class="contact-modal">
-		        <div class="modal-header">
-		            <h3>Limited time offer</h3>
-		            <p>We'll transform one of your Shopify blog posts for free. Just provide us with a link to your post and we'll take care of the rest. Offer ends Apri 15th, 2025</p>
-		            <button class="modal-close" id="modal-close-btn">
-		                <i class="fas fa-times"></i>
-		            </button>
-		        </div>
-        
-		        <div class="modal-body">
-		            <div class="success-message" id="success-message">
-		                <i class="fas fa-check-circle"></i> Your message has been sent! We'll be in touch shortly.
-		            </div>
-            
-					<!-- Update the form tag to use FormSubmit service -->
-					<form id="contact-form" action="https://formsubmit.co/gkalinin@primacy.io" method="POST">
-					    <!-- Keep all your existing form fields, but update them to include name attributes -->
-					    <div class="form-group">
-					        <label for="name" class="form-label required">Name</label>
-					        <input type="text" id="name" name="name" class="form-control" required>
-					        <div class="form-error" id="name-error">Please enter your name</div>
-					    </div>
-    
-					    <div class="form-group">
-					        <label for="email" class="form-label required">Email Address</label>
-					        <input type="email" id="email" name="email" class="form-control" required>
-					        <div class="form-error" id="email-error">Please enter a valid email address</div>
-					    </div>
-    
-					    <div class="form-group">
-					        <label for="blog-link" class="form-label required">Link to Your Shopify Blog</label>
-					        <input type="url" id="blog-link" name="blog-link" class="form-control" required>
-					        <div class="form-error" id="blog-link-error">Please enter a valid URL to your Shopify blog</div>
-					    </div>
-    
-					   <!--    <div class="form-group">
-					        <label for="post-count" class="form-label">Number of Blog Posts to Transform (optional)</label>
-					        <input type="number" id="post-count" name="post-count" class="form-control" min="1">
-					    </div> -->
-    
-					    <div class="form-group">
-					        <label for="comments" class="form-label">Comments</label>
-					        <textarea id="comments" name="comments" class="form-control"></textarea>
-					    </div>
-    
-					    <!-- FormSubmit configuration fields -->
-					    <input type="hidden" name="_subject" value="New Contact Form Submission from Primacy">
-					    <input type="hidden" name="_captcha" value="false">
-					    <input type="hidden" name="_template" value="table">
-					    <input type="hidden" name="_next" value="https://primacy.io">
-    
-					    <div class="form-footer">
-					        <button type="submit" id="submit-btn" class="btn">Submit</button>
-					    </div>
-    
-					    <p class="form-note">We respect your privacy and will never share your information.</p>
-					</form>
-
-					<!-- For FormSubmit, you can completely remove the handleSubmit function since it handles the submission natively.
-					     However, you might want to keep the validation -->
-					<script>
-					// Keep only the validateForm function and the input validation on blur
-					// Add this code to override the default form submission for validation
-						contactForm.addEventListener('submit', function(e) {
-						    // Validate form
-						    if (!validateForm()) {
-						        e.preventDefault(); // Stop the form from submitting
-						        // Shake the form if invalid
-						        contactForm.classList.add('shake');
-						        setTimeout(() => {
-						            contactForm.classList.remove('shake');
-						        }, 600);
-						    }
-						    // If valid, FormSubmit will handle the rest
-						});
-					</script>
-
-		<!-- 2. Add this CSS to your existing <style> section in the <head> of your index.html -->
-		<style>
-		    /* Contact Form Modal Styles */
-		    .modal-overlay {
-		        position: fixed;
-		        top: 0;
-		        left: 0;
-		        width: 100%;
-		        height: 100%;
-		        background-color: rgba(0, 0, 0, 0.7);
-		        display: flex;
-		        justify-content: center;
-		        align-items: center;
-		        z-index: 1000;
-		        opacity: 0;
-		        visibility: hidden;
-		        transition: opacity 0.3s ease, visibility 0.3s ease;
-		    }
-    
-		    .modal-overlay.active {
-		        opacity: 1;
-		        visibility: visible;
-		    }
-    
-		    .contact-modal {
-		        background-color: var(--light);
-		        border-radius: 8px;
-		        width: 90%;
-		        max-width: 600px;
-		        max-height: 90vh;
-		        overflow-y: auto;
-		        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-		        transform: translateY(30px);
-		        opacity: 0;
-		        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-		        position: relative;
-		    }
-    
-		    .modal-overlay.active .contact-modal {
-		        transform: translateY(0);
-		        opacity: 1;
-		    }
-    
-		    .modal-header {
-		        background-color: var(--primary);
-		        color: var(--light);
-		        padding: 1.5rem 2rem;
-		        position: relative;
-		        border-radius: 8px 8px 0 0;
-		    }
-    
-		    .modal-header h3 {
-		        margin-bottom: 0.5rem;
-		        font-size: 1.8rem;
-		    }
-    
-		    .modal-header p {
-		        opacity: 0.9;
-		        margin-bottom: 0;
-		    }
-    
-		    .modal-close {
-		        position: absolute;
-		        top: 1.5rem;
-		        right: 1.5rem;
-		        background: none;
-		        border: none;
-		        color: var(--light);
-		        font-size: 1.5rem;
-		        cursor: pointer;
-		        transition: var(--fast-transition);
-		    }
-    
-		    .modal-close:hover {
-		        transform: rotate(90deg);
-		    }
-    
-		    .modal-body {
-		        padding: 2rem;
-		    }
-    
-		    .form-group {
-		        margin-bottom: 1.5rem;
-		    }
-    
-		    .form-label {
-		        display: block;
-		        margin-bottom: 0.5rem;
-		        font-weight: 500;
-		        font-size: 1rem;
-		    }
-    
-		    .required::after {
-		        content: ' *';
-		        color: var(--primary);
-		    }
-    
-		    .form-control {
-		        width: 100%;
-		        padding: 0.75rem 1rem;
-		        font-size: 1rem;
-		        border: 1px solid var(--light-gray);
-		        border-radius: 4px;
-		        transition: var(--fast-transition);
-		        font-family: 'Inter', sans-serif;
-		    }
-    
-		    .form-control:focus {
-		        outline: none;
-		        border-color: var(--primary);
-		        box-shadow: 0 0 0 3px rgba(255, 55, 61, 0.2);
-		    }
-    
-		    textarea.form-control {
-		        min-height: 120px;
-		        resize: vertical;
-		    }
-    
-		    .form-error {
-		        color: var(--primary);
-		        font-size: 0.85rem;
-		        margin-top: 0.5rem;
-		        display: none;
-		    }
-    
-		    .form-error.visible {
-		        display: block;
-		    }
-    
-		    .form-control.error {
-		        border-color: var(--primary);
-		    }
-    
-		    .form-footer {
-		        margin-top: 2rem;
-		        display: flex;
-		        justify-content: flex-end;
-		    }
-    
-		    .form-note {
-		        font-size: 0.85rem;
-		        color: var(--mid-gray);
-		        margin-top: 1rem;
-		        text-align: center;
-		    }
-    
-		    /* Number Input Styling */
-		    input[type=number] {
-		        -moz-appearance: textfield; /* Firefox */
-		    }
-    
-		    input::-webkit-outer-spin-button,
-		    input::-webkit-inner-spin-button {
-		        -webkit-appearance: none;
-		        margin: 0;
-		    }
-    
-		    /* Success Message */
-		    .success-message {
-		        background-color: #e8f5e9;
-		        color: #2e7d32;
-		        padding: 1rem;
-		        border-radius: 4px;
-		        margin-bottom: 1.5rem;
-		        display: none;
-		    }
-    
-		    .success-message.visible {
-		        display: block;
-		    }
-    
-		    /* Animation */
-		    @keyframes shake {
-		        0%, 100% {
-		            transform: translateX(0);
-		        }
-		        10%, 30%, 50%, 70%, 90% {
-		            transform: translateX(-5px);
-		        }
-		        20%, 40%, 60%, 80% {
-		            transform: translateX(5px);
-		        }
-		    }
-    
-		    .shake {
-		        animation: shake 0.6s;
-		    }
-    
-		    /* Form Loading */
-		    .form-loading {
-		        display: none;
-		        text-align: center;
-		        padding: 2rem;
-		    }
-    
-		    .form-loading.visible {
-		        display: block;
-		    }
-    
-		    .spinner {
-		        width: 40px;
-		        height: 40px;
-		        border: 4px solid rgba(255, 55, 61, 0.2);
-		        border-radius: 50%;
-		        border-top-color: var(--primary);
-		        display: inline-block;
-		        animation: spin 1s ease-in-out infinite;
-		    }
-    
-		    @keyframes spin {
-		        to {
-		            transform: rotate(360deg);
-		        }
-		    }
-		</style>
-
-		<!-- 3. Add this JavaScript code right before the closing </body> tag, after adding the HTML above -->
-		<script>
-		    // Contact Form Modal Functionality
-		    document.addEventListener('DOMContentLoaded', function() {
-		        // Get all buttons that should open the contact form
-		        const contactButtons = document.querySelectorAll('a[href="#contact"]');
-		        const modalOverlay = document.getElementById('contact-modal-overlay');
-		        const modalCloseBtn = document.getElementById('modal-close-btn');
-		        const contactForm = document.getElementById('contact-form');
-		        const formLoading = document.getElementById('form-loading');
-		        const successMessage = document.getElementById('success-message');
-        
-		        // Form Inputs
-		        const nameInput = document.getElementById('name');
-		        const emailInput = document.getElementById('email');
-		        const blogLinkInput = document.getElementById('blog-link');
-		        const postCountInput = document.getElementById('post-count');
-		        const commentsInput = document.getElementById('comments');
-        
-		        // Error Elements
-		        const nameError = document.getElementById('name-error');
-		        const emailError = document.getElementById('email-error');
-		        const blogLinkError = document.getElementById('blog-link-error');
-        
-		        // Open Modal Function
-		        function openModal() {
-		            modalOverlay.classList.add('active');
-		            // Reset the form when opening
-		            contactForm.reset();
-		            successMessage.classList.remove('visible');
-            
-		            // Reset form errors
-		            const errorElements = document.querySelectorAll('.form-error');
-		            errorElements.forEach(error => error.classList.remove('visible'));
-            
-		            const inputElements = document.querySelectorAll('.form-control');
-		            inputElements.forEach(input => input.classList.remove('error'));
-		        }
-        
-		        // Close Modal Function
-		        function closeModal() {
-		            modalOverlay.classList.remove('active');
-		        }
-        
-		        // Validate Email Function
-		        function isValidEmail(email) {
-		            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		            return emailRegex.test(email);
-		        }
-        
-		        // Validate URL Function
-		        function isValidUrl(url) {
-		            try {
-		                new URL(url);
-		                return true;
-		            } catch (e) {
-		                return false;
-		            }
-		        }
-        
-		        // Form Validation Function
-		        function validateForm() {
-		            let isValid = true;
-            
-		            // Validate Name
-		            if (!nameInput.value.trim()) {
-		                nameInput.classList.add('error');
-		                nameError.classList.add('visible');
-		                isValid = false;
-		            } else {
-		                nameInput.classList.remove('error');
-		                nameError.classList.remove('visible');
-		            }
-            
-		            // Validate Email
-		            if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
-		                emailInput.classList.add('error');
-		                emailError.classList.add('visible');
-		                isValid = false;
-		            } else {
-		                emailInput.classList.remove('error');
-		                emailError.classList.remove('visible');
-		            }
-            
-		            // Validate Blog Link
-		            if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) {
-		                blogLinkInput.classList.add('error');
-		                blogLinkError.classList.add('visible');
-		                isValid = false;
-		            } else {
-		                blogLinkInput.classList.remove('error');
-		                blogLinkError.classList.remove('visible');
-		            }
-            
-		            return isValid;
-		        }
-            
-		            // Validate form
-		            if (!validateForm()) {
-		                // Shake the form if invalid
-		                contactForm.classList.add('shake');
-		                setTimeout(() => {
-		                    contactForm.classList.remove('shake');
-		                }, 600);
-		                return;
-		            }
-            
-		            // Show loading state
-		            contactForm.style.display = 'none';
-		            formLoading.classList.add('visible');
-            
-		            // Prepare email content
-		            const name = nameInput.value.trim();
-		            const email = emailInput.value.trim();
-		            const blogLink = blogLinkInput.value.trim();
-		            const postCount = postCountInput.value.trim();
-		            const comments = commentsInput.value.trim();
-            
-		            // Create mailto URL with form data
-		            const subject = encodeURIComponent('New Contact Form Submission from ' + name);
-		            let body = encodeURIComponent(
-		                'Name: ' + name + '\n' +
-		                'Email: ' + email + '\n' +
-		                'Shopify Blog Link: ' + blogLink + '\n' +
-		                (postCount ? 'Number of Posts: ' + postCount + '\n' : '') +
-		                (comments ? 'Comments: ' + comments : '')
-		            );
-            
-		            // Create a mailto link and trigger it
-		            const mailtoLink = 'mailto:gkalinin@primacy.io?subject=' + subject + '&body=' + body;
-            
-		            // Create a hidden link and click it
-		            const link = document.createElement('a');
-		            link.href = mailtoLink;
-		            link.style.display = 'none';
-		            document.body.appendChild(link);
-		            link.click();
-		            document.body.removeChild(link);
-            
-		            // Hide loading state and show success message
-		            setTimeout(() => {
-		                formLoading.classList.remove('visible');
-		                contactForm.style.display = 'block';
-		                successMessage.classList.add('visible');
-                
-		                // Reset form
-		                contactForm.reset();
-                
-		                // Close modal after delay
-		                setTimeout(() => {
-		                    closeModal();
-		                }, 3000);
-		            }, 1000);
-		        }
-        
-		        // Event Listeners for all "Contact" buttons/links
-		        contactButtons.forEach(button => {
-		            button.addEventListener('click', function(e) {
-		                e.preventDefault();
-		                openModal();
-		            });
-		        });
-        
-		        // Close button event listener
-		        modalCloseBtn.addEventListener('click', closeModal);
-        
-		        
-        
-		        // Close modal when clicking outside the form
-		        modalOverlay.addEventListener('click', (e) => {
-		            if (e.target === modalOverlay) {
-		                closeModal();
-		            }
-		        });
-        
-		        // Close modal with Escape key
-		        document.addEventListener('keydown', (e) => {
-		            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-		                closeModal();
-		            }
-		        });
-        
-		        // Input validation on blur
-		        nameInput.addEventListener('blur', () => {
-		            if (!nameInput.value.trim()) {
-		                nameInput.classList.add('error');
-		                nameError.classList.add('visible');
-		            } else {
-		                nameInput.classList.remove('error');
-		                nameError.classList.remove('visible');
-		            }
-		        });
-        
-		        emailInput.addEventListener('blur', () => {
-		            if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
-		                emailInput.classList.add('error');
-		                emailError.classList.add('visible');
-		            } else {
-		                emailInput.classList.remove('error');
-		                emailError.classList.remove('visible');
-		            }
-		        });
-        
-		        blogLinkInput.addEventListener('blur', () => {
-		            if (!blogLinkInput.value.trim() || !isValidUrl(blogLinkInput.value.trim())) {
-		                blogLinkInput.classList.add('error');
-		                blogLinkError.classList.add('visible');
-		            } else {
-		                blogLinkInput.classList.remove('error');
-		                blogLinkError.classList.remove('visible');
-		            }
-		        });
-		    });
-		</script>
-			<!-- Add this script to the bottom of your page, right before the closing </body> tag -->
-			<script>
-			  document.addEventListener('DOMContentLoaded', function() {
-			    // Get all elements that should trigger the contact form
-			    const contactButtons = document.querySelectorAll('a[href="#contact"]');
-			    const modalOverlay = document.getElementById('contact-modal-overlay');
-			    const modalCloseBtn = document.getElementById('modal-close-btn');
-    
-			    console.log('Found ' + contactButtons.length + ' contact buttons'); // Debugging
-    
-			    // Open Modal Function - defined separately for clarity
-			    function openModal() {
-			      console.log('Opening modal'); // Debugging
-			      if (modalOverlay) {
-			        modalOverlay.style.visibility = 'visible';
-			        modalOverlay.style.opacity = '1';
-			        modalOverlay.classList.add('active');
-			      } else {
-			        console.error('Modal overlay element not found');
-			      }
-			    }
-    
-			    // Close Modal Function
-			    function closeModal() {
-			      console.log('Closing modal'); // Debugging
-			      if (modalOverlay) {
-			        modalOverlay.classList.remove('active');
-			        setTimeout(() => {
-			          modalOverlay.style.visibility = 'hidden';
-			          modalOverlay.style.opacity = '0';
-			        }, 300);
-			      }
-			    }
-    
-			    // Add click event listener to each contact button
-			    contactButtons.forEach((button, index) => {
-			      console.log('Adding listener to button ' + index); // Debugging
-			      button.addEventListener('click', function(e) {
-			        console.log('Contact button clicked'); // Debugging
-			        e.preventDefault();
-			        openModal();
-			      });
-			    });
-    
-			    // Direct trigger for testing - you can remove this after fixing the issue
-			    window.openContactModal = openModal;
-    
-			    // Close button event listener
-			    if (modalCloseBtn) {
-			      modalCloseBtn.addEventListener('click', closeModal);
-			    } else {
-			      console.error('Modal close button not found');
-			    }
-    
-			    // Test button click event for debugging - you can remove after fixing
-			    setTimeout(() => {
-			      console.log('Contact buttons after delay:');
-			      console.log(contactButtons);
-			    }, 2000);
-			  });
-			</script>
 </body>
 </html>
