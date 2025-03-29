@@ -14,471 +14,643 @@
         }
 
         #if-blog-post-container {
-            line-height: 1.6;
-            color: #333;
+            line-height: 1.7;
+            color: #444;
             background-color: #fff;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-            max-width: 1000px; /* Max width for better readability on large screens */
-            margin: 20px auto; /* Center the container */
-            padding: 0 15px; /* Padding for mobile */
+            overflow-x: hidden;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            opacity: 0;
+            animation: blogFadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes blogFadeIn {
+            to { opacity: 1; }
         }
 
         /* Typography (Scoped) */
         #if-blog-post-container h1,
         #if-blog-post-container h2,
         #if-blog-post-container h3 {
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 0.8em;
-            color: #4CAF50; /* Organifi Green */
             line-height: 1.3;
         }
 
         #if-blog-post-container h1 {
-            font-size: 2.8rem;
-            text-align: center;
-            margin-bottom: 1em;
+            font-size: calc(2.5rem + 1vw);
+            text-align: left;
+            margin-bottom: 0.8em;
+            font-weight: 700;
+            color: #444; /* Kept as dark grey */
         }
 
         #if-blog-post-container h2 {
-            font-size: 2rem;
-            margin-top: 2em;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 0.3em;
+            font-size: calc(1.8rem + 0.5vw);
+            margin-top: 2em; /* Reduced */
+            border-bottom: 3px solid #E8F5E9; /* Kept light green border */
+            padding-bottom: 0.4em;
+            color: #444; /* Kept as dark grey */
         }
 
         #if-blog-post-container h3 {
-            font-size: 1.5rem;
-            color: #558B2F; /* Darker Green */
+            font-size: calc(1.3rem + 0.3vw);
+            /* color: #558B2F; */ /* Original Green */
+            color: #86B1CF; /* Changed to requested blue */
+            margin-bottom: 0.6em;
         }
 
         #if-blog-post-container p {
-            margin-bottom: 1.2em;
-            font-size: 1rem;
-            color: #555;
+            margin-bottom: 1.3em;
+            font-size: calc(0.95rem + 0.1vw);
+            color: #555; /* Kept as grey */
         }
 
         #if-blog-post-container ul,
         #if-blog-post-container ol {
-            margin-bottom: 1.2em;
+            margin-bottom: 1.3em;
             padding-left: 25px;
         }
-
-        #if-blog-post-container li {
-            margin-bottom: 0.5em;
-        }
+        #if-blog-post-container li { margin-bottom: 0.6em; }
 
         #if-blog-post-container a {
-            color: #4CAF50;
+            /* color: #4CAF50; */ /* Original Green */
+            color: #86B1CF; /* Changed to requested blue */
             text-decoration: none;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            border-bottom: 1px solid transparent;
         }
         #if-blog-post-container a:hover {
-            text-decoration: underline;
+            color: #EE9236; /* Kept orange hover */
+            border-bottom: 1px solid #EE9236;
         }
 
-        #if-blog-post-container strong {
-            font-weight: 600;
-            color: #333;
-        }
+        #if-blog-post-container strong { font-weight: 600; color: #333; } /* Kept as dark grey/black */
 
         /* Layout & Visual Elements (Scoped) */
         #if-blog-post-container .section {
-            margin-bottom: 3em;
-            padding: 2em 0;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 1.8em; /* Further Reduced Spacing */
+            padding: 1.5em 0; /* Reduced Padding */
+            border-bottom: 1px solid #f0f0f0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        #if-blog-post-container .section:last-child {
-            border-bottom: none;
+        #if-blog-post-container .section.is-visible {
+             opacity: 1;
+             transform: translateY(0);
         }
+        #if-blog-post-container .section:last-child { border-bottom: none; margin-bottom: 0; }
 
-        #if-blog-post-container .centered-text {
-            text-align: center;
-        }
+        #if-blog-post-container .centered-text { text-align: center; }
 
         #if-blog-post-container .highlight-box {
-            background-color: #F1F8E9; /* Light Green */
-            padding: 1.5em;
-            border-radius: 8px;
-            margin: 2em 0;
-            border-left: 5px solid #8BC34A; /* Medium Green */
+            background-color: #F1F8E9; /* Kept light green background */
+            padding: 1.8em;
+            border-radius: 12px;
+            margin: 1.8em 0; /* Adjusted margin slightly */
+            border-left: 6px solid #8BC34A; /* Kept green border */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        #if-blog-post-container .highlight-box p:last-child {
-            margin-bottom: 0;
-        }
+        #if-blog-post-container .highlight-box p:last-child { margin-bottom: 0; }
 
         #if-blog-post-container .warning-box {
-             background-color: #fff3e0; /* Light Orange */
-             padding: 1.5em;
-             border-radius: 8px;
-             margin: 1.5em 0;
-             border-left: 5px solid #ff9800; /* Orange */
+             background-color: #FFF3E0; /* Kept orange background */
+             padding: 1.5em 1.8em;
+             border-radius: 12px;
+             margin: 1.8em 0;
+             border-left: 6px solid #EE9236; /* Kept orange border */
              font-size: 0.95rem;
-         }
+             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+             color: #4E342E; /* Kept brown text */
+        }
+         #if-blog-post-container .warning-box strong { color: #D84315; } /* Kept orange strong text */
 
         #if-blog-post-container img.responsive-img {
-            max-width: 100%;
-            height: auto;
+            max-width: 100%; /* Ensures responsiveness */
+            height: auto; /* Maintains aspect ratio */
             display: block;
-            margin: 1.5em auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 1.8em auto; /* Default: Center images, reduced margin slightly */
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
-        /* Myth Buster Cards (Scoped) */
+        /* Specific override for hero image to be left-aligned */
+        #if-blog-post-container .hero-section img.responsive-img {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        /* Specific override for the 'break-fast' image - Increased Specificity */
+        #if-blog-post-container img.left-aligned-img {
+            margin-left: 0 !important; /* Added !important for certainty */
+            margin-right: auto !important;
+            display: block !important;
+        }
+
+
+        /* Myth Buster Cards (Scoped) - Enhanced */
         #if-blog-post-container .myth-busters {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5em;
-            margin-top: 1.5em;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8em;
+            margin-top: 1.8em; /* Adjusted slightly */
         }
-
         #if-blog-post-container .myth-card {
             background-color: #fff;
-            padding: 1.5em;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 1.8em;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
             border: 1px solid #eee;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        #if-blog-post-container .myth-card:before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            /* background: #4CAF50; */ /* Original Green */
+            background: #86B1CF; /* Changed to requested blue */
+            opacity: 0.9;
         }
         #if-blog-post-container .myth-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-
         #if-blog-post-container .myth-card h3 {
-            font-size: 1.2rem;
-            color: #e53935; /* Reddish for myth */
-            margin-bottom: 0.5em;
+            font-size: 1.3rem;
+            color: #D84315; /* Kept orange myth title */
+            margin-bottom: 0.6em;
             display: flex;
             align-items: center;
+            font-weight: 600;
         }
          #if-blog-post-container .myth-card h3 svg {
-             margin-right: 8px;
-             fill: #e53935;
-             width: 20px;
-             height: 20px;
+             margin-right: 10px;
+             fill: #EE9236; /* Kept orange icon fill */
+             width: 22px;
+             height: 22px;
+             flex-shrink: 0;
          }
-
-        #if-blog-post-container .myth-card p {
-            font-size: 0.95rem;
-            color: #666;
-        }
+        #if-blog-post-container .myth-card p { font-size: 0.95rem; color: #666; } /* Kept grey text */
          #if-blog-post-container .myth-card .truth {
-            margin-top: 0.8em;
-            font-weight: bold;
-            color: #4CAF50; /* Green for truth */
+            margin-top: 1em;
+            font-weight: 600;
+            /* color: #4CAF50; */ /* Original Green */
+            color: #86B1CF; /* Changed to requested blue */
+            border-left: 3px solid #8BC34A; /* Kept green border */
+            padding-left: 10px;
+            font-size: 0.95rem;
         }
 
-        /* IF Schedules Tabs (Scoped) */
+        /* IF Schedules Tabs (Scoped) - Enhanced */
         #if-blog-post-container .if-tabs {
-            margin-top: 1.5em;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            margin-top: 1.8em; /* Adjusted */
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             overflow: hidden;
             background-color: #fff;
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-
         #if-blog-post-container .tab-buttons {
             display: flex;
-            background-color: #f9f9f9;
-            border-bottom: 1px solid #ddd;
-            overflow-x: auto; /* Allow horizontal scroll on mobile */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            background-color: #fafafa;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 5px;
         }
-        #if-blog-post-container .tab-buttons::-webkit-scrollbar {
-             display: none; /* Hide scrollbar for Chrome/Safari */
-         }
-
-
+        #if-blog-post-container .tab-buttons::-webkit-scrollbar { display: none; }
         #if-blog-post-container .tab-button {
-            padding: 12px 20px;
+            padding: 14px 22px;
             cursor: pointer;
             border: none;
             background-color: transparent;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #555;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            white-space: nowrap; /* Prevent button text wrapping */
-            flex-shrink: 0; /* Prevent buttons shrinking */
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666; /* Kept grey default tab text */
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin: 0 4px;
+            border-radius: 8px;
+            position: relative;
+             border-bottom: 3px solid transparent;
         }
-
         #if-blog-post-container .tab-button:hover {
-            background-color: #eee;
+            background-color: #f0f0f0;
+            color: #333; /* Kept dark hover text */
         }
-
         #if-blog-post-container .tab-button.active {
-            background-color: #4CAF50; /* Green */
-            color: #fff;
-            border-bottom: 3px solid #558B2F; /* Darker Green */
+            background-color: #E8F5E9; /* Kept light green background */
+            /* color: #388E3C; */ /* Original Green */
+            color: #86B1CF; /* Changed to requested blue */
+            border-bottom: 3px solid #EE9236; /* Kept orange active border */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-
-        #if-blog-post-container .tab-content {
-            padding: 1.5em 2em; /* More padding inside tab content */
-        }
-
-        #if-blog-post-container .tab-pane {
-            display: none; /* Hide panes by default */
-        }
-
+        #if-blog-post-container .tab-content { padding: 1.8em; } /* Adjusted padding */
+        #if-blog-post-container .tab-pane { display: none; }
         #if-blog-post-container .tab-pane.active {
             display: block;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.6s ease-in-out;
         }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Food List Styling (Scoped) */
+        /* Food List Styling (Scoped) - Updated for Images */
          #if-blog-post-container .food-list {
              display: grid;
-             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
              gap: 1.5em;
              list-style: none;
              padding-left: 0;
+             margin-top: 1em; /* Added slightly */
          }
          #if-blog-post-container .food-item {
-             background: #f9f9f9;
-             padding: 1em;
-             border-radius: 5px;
+             background: #fcfcfc;
+             padding: 1.2em;
+             border-radius: 10px;
              display: flex;
              align-items: center;
              border: 1px solid #eee;
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
          }
-         #if-blog-post-container .food-item svg {
-             width: 24px;
-             height: 24px;
-             margin-right: 10px;
-             fill: #8BC34A; /* Medium Green */
+         #if-blog-post-container .food-item:hover {
+             transform: scale(1.02);
+             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+         }
+         #if-blog-post-container .food-item img.food-icon {
+             width: 32px;
+             height: 32px;
+             margin-right: 12px;
+             object-fit: contain;
              flex-shrink: 0;
          }
-         #if-blog-post-container .food-item span {
-            font-size: 0.95rem;
-            color: #444;
+          #if-blog-post-container .food-item svg.food-icon-svg { /* If SVGs were used */
+             width: 28px;
+             height: 28px;
+             margin-right: 12px;
+             /* fill: #8BC34A; */ /* Original Green */
+             fill: #86B1CF; /* Changed to requested blue */
+             flex-shrink: 0;
+             transition: fill 0.3s ease;
+         }
+          #if-blog-post-container .food-item:hover svg.food-icon-svg {
+             /* fill: #4CAF50; */ /* Original Green */
+             fill: #86B1CF; /* Changed to requested blue (or slightly darker blue if preferred) */
+         }
+         #if-blog-post-container .food-item span { font-size: 0.95rem; color: #444; } /* Kept dark grey text */
+         #if-blog-post-container .food-item strong {
+              /* color: #558B2F; */ /* Original Green */
+             color: #86B1CF; /* Changed to requested blue */
          }
 
-        /* Benefits Section (Scoped) */
+
+        /* Benefits Section (Scoped) - Updated for Images */
         #if-blog-post-container .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
             gap: 2em;
-            margin-top: 1.5em;
+            margin-top: 1.8em; /* Adjusted */
         }
         #if-blog-post-container .benefit-card {
             text-align: center;
-            padding: 1.5em;
+            padding: 2em 1.5em;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-             border-top: 4px solid #8BC34A; /* Medium Green */
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            border: 1px solid #eee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+             position: relative;
+             overflow: hidden;
         }
-         #if-blog-post-container .benefit-card svg {
-             width: 48px;
-             height: 48px;
-             fill: #4CAF50; /* Green */
-             margin-bottom: 0.8em;
+         #if-blog-post-container .benefit-card:before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 5px;
+            background: linear-gradient(90deg, #8BC34A, #AED581); /* Kept green gradient */
+            opacity: 0.9;
+        }
+         #if-blog-post-container .benefit-card:hover {
+             transform: translateY(-8px);
+             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+         }
+         #if-blog-post-container .benefit-card img.benefit-icon {
+             width: 55px;
+             height: 55px;
+             margin-bottom: 1em;
+             object-fit: contain;
          }
         #if-blog-post-container .benefit-card h3 {
-            font-size: 1.3rem;
-            color: #558B2F; /* Darker Green */
-            margin-bottom: 0.5em;
+            font-size: 1.4rem;
+            /* color: #558B2F; */ /* Original Green */
+            color: #86B1CF; /* Changed to requested blue */
+            margin-bottom: 0.6em;
         }
         #if-blog-post-container .benefit-card p {
             font-size: 0.9rem;
-            color: #666;
-            line-height: 1.5;
+            color: #666; /* Kept grey text */
+            line-height: 1.6;
         }
 
-        /* Simple Infographic/Diagram Styling (Scoped) */
+        /* Simple Infographic/Diagram Styling (Scoped) - Enhanced (Uses SVGs)*/
          #if-blog-post-container .if-diagram {
              display: flex;
              justify-content: space-around;
              align-items: center;
-             background-color: #F1F8E9; /* Light Green */
-             padding: 2em 1em;
-             border-radius: 8px;
-             margin: 2em 0;
-             flex-wrap: wrap; /* Wrap items on smaller screens */
-             gap: 1em;
+             background: linear-gradient(135deg, #F1F8E9, #ffffff); /* Kept light green gradient */
+             padding: 2em 1.5em; /* Adjusted */
+             border-radius: 12px;
+             margin: 2em 0; /* Adjusted */
+             flex-wrap: wrap;
+             gap: 1.5em;
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
          }
          #if-blog-post-container .diagram-segment {
              text-align: center;
              position: relative;
+             padding: 0 15px;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+         }
+         #if-blog-post-container .diagram-segment svg.main-icon {
+             width: 45px;
+             height: 45px;
+             fill: none;
+             /* stroke: #4CAF50; */ /* Original Green */
+             stroke: #86B1CF; /* Changed to requested blue */
+             stroke-width: 1.5;
+             margin-bottom: 0.7em;
+         }
+          #if-blog-post-container .diagram-segment.arrow {
              padding: 0 10px;
-         }
-         #if-blog-post-container .diagram-segment svg {
-             width: 40px;
-             height: 40px;
-             fill: #4CAF50; /* Green */
-             margin-bottom: 0.5em;
-         }
-          #if-blog-post-container .diagram-segment.arrow svg {
-             width: 30px;
-             height: 30px;
-             fill: #aaa;
-             margin-top: 15px; /* Align arrow vertically */
+             align-self: center;
+          }
+          #if-blog-post-container .diagram-segment svg.arrow-icon {
+             width: 35px;
+             height: 35px;
+             fill: #bdbdbd; /* Kept grey arrow */
+             margin-top: 0;
          }
          #if-blog-post-container .diagram-segment span {
              display: block;
-             font-weight: 500;
-             font-size: 0.9rem;
-             color: #558B2F; /* Darker Green */
+             font-weight: 600;
+             font-size: 0.95rem;
+             /* color: #558B2F; */ /* Original Green */
+             color: #86B1CF; /* Changed to requested blue */
          }
 
-
-        /* "Is IF Right For You?" Checklist (Scoped) */
+        /* "Is IF Right For You?" Checklist (Scoped) - Enhanced */
          #if-blog-post-container .if-checklist {
              background-color: #fff;
-             padding: 1.5em 2em;
-             border-radius: 8px;
-             margin: 2em 0;
-             border: 1px solid #e0e0e0;
-             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+             padding: 2em 2.5em;
+             border-radius: 12px;
+             margin: 2em 0; /* Adjusted */
+             border: 1px solid #e5e5e5;
+             box-shadow: 0 5px 20px rgba(0,0,0,0.06);
          }
          #if-blog-post-container .if-checklist h3 {
-             margin-bottom: 1em;
+             margin-bottom: 1.2em;
              text-align: center;
+             /* color: #558B2F; */ /* Original Green */
+             color: #86B1CF; /* Changed to requested blue */
          }
          #if-blog-post-container .checklist-item {
              display: flex;
              align-items: center;
-             margin-bottom: 0.8em;
+             margin-bottom: 1em;
+             cursor: pointer;
          }
          #if-blog-post-container .checklist-item input[type="checkbox"] {
-             margin-right: 10px;
-             width: 18px;
-             height: 18px;
-             accent-color: #4CAF50; /* Green checkbox */
+             opacity: 0;
+             position: absolute;
+             width: 0; height: 0;
          }
-         #if-blog-post-container .checklist-item label {
+          #if-blog-post-container .checklist-item label {
              font-size: 1rem;
-             color: #555;
+             color: #555; /* Kept grey label text */
+             position: relative;
+             padding-left: 35px;
+             cursor: pointer;
+             transition: color 0.3s ease;
+         }
+         #if-blog-post-container .checklist-item label::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 1px;
+            width: 20px; height: 20px;
+            border: 2px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+         }
+         #if-blog-post-container .checklist-item input[type="checkbox"]:checked + label::before {
+            /* background-color: #4CAF50; */ /* Original Green */
+            background-color: #86B1CF; /* Changed to requested blue */
+            /* border-color: #4CAF50; */ /* Original Green */
+            border-color: #86B1CF; /* Changed to requested blue */
+         }
+         #if-blog-post-container .checklist-item label::after { /* Checkmark inside */
+            content: '';
+            position: absolute;
+            left: 7px; top: 5px;
+            width: 6px; height: 10px;
+            border: solid white; /* Kept white checkmark */
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+         }
+         #if-blog-post-container .checklist-item input[type="checkbox"]:checked + label::after { opacity: 1; }
+         #if-blog-post-container .checklist-item:hover label::before {
+            /* border-color: #8BC34A; */ /* Original Green */
+             border-color: #ADD8E6; /* Light blue hover border for checkbox */
          }
          #if-blog-post-container .checklist-note {
              font-size: 0.9rem;
-             color: #777;
-             margin-top: 1.5em;
+             color: #777; /* Kept grey note text */
+             margin-top: 1.8em;
              text-align: center;
          }
 
-        /* Organifi CTA (Scoped) */
+        /* Organifi CTA (Scoped) - Enhanced */
          #if-blog-post-container .organifi-cta {
-             background: linear-gradient(to right, #4CAF50, #8BC34A); /* Green gradient */
-             color: #fff;
-             padding: 2em;
-             border-radius: 8px;
+             /* background: linear-gradient(120deg, #4CAF50, #66BB6A); */ /* Original Green Gradient */
+             background: linear-gradient(120deg, #86B1CF, #A0CDE8); /* Changed to blue gradient */
+             color: #fff; /* Kept white text */
+             padding: 2.5em 2em;
+             border-radius: 16px;
              text-align: center;
-             margin: 3em 0 1em 0;
+             margin: 2em 0 1.5em 0; /* Adjusted top margin */
+             box-shadow: 0 10px 30px rgba(134, 177, 207, 0.3); /* Adjusted shadow color */
+             position: relative;
+             overflow: hidden;
          }
+         #if-blog-post-container .organifi-cta::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path fill="%23fff" fill-opacity=".05" d="M0 40L40 0H20L0 20M40 40V20L20 40"></path></svg>');
+            opacity: 0.5;
+         }
+         #if-blog-post-container .organifi-cta > * { position: relative; z-index: 1; }
          #if-blog-post-container .organifi-cta h3 {
-             color: #fff;
-             font-size: 1.8rem;
+             color: #fff; /* Kept white heading */
+             font-size: calc(1.6rem + 0.5vw);
              margin-bottom: 0.5em;
+             font-weight: 700;
          }
          #if-blog-post-container .organifi-cta p {
-             color: #f1f8e9; /* Light green text */
-             margin-bottom: 1.5em;
-             font-size: 1.1rem;
+             /* color: #E8F5E9; */ /* Original Light Greenish text */
+             color: #E0F2F7; /* Light blueish text */
+             margin-bottom: 1.8em;
+             font-size: calc(1rem + 0.2vw);
+             max-width: 600px;
+             margin-left: auto;
+             margin-right: auto;
          }
          #if-blog-post-container .cta-button {
              display: inline-block;
-             background-color: #fff;
-             color: #4CAF50; /* Green text */
-             padding: 12px 30px;
-             border-radius: 25px;
+             background-color: #fff; /* Kept white background */
+             /* color: #4CAF50; */ /* Original Green */
+             color: #86B1CF; /* Changed to requested blue */
+             padding: 14px 35px;
+             border-radius: 30px;
              font-weight: bold;
              text-decoration: none;
-             transition: background-color 0.3s ease, color 0.3s ease;
-             font-size: 1rem;
-             border: 2px solid #fff;
+             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+             font-size: 1.05rem;
+             border: 2px solid #fff; /* Kept white border */
+             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
          }
          #if-blog-post-container .cta-button:hover {
-             background-color: #4CAF50;
-             color: #fff;
-             border: 2px solid #fff;
+             background-color: #EE9236; /* Kept orange hover background */
+             color: #fff; /* Kept white hover text */
+             border-color: #EE9236; /* Kept orange hover border */
+             transform: translateY(-3px);
+             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
          }
 
-         /* Summary Section */
+         /* Summary Section - Enhanced (Uses IMG) */
          #if-blog-post-container .summary-section {
-            background-color: #f9f9f9;
-            padding: 1.5em;
-            border-radius: 8px;
-            margin-top: 2em;
+            background-color: #fdfdfd;
+            padding: 2em 2.5em;
+            border-radius: 12px;
+             margin-top: 2em; /* Adjusted */
+             border: 1px solid #f0f0f0;
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
          }
           #if-blog-post-container .summary-section h3 {
-             margin-bottom: 0.8em;
-             color: #558B2F;
+             margin-bottom: 1em;
+             /* color: #558B2F; */ /* Original Green */
+             color: #86B1CF; /* Changed to requested blue */
              display: flex;
              align-items: center;
+             font-weight: 600;
          }
-          #if-blog-post-container .summary-section h3 svg {
-             fill: #558B2F;
-             width: 24px;
-             height: 24px;
-             margin-right: 8px;
-         }
+          #if-blog-post-container .summary-section h3 img.summary-icon {
+             width: 32px;
+             height: 32px;
+             margin-right: 10px;
+             vertical-align: middle;
+             object-fit: contain;
+          }
          #if-blog-post-container .summary-section ul {
             list-style: none;
             padding-left: 0;
          }
          #if-blog-post-container .summary-section li {
-            margin-bottom: 0.5em;
-            padding-left: 25px;
+            margin-bottom: 0.7em;
+            padding-left: 30px;
             position: relative;
             font-size: 0.95rem;
+             color: #555; /* Keep text grey */
          }
-         #if-blog-post-container .summary-section li::before {
-            content: '✔';
-            color: #4CAF50; /* Green check */
+         #if-blog-post-container .summary-section li::before { /* Checkmark */
+            content: '';
             position: absolute;
             left: 0;
-            top: 0;
-            font-weight: bold;
+            top: 5px;
+            width: 8px;
+            height: 14px;
+            /* border: solid #4CAF50; */ /* Original Green */
+            border: solid #86B1CF; /* Changed to requested blue */
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
          }
 
-
-        /* References */
+        /* References - Enhanced */
         #if-blog-post-container .references {
-            margin-top: 2em;
-            font-size: 0.85rem;
-            color: #777;
+            margin-top: 2em; /* Adjusted */
+            font-size: 0.9rem;
+            color: #777; /* Kept grey text */
             border-top: 1px solid #eee;
-            padding-top: 1.5em;
+            padding-top: 1.5em; /* Adjusted */
         }
         #if-blog-post-container .references h3 {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 0.5em;
+            font-size: 1.2rem;
+            color: #666; /* Kept grey heading */
+            margin-bottom: 0.7em;
         }
         #if-blog-post-container .references ol {
-             padding-left: 15px;
-             margin-bottom: 0;
+             padding-left: 20px;
+             margin-bottom: 1em;
          }
         #if-blog-post-container .references li {
-             margin-bottom: 0.3em;
+             margin-bottom: 0.5em;
+             line-height: 1.5;
          }
+        #if-blog-post-container .references a {
+            /* color: #8BC34A; */ /* Original Green */
+            color: #86B1CF; /* Changed to requested blue */
+            /* border-bottom: 1px dotted #8BC34A; */ /* Original Green */
+            border-bottom: 1px dotted #86B1CF; /* Changed to requested blue */
+        }
+         #if-blog-post-container .references a:hover {
+            color: #EE9236; /* Kept orange hover */
+            border-bottom: 1px solid #EE9236; /* Kept orange hover border */
+        }
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
-            #if-blog-post-container h1 { font-size: 2.2rem; }
-            #if-blog-post-container h2 { font-size: 1.8rem; }
-            #if-blog-post-container h3 { font-size: 1.3rem; }
-            #if-blog-post-container p { font-size: 0.95rem; }
-            #if-blog-post-container .if-tabs { margin-left: -15px; margin-right: -15px; border-radius: 0; border-left: none; border-right: none;} /* Full width tabs on mobile */
+            #if-blog-post-container h1 { font-size: calc(2rem + 1.5vw); }
+            #if-blog-post-container h2 { font-size: calc(1.6rem + 1vw); margin-top: 1.8em; }
+            #if-blog-post-container h3 { font-size: calc(1.2rem + 0.5vw); }
+            #if-blog-post-container p { font-size: calc(0.9rem + 0.1vw); }
+            #if-blog-post-container .section { margin-bottom: 1.5em; padding: 1.2em 0; } /* Further reduce on smaller screens */
+            #if-blog-post-container .if-tabs { margin-left: -20px; margin-right: -20px; border-radius: 0; border-left: none; border-right: none;}
             #if-blog-post-container .tab-content { padding: 1.5em; }
-             #if-blog-post-container .if-diagram { padding: 1.5em 0.5em; flex-direction: column; } /* Stack diagram vertically */
-             #if-blog-post-container .diagram-segment.arrow { transform: rotate(90deg); margin: 0.5em 0;} /* Rotate arrow */
-             #if-blog-post-container .if-checklist { padding: 1.5em; }
+             #if-blog-post-container .if-diagram { padding: 1.5em; flex-direction: column; }
+             #if-blog-post-container .diagram-segment.arrow { transform: rotate(90deg); margin: 1em 0;}
+             #if-blog-post-container .if-checklist { padding: 1.5em; margin: 1.8em 0; }
+             #if-blog-post-container .food-list { grid-template-columns: 1fr; }
+             #if-blog-post-container .organifi-cta,
+             #if-blog-post-container .summary-section,
+             #if-blog-post-container .references { margin-top: 1.8em; }
+             #if-blog-post-container .references { padding-top: 1.2em; }
         }
 
          @media (max-width: 480px) {
-            #if-blog-post-container h1 { font-size: 1.8rem; }
-            #if-blog-post-container h2 { font-size: 1.5rem; }
-            #if-blog-post-container h3 { font-size: 1.2rem; }
-            #if-blog-post-container .myth-busters, #if-blog-post-container .benefits-grid, #if-blog-post-container .food-list { grid-template-columns: 1fr; } /* Single column grids */
-            #if-blog-post-container .tab-button { padding: 10px 15px; font-size: 0.9rem; }
+            #if-blog-post-container { padding: 0 15px; }
+            #if-blog-post-container h1 { font-size: calc(1.8rem + 2vw); }
+            #if-blog-post-container h2 { font-size: calc(1.4rem + 1.5vw); margin-top: 1.5em; }
+            #if-blog-post-container h3 { font-size: calc(1.1rem + 1vw); }
+            #if-blog-post-container .section { margin-bottom: 1.2em; padding: 1em 0; } /* Even less on smallest screens */
+            #if-blog-post-container .myth-busters, #if-blog-post-container .benefits-grid { grid-template-columns: 1fr; gap: 1.5em; margin-top: 1.5em; }
+            #if-blog-post-container .tab-button { padding: 12px 18px; font-size: 0.9rem; }
+            #if-blog-post-container .organifi-cta { padding: 2em 1.5em; border-radius: 12px; margin-top: 1.5em; }
+             #if-blog-post-container .cta-button { padding: 12px 30px; font-size: 1rem; }
+             #if-blog-post-container .if-checklist { padding: 1.5em; margin: 1.5em 0; }
+             #if-blog-post-container .summary-section { padding: 1.5em; margin-top: 1.5em; }
+             #if-blog-post-container .references { margin-top: 1.5em; padding-top: 1em;}
+             #if-blog-post-container .food-item img.food-icon,
+             #if-blog-post-container .food-item svg.food-icon-svg { width: 28px; height: 28px; }
+             #if-blog-post-container .benefit-card img.benefit-icon { width: 50px; height: 50px; }
          }
 
     </style>
@@ -490,10 +662,12 @@
     <!-- Hero Section -->
     <section class="section hero-section">
         <h1>Fast-Track Your Way to Weight Management</h1>
-        <p class="centered-text" style="font-size: 1.2rem; color: #666;">The Simple, Science-Backed Guide to Intermittent Fasting</p>
-        <img src="https://cdn.shopify.com/s/files/1/0940/8252/files/what-is-intermittent-fasting_1024x1024.jpg?v=1543995154" alt="Clock on a plate symbolizing intermittent fasting" class="responsive-img" style="max-width: 500px;">
-        <p class="centered-text">It's a widely accepted myth that major transformations take time or require painful sacrifices. But what if a full-body reset could happen with just a few simple, strategic tweaks to your eating schedule? Welcome to the world of Intermittent Fasting (IF).</p>
+        <p style="font-size: 1.2rem; color: #666;">The Simple, Science-Backed Guide to Intermittent Fasting</p>
+        <!-- Image below is already responsive due to .responsive-img class -->
+        <img src="https://primacy.io/intermittent_fasting2.png" alt="Clock on a plate symbolizing intermittent fasting" class="responsive-img" style="max-width: 1000px;">
+        <p>It's a widely accepted myth that major transformations take time or require painful sacrifices. But what if a full-body reset could happen with just a few simple, strategic tweaks to your eating schedule? Welcome to the world of Intermittent Fasting (IF).</p>
     </section>
+
 
     <!-- Debunking Myths -->
     <section class="section">
@@ -502,27 +676,27 @@
         <div class="myth-busters">
             <div class="myth-card">
                 <h3>
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Myth: "I'll have to starve myself!"
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Myth: "I'll starve!"
                 </h3>
-                <p>This isn't about deprivation. IF focuses on *when* you eat, not *how little* you eat.</p>
-                <p class="truth">Truth: It's about cycling between eating and fasting periods to allow natural body processes to occur.</p>
+                <p>This isn't about deprivation. IF focuses on *when* you eat, not *how little*.</p>
+                <p class="truth">Truth: It's cycling between eating & fasting to let your body work naturally.</p>
             </div>
             <div class="myth-card">
                  <h3>
-                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Myth: "It will make me moody and 'hangry'."
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Myth: "I'll be 'hangry'."
                  </h3>
                 <p>Worried about mood swings?</p>
-                 <p class="truth">Truth: When done correctly, many people report feeling *more* energized, focused, and upbeat. Bye-bye, hanger!</p>
+                 <p class="truth">Truth: Done right, many feel *more* energized, focused, and upbeat!</p>
             </div>
             <div class="myth-card">
                  <h3>
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Myth: "It probably won't work for me."
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Myth: "It won't work for me."
                 </h3>
                 <p>Think it's just another fad?</p>
-                <p class="truth">Truth: While every body is unique, studies (1, 2, 3) show IF can offer significant benefits, especially for weight management.</p>
+                <p class="truth">Truth: Studies (1, 2, 3) show IF offers real benefits for many, especially for weight management.</p>
             </div>
         </div>
     </section>
@@ -533,157 +707,154 @@
         <p>Think about what happens when you sleep. You're not eating, right? Your body uses this time to rest, digest, detoxify, and rejuvenate. You wake up feeling refreshed and cleansed (hopefully!).</p>
         <p><strong>Intermittent Fasting works on a similar principle.</strong> By intentionally creating periods where you don't eat (fasting) alternated with periods where you do eat (eating window), you give your body an extended break.</p>
         <div class="highlight-box">
-            <p><strong>The Key Difference:</strong> Unlike traditional diets often focused on *what* or *how much* you eat (calorie counting, low-fat), IF primarily emphasizes *<strong>WHEN</strong>* you eat. It's about scheduling, not overly restricting specific foods.</p>
+            <p><strong>The Key Difference:</strong> Unlike traditional diets focused on *what* or *how much* (calorie counting, low-fat), IF primarily emphasizes *<strong>WHEN</strong>* you eat. It's about scheduling, not overly restricting specific foods.</p>
         </div>
-
-        <h3>Visualizing a Typical IF Cycle:</h3>
+         <h3>Visualizing a Typical IF Cycle:</h3>
          <div class="if-diagram">
-            <div class="diagram-segment">
-                 <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                <span>No Eating Period (Fast)</span>
-            </div>
-            <div class="diagram-segment arrow">
-                 <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-             </div>
-            <div class="diagram-segment">
-                <svg viewBox="0 0 24 24"><path d="M17 11h2v2h-2v2h-2v-2h-2v-2h2V9h2v2zm-5 1c0 2.21-1.79 4-4 4s-4-1.79-4-4 1.79-4 4-4v-.5c0-.45.09-.88.25-1.29C6.17 6.58 5 8.14 5 10v9h14v-1.5c0-1.48-.68-2.83-1.75-3.75.58-.28 1.1-.63 1.57-1.04.4-.36.73-.77.98-1.21H12v-1zm-4-2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                <span>Eating Period (Window)</span>
-            </div>
-             <div class="diagram-segment arrow">
-                 <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-             </div>
              <div class="diagram-segment">
-                  <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                 <span>No Eating Period (Fast)</span>
+                  <svg class="main-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>No Eating Period (Fast)</span>
              </div>
-             <!-- Add more segments as needed -->
-        </div>
-        <p class="centered-text">It sounds simple because it is! The most successful plan is one that fits *your* lifestyle without adding stress.</p>
+             <div class="diagram-segment arrow">
+                  <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+              </div>
+             <div class="diagram-segment">
+                  <svg class="main-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                  <span>Eating Period (Window)</span>
+             </div>
+              <div class="diagram-segment arrow">
+                  <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+              </div>
+              <div class="diagram-segment">
+                  <svg class="main-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>No Eating Period (Fast)</span>
+              </div>
+         </div>
+         <p class="centered-text">It sounds simple because it is! The most successful plan is one that fits *your* lifestyle without adding stress.</p>
     </section>
 
     <!-- Types of IF Schedules -->
     <section class="section">
         <h2>Choosing Your Rhythm: Types of IF Schedules</h2>
         <p>There are several popular ways to practice Intermittent Fasting. Find the one that resonates most with you:</p>
-
         <div class="if-tabs">
             <div class="tab-buttons">
-                <button class="tab-button active" data-tab="tab-16-8">16:8 Method</button>
-                <button class="tab-button" data-tab="tab-14-10">14:10 Method</button>
-                <button class="tab-button" data-tab="tab-adF">Alternate Day</button>
-                <button class="tab-button" data-tab="tab-whole-day">Whole-Day Fast</button>
+                 <button class="tab-button active" data-tab="tab-16-8">16:8 Method</button>
+                 <button class="tab-button" data-tab="tab-14-10">14:10 Method</button>
+                 <button class="tab-button" data-tab="tab-adF">Alternate Day</button>
+                 <button class="tab-button" data-tab="tab-whole-day">Whole-Day Fast</button>
             </div>
             <div class="tab-content">
-                <div id="tab-16-8" class="tab-pane active">
-                    <h3>The 16:8 Method (Most Popular)</h3>
-                    <p>Fast for 16 hours each day and eat all your meals within an 8-hour window.</p>
-                    <ul>
-                        <li><strong>Example:</strong> Finish dinner by 7 p.m. and don't eat again until 11 a.m. the next day. Your eating window is 11 a.m. to 7 p.m.</li>
-                        <li><strong>Flexibility:</strong> You choose the 8-hour window that fits your schedule best.</li>
-                        <li><strong>Good for:</strong> Beginners and those who like a consistent daily routine.</li>
-                    </ul>
-                </div>
-                <div id="tab-14-10" class="tab-pane">
-                    <h3>The 14:10 Method</h3>
-                    <p>Similar to 16:8, but with a slightly longer eating window: Fast for 14 hours, eat within a 10-hour window.</p>
+                  <div id="tab-16-8" class="tab-pane active">
+                     <h3>The 16:8 Method (Most Popular)</h3>
+                     <p>Fast for 16 hours each day and eat all your meals within an 8-hour window.</p>
                      <ul>
-                        <li><strong>Example:</strong> Finish dinner by 8 p.m. and eat breakfast at 10 a.m. the next day. Your eating window is 10 a.m. to 8 p.m.</li>
-                        <li><strong>Easier Transition:</strong> Some find this easier to adapt to initially than the 16:8 method.</li>
-                         <li><strong>Good for:</strong> Those new to fasting or finding 16 hours too challenging at first.</li>
-                    </ul>
-                </div>
-                <div id="tab-adF" class="tab-pane">
-                    <h3>Alternate Day Fasting (ADF)</h3>
-                    <p>Alternate between days of normal eating and days of significant calorie restriction (or complete fasting).</p>
-                    <ul>
-                        <li><strong>Structure:</strong> Eat normally one day, then consume very few calories (often around 500) or no calories the next day. Repeat.</li>
-                        <li><strong>Intensity:</strong> More challenging than timed eating methods.</li>
-                        <li><strong>Variations:</strong> Some ADF plans allow ~500 calories on "fasting" days, others aim for near-zero.</li>
-                         <li><strong>Good for:</strong> Potentially faster results, but requires more discipline. Consult a professional first.</li>
-                    </ul>
-                </div>
-                <div id="tab-whole-day" class="tab-pane">
-                    <h3>Whole-Day Fasting (e.g., 5:2 Diet)</h3>
-                    <p>Involves one or two full 24-hour fasts per week.</p>
-                    <ul>
-                        <li><strong>Example (Eat-Stop-Eat):</strong> Finish dinner on Monday and don't eat again until dinner on Tuesday (a full 24 hours).</li>
-                        <li><strong>Example (5:2 Diet):</strong> Eat normally for 5 days of the week, and restrict calories to ~500-600 on 2 non-consecutive days.</li>
-                        <li><strong>Important:</strong> Not recommended on consecutive days. Adequate hydration is crucial. Consuming ~500 calories on fasting days is common.</li>
-                         <li><strong>Good for:</strong> Those looking for less frequent fasting days, but requires careful planning.</li>
-                    </ul>
-                </div>
-            </div>
+                         <li><strong>Example:</strong> Finish dinner by 7 p.m. and don't eat again until 11 a.m. the next day. Your eating window is 11 a.m. to 7 p.m.</li>
+                         <li><strong>Flexibility:</strong> You choose the 8-hour window that fits your schedule best.</li>
+                         <li><strong>Good for:</strong> Beginners and those who like a consistent daily routine.</li>
+                     </ul>
+                 </div>
+                 <div id="tab-14-10" class="tab-pane">
+                     <h3>The 14:10 Method</h3>
+                     <p>Similar to 16:8, but with a slightly longer eating window: Fast for 14 hours, eat within a 10-hour window.</p>
+                      <ul>
+                         <li><strong>Example:</strong> Finish dinner by 8 p.m. and eat breakfast at 10 a.m. the next day. Your eating window is 10 a.m. to 8 p.m.</li>
+                         <li><strong>Easier Transition:</strong> Some find this easier to adapt to initially than the 16:8 method.</li>
+                          <li><strong>Good for:</strong> Those new to fasting or finding 16 hours too challenging at first.</li>
+                     </ul>
+                 </div>
+                 <div id="tab-adF" class="tab-pane">
+                     <h3>Alternate Day Fasting (ADF)</h3>
+                     <p>Alternate between days of normal eating and days of significant calorie restriction (or complete fasting).</p>
+                     <ul>
+                         <li><strong>Structure:</strong> Eat normally one day, then consume very few calories (often around 500) or no calories the next day. Repeat.</li>
+                         <li><strong>Intensity:</strong> More challenging than timed eating methods.</li>
+                         <li><strong>Variations:</strong> Some ADF plans allow ~500 calories on "fasting" days, others aim for near-zero.</li>
+                          <li><strong>Good for:</strong> Potentially faster results, but requires more discipline. Consult a professional first.</li>
+                     </ul>
+                 </div>
+                 <div id="tab-whole-day" class="tab-pane">
+                     <h3>Whole-Day Fasting (e.g., 5:2 Diet)</h3>
+                     <p>Involves one or two full 24-hour fasts per week.</p>
+                     <ul>
+                         <li><strong>Example (Eat-Stop-Eat):</strong> Finish dinner on Monday and don't eat again until dinner on Tuesday (a full 24 hours).</li>
+                         <li><strong>Example (5:2 Diet):</strong> Eat normally for 5 days of the week, and restrict calories to ~500-600 on 2 non-consecutive days.</li>
+                         <li><strong>Important:</strong> Not recommended on consecutive days. Adequate hydration is crucial. Consuming ~500 calories on fasting days is common.</li>
+                          <li><strong>Good for:</strong> Those looking for less frequent fasting days, but requires careful planning.</li>
+                     </ul>
+                 </div>
+             </div>
         </div>
          <div class="warning-box">
-             <p><strong>Important Note:</strong> Results vary. What works for one person might not be right for you. Always consult your healthcare professional or a registered dietitian/nutritionist before making significant changes to your diet, especially if you have underlying health conditions, are pregnant, breastfeeding, or taking medications.</p>
+             <p><strong>Important Note:</strong> Results vary. Always consult your healthcare professional before making significant changes to your diet.</p>
          </div>
-         <p>Remember, IF shouldn't be a long-term, continuous practice for everyone. It's often used cyclically or for shorter periods to achieve specific goals.</p>
+         <p>Remember, IF shouldn't be a long-term, continuous practice for everyone. It's often used cyclically.</p>
     </section>
 
     <!-- Helpful Tips -->
     <section class="section">
         <h2>Tips for a Successful Fasting Journey</h2>
-         <img src="https://cdn.shopify.com/s/files/1/0940/8252/files/break-fast-right-way-intermittent-fasting_1024x1024.jpg?v=1543995719" alt="Healthy foods like avocado, eggs, and greens" class="responsive-img" style="max-width: 600px;">
-
+         <!-- Image below is already responsive due to .responsive-img class -->
+         <img src="https://cdn.shopify.com/s/files/1/0940/8252/files/break-fast-right-way-intermittent-fasting_1024x1024.jpg?v=1543995719" alt="Healthy foods like avocado, eggs, and greens" class="responsive-img left-aligned-img" style="max-width: 1000px;">
         <h3>Fueling Your Eating Window Wisely</h3>
-        <p>Your eating window isn't a free-for-all! While IF isn't about strict food rules, focusing on nutrient-dense foods maximizes benefits and helps you feel your best. Avoid shocking your system with processed junk food, especially right before or after a fast.</p>
+        <p>Your eating window isn't a free-for-all! Focus on nutrient-dense foods to maximize benefits.</p>
         <p><strong>Stock your kitchen with quality choices:</strong></p>
         <ul class="food-list">
             <li class="food-item">
-                 <svg viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v1.5c-.83.38-1.5 1-1.5 1.8V11h-2c-.28 0-.5.22-.5.5s.22.5.5.5h2v7.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V12h1v9.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V12h1v6.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V12h1.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5zM13 7h4v4h-4V7z"/></svg>
-                 <span><strong>Quality Proteins:</strong> Grass-fed/pasture-raised meats, wild-caught fish (salmon, tuna, sardines), legumes, tofu.</span>
+                 <img src="https://primacy.io/protein.png" alt="Protein Icon" class="food-icon">
+                 <span><strong>Quality Proteins:</strong> Grass-fed/pasture-raised meats, wild-caught fish, legumes, tofu.</span>
             </li>
             <li class="food-item">
-                 <svg viewBox="0 0 24 24"><path d="M21.8 13.4c-.18-.67-.99-1-1.74-.64l-2.74 1.29c-.34.16-.75.16-1.09 0l-2.64-1.25c-.75-.35-1.56.08-1.74.8l-.44 1.79c-.07.29-.36.5-.66.5s-.59-.21-.66-.5l-.44-1.79c-.18-.72-1-1.15-1.74-.8l-2.64 1.25c-.34.16-.75.16-1.09 0l-2.74-1.29c-.75-.35-1.56.03-1.74.64l-1.11 4.08c-.1.37.02.78.34 1l7.21 4.95c.37.26.85.26 1.22 0l7.21-4.95c.32-.22.44-.63.34-1l-1.11-4.08zM12 3.64c.37-.23.6-.64.6-1.08C12.6 1.64 12.04 1 11.4 1c-.38 0-.7.15-.95.38C7.67 3.44 5.48 6.44 5.1 9.83c-.03.3.18.57.48.61.29.04.56-.15.61-.44.32-2.77 2.04-5.23 4.46-6.99.27-.2.6-.21.85-.04zm4.36 2.06c.25.17.58.16.85.04 2.42-1.76 4.14-4.22 4.46-6.99.05-.3.32-.48.61-.44.3.04.51.31.48.61-.38 3.39-2.57 6.39-5.35 8.45-.25.18-.58.18-.83 0-.38-.27-.46-.78-.22-1.13z"/></svg>
-                 <span><strong>Vibrant Veggies & Fruits:</strong> Organic & local when possible. Think leafy greens, berries, colorful vegetables.</span>
+                 <img src="https://primacy.io/veggies-fruits.png" alt="Vegetables and Fruits Icon" class="food-icon">
+                 <span><strong>Vibrant Veggies & Fruits:</strong> Organic & local preferred. Leafy greens, berries, colorful variety.</span>
             </li>
              <li class="food-item">
-                 <svg viewBox="0 0 24 24"><path d="M12 2C9.2 2 6.8 3.4 5.4 5.4L4 4v5h5l-1.5-1.5C8.6 6.2 10.2 5.5 12 5.5c3.3 0 6 2.4 6.4 5.5H21c-.5-4.7-4.3-8-8-8zm0 14.5c-3.3 0-6-2.4-6.4-5.5H3c.5 4.7 4.3 8 8 8 2.8 0 5.2-1.4 6.6-3.4L20 20v-5h-5l1.5 1.5c-1.1 1.3-2.7 2-4.5 2z"/></svg>
-                 <span><strong>Healthy Fats & Oils:</strong> Avocado, nuts, seeds (soaked/sprouted is great!), olive oil, coconut oil, ghee, grass-fed butter.</span>
+                 <img src="https://primacy.io/oils-fat.png" alt="Healthy Fats Icon" class="food-icon">
+                 <span><strong>Healthy Fats & Oils:</strong> Avocado, nuts, seeds, olive/coconut oil, ghee, grass-fed butter.</span>
             </li>
             <li class="food-item">
-                 <svg viewBox="0 0 24 24"><path d="M19.5 2h-15C3.67 2 3 2.67 3 3.5v17c0 .83.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5v-17c0-.83-.67-1.5-1.5-1.5zm-10 17H6v-7h3.5v7zm0-8.5H6V6h3.5v4.5zm5 8.5h-3.5v-7H13v7zm0-8.5H13V6h3.5v4.5zm5 8.5h-3.5v-7H18v7zm0-8.5H18V6h3.5v4.5z"/></svg>
-                 <span><strong>Fermented Foods:</strong> Sauerkraut, kimchi, kombucha, yogurt (check sugar content).</span>
+                 <img src="https://primacy.io/fermented.png" alt="Fermented Foods Icon" class="food-icon">
+                 <span><strong>Fermented Foods:</strong> Sauerkraut, kimchi, kombucha, yogurt (check sugar).</span>
             </li>
             <li class="food-item">
-                <svg viewBox="0 0 24 24"><path d="M3 2l1.57 12.97c.07.58.57 1.03 1.16 1.03h10.54c.59 0 1.09-.45 1.16-1.03L19 2H3zm5.29 10l-1.13-9h8.68l-1.13 9H8.29zM21 18c0 1.1-.9 2-2 2h-1v1c0 .55-.45 1-1 1s-1-.45-1-1v-1H8v1c0 .55-.45 1-1 1s-1-.45-1-1v-1H5c-1.1 0-2-.9-2-2v-2h18v2z"/></svg>
-                 <span><strong>Hydration Heroes:</strong> Plenty of water! Plus organic black coffee/tea (no sugar/milk during fast), bone broth, organic green juices.</span>
+                 <img src="https://primacy.io/hydration.png" alt="Hydration Icon" class="food-icon">
+                 <span><strong>Hydration Heroes:</strong> Water! Plus organic black coffee/tea, bone broth, green juices.</span>
              </li>
         </ul>
 
-        <h3>Other Smart Strategies:</h3>
+        <h3 style="margin-top: 2em;">Other Smart Strategies:</h3>
         <ul>
-            <li><strong>Stay Hydrated:</strong> Drink plenty of water, especially during fasting periods. Herbal teas or black coffee are usually okay too (check specific IF guidelines).</li>
-            <li><strong>Listen to Your Body:</strong> IF isn't about pushing through extreme discomfort. If you feel unwell, dizzy, or overly fatigued, adjust your plan or stop and consult a professional.</li>
-            <li><strong>Ease Into It:</strong> Don't jump into a 24-hour fast if you're new. Start with 14:10 or 16:8 and see how you feel.</li>
-            <li><strong>Plan Your Meals:</strong> Knowing what you'll eat during your window can prevent impulsive unhealthy choices.</li>
-            <li><strong>Manage Stress:</strong> High stress can counteract IF benefits. Incorporate relaxation techniques like meditation or yoga.</li>
-            <li><strong>Be Patient:</strong> Give your body time to adapt. Results aren't always instant.</li>
+             <li><strong>Stay Hydrated:</strong> Drink plenty of water, especially during fasting periods. Herbal teas or black coffee are usually okay too.</li>
+             <li><strong>Listen to Your Body:</strong> Adjust or stop if you feel unwell. Consult a professional.</li>
+             <li><strong>Ease Into It:</strong> Start with 14:10 or 16:8.</li>
+             <li><strong>Plan Your Meals:</strong> Prevents impulsive unhealthy choices.</li>
+             <li><strong>Manage Stress:</strong> Incorporate relaxation techniques.</li>
+             <li><strong>Be Patient:</strong> Give your body time to adapt.</li>
         </ul>
     </section>
 
     <!-- How IF Supports Weight Management -->
     <section class="section">
         <h2>The Science: How IF Can Support Weight Management</h2>
-        <p>While not its only benefit, weight management is a key reason many explore IF. Here's how it can help:</p>
+        <p>Weight management is a key reason many explore IF. Here's how it can help:</p>
         <div class="benefits-grid">
             <div class="benefit-card">
-                 <svg viewBox="0 0 24 24"><path d="M12 6c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8 11.91c0-1.38.72-2.64 1.84-3.38C7.09 13.85 9.42 13 12 13s4.91.85 6.16 1.53c1.11.74 1.84 2 1.84 3.38V19H4v-1.09zM12 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zM19.13 6.71c.97.97 1.55 2.25 1.7 3.63-.15 1.38-.73 2.66-1.7 3.63l-.01.01c-.97.97-2.25 1.55-3.63 1.7-1.38-.15-2.66-.73-3.63-1.7l-.01-.01c-.97-.97-1.55-2.25-1.7-3.63.15-1.38.73-2.66 1.7-3.63l.01-.01c.97-.97 2.25-1.55 3.63-1.7 1.38.15 2.66.73 3.63 1.7l.01.01z"/></svg>
+                 <img src="https://primacy.io/lower-calorie.png" alt="Lower Calorie Intake Icon" class="benefit-icon">
                 <h3>Lower Calorie Intake</h3>
-                <p>By limiting your eating time, you often naturally consume fewer calories overall without strict counting. This can create the calorie deficit helpful for weight management.</p>
+                <p>Limiting eating time often naturally reduces overall calorie consumption, potentially creating a deficit helpful for weight goals.</p>
             </div>
             <div class="benefit-card">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 13h-1c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h1c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2zM9 11.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm6 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                 <img src="https://primacy.io/mindless-eating.png" alt="Mindless Eating Prevention Icon" class="benefit-icon">
                 <h3>Reduced Snacking & Mindless Eating</h3>
-                <p>A structured schedule discourages grazing between meals. This promotes more conscious food choices and helps you tune into actual hunger cues, potentially improving portion awareness.</p>
+                <p>A structured schedule discourages grazing, promoting conscious choices and potentially better portion awareness.</p>
             </div>
             <div class="benefit-card">
-                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-11h2v2h-2v2h-2V9h2V7h2v2zm-2.5 6c.83 0 1.5.67 1.5 1.5S9.33 18 8.5 18 7 17.33 7 16.5 7.67 15 8.5 15zm7 0c.83 0 1.5.67 1.5 1.5S16.33 18 15.5 18s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z"/></svg>
+                 <img src="https://primacy.io/fat-burn.png" alt="Fat Burning Support Icon" class="benefit-icon">
                  <h3>Fat Burning Support</h3>
-                <p>Your body primarily uses glucose (from carbs/sugar) for energy. During fasting, stored glucose (glycogen) gets depleted. The body then seeks alternative fuel, potentially shifting to burn stored fat for energy – a state called ketosis.</p>
+                <p>Fasting depletes stored glucose, potentially prompting the body to shift towards using stored fat for energy.</p>
              </div>
         </div>
-         <p style="margin-top: 1.5em;">As you can see, Intermittent Fasting isn't magic, but it's a powerful tool for kick-starting positive changes and supporting your weight management goals when used appropriately.</p>
+         <p style="margin-top: 1.5em;">IF isn't magic, but it's a powerful tool for kick-starting positive changes when used appropriately.</p>
     </section>
 
     <!-- Is IF Right For You? Checklist -->
@@ -697,11 +868,11 @@
              </div>
              <div class="checklist-item">
                  <input type="checkbox" id="check2" name="check2">
-                 <label for="check2">Are you looking for a structured approach to eating rather than calorie counting?</label>
+                 <label for="check2">Looking for structured eating rather than calorie counting?</label>
              </div>
              <div class="checklist-item">
                  <input type="checkbox" id="check3" name="check3">
-                 <label for="check3">Can you comfortably skip a meal (like breakfast) without excessive discomfort?</label>
+                 <label for="check3">Can you comfortably skip a meal (like breakfast)?</label>
              </div>
              <div class="checklist-item">
                  <input type="checkbox" id="check4" name="check4">
@@ -715,7 +886,7 @@
                  <input type="checkbox" id="check6" name="check6">
                  <label for="check6">Are you NOT diabetic or taking blood sugar-regulating medication (without doctor supervision)?</label>
              </div>
-             <p class="checklist-note">If you checked mostly 'yes' AND feel comfortable, IF *might* be worth exploring. <strong>However, always discuss with your doctor before starting.</strong></p>
+             <p class="checklist-note">If you checked mostly 'yes' AND feel comfortable, IF *might* be worth exploring. <strong><br>However, always discuss with your doctor before starting.</strong></p>
          </div>
      </section>
 
@@ -724,77 +895,86 @@
     <section class="section organifi-cta">
         <h3>Ready to Boost Your Fasting Journey?</h3>
         <p>Make your IF schedule even simpler and more nourishing with Organifi's supportive superfood blends. Our handpicked bundles can help you ease into and out of your fast with vital nutrients.</p>
-        <a href="https://www.organifishop.com/products/organifi-complete-health-system?utm_source=blog&utm_medium=social&utm_campaign=complete+health+system+intermittent+fasting" class="cta-button">Explore Organifi Bundles</a>
-        <!-- NOTE: Replace "#" with the actual link to the Organifi bundles page -->
+        <a href="#" class="cta-button">Explore Organifi Bundles</a>
     </section>
 
     <!-- Summary -->
      <section class="section summary-section">
         <h3>
-             <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+             <img class="summary-icon" src="https://primacy.io/key-takeways.png" alt="Key Takeaways Icon">
              Key Takeaways: Intermittent Fasting Simplified
         </h3>
-         <ul>
-             <li>IF is about *when* you eat, not just *what* you eat.</li>
-             <li>It involves cycling between periods of eating and voluntary fasting.</li>
-             <li>Popular methods include 16:8, 14:10, Alternate Day, and Whole-Day fasts.</li>
-             <li>Focus on nutrient-dense foods during your eating window.</li>
-             <li>Stay well-hydrated, especially during fasts.</li>
-             <li>IF can support weight management by potentially reducing calorie intake, curbing snacking, and encouraging fat burning.</li>
-             <li>It's not suitable for everyone; consult a healthcare professional before starting.</li>
-             <li>Listen to your body and start slowly.</li>
-         </ul>
+          <ul>
+              <li>IF is about *when* you eat, not just *what* you eat.</li>
+              <li>It involves cycling between periods of eating and voluntary fasting.</li>
+              <li>Popular methods include 16:8, 14:10, Alternate Day, and Whole-Day fasts.</li>
+              <li>Focus on nutrient-dense foods during your eating window.</li>
+              <li>Stay well-hydrated, especially during fasts.</li>
+              <li>IF can support weight management by potentially reducing calorie intake, curbing snacking, and encouraging fat burning.</li>
+              <li>It's not suitable for everyone; consult a healthcare professional before starting.</li>
+              <li>Listen to your body and start slowly.</li>
+          </ul>
      </section>
 
 
     <!-- References -->
     <section class="references">
-        <h3>References</h3>
-        <p>The information used in this article came from peer-reviewed studies, publications, and/or research. For more information, please visit the links below.</p>
-        <ol>
-            <li>Intermittent Fasting and Weight Loss: <a href="https://www.ncbi.nlm.nih.gov/pubmed/27055824" target="_blank" rel="noopener noreferrer">https://www.ncbi.nlm.nih.gov/pubmed/27055824</a> (Link might be outdated - verify source if possible)</li>
-             <li>Effects of Intermittent Fasting on Body Composition: <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-015-0104-9" target="_blank" rel="noopener noreferrer">https://jissn.biomedcentral.com/articles/10.1186/s12970-015-0104-9</a> (Link might be outdated - verify source if possible)</li>
-            <li>Effectiveness of Intermittent Fasting (General - representative link needed if original 3rd link wasn't provided or is broken): Example: <a href="https://www.healthline.com/nutrition/intermittent-fasting-guide" target="_blank" rel="noopener noreferrer">General Guide on Healthline</a> (Replace with actual reference if available)</li>
-        </ol>
-         <div class="warning-box" style="margin-top: 1.5em; border-left-color: #aaa; background-color: #fafafa;">
-             <p><strong>Disclaimer:</strong> The content provided in this blog post is for informational purposes only and does not constitute medical advice. It is essential to consult with a qualified healthcare professional before making any decisions about your health or diet, including starting an Intermittent Fasting regimen. Individual results may vary.</p>
-         </div>
+         <h3>References</h3>
+         <p>The information used in this article came from peer-reviewed studies, publications, and/or research. For more information, please visit the links below.</p>
+         <ol>
+             <li>Intermittent Fasting and Weight Loss: <a href="https://www.ncbi.nlm.nih.gov/pubmed/27055824" target="_blank" rel="noopener noreferrer">https://www.ncbi.nlm.nih.gov/pubmed/27055824</a> (Link might be outdated)</li>
+              <li>Effects of Intermittent Fasting on Body Composition: <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-015-0104-9" target="_blank" rel="noopener noreferrer">https://jissn.biomedcentral.com/articles/10.1186/s12970-015-0104-9</a> (Link might be outdated)</li>
+             <li>Effectiveness of Intermittent Fasting (General - representative): <a href="https://www.healthline.com/nutrition/intermittent-fasting-guide" target="_blank" rel="noopener noreferrer">General Guide on Healthline</a></li>
+         </ol>
+          <div class="warning-box" style="margin-top: 1.5em; border-left-color: #aaa; background-color: #fafafa;">
+              <p><strong>Disclaimer:</strong> The content provided in this blog post is for informational purposes only and does not constitute medical advice. It is essential to consult with a qualified healthcare professional before making any decisions about your health or diet, including starting an Intermittent Fasting regimen. Individual results may vary.</p>
+          </div>
     </section>
 
 
 </div> <!-- End #if-blog-post-container -->
 
 <script>
-    // Ensure script runs after DOM is loaded and stays within the container
+    // Javascript remains the same
     document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('if-blog-post-container');
-        if (!container) return; // Exit if container not found
+        if (!container) return;
 
-        // Tab Functionality
+        // --- Tab Functionality ---
         const tabButtons = container.querySelectorAll('.tab-button');
         const tabPanes = container.querySelectorAll('.tab-pane');
 
         tabButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
-
-                // Update button active state
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
-
-                // Update pane active state
                 tabPanes.forEach(pane => {
-                    if (pane.id === tabId) {
-                        pane.classList.add('active');
-                    } else {
-                        pane.classList.remove('active');
-                    }
+                    pane.classList.toggle('active', pane.id === tabId);
                 });
             });
         });
 
-        // Optional: Add simple animations or interactions here if needed
-        // e.g., fade in sections on scroll (would require Intersection Observer API)
+        // --- Subtle Scroll Fade-In Effect ---
+        const sections = container.querySelectorAll('.section');
+
+        const observerOptions = {
+            root: null, // relative to viewport
+            rootMargin: '0px',
+            threshold: 0.1 // trigger when 10% of the section is visible
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Optional: stop observing once visible
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sections.forEach(section => observer.observe(section));
 
     });
 </script>
