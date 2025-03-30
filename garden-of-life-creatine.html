@@ -12,37 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-		
-        .feature-icon {
-            /* font-size: 2rem; Removed */
-            color: var(--primary-blue); /* Keep for potential fallback or other elements */
-            margin-bottom: 1rem;
-            /* Remove fixed height/width from container, let it size based on image */
-            /* height: 36px; */ /* REMOVED */
-            /* width: 36px;  */ /* REMOVED */
-            display: inline-block; /* Keep or change to block as needed for layout */
-            /* Add vertical-align if needed with inline-block */
-            vertical-align: middle; /* Example alignment */
-        }
-
-        /* Remove or comment out the SVG rule if it exists */
-        /*
-        .feature-icon svg {
-           width: 100%;
-           height: 100%;
-           display: block;
-        }
-        */
-
-        /* ADD this rule specifically for the images */
-        .feature-icon img {
-           width: 48px;  /* Set desired image width */
-           height: 48px; /* Set desired image height */
-           display: block; /* Good practice for images in containers */
-           /* Optional: Control how the image fits if aspect ratio differs */
-           /* object-fit: contain; */
-        }
-		
         /* Garden of Life Improved Color Palette */
         :root {
             --primary-blue: #003f7e;
@@ -500,6 +469,11 @@
             box-shadow: var(--box-shadow);
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease;
+            /* Center align content within the item */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .feature-item:hover {
@@ -507,21 +481,21 @@
         }
 
         .feature-icon {
-            /* font-size: 2rem; Removed as SVG size is handled differently */
-            color: var(--primary-blue); /* SVG will inherit this color */
+            /* Remove font-size styling as we're using images */
+            /* font-size: 2rem; */
+            color: var(--primary-blue); /* Keep for potential future use */
             margin-bottom: 1rem;
-            /* Ensure SVG has a defined size */
-            height: 36px; /* Adjust size as needed */
-            width: 36px;  /* Adjust size as needed */
-            display: inline-block; /* Or block if you prefer */
+             /* Ensure the container takes minimal space */
+            display: inline-block;
         }
-        
-        /* Ensure SVGs scale nicely within the container */
-        .feature-icon svg {
-           width: 100%;
-           height: 100%;
-           display: block; /* Prevents extra space below */
+
+        /* Style for the image icons */
+        .feature-icon img {
+            width: 48px;
+            height: 48px;
+            display: block; /* Ensures proper block-level rendering */
         }
+
 
         .feature-title {
             font-weight: 600;
@@ -569,6 +543,8 @@
             .hero-section { margin: -25px -25px 30px; }
             .myth-fact-section { padding: 20px; }
             .dosage-calculator { padding: 25px; }
+             /* Adjust feature item padding on smaller screens */
+            .feature-item { padding: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -583,11 +559,12 @@
             .myth-fact-question { padding: 15px 20px; }
             .myth-fact-answer { padding: 15px 20px; }
             .chart-container { padding: 15px; }
-            /* Adjust icon size for small screens if needed */
-            .feature-icon {
-                height: 32px; 
-                width: 32px;
-            }
+             /* Adjust icon size slightly for very small screens if needed */
+            .feature-icon img {
+                 width: 40px;
+                 height: 40px;
+             }
+             .feature-item { padding: 15px; }
         }
     </style>
 </head>
@@ -619,7 +596,7 @@
                 data: {
                     labels: ['Week 0', 'Week 2', 'Week 4', 'Week 6', 'Week 8'],
                     datasets: [{
-                        label: ' Creatine Group',
+                        label: 'Creatine Group',
                         data: [100, 105, 112, 118, 125],
                         borderColor: '#003f7e',
                         backgroundColor: 'rgba(0, 63, 126, 0.1)',
@@ -630,7 +607,7 @@
                         pointRadius: 5,
                         pointHoverRadius: 7
                     }, {
-                        label: ' Placebo Group',
+                        label: 'Placebo Group',
                         data: [100, 102, 104, 106, 108],
                         borderColor: '#aab8c2',
                         backgroundColor: 'rgba(170, 184, 194, 0.1)',
@@ -709,7 +686,7 @@
                 data: {
                     labels: ['Day 0', 'Day 3', 'Day 7', 'Week 2', 'Week 3', 'Week 4'],
                     datasets: [{
-                        label: ' Loading Protocol',
+                        label: 'Loading Protocol',
                         data: [10, 60, 95, 98, 100, 100],
                         borderColor: '#003f7e',
                         backgroundColor: 'rgba(0, 63, 126, 0.1)',
@@ -720,7 +697,7 @@
                         pointRadius: 5,
                         pointHoverRadius: 7
                     }, {
-                        label: ' Maintenance Only',
+                        label: 'Maintenance Only',
                         data: [10, 25, 45, 70, 90, 100],
                         borderColor: '#7cb732',
                         backgroundColor: 'rgba(124, 183, 50, 0.1)',
@@ -821,14 +798,16 @@
             const resultDiv = document.getElementById('dosage-result');
             const weight = parseFloat(weightInput.value);
             
-            if (isNaN(weight) || weight <= 0 || weight > 500) {
-                resultDiv.innerHTML = 'Please enter a valid weight (lb).';
+            // Updated validation max weight to 300 as per placeholder and min to 40
+            if (isNaN(weight) || weight < 40 || weight > 300) { 
+                resultDiv.innerHTML = 'Please enter a valid weight (40-300 kg).';
                 resultDiv.className = 'visible';
                 weightInput.focus();
                 return;
             }
             
-            const calculatedDose = (weight * 0.014).toFixed(1);
+            // Calculation remains 0.03g per kg
+            const calculatedDose = (weight * 0.03).toFixed(1); 
             resultDiv.innerHTML = `<strong>Standard maintenance:</strong> <span>3-5g</span> daily<br><strong>Your approx. guideline:</strong> <span>${calculatedDose}g</span> daily`;
             resultDiv.className = 'visible';
         }
@@ -841,7 +820,7 @@
 
         <div class="content">
             <div class="hero-section">
-                <img src="https://www.gardenoflife.com/media/wysiwyg/GoL_CreatineAthletic_Blog_905x400_v1.jpg" alt="Garden of Life Creatine Athletic Performance" class="hero-image">
+                <img src="https://images.unsplash.com/photo-1584735935682-5b5b28540a6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Athlete preparing creatine shake" class="hero-image">
                 <div class="hero-overlay">
                     <h2>Enhanced Performance, Naturally</h2>
                     <p>The scientifically-proven supplement for strength, power, and recovery</p>
@@ -849,17 +828,16 @@
             </div>
 
             <p>Are you looking to take your athletic performance to the next level? Want to boost your strength, power, and muscle growth? Look no further than <span class="highlight">creatine</span>! This naturally occurring compound is a superstar supplement backed by tons of research, and it's not just for bodybuilders. Let's dive into how creatine works and how it can benefit you, the Garden of Life way!</p>
-
-
-			<section class="section"><!-- Audio player section -->
-			<div class="audio-container">
+            
+            <section class="section"><!-- Audio player section -->
+            <div class="audio-container">
 	<p><strong>Listen while you browse:<br></strong>Google's Deep Dive Podcast on Creatine: Powering Natural Performance</p>
 			<audio controls="controls">
 			        <source src="https://primacy.io/Google-Creatine_Podcast.MP3" type="audio/mpeg">
 			        Your browser does not support the audio element.
 			      </source></audio>
 			</div>
-
+            </section>
 
             <h2>What is Creatine and Where Does it Come From?</h2>
 
@@ -884,50 +862,38 @@
 
             <h2>The Science-Backed Benefits of Creatine</h2>
 
-           
-		   
-		   
-           <!-- START OF IMAGE ICON SECTION -->
-           <div class="features-grid">
-               <div class="feature-item">
-                   <div class="feature-icon">
-                       <!-- Image Icon for Strength (Barbell) -->
-                       <img src="https://primacy.io/barbell_icon-blue.png" alt="Barbell icon representing strength">
-                   </div>
-                   <div class="feature-title">Increased Muscle Strength and Power</div>
-                   <p>This is the most well-documented benefit. Creatine helps you lift heavier and generate more force.</p>
-               </div>
-               <div class="feature-item">
-                   <div class="feature-icon">
-                       <!-- Image Icon for Growth (Bicep) -->
-                       <img src="https://primacy.io/bicep_icon-blue.png" alt="Bicep icon representing muscle growth">
-                   </div>
-                   <div class="feature-title">Enhanced Muscle Growth</div>
-                   <p>By enabling harder training sessions and potentially drawing water into muscle cells (cell volumization), creatine supports muscle growth over time.</p>
-               </div>
-               <div class="feature-item">
-                   <div class="feature-icon">
-                        <!-- Image Icon for Athletic Performance (Running Person) -->
-                       <img src="https://primacy.io/run_icon-blue.png" alt="Running icon representing athletic performance">
-                   </div>
-                   <div class="feature-title">Improved Athletic Performance</div>
-                   <p>Benefits are seen across sports involving repeated bursts of high intensity, like weightlifting, sprinting, soccer, basketball, and hockey.</p>
-               </div>
-               <div class="feature-item">
-                   <div class="feature-icon">
-                       <!-- Image Icon for Cognition (Brain) -->
-                        <img src="https://primacy.io/brain_icon-blue.png" alt="Brain icon representing cognitive benefits">
-                   </div>
-                   <div class="feature-title">Potential Cognitive Benefits</div>
-                   <p>Your brain uses ATP too! Emerging research suggests creatine may support cognitive function, especially during stressful situations.</p>
-               </div>
-           </div>
-           <!-- END OF IMAGE ICON SECTION -->
-			
-			
-			
-			
-			
+            <!-- Updated Feature Grid with Image Icons -->
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                         <img src="https://primacy.io/barbell_icon-blue.png" alt="Barbell icon representing strength">
+                    </div>
+                    <div class="feature-title">Increased Muscle Strength and Power</div>
+                    <p>This is the most well-documented benefit. Creatine helps you lift heavier and generate more force.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <img src="https://primacy.io/bicep_icon-blue.png" alt="Bicep icon representing muscle growth">
+                    </div>
+                    <div class="feature-title">Enhanced Muscle Growth</div>
+                    <p>By enabling harder training sessions and potentially drawing water into muscle cells (cell volumization), creatine supports muscle growth over time.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <img src="https://primacy.io/run_icon-blue.png" alt="Running icon representing athletic performance">
+                    </div>
+                    <div class="feature-title">Improved Athletic Performance</div>
+                    <p>Benefits are seen across sports involving repeated bursts of high intensity, like weightlifting, sprinting, soccer, basketball, and hockey.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                         <img src="https://primacy.io/brain_icon-blue.png" alt="Brain icon representing cognitive benefits">
+                    </div>
+                    <div class="feature-title">Potential Cognitive Benefits</div>
+                    <p>Your brain uses ATP too! Emerging research suggests creatine may support cognitive function, especially during stressful situations.</p>
+                </div>
+            </div>
+            <!-- End Updated Feature Grid -->
 
             <!-- Interactive Chart 1: Strength Gains -->
             <div class="chart-container">
@@ -949,29 +915,34 @@
 
             <h2>How to Take Creatine: Loading vs. Maintenance</h2>
 
-            <p>You have two primary strategies for starting creatine:</p>
+            <div class="two-column">
+                <div class="column">
+                    <p>You have two primary strategies for starting creatine:</p>
 
-            <ol>
-                <li><span class="highlight">Loading Phase (Optional, Faster Saturation):</span> Take approximately 0.3 grams per kg of body weight per day, typically split into 4-5 doses (e.g., 5g x 4 times/day = 20g total) for 5-7 days. This quickly saturates your muscle creatine stores.</li>
-                <li><span class="highlight">Maintenance Phase (Essential):</span> After loading (or if skipping loading), take a daily dose of 3-5 grams to keep your muscle stores topped up.</li>
-            </ol>
+                    <ol>
+                        <li><span class="highlight">Loading Phase (Optional, Faster Saturation):</span> Take approximately 0.3 grams per kg of body weight per day, typically split into 4-5 doses (e.g., 5g x 4 times/day = 20g total) for 5-7 days. This quickly saturates your muscle creatine stores.</li>
+                        <li><span class="highlight">Maintenance Phase (Essential):</span> After loading (or if skipping loading), take a daily dose of 3-5 grams to keep your muscle stores topped up.</li>
+                    </ol>
 
-            <p>Alternatively, you can simply <span class="highlight">start with the maintenance dose (3-5g daily)</span>. It will take longer (around 3-4 weeks) to fully saturate your muscles compared to loading, but the long-term results are the same.</p>
-
-            <!-- Interactive Chart 2: Saturation Levels -->
-            <div class="chart-container">
-                <h3>Muscle Saturation: Loading vs. Maintenance</h3>
-                <canvas id="saturationChart"></canvas>
-                <p style="text-align: center; font-size: 0.9em; color: var(--light-text); margin-top: 15px;">Illustrative example comparing saturation speed.</p>
+                    <p>Alternatively, you can simply <span class="highlight">start with the maintenance dose (3-5g daily)</span>. It will take longer (around 3-4 weeks) to fully saturate your muscles compared to loading, but the long-term results are the same.</p>
+                </div>
+                <div class="column">
+                    <!-- Interactive Chart 2: Saturation Levels -->
+                    <div class="chart-container" style="margin-top: 0">
+                        <h3>Muscle Saturation: Loading vs. Maintenance</h3>
+                        <canvas id="saturationChart"></canvas>
+                        <p style="text-align: center; font-size: 0.9em; color: var(--light-text); margin-top: 15px;">Illustrative example comparing saturation speed.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Simple Dosage 'Guideline' -->
             <div class="dosage-calculator">
                 <h3>Quick Dose Guideline (Maintenance)</h3>
-                <p>While 3-5g daily works for most, a common guideline is ~0.014g per lb bodyweight for maintenance. This is just an estimate - always follow product instructions.</p>
+                <p>While 3-5g daily works for most, a common guideline is ~0.03g per kg bodyweight for maintenance. This is just an estimate - always follow product instructions.</p>
                 <div class="calc-form">
-                    <label for="weight">Your Weight (lb):</label>
-                    <input type="number" id="weight" name="weight" min="88" max="440" placeholder="e.g., 154">
+                    <label for="weight">Your Weight (kg):</label>
+                    <input type="number" id="weight" name="weight" min="40" max="300" placeholder="e.g., 70">
                     <button onclick="calculateDosage()">Calculate Approx. Dose</button>
                 </div>
                 <div id="dosage-result"></div>
