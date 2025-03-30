@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creatine: Power Up Your Performance, Naturally!</title>
-    
+
     <!-- Include Chart.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    
+
     <style>
         /* Garden of Life Improved Color Palette */
         :root {
@@ -339,29 +339,25 @@
             transition: transform 0.3s ease;
             color: var(--primary-blue);
         }
-		
+
 	    .myth-fact-answer {
-	               padding: 0 25px; /* Keep horizontal padding */
-	               max-height: 0;
-	               overflow: hidden; /* Crucial */
-	               transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Adjust transition properties */
-	               color: var(--medium-text);
-	               background-color: var(--white);
-	               font-size: 1rem;
-	               /* Add this to prevent internal margins from causing issues */
-	               box-sizing: content-box; /* Let padding add to size, but max-height controls total */
-	           }
-
-			   .myth-fact.active .myth-fact-answer {
-			              padding: 20px 25px; /* Restore vertical padding when active */
-			              max-height: 300px; /* Or adjust if needed */
-			              box-sizing: border-box; /* Switch back for intuitive padding behavior when open */
-			          }
-
-        .myth-fact.active .myth-fact-question .arrow {
-            transform: rotate(90deg);
+            padding: 0 25px; /* Keep horizontal padding */
+            max-height: 0;
+            overflow: hidden; /* Crucial */
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Adjust transition properties */
+            color: var(--medium-text);
+            background-color: var(--white);
+            font-size: 1rem;
+            /* Add this to prevent internal margins from causing issues */
+            box-sizing: content-box; /* Let padding add to size, but max-height controls total */
         }
-		
+
+        .myth-fact.active .myth-fact-answer {
+            padding: 20px 25px; /* Restore vertical padding when active */
+            max-height: 300px; /* Or adjust if needed */
+            box-sizing: border-box; /* Switch back for intuitive padding behavior when open */
+        }
+
         /* Existing .myth-fact-question .arrow rule */
         .myth-fact-question .arrow {
             font-size: 1.2rem; /* Or your preferred size */
@@ -485,6 +481,7 @@
             box-shadow: var(--box-shadow);
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease;
+            text-align: center; /* Center content within the card */
         }
 
         .feature-item:hover {
@@ -492,10 +489,20 @@
         }
 
         .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-blue);
+            /* Remove font-size and color if they were for emojis */
             margin-bottom: 1rem;
+            /* Keep the div for structure and margin */
+            height: 48px; /* Set fixed height to match image */
+            display: flex; /* Use flex to center image vertically */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
         }
+
+        /* Style for the image itself */
+        .feature-icon img {
+            vertical-align: middle; /* Good practice */
+        }
+
 
         .feature-title {
             font-weight: 600;
@@ -555,7 +562,10 @@
             .button { padding: 12px 25px; }
             .calc-form { flex-direction: column; }
             .myth-fact-question { padding: 15px 20px; }
-            .myth-fact-answer { padding: 15px 20px; }
+            .myth-fact-answer { padding: 15px 20px; } /* Use this for active state padding */
+             .myth-fact.active .myth-fact-answer {
+                 padding: 15px 20px; /* Ensure padding is consistent when open */
+             }
             .chart-container { padding: 15px; }
         }
     </style>
@@ -566,213 +576,222 @@
         window.onload = function() {
             // Initialize the charts
             initializeCharts();
-            
+
             // Set up the myth vs fact accordions
             setupAccordions();
-            
-            // Set up calculator
-            document.getElementById('weight').addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    calculateDosage();
-                }
-            });
+
+            // Set up calculator Enter key listener
+            const weightInput = document.getElementById('weight');
+            if(weightInput) {
+                weightInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        calculateDosage();
+                    }
+                });
+            }
         };
-        
+
         // Chart initialization function
         function initializeCharts() {
             // Strength Chart
-            const strengthCtx = document.getElementById('strengthChart').getContext('2d');
-            const strengthChart = new Chart(strengthCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 0', 'Week 2', 'Week 4', 'Week 6', 'Week 8'],
-                    datasets: [{
-                        label: ' Creatine Group',
-                        data: [100, 105, 112, 118, 125],
-                        borderColor: '#003f7e',
-                        backgroundColor: 'rgba(0, 63, 126, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.2,
-                        fill: true,
-                        pointBackgroundColor: '#003f7e',
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }, {
-                        label: ' Placebo Group',
-                        data: [100, 102, 104, 106, 108],
-                        borderColor: '#aab8c2',
-                        backgroundColor: 'rgba(170, 184, 194, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.2,
-                        fill: true,
-                        borderDash: [5, 5],
-                        pointBackgroundColor: '#aab8c2',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 95,
-                            title: {
-                                display: true,
-                                text: 'Relative Strength Increase (%)',
-                                color: '#455a64',
-                                font: { size: 13 }
-                            },
-                            ticks: {
-                                color: '#78909c',
-                                font: { size: 12 }
-                            },
-                            grid: { color: 'rgba(0,0,0,0.05)' }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Time',
-                                color: '#455a64',
-                                font: { size: 13 }
-                            },
-                            ticks: {
-                                color: '#78909c',
-                                font: { size: 12 }
-                            },
-                            grid: { display: false }
-                        }
+            try {
+                const strengthCtx = document.getElementById('strengthChart').getContext('2d');
+                const strengthChart = new Chart(strengthCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Week 0', 'Week 2', 'Week 4', 'Week 6', 'Week 8'],
+                        datasets: [{
+                            label: ' Creatine Group',
+                            data: [100, 105, 112, 118, 125],
+                            borderColor: '#003f7e',
+                            backgroundColor: 'rgba(0, 63, 126, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.2,
+                            fill: true,
+                            pointBackgroundColor: '#003f7e',
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }, {
+                            label: ' Placebo Group',
+                            data: [100, 102, 104, 106, 108],
+                            borderColor: '#aab8c2',
+                            backgroundColor: 'rgba(170, 184, 194, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.2,
+                            fill: true,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: '#aab8c2',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
                     },
-                    plugins: {
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#ffffff',
-                            bodyColor: '#ffffff',
-                            titleFont: { size: 13 },
-                            bodyFont: { size: 13 },
-                            padding: 10,
-                            cornerRadius: 6
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 95,
+                                title: {
+                                    display: true,
+                                    text: 'Relative Strength Increase (%)',
+                                    color: '#455a64',
+                                    font: { size: 13 }
+                                },
+                                ticks: {
+                                    color: '#78909c',
+                                    font: { size: 12 }
+                                },
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time',
+                                    color: '#455a64',
+                                    font: { size: 13 }
+                                },
+                                ticks: {
+                                    color: '#78909c',
+                                    font: { size: 12 }
+                                },
+                                grid: { display: false }
+                            }
                         },
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: '#455a64',
-                                usePointStyle: true,
-                                boxWidth: 8,
-                                padding: 15,
-                                font: { size: 13 }
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#ffffff',
+                                titleFont: { size: 13 },
+                                bodyFont: { size: 13 },
+                                padding: 10,
+                                cornerRadius: 6
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#455a64',
+                                    usePointStyle: true,
+                                    boxWidth: 8,
+                                    padding: 15,
+                                    font: { size: 13 }
+                                }
                             }
                         }
                     }
-                }
-            });
-            
+                });
+            } catch (e) {
+                console.error("Could not initialize Strength Chart:", e);
+            }
+
             // Saturation Chart
-            const saturationCtx = document.getElementById('saturationChart').getContext('2d');
-            const saturationChart = new Chart(saturationCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Day 0', 'Day 3', 'Day 7', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [{
-                        label: ' Loading Protocol',
-                        data: [10, 60, 95, 98, 100, 100],
-                        borderColor: '#003f7e',
-                        backgroundColor: 'rgba(0, 63, 126, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.2,
-                        fill: true,
-                        pointBackgroundColor: '#003f7e',
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }, {
-                        label: ' Maintenance Only',
-                        data: [10, 25, 45, 70, 90, 100],
-                        borderColor: '#7cb732',
-                        backgroundColor: 'rgba(124, 183, 50, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.2,
-                        fill: true,
-                        borderDash: [5, 5],
-                        pointBackgroundColor: '#7cb732',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 105,
-                            title: {
-                                display: true,
-                                text: 'Muscle Creatine Saturation (%)',
-                                color: '#455a64',
-                                font: { size: 13 }
-                            },
-                            ticks: {
-                                color: '#78909c',
-                                font: { size: 12 }
-                            },
-                            grid: { color: 'rgba(0,0,0,0.05)' }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Time',
-                                color: '#455a64',
-                                font: { size: 13 }
-                            },
-                            ticks: {
-                                color: '#78909c',
-                                font: { size: 12 }
-                            },
-                            grid: { display: false }
-                        }
+            try {
+                const saturationCtx = document.getElementById('saturationChart').getContext('2d');
+                const saturationChart = new Chart(saturationCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Day 0', 'Day 3', 'Day 7', 'Week 2', 'Week 3', 'Week 4'],
+                        datasets: [{
+                            label: ' Loading Protocol',
+                            data: [10, 60, 95, 98, 100, 100],
+                            borderColor: '#003f7e',
+                            backgroundColor: 'rgba(0, 63, 126, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.2,
+                            fill: true,
+                            pointBackgroundColor: '#003f7e',
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }, {
+                            label: ' Maintenance Only',
+                            data: [10, 25, 45, 70, 90, 100],
+                            borderColor: '#7cb732',
+                            backgroundColor: 'rgba(124, 183, 50, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.2,
+                            fill: true,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: '#7cb732',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
                     },
-                    plugins: {
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#ffffff',
-                            bodyColor: '#ffffff',
-                            titleFont: { size: 13 },
-                            bodyFont: { size: 13 },
-                            padding: 10,
-                            cornerRadius: 6
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 105,
+                                title: {
+                                    display: true,
+                                    text: 'Muscle Creatine Saturation (%)',
+                                    color: '#455a64',
+                                    font: { size: 13 }
+                                },
+                                ticks: {
+                                    color: '#78909c',
+                                    font: { size: 12 }
+                                },
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time',
+                                    color: '#455a64',
+                                    font: { size: 13 }
+                                },
+                                ticks: {
+                                    color: '#78909c',
+                                    font: { size: 12 }
+                                },
+                                grid: { display: false }
+                            }
                         },
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: '#455a64',
-                                usePointStyle: true,
-                                boxWidth: 8,
-                                padding: 15,
-                                font: { size: 13 }
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#ffffff',
+                                titleFont: { size: 13 },
+                                bodyFont: { size: 13 },
+                                padding: 10,
+                                cornerRadius: 6
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#455a64',
+                                    usePointStyle: true,
+                                    boxWidth: 8,
+                                    padding: 15,
+                                    font: { size: 13 }
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            } catch (e) {
+                console.error("Could not initialize Saturation Chart:", e);
+            }
         }
-        
+
         // Set up accordion functionality (CSS Rotation Version)
         function setupAccordions() {
             const mythFactItems = document.querySelectorAll('.myth-fact');
             mythFactItems.forEach(item => {
                 const question = item.querySelector('.myth-fact-question');
                 if (question) { // Check if the question element exists
-                    // Find arrow span - not strictly needed now but good practice
                     const arrow = question.querySelector('.arrow');
                     if (arrow) {
-                        // Optional: Ensure all arrows start pointing right if not already ▶
-                        arrow.innerHTML = '▶'; // Or just put ▶ directly in HTML
+                        arrow.innerHTML = '▶'; // Ensure it starts as right arrow
 
                         question.addEventListener('click', function() {
                             const wasActive = item.classList.contains('active');
@@ -781,39 +800,36 @@
                             mythFactItems.forEach(otherItem => {
                                 if (otherItem !== item && otherItem.classList.contains('active')) {
                                     otherItem.classList.remove('active');
-                                    // No need to change other arrows via JS anymore
                                 }
                             });
 
                             // Toggle this item's active class
-                            // If it wasn't active before, make it active. If it was, remove active.
-                            if (!wasActive) {
-                                item.classList.add('active');
-                            } else {
-                                item.classList.remove('active');
-                            }
-
-                            // --- REMOVED ARROW CHARACTER SWAPPING LOGIC ---
-                            // The CSS handles the visual change based on the 'active' class now.
+                            item.classList.toggle('active', !wasActive);
                         });
                     }
                 }
             });
         }
-        
+
         // Dosage calculator function
         function calculateDosage() {
             const weightInput = document.getElementById('weight');
             const resultDiv = document.getElementById('dosage-result');
+
+            if (!weightInput || !resultDiv) {
+                console.error("Dosage calculator elements not found.");
+                return;
+            }
+
             const weight = parseFloat(weightInput.value);
-            
+
             if (isNaN(weight) || weight <= 0 || weight > 500) {
-                resultDiv.innerHTML = 'Please enter a valid weight (lb).';
+                resultDiv.innerHTML = 'Please enter a valid weight (1-500 lb).';
                 resultDiv.className = 'visible';
                 weightInput.focus();
                 return;
             }
-            
+
             const calculatedDose = (weight * 0.014).toFixed(1);
             resultDiv.innerHTML = `<strong>Standard maintenance:</strong> <span>3-5g</span> daily<br><strong>Your approx. guideline:</strong> <span>${calculatedDose}g</span> daily`;
             resultDiv.className = 'visible';
@@ -861,22 +877,30 @@
 
             <div class="features-grid">
                 <div class="feature-item">
-                    <div class="feature-icon">💪</div>
+                    <div class="feature-icon">
+                         <img src="https://primacy.io/barbell_icon-blue.png" alt="Barbell icon representing strength" width="48" height="48">
+                    </div>
                     <div class="feature-title">Increased Muscle Strength and Power</div>
                     <p>This is the most well-documented benefit. Creatine helps you lift heavier and generate more force.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">📈</div>
+                    <div class="feature-icon">
+                         <img src="https://primacy.io/bicep_icon-blue.png" alt="Bicep icon representing muscle growth" width="48" height="48">
+                    </div>
                     <div class="feature-title">Enhanced Muscle Growth</div>
                     <p>By enabling harder training sessions and potentially drawing water into muscle cells (cell volumization), creatine supports muscle growth over time.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">🏃‍♀️</div>
+                    <div class="feature-icon">
+                         <img src="https://primacy.io/run_icon-blue.png" alt="Running icon representing athletic performance" width="48" height="48">
+                    </div>
                     <div class="feature-title">Improved Athletic Performance</div>
                     <p>Benefits are seen across sports involving repeated bursts of high intensity, like weightlifting, sprinting, soccer, basketball, and hockey.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">🧠</div>
+                    <div class="feature-icon">
+                         <img src="https://primacy.io/brain_icon-blue.png" alt="Brain icon representing cognitive benefits" width="48" height="48">
+                    </div>
                     <div class="feature-title">Potential Cognitive Benefits</div>
                     <p>Your brain uses ATP too! Emerging research suggests creatine may support cognitive function, especially during stressful situations.</p>
                 </div>
@@ -924,8 +948,8 @@
                 <p>While 3-5g daily works for most, a common guideline is ~0.014g per lb bodyweight for maintenance. This is just an estimate - always follow product instructions.</p>
                 <div class="calc-form">
                     <label for="weight">Your Weight (lb):</label>
-                    <input type="number" id="weight" name="weight" min="88" max="440" placeholder="e.g., 154">
-                    <button onclick="calculateDosage()">Calculate Approx. Dose</button>
+                    <input type="number" id="weight" name="weight" min="1" max="500" placeholder="e.g., 154"> <!-- Adjusted min to 1 -->
+                    <button type="button" onclick="calculateDosage()">Calculate Approx. Dose</button> <!-- Added type="button" -->
                 </div>
                 <div id="dosage-result"></div>
             </div>
@@ -939,73 +963,74 @@
             <p>Creatine is one of the safest and most studied sports supplements available. Decades of research consistently show it's safe for long-term use in healthy individuals when taken at recommended dosages.</p>
             <p>However, myths still circulate. Let's address some common ones:</p>
 
-		        <!-- Interactive Myth vs Fact Section -->
-		        <div class="myth-fact-section">
-		             <h3>Myth vs. Fact</h3>
-		            <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                    <span>Myth: Creatine causes kidney damage.</span>
-		                    <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><b><br>Fact:</b> Extensive research in healthy individuals has shown <span class="highlight">no evidence</span> that recommended creatine doses harm kidney function. People with pre-existing kidney conditions should consult their doctor before use, as with any supplement.</p>
-		                </div>
-		            </div>
-		            <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                     <span>Myth: Creatine causes dehydration and cramping.</span>
-		                     <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><b><br>Fact:</b> Controlled studies do <span class="highlight">not support</span> the idea that creatine causes dehydration or cramping. In fact, it might even help with thermoregulation. Proper hydration is always important for athletes, regardless of creatine use.</p>
-		                </div>
-		            </div>
-		             <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                     <span>Myth: Creatine is a steroid.</span>
-		                     <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><b><br>Fact:</b> Absolutely not! Creatine is a <span class="highlight">naturally occurring compound</span> made from amino acids. It has a completely different chemical structure and mechanism of action than anabolic steroids.</p>
-		                </div>
-		            </div>
-		             <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                     <span>Myth: You lose all your gains when you stop taking creatine.</span>
-		                     <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><br><b>Fact:</b> You will lose the extra water weight stored in the muscles, and your creatine levels will return to baseline over time. However, the actual <span class="highlight">muscle strength and size gains</span> made through harder training will largely remain if you continue training properly.</p>
-		                </div>
-		            </div>
-		        </div>
+            <!-- Interactive Myth vs Fact Section -->
+            <div class="myth-fact-section">
+                <h3>Myth vs. Fact</h3>
+                <div class="myth-fact">
+                    <div class="myth-fact-question">
+                        <span>Myth: Creatine causes kidney damage.</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> Extensive research in healthy individuals has shown <span class="highlight">no evidence</span> that recommended creatine doses harm kidney function. People with pre-existing kidney conditions should consult their doctor before use, as with any supplement.</p>
+                    </div>
+                </div>
+                <div class="myth-fact">
+                    <div class="myth-fact-question">
+                         <span>Myth: Creatine causes dehydration and cramping.</span>
+                         <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> Controlled studies do <span class="highlight">not support</span> the idea that creatine causes dehydration or cramping. In fact, it might even help with thermoregulation. Proper hydration is always important for athletes, regardless of creatine use.</p>
+                    </div>
+                </div>
+                 <div class="myth-fact">
+                    <div class="myth-fact-question">
+                         <span>Myth: Creatine is a steroid.</span>
+                         <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> Absolutely not! Creatine is a <span class="highlight">naturally occurring compound</span> made from amino acids. It has a completely different chemical structure and mechanism of action than anabolic steroids.</p>
+                    </div>
+                </div>
+                 <div class="myth-fact">
+                    <div class="myth-fact-question">
+                         <span>Myth: You lose all your gains when you stop taking creatine.</span>
+                         <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> You will lose the extra water weight stored in the muscles, and your creatine levels will return to baseline over time. However, the actual <span class="highlight">muscle strength and size gains</span> made through harder training will largely remain if you continue training properly.</p>
+                    </div>
+                </div>
+            </div>
 
-		        <p>The most common side effect is slight weight gain (1-2 kg) initially, primarily due to water retention within the muscles. Some individuals might experience mild stomach discomfort if they take too much at once on an empty stomach.</p>
+            <p>The most common side effect is slight weight gain (1-2 kg) initially, primarily due to water retention within the muscles. Some individuals might experience mild stomach discomfort if they take too much at once on an empty stomach.</p>
 
-		        <h2>Choosing the Right Creatine: The Garden of Life Standard</h2>
+            <h2>Choosing the Right Creatine: The Garden of Life Standard</h2>
 
-		        <p>When choosing *any* supplement, quality and purity matter. At Garden of Life, we believe in clean, traceable ingredients. When selecting a creatine supplement, look for:</p>
-		        <ul>
-		            <li>✅ <span class="highlight">Third-Party Certifications:</span> Look for seals like NSF Certified for Sport or Informed Choice/Informed Sport. These verify that the product contains what it says it does and is tested for banned substances.</li>
-		            <li>✅ <span class="highlight">High-Quality Creatine Monohydrate:</span> Often sourced from reputable manufacturers (e.g., Creapure® is a well-known high-purity brand, though others are good too).</li>
-		            <li>✅ <span class="highlight">Minimal Additives:</span> Choose products with just creatine monohydrate, avoiding unnecessary fillers, artificial colors, or sweeteners if possible, especially if you prefer unflavored options to mix yourself.</li>
-		        </ul>
+            <p>When choosing *any* supplement, quality and purity matter. At Garden of Life, we believe in clean, traceable ingredients. When selecting a creatine supplement, look for:</p>
+            <ul>
+                <li>✅ <span class="highlight">Third-Party Certifications:</span> Look for seals like NSF Certified for Sport or Informed Choice/Informed Sport. These verify that the product contains what it says it does and is tested for banned substances.</li>
+                <li>✅ <span class="highlight">High-Quality Creatine Monohydrate:</span> Often sourced from reputable manufacturers (e.g., Creapure® is a well-known high-purity brand, though others are good too).</li>
+                <li>✅ <span class="highlight">Minimal Additives:</span> Choose products with just creatine monohydrate, avoiding unnecessary fillers, artificial colors, or sweeteners if possible, especially if you prefer unflavored options to mix yourself.</li>
+            </ul>
 
-		        <!-- Inline image - using previous URL -->
-		        <img src="https://www.gardenoflife.com/media/catalog/product/6/5/658010134040-6_1.jpg?optimize=medium&fit=bounds&height=&width=&canvas=:" alt="Clean supplement bottles on a shelf" class="inline-image">
+            <!-- Inline image - using previous URL -->
+            <img src="https://www.gardenoflife.com/media/catalog/product/6/5/658010134040-6_1.jpg?optimize=medium&fit=bounds&height=&width=&canvas=:" alt="Clean supplement bottles on a shelf" class="inline-image">
 
-		        <h2>Ready to Power Up Your Performance?</h2>
+            <h2>Ready to Power Up Your Performance?</h2>
 
-		        <p>Creatine is a scientifically proven, safe, and natural way to enhance your strength, power, and athletic performance. By helping your muscles produce energy more efficiently, it allows you to train harder and achieve your goals faster. Remember to combine supplementation with consistent training and a healthy diet for the best results.</p>
-		        <p>As always, it's a good idea to chat with your doctor or a registered dietitian before starting any new supplement, especially if you have any underlying health conditions.</p>
+            <p>Creatine is a scientifically proven, safe, and natural way to enhance your strength, power, and athletic performance. By helping your muscles produce energy more efficiently, it allows you to train harder and achieve your goals faster. Remember to combine supplementation with consistent training and a healthy diet for the best results.</p>
+            <p>As always, it's a good idea to chat with your doctor or a registered dietitian before starting any new supplement, especially if you have any underlying health conditions.</p>
 
-		        <a href="https://www.gardenoflife.com/products" target="_blank" class="button button-center">Explore Garden of Life</a>
+            <a href="https://www.gardenoflife.com/products" target="_blank" class="button button-center">Explore Garden of Life</a>
 
-		        
-				<div style="text-align: center;">
-				 <p>Empowering Extraordinary Health®</p>
-				</div>
+            <div class="footer">
+                <h3>Empowering Extraordinary Health®</h3>
+                <p>© Garden of Life LLC. All rights reserved.</p>
+             </div>
 
-		    </div>
-	</body>
+        </div> <!-- End Content -->
+    </div> <!-- End Container -->
+</body>
 </html>
