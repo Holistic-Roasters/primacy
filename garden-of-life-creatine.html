@@ -12,6 +12,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
+		
+        .feature-icon {
+            /* font-size: 2rem; Removed */
+            color: var(--primary-blue); /* Keep for potential fallback or other elements */
+            margin-bottom: 1rem;
+            /* Remove fixed height/width from container, let it size based on image */
+            /* height: 36px; */ /* REMOVED */
+            /* width: 36px;  */ /* REMOVED */
+            display: inline-block; /* Keep or change to block as needed for layout */
+            /* Add vertical-align if needed with inline-block */
+            vertical-align: middle; /* Example alignment */
+        }
+
+        /* Remove or comment out the SVG rule if it exists */
+        /*
+        .feature-icon svg {
+           width: 100%;
+           height: 100%;
+           display: block;
+        }
+        */
+
+        /* ADD this rule specifically for the images */
+        .feature-icon img {
+           width: 48px;  /* Set desired image width */
+           height: 48px; /* Set desired image height */
+           display: block; /* Good practice for images in containers */
+           /* Optional: Control how the image fits if aspect ratio differs */
+           /* object-fit: contain; */
+        }
+		
         /* Garden of Life Improved Color Palette */
         :root {
             --primary-blue: #003f7e;
@@ -339,38 +370,22 @@
             transition: transform 0.3s ease;
             color: var(--primary-blue);
         }
-		
-	    .myth-fact-answer {
-	               padding: 0 25px; /* Keep horizontal padding */
-	               max-height: 0;
-	               overflow: hidden; /* Crucial */
-	               transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Adjust transition properties */
-	               color: var(--medium-text);
-	               background-color: var(--white);
-	               font-size: 1rem;
-	               /* Add this to prevent internal margins from causing issues */
-	               box-sizing: content-box; /* Let padding add to size, but max-height controls total */
-	           }
 
-			   .myth-fact.active .myth-fact-answer {
-			              padding: 20px 25px; /* Restore vertical padding when active */
-			              max-height: 300px; /* Or adjust if needed */
-			              box-sizing: border-box; /* Switch back for intuitive padding behavior when open */
-			          }
-
-        .myth-fact.active .myth-fact-question .arrow {
-            transform: rotate(90deg);
-        }
-		
-        /* Existing .myth-fact-question .arrow rule */
-        .myth-fact-question .arrow {
-            font-size: 1.2rem; /* Or your preferred size */
-            transition: transform 0.3s ease; /* Keep the transition */
-            color: var(--primary-blue);
-            display: inline-block; /* Needed for transform */
+        .myth-fact-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+            color: var(--medium-text);
+            background-color: var(--white);
+            font-size: 1rem;
         }
 
-        /* Add this rule for the rotation when active */
+        .myth-fact.active .myth-fact-answer {
+            padding: 20px 25px;
+            max-height: 300px;
+        }
+
         .myth-fact.active .myth-fact-question .arrow {
             transform: rotate(90deg);
         }
@@ -492,9 +507,20 @@
         }
 
         .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-blue);
+            /* font-size: 2rem; Removed as SVG size is handled differently */
+            color: var(--primary-blue); /* SVG will inherit this color */
             margin-bottom: 1rem;
+            /* Ensure SVG has a defined size */
+            height: 36px; /* Adjust size as needed */
+            width: 36px;  /* Adjust size as needed */
+            display: inline-block; /* Or block if you prefer */
+        }
+        
+        /* Ensure SVGs scale nicely within the container */
+        .feature-icon svg {
+           width: 100%;
+           height: 100%;
+           display: block; /* Prevents extra space below */
         }
 
         .feature-title {
@@ -557,6 +583,11 @@
             .myth-fact-question { padding: 15px 20px; }
             .myth-fact-answer { padding: 15px 20px; }
             .chart-container { padding: 15px; }
+            /* Adjust icon size for small screens if needed */
+            .feature-icon {
+                height: 32px; 
+                width: 32px;
+            }
         }
     </style>
 </head>
@@ -762,42 +793,25 @@
             });
         }
         
-        // Set up accordion functionality (CSS Rotation Version)
+        // Set up accordion functionality
         function setupAccordions() {
             const mythFactItems = document.querySelectorAll('.myth-fact');
             mythFactItems.forEach(item => {
                 const question = item.querySelector('.myth-fact-question');
-                if (question) { // Check if the question element exists
-                    // Find arrow span - not strictly needed now but good practice
-                    const arrow = question.querySelector('.arrow');
-                    if (arrow) {
-                        // Optional: Ensure all arrows start pointing right if not already ▶
-                        arrow.innerHTML = '▶'; // Or just put ▶ directly in HTML
-
-                        question.addEventListener('click', function() {
-                            const wasActive = item.classList.contains('active');
-
-                            // Close other open items first (Accordion style)
-                            mythFactItems.forEach(otherItem => {
-                                if (otherItem !== item && otherItem.classList.contains('active')) {
-                                    otherItem.classList.remove('active');
-                                    // No need to change other arrows via JS anymore
-                                }
-                            });
-
-                            // Toggle this item's active class
-                            // If it wasn't active before, make it active. If it was, remove active.
-                            if (!wasActive) {
-                                item.classList.add('active');
-                            } else {
-                                item.classList.remove('active');
-                            }
-
-                            // --- REMOVED ARROW CHARACTER SWAPPING LOGIC ---
-                            // The CSS handles the visual change based on the 'active' class now.
-                        });
-                    }
-                }
+                question.addEventListener('click', function() {
+                    // Close other open items first
+                    mythFactItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.arrow').textContent = '▶';
+                        }
+                    });
+                    
+                    // Toggle this item
+                    item.classList.toggle('active');
+                    const arrow = this.querySelector('.arrow');
+                    arrow.textContent = item.classList.contains('active') ? '▼' : '▶';
+                });
             });
         }
         
@@ -836,16 +850,18 @@
 
             <p>Are you looking to take your athletic performance to the next level? Want to boost your strength, power, and muscle growth? Look no further than <span class="highlight">creatine</span>! This naturally occurring compound is a superstar supplement backed by tons of research, and it's not just for bodybuilders. Let's dive into how creatine works and how it can benefit you, the Garden of Life way!</p>
 
-	  			<section class="section"><!-- Audio player section -->
-	  			<div class="audio-container">
-	  	<p><strong>Listen while you browse:<br></strong>Google's Deep Dive Podcast on Creatine: Powering Natural Performance</p>
-	  			<audio controls="controls">
-	  			        <source src="https://primacy.io/Google-Creatine_Podcast.MP3" type="audio/mpeg">
-	  			        Your browser does not support the audio element.
-	  			      </source></audio>
-	  			</div>
-		  
-		    <h2>What is Creatine and Where Does it Come From?</h2>
+
+			<section class="section"><!-- Audio player section -->
+			<div class="audio-container">
+	<p><strong>Listen while you browse:<br></strong>Google's Deep Dive Podcast on Creatine: Powering Natural Performance</p>
+			<audio controls="controls">
+			        <source src="https://primacy.io/Google-Creatine_Podcast.MP3" type="audio/mpeg">
+			        Your browser does not support the audio element.
+			      </source></audio>
+			</div>
+
+
+            <h2>What is Creatine and Where Does it Come From?</h2>
 
             <div class="two-column">
                 <div class="column">
@@ -868,28 +884,50 @@
 
             <h2>The Science-Backed Benefits of Creatine</h2>
 
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">💪</div>
-                    <div class="feature-title">Increased Muscle Strength and Power</div>
-                    <p>This is the most well-documented benefit. Creatine helps you lift heavier and generate more force.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📈</div>
-                    <div class="feature-title">Enhanced Muscle Growth</div>
-                    <p>By enabling harder training sessions and potentially drawing water into muscle cells (cell volumization), creatine supports muscle growth over time.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🏃‍♀️</div>
-                    <div class="feature-title">Improved Athletic Performance</div>
-                    <p>Benefits are seen across sports involving repeated bursts of high intensity, like weightlifting, sprinting, soccer, basketball, and hockey.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🧠</div>
-                    <div class="feature-title">Potential Cognitive Benefits</div>
-                    <p>Your brain uses ATP too! Emerging research suggests creatine may support cognitive function, especially during stressful situations.</p>
-                </div>
-            </div>
+           
+		   
+		   
+           <!-- START OF IMAGE ICON SECTION -->
+           <div class="features-grid">
+               <div class="feature-item">
+                   <div class="feature-icon">
+                       <!-- Image Icon for Strength (Barbell) -->
+                       <img src="https://primacy.io/barbell_icon-blue.png" alt="Barbell icon representing strength">
+                   </div>
+                   <div class="feature-title">Increased Muscle Strength and Power</div>
+                   <p>This is the most well-documented benefit. Creatine helps you lift heavier and generate more force.</p>
+               </div>
+               <div class="feature-item">
+                   <div class="feature-icon">
+                       <!-- Image Icon for Growth (Bicep) -->
+                       <img src="https://primacy.io/bicep_icon-blue.png" alt="Bicep icon representing muscle growth">
+                   </div>
+                   <div class="feature-title">Enhanced Muscle Growth</div>
+                   <p>By enabling harder training sessions and potentially drawing water into muscle cells (cell volumization), creatine supports muscle growth over time.</p>
+               </div>
+               <div class="feature-item">
+                   <div class="feature-icon">
+                        <!-- Image Icon for Athletic Performance (Running Person) -->
+                       <img src="https://primacy.io/run_icon-blue.png" alt="Running icon representing athletic performance">
+                   </div>
+                   <div class="feature-title">Improved Athletic Performance</div>
+                   <p>Benefits are seen across sports involving repeated bursts of high intensity, like weightlifting, sprinting, soccer, basketball, and hockey.</p>
+               </div>
+               <div class="feature-item">
+                   <div class="feature-icon">
+                       <!-- Image Icon for Cognition (Brain) -->
+                        <img src="https://primacy.io/brain_icon-blue.png" alt="Brain icon representing cognitive benefits">
+                   </div>
+                   <div class="feature-title">Potential Cognitive Benefits</div>
+                   <p>Your brain uses ATP too! Emerging research suggests creatine may support cognitive function, especially during stressful situations.</p>
+               </div>
+           </div>
+           <!-- END OF IMAGE ICON SECTION -->
+			
+			
+			
+			
+			
 
             <!-- Interactive Chart 1: Strength Gains -->
             <div class="chart-container">
@@ -948,73 +986,77 @@
             <p>Creatine is one of the safest and most studied sports supplements available. Decades of research consistently show it's safe for long-term use in healthy individuals when taken at recommended dosages.</p>
             <p>However, myths still circulate. Let's address some common ones:</p>
 
-		        <!-- Interactive Myth vs Fact Section -->
-		        <div class="myth-fact-section">
-		             <h3>Myth vs. Fact</h3>
-		            <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                    <span>Myth: Creatine causes kidney damage.</span>
-		                    <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><b><br>Fact:</b> Extensive research in healthy individuals has shown <span class="highlight">no evidence</span> that recommended creatine doses harm kidney function. People with pre-existing kidney conditions should consult their doctor before use, as with any supplement.</p>
-		                </div>
-		            </div>
-		            <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                     <span>Myth: Creatine causes dehydration and cramping.</span>
-		                     <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><b><br>Fact:</b> Controlled studies do <span class="highlight">not support</span> the idea that creatine causes dehydration or cramping. In fact, it might even help with thermoregulation. Proper hydration is always important for athletes, regardless of creatine use.</p>
-		                </div>
-		            </div>
-		             <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                     <span>Myth: Creatine is a steroid.</span>
-		                     <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><b><br>Fact:</b> Absolutely not! Creatine is a <span class="highlight">naturally occurring compound</span> made from amino acids. It has a completely different chemical structure and mechanism of action than anabolic steroids.</p>
-		                </div>
-		            </div>
-		             <div class="myth-fact">
-		                <div class="myth-fact-question">
-		                     <span>Myth: You lose all your gains when you stop taking creatine.</span>
-		                     <span class="arrow">▶</span>
-		                </div>
-		                <div class="myth-fact-answer">
-		                    <p><br><b>Fact:</b> You will lose the extra water weight stored in the muscles, and your natural creatine levels will return to baseline over time. However, the actual <span class="highlight">muscle strength and size gains</span> made through harder training will largely remain if you continue training properly.</p>
-		                </div>
-		            </div>
-		        </div>
+            <!-- Interactive Myth vs Fact Section -->
+            <div class="myth-fact-section">
+                <h3>Myth vs. Fact</h3>
+                <div class="myth-fact">
+                    <div class="myth-fact-question">
+                        <span>Myth: Creatine causes kidney damage.</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> Extensive research in healthy individuals has shown <span class="highlight">no evidence</span> that recommended creatine doses harm kidney function. People with pre-existing kidney conditions should consult their doctor before use, as with any supplement.</p>
+                    </div>
+                </div>
+                <div class="myth-fact">
+                    <div class="myth-fact-question">
+                        <span>Myth: Creatine causes dehydration and cramping.</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> Controlled studies do <span class="highlight">not support</span> the idea that creatine causes dehydration or cramping. In fact, it might even help with thermoregulation. Proper hydration is always important for athletes, regardless of creatine use.</p>
+                    </div>
+                </div>
+                <div class="myth-fact">
+                    <div class="myth-fact-question">
+                        <span>Myth: Creatine is a steroid.</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> Absolutely not! Creatine is a <span class="highlight">naturally occurring compound</span> made from amino acids. It has a completely different chemical structure and mechanism of action than anabolic steroids.</p>
+                    </div>
+                </div>
+                <div class="myth-fact">
+                    <div class="myth-fact-question">
+                        <span>Myth: You lose all your gains when you stop taking creatine.</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="myth-fact-answer">
+                        <p><b>Fact:</b> You will lose the extra water weight stored in the muscles, and your natural creatine levels will return to baseline over several weeks. However, the actual <span class="highlight">muscle strength and size gains</span> made through harder training (facilitated by creatine) will largely remain if you continue training properly.</p>
+                    </div>
+                </div>
+            </div>
 
-		        <p>The most common side effect is slight weight gain (1-2 kg) initially, primarily due to water retention within the muscles. Some individuals might experience mild stomach discomfort if they take too much at once on an empty stomach.</p>
+            <p>The most common side effect is slight weight gain (1-2 kg) initially, primarily due to water retention within the muscles. Some individuals might experience mild stomach discomfort if they take too much at once on an empty stomach.</p>
 
-		        <h2>Choosing the Right Creatine: The Garden of Life Standard</h2>
+            <h2>Choosing the Right Creatine: The Garden of Life Standard</h2>
 
-		        <p>When choosing *any* supplement, quality and purity matter. At Garden of Life, we believe in clean, traceable ingredients. When selecting a creatine supplement, look for:</p>
-		        <ul>
-		            <li>✅ <span class="highlight">Third-Party Certifications:</span> Look for seals like NSF Certified for Sport or Informed Choice/Informed Sport. These verify that the product contains what it says it does and is tested for banned substances.</li>
-		            <li>✅ <span class="highlight">High-Quality Creatine Monohydrate:</span> Often sourced from reputable manufacturers (e.g., Creapure® is a well-known high-purity brand, though others are good too).</li>
-		            <li>✅ <span class="highlight">Minimal Additives:</span> Choose products with just creatine monohydrate, avoiding unnecessary fillers, artificial colors, or sweeteners if possible, especially if you prefer unflavored options to mix yourself.</li>
-		        </ul>
+            <div class="two-column">
+                <div class="column">
+                    <p>When choosing *any* supplement, quality and purity matter. At Garden of Life, we believe in clean, traceable ingredients. When selecting a creatine supplement, look for:</p>
 
-		        <!-- Inline image - using previous URL -->
-		        <img src="https://www.gardenoflife.com/media/catalog/product/6/5/658010134040-6_1.jpg?optimize=medium&fit=bounds&height=&width=&canvas=:" alt="Clean supplement bottles on a shelf" class="inline-image">
+                    <ul>
+                        <li>✅ <span class="highlight">Third-Party Certifications:</span> Look for seals like NSF Certified for Sport or Informed Choice/Informed Sport. These verify that the product contains what it says it does and is tested for banned substances.</li>
+                        <li>✅ <span class="highlight">High-Quality Creatine Monohydrate:</span> Often sourced from reputable manufacturers (e.g., Creapure® is a well-known high-purity brand, though others are good too).</li>
+                        <li>✅ <span class="highlight">Minimal Additives:</span> Choose products with just creatine monohydrate, avoiding unnecessary fillers, artificial colors, or sweeteners if possible, especially if you prefer unflavored options to mix yourself.</li>
+                    </ul>
+                </div>
+                <div class="column">
+                     <!-- Placeholder for an image if needed -->
+                     <img src="https://www.gardenoflife.com/media/catalog/product/1/0/10001858_sport-creatine_unflavored_front_530x840_v2.png" alt="Garden of Life Certified Clean Creatine Product" class="inline-image" style="max-height: 350px; margin: 1rem auto;">
+                </div>
+            </div>
 
-		        <h2>Ready to Power Up Your Performance?</h2>
+            <a href="#" class="button button-center">Explore Garden of Life Creatine</a>
 
-		        <p>Creatine is a scientifically proven, safe, and natural way to enhance your strength, power, and athletic performance. By helping your muscles produce energy more efficiently, it allows you to train harder and achieve your goals faster. Remember to combine supplementation with consistent training and a healthy diet for the best results.</p>
-		        <p>As always, it's a good idea to chat with your doctor or a registered dietitian before starting any new supplement, especially if you have any underlying health conditions.</p>
+        </div> <!-- End Content -->
 
-		        <a href="https://www.gardenoflife.com/products" target="_blank" class="button button-center">Explore Garden of Life</a>
+        <div class="footer">
+            <h3>Ready to Power Up?</h3>
+            <p>Choose clean, effective creatine to support your fitness goals. <br>Always consult with a healthcare provider before starting any new supplement regimen.</p>
+            <p>© 2023 Garden of Life. All rights reserved.</p>
+        </div>
+    </div> <!-- End Container -->
 
-		        
-				<div style="text-align: center;">
-				 <p>Empowering Extraordinary Health®</p>
-				</div>
-
-		    </div>
-	</body>
+</body>
 </html>
