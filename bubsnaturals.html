@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How Collagen Can Support Your Joints and Recovery This Spring</title>
+
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- === GOOGLE FONTS (Source Sans 3) === -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Requesting Regular 400, Italic 400, SemiBold 600, Bold 700 -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- ===================================== -->
+
     <style>
         /* Basic Reset & Font */
         *, *::before, *::after {
@@ -16,7 +25,11 @@
 
         /* Isolate styles to this container */
         #bubspost-container {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            /* === USE SOURCE SANS 3 === */
+            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Source Sans 3 first, then fallbacks */
+            font-weight: 400; /* Default to Regular weight */
+            font-style: normal;
+            /* ======================== */
             background-color: #F7F6F2; /* Background colour */
             color: #131920; /* Text color */
             line-height: 1.6;
@@ -32,7 +45,6 @@
 
         /* Header Section */
         #bubspost-container .hero {
-            /* Use the correct hero image */
             background-image: url('https://www.bubsnaturals.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcwo5cwn0btvr%2F5xupwORyHygtU72zIp98Vb%2F6ddeaa45c5344c1ee85fb615a531ac5f%2Fcollagen_for_spring.jpg&w=2048&q=75');
             background-size: cover;
             background-position: center;
@@ -52,26 +64,27 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /* Dark overlay using text color with opacity */
             background-color: rgba(19, 25, 32, 0.5);
         }
 
         #bubspost-container .hero-content {
             position: relative;
             z-index: 2;
-            color: white; /* Keep text white on overlay */
+            color: white;
             padding: 20px;
         }
 
         #bubspost-container h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            color: white; /* Explicitly white */
+            color: white;
+            font-weight: 700; /* Use Bold (700) from Source Sans 3 */
         }
 
         #bubspost-container .meta {
             font-size: 0.9rem;
-            color: #e0e0e0; /* Lighter grey for meta on dark overlay */
+            color: #e0e0e0;
+            /* Inherits base font-weight 400 */
         }
 
         /* Progress Bar */
@@ -80,13 +93,13 @@
             top: 0;
             width: 100%;
             height: 4px;
-            background: transparent; /* Keep background transparent */
+            background: transparent;
             z-index: 1000;
         }
 
         #bubspost-container .progress-bar {
             height: 4px;
-            background: #DE6036; /* Button color */
+            background: #DE6036;
             width: 0%;
         }
 
@@ -96,7 +109,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background-color: white; /* White background for nav */
+            background-color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
             padding: 15px 0;
@@ -118,10 +131,10 @@
         }
 
         #bubspost-container .logo {
-            font-weight: bold;
+            font-weight: 600; /* Use SemiBold (600) from Source Sans 3 */
             font-size: 1.2rem;
-            color: #4294A8; /* Highlight color */
-            text-decoration: none; /* Remove underline if it's a link */
+            color: #4294A8;
+            text-decoration: none;
         }
 
         #bubspost-container .nav-links {
@@ -130,17 +143,18 @@
         }
 
         #bubspost-container .nav-links a {
-            color: #555; /* Dark grey for nav links */
+            color: #555;
             text-decoration: none;
             font-size: 0.9rem;
             padding: 5px 10px;
             border-radius: 4px;
             transition: color 0.2s ease, background-color 0.2s ease;
+             /* Inherits base font-weight 400 */
         }
 
         #bubspost-container .nav-links a:hover {
             background-color: #f0f0f0;
-            color: #4294A8; /* Highlight color on hover */
+            color: #4294A8;
         }
 
         /* Back to Top Button */
@@ -150,7 +164,7 @@
             right: 30px;
             width: 50px;
             height: 50px;
-            background-color: #4294A8; /* Highlight color */
+            background-color: #4294A8;
             color: white;
             border-radius: 50%;
             display: flex;
@@ -158,7 +172,7 @@
             align-items: center;
             cursor: pointer;
             opacity: 0;
-            visibility: hidden; /* Use visibility for better handling */
+            visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
             z-index: 99;
         }
@@ -171,9 +185,7 @@
         /* Section Styles */
         #bubspost-container section {
             margin-bottom: 50px;
-            /* Fade in animation - keep if desired */
-            /* animation: fadeIn 1s ease-out; */
-            opacity: 0; /* Start hidden for JS fade-in */
+            opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
@@ -182,45 +194,49 @@
              transform: translateY(0);
         }
 
-        /* Removed keyframes animation in favor of JS Intersection Observer for better control */
-        /* @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        } */
-
         #bubspost-container h2 {
             font-size: 2rem;
             text-align: center;
             margin-bottom: 30px;
-            color: #131920; /* Main text color */
-            font-weight: 600;
-            padding-top: 20px; /* Add some space above section titles */
+            color: #131920;
+            font-weight: 600; /* Use SemiBold (600) from Source Sans 3 */
+            padding-top: 20px;
         }
 
         #bubspost-container h3 {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            color: #4294A8; /* Highlight color */
-            font-weight: 600;
+            color: #4294A8;
+            font-weight: 600; /* Use SemiBold (600) from Source Sans 3 */
         }
 
         #bubspost-container h4 {
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 600; /* Use SemiBold (600) from Source Sans 3 */
             color: #131920;
             margin-bottom: 10px;
         }
 
         #bubspost-container p {
             margin-bottom: 20px;
-            color: #131920; /* Use main text color for consistency */
+            color: #131920;
             font-size: 1rem;
+             /* Inherits base font-weight 400 */
         }
 
         #bubspost-container .highlight {
-            color: #4294A8; /* Highlight color */
-            font-weight: 600;
+            color: #4294A8;
+            font-weight: 600; /* Use SemiBold (600) from Source Sans 3 */
         }
+
+        /* Define styles for <strong> and <em> */
+        #bubspost-container strong {
+             font-weight: 700; /* Use Bold (700) from Source Sans 3 */
+        }
+         #bubspost-container em {
+             font-style: italic; /* Uses Italic style (inherits 400 weight) */
+         }
+
 
         /* Cards */
         #bubspost-container .card-section {
@@ -234,10 +250,10 @@
             background-color: white;
             padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(19, 25, 32, 0.08); /* Use main text color with alpha */
+            box-shadow: 0 4px 12px rgba(19, 25, 32, 0.08);
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: default; /* Make cards not look clickable unless intended */
+            cursor: default;
         }
 
         #bubspost-container .card:hover {
@@ -247,14 +263,15 @@
 
         #bubspost-container .card i {
             font-size: 2.5rem;
-            color: #4294A8; /* Highlight color */
+            color: #4294A8;
             margin-bottom: 15px;
         }
 
         #bubspost-container .card p {
             font-size: 0.95rem;
-            color: #555; /* Slightly lighter text for card body */
+            color: #555;
             margin-bottom: 0;
+            /* Inherits base font-weight 400 */
         }
 
         /* Lists */
@@ -266,20 +283,20 @@
 
         #bubspost-container ul li {
             margin-bottom: 10px;
-            padding-left: 25px; /* Space for icon */
+            padding-left: 25px;
             position: relative;
             font-size: 1rem;
+            /* Inherits base font-weight 400 */
         }
 
         #bubspost-container ul li::before {
-            /* content: "✓"; Use FontAwesome instead */
-            font-family: "Font Awesome 6 Free"; /* Use Font Awesome */
-            content: "\f058"; /* Check circle icon */
-            font-weight: 900; /* Use solid style */
-            color: #4294A8; /* Highlight color */
+            font-family: "Font Awesome 6 Free";
+            content: "\f058";
+            font-weight: 900;
+            color: #4294A8;
             position: absolute;
             left: 0;
-            top: 4px; /* Adjust vertical alignment */
+            top: 4px;
             font-size: 1rem;
         }
 
@@ -287,7 +304,7 @@
 
         /* Testimonial Carousel */
         #bubspost-container .testimonial-section {
-            background-color: #ffffff; /* White background for section */
+            background-color: #ffffff;
             padding: 40px 20px;
             border-radius: 10px;
             margin: 40px 0;
@@ -296,7 +313,7 @@
 
         #bubspost-container .testimonial-container {
             position: relative;
-            max-width: 700px; /* Slightly narrower for better focus */
+            max-width: 700px;
             margin: 0 auto;
             overflow: hidden;
         }
@@ -308,42 +325,42 @@
 
         #bubspost-container .testimonial {
             flex: 0 0 100%;
-            padding: 20px 40px; /* More horizontal padding */
+            padding: 20px 40px;
             text-align: center;
-            min-height: 250px; /* Ensure consistent height */
+            min-height: 250px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         #bubspost-container .testimonial-img {
-            width: 70px; /* Smaller image */
+            width: 70px;
             height: 70px;
             border-radius: 50%;
             margin: 0 auto 15px;
-            background-color: #e0e0e0; /* Placeholder background */
-            overflow: hidden; /* In case you add actual images */
-            border: 2px solid #4294A8; /* Highlight border */
+            background-color: #e0e0e0;
+            overflow: hidden;
+            border: 2px solid #4294A8;
         }
-         
-		/* Styles for the actual image inside the container */
-		    #bubspost-container .testimonial-img img {
-		        display: block;
-		        width: 100%;
-		        height: 100%;
-		        object-fit: cover; /* Crops image to fit circle */
-		        object-position: center;
-		    }
+
+		#bubspost-container .testimonial-img img {
+		    display: block;
+		    width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		    object-position: center;
+		}
 
         #bubspost-container .testimonial-text {
-            font-style: italic;
+            font-style: italic; /* Use italic (inherits 400 weight) */
             margin-bottom: 15px;
             color: #333;
             font-size: 1rem;
+             /* Inherits base font-weight 400 */
         }
 
         #bubspost-container .testimonial-author {
-             font-weight: 600;
+             font-weight: 600; /* Use SemiBold (600) */
              margin-bottom: 5px;
              color: #131920;
         }
@@ -352,6 +369,7 @@
             color: #777;
             font-size: 0.9rem;
             margin-bottom: 0;
+             /* Inherits base font-weight 400 */
         }
 
         #bubspost-container .testimonial-nav {
@@ -364,14 +382,14 @@
         #bubspost-container .testimonial-dot {
             width: 12px;
             height: 12px;
-            background-color: #ddd; /* Inactive dot color */
+            background-color: #ddd;
             border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         #bubspost-container .testimonial-dot.active {
-            background-color: #4294A8; /* Highlight color for active dot */
+            background-color: #4294A8;
         }
 
         /* FAQ Accordion */
@@ -381,7 +399,7 @@
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(19, 25, 32, 0.05);
             overflow: hidden;
-            border: 1px solid #eee; /* Subtle border */
+            border: 1px solid #eee;
         }
 
         #bubspost-container .accordion-header {
@@ -394,17 +412,17 @@
             transition: background-color 0.2s ease;
         }
         #bubspost-container .accordion-item.active .accordion-header {
-            background-color: #f9f9f9; /* Slightly different background when open */
+            background-color: #f9f9f9;
         }
 
         #bubspost-container .accordion-title {
-            font-weight: 600; /* Bolder title */
+            font-weight: 600; /* Use SemiBold (600) */
             color: #131920;
         }
 
         #bubspost-container .accordion-header i {
             transition: transform 0.3s ease;
-            color: #4294A8; /* Highlight color for chevron */
+            color: #4294A8;
         }
 
         #bubspost-container .accordion-item.active .accordion-header i {
@@ -415,20 +433,19 @@
             padding: 0 20px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Smoother transition */
-            background-color: white; /* Ensure background is white */
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            background-color: white;
         }
          #bubspost-container .accordion-content p {
-            margin-bottom: 0; /* Reset paragraph margin inside */
-            padding-bottom: 20px; /* Add padding below the text */
-            color: #333; /* Slightly lighter text for answer */
+            margin-bottom: 0;
+            padding-bottom: 20px;
+            color: #333;
             font-size: 0.95rem;
+             /* Inherits base font-weight 400 */
          }
 
-
         #bubspost-container .accordion-item.active .accordion-content {
-            /* padding: 0 20px 20px; Set padding on the p tag instead */
-            max-height: 300px; /* Increase max-height if needed */
+            max-height: 300px;
         }
 
         /* Calculator Section */
@@ -443,10 +460,11 @@
          #bubspost-container .calculator-section h2 {
              margin-bottom: 15px;
          }
-         #bubspost-container .calculator-section p:first-of-type { /* Target the introductory paragraph */
+         #bubspost-container .calculator-section p:first-of-type {
              text-align: center;
              margin-bottom: 30px;
              color: #555;
+             /* Inherits base font-weight 400 */
          }
 
         #bubspost-container .calculator-form {
@@ -460,8 +478,8 @@
 
         #bubspost-container .form-group label {
             display: block;
-            margin-bottom: 8px; /* More space below label */
-            font-weight: 600; /* Bolder label */
+            margin-bottom: 8px;
+            font-weight: 600; /* Use SemiBold (600) */
             color: #131920;
             font-size: 0.9rem;
         }
@@ -469,70 +487,80 @@
         #bubspost-container .calculator-input,
         #bubspost-container .calculator-select {
             width: 100%;
-            padding: 12px; /* More padding */
-            border: 1px solid #ccc; /* Slightly darker border */
+            padding: 12px;
+            border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 1rem;
-            background-color: #fff; /* Ensure white background */
+            background-color: #fff;
             color: #131920;
+            font-family: inherit; /* Inherit Source Sans 3 */
+            font-weight: 400; /* Regular weight for input text */
         }
          #bubspost-container .calculator-input::placeholder {
             color: #aaa;
+            font-weight: 400;
+            font-style: italic;
          }
+        #bubspost-container .calculator-select {
+            appearance: none;
+        }
+
 
         #bubspost-container .calculator-button {
-            background-color: #DE6036; /* Button color */
+            background-color: #DE6036;
             color: white;
             border: none;
             padding: 12px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 600; /* Use SemiBold (600) */
             width: 100%;
             transition: background-color 0.3s ease;
-            margin-top: 10px; /* Space above button */
+            margin-top: 10px;
+            font-family: inherit; /* Inherit Source Sans 3 */
         }
          #bubspost-container .calculator-button:hover {
-             background-color: #4294A8; /* Darker shade of button color */
+             background-color: #4294A8;
          }
 
         #bubspost-container .calculator-result {
-            background-color: #eaf5f7; /* Light highlight background */
+            background-color: #eaf5f7;
             padding: 20px;
             border-radius: 8px;
-            margin-top: 25px; /* More space above result */
+            margin-top: 25px;
             text-align: center;
-            display: none; /* Hidden by default */
-            border: 1px solid #cce0e5; /* Border matching background */
+            display: none;
+            border: 1px solid #cce0e5;
         }
 
         #bubspost-container .calculator-result.visible {
             display: block;
         }
         #bubspost-container .calculator-result-label {
-             font-weight: 600;
+             font-weight: 600; /* Use SemiBold (600) */
              color: #131920;
              margin-bottom: 5px;
         }
 
         #bubspost-container .result-value {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: #4294A8; /* Highlight color */
+            font-weight: 700; /* Use Bold (700) */
+            color: #4294A8;
             margin: 5px 0;
         }
         #bubspost-container .result-message {
-             font-style: italic;
+             font-style: italic; /* Use Italic (inherits 400 weight) */
              color: #555;
              font-size: 0.9rem;
              margin-top: 10px;
+             /* Inherits base font-weight 400 */
         }
 
         /* Product Section */
         #bubspost-container .product-section {
             background-color: white;
-            padding: 40px 30px; /* More padding */
+            padding: 40px 30px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(19, 25, 32, 0.08);
@@ -541,16 +569,17 @@
         #bubspost-container .product-section h2 {
             margin-bottom: 15px;
         }
-        #bubspost-container .product-section > p { /* Target the intro p directly under section */
+        #bubspost-container .product-section > p {
              max-width: 600px;
              margin-left: auto;
              margin-right: auto;
              margin-bottom: 30px;
              color: #555;
+             /* Inherits base font-weight 400 */
         }
 
         #bubspost-container .product-image-wrapper {
-             max-width: 250px; /* Control image size */
+             max-width: 250px;
              margin: 0 auto 20px;
         }
 
@@ -572,33 +601,35 @@
         #bubspost-container .product-size {
             font-size: 0.9rem;
             color: #555;
+             /* Inherits base font-weight 400 */
         }
 
         #bubspost-container .price {
-            font-size: 1.8rem; /* Larger price */
-            font-weight: 600; /* Bolder price */
-            color: #131920; /* Main text color for price */
-            margin: 10px 0 25px 0; /* Adjust margin */
+            font-size: 1.8rem;
+            font-weight: 600; /* Use SemiBold (600) */
+            color: #131920;
+            margin: 10px 0 25px 0;
         }
 
         #bubspost-container .cta-button {
             display: inline-block;
-            background-color: #DE6036; /* Button color */
-            color: white !important; /* Ensure white text */
+            background-color: #DE6036;
+            color: white !important;
             text-decoration: none;
-            padding: 14px 35px; /* Larger padding */
-            border-radius: 5px; /* Slightly rounded */
-            font-weight: 600; /* Bold text */
+            padding: 14px 35px;
+            border-radius: 5px;
+            font-weight: 600; /* Use SemiBold (600) */
             font-size: 1.1rem;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border: none; /* Remove border */
+            border: none;
             cursor: pointer;
+            font-family: inherit; /* Inherit Source Sans 3 */
         }
 
         #bubspost-container .cta-button:hover {
-            background-color: #4294A8; /* Darker button color */
+            background-color: #4294A8;
             transform: translateY(-2px);
             color: white !important;
         }
@@ -612,23 +643,24 @@
             border: 0;
             height: 1px;
             background-image: linear-gradient(to right, transparent, #d0d0d0, transparent);
-            margin: 50px auto; /* Increased margin */
+            margin: 50px auto;
             width: 80%;
         }
 
         /* Summary Box */
         #bubspost-container .summary-box {
-            background-color: #eaf5f7; /* Light version of highlight */
-            border-left: 5px solid #4294A8; /* Highlight border */
+            background-color: #eaf5f7;
+            border-left: 5px solid #4294A8;
             padding: 25px;
             margin: 40px 0;
             border-radius: 0 8px 8px 0;
         }
         #bubspost-container .summary-box h3 {
-            color: #131920; /* Darker heading for summary */
+            color: #131920;
             margin-top: 0;
             margin-bottom: 1rem;
             font-size: 1.3rem;
+             font-weight: 600; /* Ensure it uses SemiBold */
         }
          #bubspost-container .summary-box ul {
              margin-bottom: 0;
@@ -636,12 +668,17 @@
          #bubspost-container .summary-box ul li {
              font-size: 0.95rem;
              margin-bottom: 0.5rem;
+             /* Inherits base font-weight 400 */
          }
           #bubspost-container .summary-box ul li::before {
-             /* Checkmark using the Button Color */
-             content: "\f00c"; /* FA Check icon */
-             color: #DE6036; /* Use Button color */
+             content: "\f00c";
+             color: #DE6036;
              font-weight: 900;
+             font-family: "Font Awesome 6 Free";
+             position: absolute;
+             left: 0;
+             top: 4px;
+             font-size: 1rem;
           }
 
         /* Responsive Adjustments */
@@ -653,10 +690,10 @@
                 font-size: 2rem;
             }
             #bubspost-container .nav-links {
-                display: none; /* Hide desktop nav links on smaller screens */
+                display: none;
             }
             #bubspost-container .card-section {
-                grid-template-columns: 1fr; /* Stack cards */
+                grid-template-columns: 1fr;
             }
             #bubspost-container h2 {
                 font-size: 1.8rem;
@@ -701,6 +738,10 @@
                #bubspost-container .price {
                   font-size: 1.5rem;
                }
+               #bubspost-container .calculator-input,
+               #bubspost-container .calculator-select {
+                    font-size: 0.95rem;
+               }
          }
     </style>
 </head>
@@ -715,8 +756,8 @@
 
     <!-- Sticky Navigation -->
     <nav class="sticky-nav" id="stickyNav">
-        <div class="nav-container container"> <!-- Added container class for padding -->
-            <a href="https://www.bubsnaturals.com/" class="logo">BUBS Naturals</a> <!-- Make logo a link -->
+        <div class="nav-container container">
+            <a href="https://www.bubsnaturals.com/" class="logo">BUBS Naturals</a>
             <div class="nav-links">
                 <a href="#challenges">Spring Challenges</a>
                 <a href="#benefits">Benefits</a>
@@ -743,7 +784,7 @@
 
     <div class="container">
         <!-- Introduction Section -->
-        <section class="intro visible"> <!-- Start visible -->
+        <section class="intro visible">
             <p>As the snow melts and trails open up, spring is the season for getting back outside. Whether you're lacing up your hiking boots, dusting off the bike, or signing up for your next 5K, your body will thank you for the extra support during this seasonal transition.</p>
             <p>And guess what? <strong class="highlight">BUBS Naturals Collagen Peptides</strong> might just be your new secret weapon for a stronger, smoother return to your favorite spring adventures.</p>
         </section>
@@ -757,12 +798,12 @@
 
             <div class="card-section">
                 <div class="card">
-                    <i class="fa-solid fa-person-hiking"></i> 
+                    <i class="fa-solid fa-person-hiking"></i>
                     <h4>Hiking Trails Call</h4>
                     <p>Sudden inclines and longer distances challenge unprepared joints.</p>
                 </div>
                 <div class="card">
-                    <i class="fa-solid fa-person-running"></i>  
+                    <i class="fa-solid fa-person-running"></i>
                     <h4>Running Shoes Whisper</h4>
                     <p>Increased pounding on pavement or trails after a break can lead to aches.</p>
                 </div>
@@ -800,12 +841,12 @@
 
             <div class="card-section">
                 <div class="card">
-                    <i class="fa-solid fa-screwdriver-wrench"></i> 
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
                     <h4>Tendon & Ligament Repair</h4>
                     <p>Crucial for preventing those common springtime tweaks and strains by strengthening connective tissues.</p>
                 </div>
                 <div class="card">
-                    <i class="fa-solid fa-shield-heart"></i> 
+                    <i class="fa-solid fa-shield-heart"></i>
                     <h4>Post-Activity Support</h4>
                     <p>Studies suggest collagen may help reduce exercise-induced soreness and support muscle recovery.</p>
                 </div>
@@ -852,7 +893,7 @@
                     <!-- Testimonial 1 (Sarah K.) -->
                     <div class="testimonial">
                         <div class="testimonial-img">
-                            <img src="https://primacy.io/testimonial-w42.png" alt="Photo of Sarah K."> {/* Updated Image */}
+                            <img src="https://primacy.io/testimonial-w42.png" alt="Photo of Sarah K.">
                         </div>
                         <p class="testimonial-text">"I've been using BUBS Collagen for 3 months now and the difference in my joint comfort after hiking is incredible. I used to feel stiff for days after a long trek, but now I bounce back so much faster!"</p>
                         <p class="testimonial-author">Sarah K.</p>
@@ -861,7 +902,7 @@
                     <!-- Testimonial 2 (Michael T.) -->
                     <div class="testimonial">
                         <div class="testimonial-img">
-                             <img src="https://primacy.io/Testimonial-m38.png" alt="Photo of Michael T."> {/* Updated Image */}
+                             <img src="https://primacy.io/Testimonial-m38.png" alt="Photo of Michael T.">
                         </div>
                         <p class="testimonial-text">"As a weekend warrior who loves trail running, I was skeptical about collagen supplements. But after 6 weeks with BUBS, my recovery time has noticeably improved. My knees thank me every Monday morning!"</p>
                         <p class="testimonial-author">Michael T.</p>
@@ -870,7 +911,7 @@
                     <!-- Testimonial 3 (Jennifer M.) -->
                     <div class="testimonial">
                          <div class="testimonial-img">
-                              <img src="https://primacy.io/Testimonial_w55.png" alt="Photo of Jennifer M."> {/* Updated Image */}
+                              <img src="https://primacy.io/Testimonial_w55.png" alt="Photo of Jennifer M.">
                          </div>
                         <p class="testimonial-text">"I add BUBS to my morning coffee every day. Not only has it helped with my joint comfort during spring gardening season, but I've noticed my skin looks more hydrated too. It's become my daily essential!"</p>
                         <p class="testimonial-author">Jennifer M.</p>
@@ -972,7 +1013,6 @@
             <p>Don't let achy joints or slow recovery hold you back this spring. Make BUBS Naturals Collagen Peptides part of your routine and experience the support your active body deserves.</p>
             <div class="product-image-wrapper">
                 <a href="https://www.bubsnaturals.com/products/collagen-peptides" target="_blank" rel="noopener noreferrer">
-                 
                     <img src="https://www.bubsnaturals.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcwo5cwn0btvr%2F2m6dICKL72A9QzGnPv6wKQ%2F4d57aa8a2d011ba89ccf241bbd768ebd%2FCollagen20oz.webp&w=2048&q=75" alt="BUBS Naturals Collagen Peptides 20oz" class="product-image">
                 </a>
             </div>
@@ -980,7 +1020,6 @@
                 <div class="product-size">20 oz / Approx. 28 Day Supply</div>
                 <div class="price">$47.00</div>
             </div>
-          
             <a href="https://www.bubsnaturals.com/products/collagen-peptides" target="_blank" rel="noopener noreferrer" class="cta-button">
                 Shop Collagen Now <i class="fas fa-arrow-right"></i>
             </a>
@@ -990,6 +1029,7 @@
 </div> <!-- End #bubspost-container -->
 
     <script>
+       // --- All Javascript remains the same ---
        document.addEventListener('DOMContentLoaded', function() {
             // --- Intersection Observer for Animations ---
             const sections = document.querySelectorAll('#bubspost-container section, #bubspost-container .summary-box, #bubspost-container .card'); // Target sections and cards
@@ -1130,12 +1170,6 @@
 
                 if(header && content){
                     header.addEventListener('click', () => {
-                         // Optional: Close other items when one is opened
-                        // accordionItems.forEach(otherItem => {
-                        //     if (otherItem !== item && otherItem.classList.contains('active')) {
-                        //         otherItem.classList.remove('active');
-                        //     }
-                        // });
                         item.classList.toggle('active');
                     });
                 }
@@ -1181,7 +1215,6 @@
                     // Adjust based on goal (subtle adjustments/messaging)
                     let messageText;
                     if (goal === 'recovery' || (goal === 'joints' && activity !== 'light')) {
-                         // Suggest leaning towards higher end for recovery/active joints
                          baseAmount = Math.min(maxAmount, baseAmount + 5);
                          messageText = `Consider the higher end of the range for optimal ${goal} support with ${activity} activity.`;
                     } else if (goal === 'skin') {
