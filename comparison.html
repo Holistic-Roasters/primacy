@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpage Comparison Slider</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .comparison-before,
+        .comparison-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .comparison-before {
+            z-index: 1;
+            width: 50%; /* Initial position */
+        }
+        
+        .comparison-after {
+            z-index: 0;
+        }
+        
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%; /* Initial position */
+            width: 40px;
+            margin-left: -20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            cursor: ew-resize;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-left: 2px solid #2196F3;
+            border-right: 2px solid #2196F3;
+        }
+        
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background-color: #2196F3;
+            border-radius: 50%;
+        }
+        
+        .slider-handle::after {
+            content: '↔';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            position: relative;
+            z-index: 11;
+        }
+        
+        /* Iframe styling */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .controls label {
+            color: white;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .controls input {
+            width: 100%;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="comparison-container">
+        <div class="comparison-before">
+            <!-- First page URL -->
+            <iframe id="before-frame" src="https://www.getkion.com/blogs/all/what-is-colostrum"></iframe>
+        </div>
+        
+        <div class="comparison-after">
+            <!-- Second page URL -->
+            <iframe id="after-frame" src="https://primacy.io/Kion.html"></iframe>
+        </div>
+        
+        <div class="slider-handle" id="slider-handle"></div>
+        
+        <div class="controls">
+            <div style="color: white; text-align: center;">
+                <div style="font-weight: bold; margin-bottom: 5px;">Comparing Pages:</div>
+                <div style="font-size: 12px;">LEFT: Kion Blog | RIGHT: Primacy.io</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.comparison-container');
+            const beforeDiv = document.querySelector('.comparison-before');
+            const handle = document.getElementById('slider-handle');
+            const beforeFrame = document.getElementById('before-frame');
+            const afterFrame = document.getElementById('after-frame');
+            const beforeUrlInput = document.getElementById('before-url');
+            const afterUrlInput = document.getElementById('after-url');
+            const loadButton = document.getElementById('load-pages');
+            
+            // URLs are now fixed in the HTML
+            // No need for the URL input and load functionality
+            
+            // Slider functionality
+            let isResizing = false;
+            
+            handle.addEventListener('mousedown', function(e) {
+                isResizing = true;
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isResizing) return;
+                
+                const containerRect = container.getBoundingClientRect();
+                const containerWidth = containerRect.width;
+                const containerLeft = containerRect.left;
+                
+                let newPosition = ((e.clientX - containerLeft) / containerWidth) * 100;
+                
+                // Constrain position between 0% and 100%
+                newPosition = Math.max(0, Math.min(100, newPosition));
+                
+                // Update elements
+                beforeDiv.style.width = newPosition + '%';
+                handle.style.left = newPosition + '%';
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isResizing = false;
+            });
+            
+            // Touch support for mobile devices
+            handle.addEventListener('touchstart', function(e) {
+                isResizing = true;
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (!isResizing) return;
+                
+                const containerRect = container.getBoundingClientRect();
+                const containerWidth = containerRect.width;
+                const containerLeft = containerRect.left;
+                const touch = e.touches[0];
+                
+                let newPosition = ((touch.clientX - containerLeft) / containerWidth) * 100;
+                
+                // Constrain position between 0% and 100%
+                newPosition = Math.max(0, Math.min(100, newPosition));
+                
+                // Update elements
+                beforeDiv.style.width = newPosition + '%';
+                handle.style.left = newPosition + '%';
+            });
+            
+            document.addEventListener('touchend', function() {
+                isResizing = false;
+            });
+        });
+    </script>
+</body>
+</html>
