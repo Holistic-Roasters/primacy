@@ -325,8 +325,15 @@
             overflow: hidden; /* In case you add actual images */
             border: 2px solid #4294A8; /* Highlight border */
         }
-         /* Add actual image styles if needed */
-         /* #bubspost-container .testimonial-img img { width: 100%; height: 100%; object-fit: cover; } */
+         
+		/* Styles for the actual image inside the container */
+		    #bubspost-container .testimonial-img img {
+		        display: block;
+		        width: 100%;
+		        height: 100%;
+		        object-fit: cover; /* Crops image to fit circle */
+		        object-position: center;
+		    }
 
         #bubspost-container .testimonial-text {
             font-style: italic;
@@ -842,20 +849,29 @@
             <h2>What Our Customers Say</h2>
             <div class="testimonial-container">
                 <div class="testimonial-track">
+                    <!-- Testimonial 1 (Sarah K.) -->
                     <div class="testimonial">
-                        <div class="testimonial-img"></div>
+                        <div class="testimonial-img">
+                            <img src="https://primacy.io/testimonial-w42.png" alt="Photo of Sarah K."> {/* Updated Image */}
+                        </div>
                         <p class="testimonial-text">"I've been using BUBS Collagen for 3 months now and the difference in my joint comfort after hiking is incredible. I used to feel stiff for days after a long trek, but now I bounce back so much faster!"</p>
                         <p class="testimonial-author">Sarah K.</p>
                         <p class="testimonial-title">Avid Hiker, 42</p>
                     </div>
+                    <!-- Testimonial 2 (Michael T.) -->
                     <div class="testimonial">
-                        <div class="testimonial-img"></div>
+                        <div class="testimonial-img">
+                             <img src="https://primacy.io/Testimonial-m38.png" alt="Photo of Michael T."> {/* Updated Image */}
+                        </div>
                         <p class="testimonial-text">"As a weekend warrior who loves trail running, I was skeptical about collagen supplements. But after 6 weeks with BUBS, my recovery time has noticeably improved. My knees thank me every Monday morning!"</p>
                         <p class="testimonial-author">Michael T.</p>
                         <p class="testimonial-title">Trail Runner, 38</p>
                     </div>
+                    <!-- Testimonial 3 (Jennifer M.) -->
                     <div class="testimonial">
-                        <div class="testimonial-img"></div>
+                         <div class="testimonial-img">
+                              <img src="https://primacy.io/Testimonial_w55.png" alt="Photo of Jennifer M."> {/* Updated Image */}
+                         </div>
                         <p class="testimonial-text">"I add BUBS to my morning coffee every day. Not only has it helped with my joint comfort during spring gardening season, but I've noticed my skin looks more hydrated too. It's become my daily essential!"</p>
                         <p class="testimonial-author">Jennifer M.</p>
                         <p class="testimonial-title">Gardening Enthusiast, 55</p>
