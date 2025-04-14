@@ -1,0 +1,114 @@
+/* Animation styles for final polish */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Add animations to elements */
+body.loaded header {
+    animation: fadeIn 1s ease-in-out;
+}
+
+body.loaded .section {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+body.loaded .section.animate {
+    animation: slideUp 0.6s ease-in-out forwards;
+}
+
+.logo:hover, .footer-logo:hover {
+    animation: pulse 1s infinite;
+}
+
+/* Enhance color swatch interactions */
+.color-swatch {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.copy-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.copy-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: width 0.3s ease;
+}
+
+.copy-btn:hover::after {
+    width: 100%;
+}
+
+/* Enhance notification */
+.notification {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Improve expandable sections */
+.expand-btn {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.expand-btn:hover {
+    color: var(--toxic-cyan);
+}
+
+.section-content {
+    transition: max-height 0.5s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.section-content.active {
+    max-height: 5000px; /* Large enough to contain content */
+}
+
+/* Print styles */
+@media print {
+    nav, .expand-btn, .copy-btn {
+        display: none;
+    }
+    
+    .section-content {
+        display: block !important;
+        max-height: none !important;
+    }
+    
+    body, .section, .section-header {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: black !important;
+    }
+    
+    .section {
+        break-inside: avoid;
+        margin-bottom: 2cm;
+    }
+    
+    a {
+        text-decoration: none !important;
+        color: black !important;
+    }
+}

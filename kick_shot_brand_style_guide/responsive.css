@@ -1,0 +1,105 @@
+/* Additional CSS for mobile responsiveness */
+@media (max-width: 768px) {
+    /* Navigation adjustments */
+    nav ul {
+        display: none;
+    }
+    
+    nav ul.active {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .mobile-nav-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--neuro-yellow);
+        font-size: 1.5rem;
+        padding: var(--spacing-sm);
+        cursor: pointer;
+        width: 100%;
+        text-align: right;
+    }
+    
+    /* Section content padding */
+    .section-content {
+        padding: var(--spacing-sm);
+    }
+    
+    /* Color swatches */
+    .color-swatches {
+        flex-direction: column;
+    }
+    
+    .color-swatch {
+        width: 100%;
+        max-width: none;
+    }
+    
+    /* Typography examples */
+    .font-example {
+        padding: var(--spacing-sm);
+    }
+    
+    .size-xl {
+        font-size: 36px;
+    }
+    
+    .size-lg {
+        font-size: 28px;
+    }
+    
+    /* Messaging section */
+    .pillars-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .tagline-examples {
+        flex-direction: column;
+    }
+    
+    .voice-example {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Header */
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .tagline {
+        font-size: 0.9rem;
+    }
+    
+    /* Section headers */
+    .section-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* Typography examples */
+    .size-xl {
+        font-size: 28px;
+    }
+    
+    .size-lg {
+        font-size: 22px;
+    }
+    
+    .size-md {
+        font-size: 18px;
+    }
+    
+    /* Product images */
+    .product-image {
+        max-width: 100%;
+    }
+    
+    /* Logo */
+    .logo-large {
+        max-width: 200px;
+    }
+}
