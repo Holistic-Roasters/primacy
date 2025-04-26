@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holistic Roasters - Green Coffee Annual Projection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+        
+        :root {
+            /* Brand colors from style guide */
+            --red-orange: #EF4E37;
+            --orange: #FF7F2F;
+            --yellow: #FFB819;
+            --light-green: #6CC04A;
+            --medium-green: #009D4E;
+            --dark-green: #006F42;
+            --dark-gray: #555759;
+            --light-gray: #F5F5F5;
+
+            /* Additional variables */
+            --body-font: 'DM Sans', sans-serif;
+            --button-radius: 3px;
+            --card-radius: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--light-gray);
+            padding: 0;
+            margin: 0;
+        }
+
+        .app-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--dark-green);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--medium-green);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 0.5rem;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background-color: var(--light-gray);
+            border-left: 4px solid var(--medium-green);
+        }
+
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-field {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--button-radius);
+            transition: var(--transition);
+            font-family: var(--body-font);
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--medium-green);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 157, 78, 0.2);
+        }
+
+        .unit-note {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 0.3rem;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
+            padding: 1rem 1.5rem;
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            border-radius: var(--button-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error {
+            color: var(--red-orange);
+            font-weight: 500;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        #results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: #f2f9f5;
+            border-radius: 10px;
+            border-left: 4px solid var(--light-green);
+        }
+
+        #results h2 {
+            color: var(--dark-green);
+            text-align: left;
+            margin-top: 0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.8rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: var(--dark-green);
+        }
+
+        .total-row {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--light-green);
+        }
+
+        .total-row .result-label,
+        .total-row .result-value {
+            font-size: 1.2rem;
+            color: var(--red-orange);
+        }
+
+        .container-info {
+            background-color: #fff8e6;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--yellow);
+        }
+
+        #growth-rate-table-container {
+            margin-top: 2rem;
+        }
+
+        #growth-rate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        #growth-rate-table th,
+        #growth-rate-table td {
+            border: 1px solid #ddd;
+            padding: 0.8rem 1rem;
+            text-align: center;
+        }
+
+        #growth-rate-table th {
+            background-color: var(--medium-green);
+            color: white;
+            font-weight: 500;
+        }
+
+        #growth-rate-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #growth-rate-table tbody tr:hover {
+            background-color: #f2f9f5;
+        }
+
+        .certification-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 120px;
+        }
+
+        .badge-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-size: 24px;
+        }
+
+        .badge-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background-color: var(--dark-green);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .footer-logo {
+            margin-bottom: 1rem;
+        }
+
+        .copyright {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            .container {
+                padding: 1.5rem;
+                border-radius: 0;
+            }
+            .input-field {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="app-container">
+        <div class="container">
+            <h1>Green Coffee Annual Projection</h1>
+            
+            <p class="intro-text">
+                This tool helps project your annual green coffee needs across all Holistic Roasters operations. 
+                Enter your current usage data and growth rates to forecast future requirements and plan accordingly.
+            </p>
+
+            <div id="inputs">
+                <h2>Input Base Data & Growth Rates</h2>
+
+                <div class="input-group">
+                    <h3>Melk Site Sales</h3>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="melk-base">Base Green Coffee (Lbs used in last 30 days):</label>
+                            <input type="number" id="melk-base" value="6255" step="any">
+                        </div>
+                        <div class="input-field">
+                            <label for="melk-growth">Projected Monthly Growth Rate (%):</label>
+                            <input type="number" id="melk-growth" value="2" step="any">
+                            <p class="unit-note">Enter 1 for 1%, 0.5 for 0.5%, etc.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <h3>Biodynamic Site Sales</h3>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="bio-base">Base Green Coffee (Lbs used in last 30 days):</label>
+                            <input type="number" id="bio-base" value="4137" step="any" placeholder="Enter 30-day green lbs">
+                        </div>
+                        <div class="input-field">
+                            <label for="bio-growth">Projected Monthly Growth Rate (%):</label>
+                            <input type="number" id="bio-growth" value="10" step="any">
+                            <p class="unit-note">Enter 1 for 1%, 0.5 for 0.5%, etc.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <h3>NHP Wholesale</h3>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="nhp-base">Base Green Coffee (Lbs used in last 12 months):</label>
+                            <input type="number" id="nhp-base" value="30709" step="any" placeholder="Enter 12-month green lbs">
+                        </div>
+                        <div class="input-field">
+                            <label for="nhp-growth">Projected Monthly Growth Rate (%):</label>
+                            <input type="number" id="nhp-growth" value="0" step="any">
+                            <p class="unit-note">Enter 1 for 1%, 0.5 for 0.5%, etc.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="calculate-btn">Calculate 12-Month Projection</button>
+                <p id="error-message" class="error"></p>
+            </div>
+
+            <div id="results" style="display: none;">
+                <h2>Projected Annual Green Coffee Usage</h2>
+                
+                <div class="result-item">
+                    <span class="result-label">Melk (Lbs):</span>
+                    <span id="melk-result" class="result-value"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Biodynamic (Lbs):</span>
+                    <span id="bio-result" class="result-value"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">NHP (Lbs):</span>
+                    <span id="nhp-result" class="result-value"></span>
+                </div>
+                
+                <div class="result-item total-row">
+                    <span class="result-label">TOTAL (Lbs):</span>
+                    <span id="total-result" class="result-value"></span>
+                </div>
+                
+                <div class="container-info">
+                    <div class="result-item">
+                        <span class="result-label">Containers Required (20ft):</span>
+                        <span id="container-result" class="result-value"></span>
+                    </div>
+                    <span id="container-capacity-note" class="unit-note"></span>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="container" id="growth-rate-table-container">
+            <h2>Monthly to Annual Growth Rate Conversion</h2>
+            <p class="intro-text">
+                This table shows how monthly growth rates compound over a year. Use this reference to understand 
+                the full annual impact of your projected monthly growth rates.
+            </p>
+            <table id="growth-rate-table">
+                <thead>
+                    <tr>
+                        <th>Monthly Rate</th>
+                        <th>Equivalent Annual Rate</th>
+                    </tr>
+                </thead>
+                <tbody id="growth-rate-tbody">
+                    <!-- Rows will be added here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script>
+        // --- DOM Element References ---
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultsDiv = document.getElementById('results');
+        const errorMessage = document.getElementById('error-message');
+        // Input fields
+        const melkBaseInput = document.getElementById('melk-base');
+        const melkGrowthInput = document.getElementById('melk-growth');
+        const bioBaseInput = document.getElementById('bio-base');
+        const bioGrowthInput = document.getElementById('bio-growth');
+        const nhpBaseInput = document.getElementById('nhp-base');
+        const nhpGrowthInput = document.getElementById('nhp-growth');
+        // Output fields
+        const melkResultSpan = document.getElementById('melk-result');
+        const bioResultSpan = document.getElementById('bio-result');
+        const nhpResultSpan = document.getElementById('nhp-result');
+        const totalResultSpan = document.getElementById('total-result');
+        const containerResultSpan = document.getElementById('container-result');
+        const containerCapacityNoteSpan = document.getElementById('container-capacity-note');
+        // Growth Rate Table Body
+        const growthRateTbody = document.getElementById('growth-rate-tbody');
+
+        // --- Constants ---
+        const POUNDS_PER_BAG = 132;
+        const BAGS_PER_CONTAINER = 320;
+        const POUNDS_PER_CONTAINER = BAGS_PER_CONTAINER * POUNDS_PER_BAG; // 42,240 lbs
+
+        // --- Functions ---
+
+        /**
+         * Calculates the total annual amount based on an initial monthly amount
+         * and a constant monthly growth rate.
+         */
+        function calculateAnnualProjection(monthlyBaseAmount, monthlyGrowthRate) {
+            if (monthlyBaseAmount <= 0) return 0;
+            if (monthlyGrowthRate === 0) {
+                return monthlyBaseAmount * 12;
+            } else {
+                const factor = Math.pow(1 + monthlyGrowthRate, 12);
+                return monthlyBaseAmount * (factor - 1) / monthlyGrowthRate;
+            }
+        }
+
+        /**
+         * Populates the growth rate reference table.
+         */
+        function populateGrowthRateTable() {
+             growthRateTbody.innerHTML = ''; // Clear existing rows (if any)
+
+             for (let monthlyPercent = 1; monthlyPercent <= 15; monthlyPercent++) {
+                 const monthlyDecimal = monthlyPercent / 100;
+                 // Calculate equivalent annual rate: (1 + monthly)^12 - 1
+                 const annualDecimal = Math.pow(1 + monthlyDecimal, 12) - 1;
+                 const annualPercent = annualDecimal * 100;
+
+                 // Create table row and cells
+                 const row = document.createElement('tr');
+                 const cellMonthly = document.createElement('td');
+                 const cellAnnual = document.createElement('td');
+
+                 cellMonthly.textContent = monthlyPercent + '%';
+                 cellAnnual.textContent = annualPercent.toFixed(1) + '%'; // Format to 1 decimal place
+
+                 row.appendChild(cellMonthly);
+                 row.appendChild(cellAnnual);
+                 growthRateTbody.appendChild(row);
+             }
+         }
+
+
+        // --- Event Listener for Calculation ---
+        calculateBtn.addEventListener('click', () => {
+            // Clear previous results and errors
+            resultsDiv.style.display = 'none';
+            errorMessage.textContent = '';
+            melkResultSpan.textContent = '';
+            bioResultSpan.textContent = '';
+            nhpResultSpan.textContent = '';
+            totalResultSpan.textContent = '';
+            containerResultSpan.textContent = '';
+            containerCapacityNoteSpan.textContent = '';
+
+            // Get and Validate Inputs
+            const melkBase = parseFloat(melkBaseInput.value);
+            const melkGrowth = parseFloat(melkGrowthInput.value) / 100;
+            const bioBase = parseFloat(bioBaseInput.value);
+            const bioGrowth = parseFloat(bioGrowthInput.value) / 100;
+            const nhpBaseAnnual = parseFloat(nhpBaseInput.value);
+            const nhpGrowth = parseFloat(nhpGrowthInput.value) / 100;
+
+            if (isNaN(melkBase) || isNaN(melkGrowth) || isNaN(bioBase) || isNaN(bioGrowth) || isNaN(nhpBaseAnnual) || isNaN(nhpGrowth)) {
+                 errorMessage.textContent = 'Error: Please ensure all inputs are valid numbers.';
+                 return;
+             }
+             if (melkBase < 0 || bioBase < 0 || nhpBaseAnnual < 0) {
+                 errorMessage.textContent = 'Error: Base coffee amounts cannot be negative.';
+                 return;
+             }
+
+            // Perform Calculations
+            const melkMonthlyBase = melkBase;
+            const bioMonthlyBase = bioBase;
+            const nhpMonthlyBase = nhpBaseAnnual / 12;
+
+            const melkProjectedAnnual = calculateAnnualProjection(melkMonthlyBase, melkGrowth);
+            const bioProjectedAnnual = calculateAnnualProjection(bioMonthlyBase, bioGrowth);
+            const nhpProjectedAnnual = calculateAnnualProjection(nhpMonthlyBase, nhpGrowth);
+
+            const totalProjectedAnnual = melkProjectedAnnual + bioProjectedAnnual + nhpProjectedAnnual;
+
+            let numberOfContainersExact = 0;
+            if (totalProjectedAnnual > 0 && POUNDS_PER_CONTAINER > 0) {
+                 numberOfContainersExact = totalProjectedAnnual / POUNDS_PER_CONTAINER;
+            }
+
+            // Display Results
+            melkResultSpan.textContent = melkProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            bioResultSpan.textContent = bioProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            nhpResultSpan.textContent = nhpProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            totalResultSpan.textContent = totalProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            containerResultSpan.textContent = numberOfContainersExact.toFixed(2);
+            containerCapacityNoteSpan.textContent = `(at ${POUNDS_PER_CONTAINER.toLocaleString()} lbs/container)`;
+
+            resultsDiv.style.display = 'block';
+        });
+
+        // --- Initial Setup ---
+        // Populate the growth rate table when the script loads
+        populateGrowthRateTable();
+    </script>
+</body>
+</html>
