@@ -3,61 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>May 2025 Schedule</title>
+    <title>May 2025 Schedule (Responsive)</title>
     <style>
-        body {
-            font-family: sans-serif;
-            line-height: 1.4;
+        :root {
+            --cell-min-height-desktop: 130px; /* Min height for desktop cells */
+            --cell-padding: 8px;
+            --border-color: #ccc;
+            --header-bg: #f2f2f2;
+            --mobile-breakpoint: 768px; /* Screen width to switch to mobile view */
         }
-        table {
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.4;
+            margin: 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            table-layout: fixed; /* Crucial for equal column widths */
+            border: 1px solid var(--border-color);
         }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
+
+        .calendar-table th,
+        .calendar-table td {
+            border: 1px solid var(--border-color);
+            padding: var(--cell-padding);
             text-align: left;
             vertical-align: top;
-            height: 100px; /* Adjust height as needed */
+            width: calc(100% / 7); /* Equal width for 7 columns */
+            min-height: var(--cell-min-height-desktop); /* Ensure minimum height */
+            height: var(--cell-min-height-desktop); /* Try to enforce height */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            overflow: hidden; /* Hide overflow if content is too large - adjust as needed */
         }
-        th {
-            background-color: #f2f2f2;
+
+        .calendar-table th {
+            background-color: var(--header-bg);
             text-align: center;
+            font-weight: bold;
+            height: auto; /* Header height can be different */
+            min-height: auto;
         }
+
         .date-number {
             font-weight: bold;
             font-size: 1.1em;
             display: block;
             margin-bottom: 5px;
+            color: #333;
         }
+
         .names {
-            font-size: 0.9em;
+            font-size: 0.85em; /* Slightly smaller font for names */
+            word-wrap: break-word; /* Wrap long names */
         }
+
         .note {
             font-style: italic;
-            font-size: 0.8em;
+            font-size: 0.75em; /* Smaller font for notes */
             color: #555;
+            margin-top: 4px;
+            display: block;
+            word-wrap: break-word;
         }
+
         .holiday {
             font-weight: bold;
             color: #006400; /* Dark green */
         }
+
         .uncovered {
             font-weight: bold;
             color: #ff0000; /* Red */
             background-color: #ffeeee;
         }
-         .baking {
-             color: #800080; /* Purple */
-         }
+
+        .baking {
+            color: #800080; /* Purple */
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: var(--mobile-breakpoint)) {
+            .calendar-table thead {
+                 /* Hiding headers on mobile is common for calendar lists */
+                 display: none;
+            }
+
+            .calendar-table,
+            .calendar-table tbody,
+            .calendar-table tr,
+            .calendar-table td {
+                display: block; /* Stack table elements */
+                width: 100%;   /* Make each day take full width */
+            }
+
+            .calendar-table tr {
+                margin-bottom: 10px; /* Add space between days */
+                border: 1px solid var(--border-color); /* Add border around each day block */
+            }
+
+             .calendar-table td {
+                min-height: 0; /* Reset min-height for mobile */
+                height: auto; /* Let height be determined by content */
+                border: none; /* Remove inner cell borders */
+                border-bottom: 1px solid var(--border-color); /* Add border below content */
+                padding-bottom: 15px; /* More padding at bottom */
+             }
+             .calendar-table tr td:last-child {
+                 border-bottom: none; /* Remove border from last cell in virtual row */
+             }
+
+            .date-number {
+                background-color: var(--header-bg);
+                padding: 5px var(--cell-padding);
+                margin: calc(-1 * var(--cell-padding)) calc(-1 * var(--cell-padding)) 10px calc(-1 * var(--cell-padding)); /* Make date banner span width */
+                border-bottom: 1px solid var(--border-color);
+            }
+
+             .names, .note {
+                 font-size: 0.9em; /* Slightly larger font on mobile for readability */
+             }
+             .note {
+                 font-size: 0.8em;
+             }
+        }
+
     </style>
 </head>
 <body>
 
 <h1>May 2025 Schedule</h1>
 
-<table>
+<table class="calendar-table">
     <thead>
         <tr>
             <th>Sun</th>
