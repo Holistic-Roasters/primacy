@@ -196,7 +196,7 @@
 
         <div class="input-group">
             <label for="greenCoffeeCost">Green coffee cost:</label>
-            <input type="number" id="greenCoffeeCost" step="0.01" min="0" value="4.50">
+            <input type="number" id="greenCoffeeCost" step="0.01" min="0" value="9.50">
             <span class="currency-symbol-display per-unit" id="greenCoffeeCostUnit">$/lb</span>
         </div>
         <div class="input-group">
@@ -206,24 +206,24 @@
         </div>
         <div class="input-group">
             <label for="roastLabourCost">Roast labour cost:</label>
-            <input type="number" id="roastLabourCost" step="0.01" min="0" value="1.20">
+            <input type="number" id="roastLabourCost" step="0.01" min="0" value="1.28">
             <span class="currency-symbol-display per-unit" id="roastLabourCostUnit">$/lb</span>
             <small style="margin-left: calc(var(--label-width) + 10px); font-size: 0.8em; color: #666; width: 100%;"> (per lb of *roasted* coffee)</small>
         </div>
         <div class="input-group">
             <label for="packingCost">Packing cost:</label>
-            <input type="number" id="packingCost" step="0.01" min="0" value="0.80">
+            <input type="number" id="packingCost" step="0.01" min="0" value="0.32">
             <span class="currency-symbol-display per-unit" id="packingCostUnit">$/lb</span>
             <small style="margin-left: calc(var(--label-width) + 10px); font-size: 0.8em; color: #666; width: 100%;"> (per lb of *roasted* coffee)</small>
         </div>
         <div class="input-group">
             <label for="stickerCost">Sticker cost (optional):</label>
-            <input type="number" id="stickerCost" step="0.01" min="0" value="0.15">
+            <input type="number" id="stickerCost" step="0.01" min="0" value="0.25">
             <span class="currency-symbol-display per-unit" id="stickerCostUnit">$/unit</span>
         </div>
         <div class="input-group">
             <label for="targetGrossMargin">Target Gross Margin:</label>
-            <input type="number" id="targetGrossMargin" step="0.1" min="0" max="99.9" value="40">
+            <input type="number" id="targetGrossMargin" step="0.1" min="0" max="99.9" value="70">
             <span class="currency-symbol-display">%</span>
         </div>
          <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 15px 0;">
@@ -235,7 +235,7 @@
         <div class="input-group">
              <label for="fxRate">Exchange rate:</label>
              <span>1 USD = </span>
-             <input type="number" id="fxRate" step="0.0001" min="0" value="1.3850" style="margin: 0 5px; width: 80px;">
+             <input type="number" id="fxRate" step="0.0001" min="0" value="1.39" style="margin: 0 5px; width: 80px;">
              <span>CAD</span>
         </div>
     </fieldset>
@@ -287,10 +287,10 @@
     <script>
         // --- Configuration ---
         const packSizes = [
-            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.50, defaultTranspoPercent: 5.0, defaultOverheadPercent: 10.0 },
-            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.90, defaultTranspoPercent: 4.0, defaultOverheadPercent: 9.0 },
-            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 1.80, defaultTranspoPercent: 3.0, defaultOverheadPercent: 8.0 },
-            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 3.50, defaultTranspoPercent: 2.0, defaultOverheadPercent: 7.0 }
+            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.50, defaultTranspoPercent: 15.0, defaultOverheadPercent: 30.0 },
+            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.90, defaultTranspoPercent: 15.0, defaultOverheadPercent: 30.0 },
+            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 1.80, defaultTranspoPercent: 15.0, defaultOverheadPercent: 30.0 },
+            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 3.50, defaultTranspoPercent: 15.0, defaultOverheadPercent: 30.0 }
         ];
 
         // --- DOM Elements ---
