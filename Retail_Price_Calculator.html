@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Retail Price Calculator</title>
+    <style>
+        :root {
+            --border-color: #ccc;
+            --background-light: #f9f9f9;
+            --highlight-error: #dc3545;
+            --text-color: #333;
+            --label-width: 150px;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #fff;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5a3a22;
+            margin-bottom: 25px;
+        }
+
+        fieldset {
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            margin-bottom: 25px; /* Increased margin */
+            border-radius: 5px;
+            background-color: var(--background-light);
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+            color: #5a3a22;
+            font-size: 1.1em; /* Slightly larger legend */
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .input-group label {
+            display: inline-block;
+            width: var(--label-width);
+            margin-right: 10px;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        .input-group input[type="number"],
+        .input-group .currency-symbol-display {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        .input-group input[type="number"] {
+             width: 100px;
+        }
+
+        .input-group .currency-symbol-display {
+            background-color: #eee;
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            padding: 8px 10px;
+            margin-left: -1px;
+            display: inline-block;
+        }
+
+        #greenCoffeeCost, #roastLabourCost, #packingCost, #stickerCost, #fxRate {
+            width: 100px;
+        }
+        #targetGrossMargin, #roastShrinkage {
+             width: 60px;
+        }
+
+        .currency-toggle label {
+            margin-right: 15px;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+        .currency-toggle input[type="radio"] {
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px; /* Reduced top margin */
+            font-size: 0.9em;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f0f0f0; /* Slightly different header bg */
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        th .header-currency-symbol {
+            margin-left: 3px;
+        }
+        /* Input widths in tables */
+        td input[type="number"].cost-input { width: 80px; }
+        td input[type="number"].percent-input { width: 60px; } /* Smaller width for percentages */
+
+        td input[type="number"] {
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            text-align: right;
+        }
+
+        td .output-currency-symbol {
+            display: inline-block;
+            margin-right: 5px;
+            font-size: 0.9em;
+            min-width: 25px;
+            text-align: right;
+        }
+
+        td[data-output] {
+             text-align: right;
+             font-family: monospace;
+             white-space: nowrap;
+             background-color: #fdfdfd;
+        }
+        td[data-output] span[data-value] {
+             display: inline-block;
+             min-width: 50px;
+        }
+        td[data-output].percent-output span[data-value] { /* Less min-width for % outputs */
+            min-width: 40px;
+        }
+
+        .low-margin {
+            color: var(--highlight-error);
+            font-weight: bold;
+        }
+        .negative-margin { /* Style for negative NM */
+             color: var(--highlight-error);
+        }
+
+        @media (max-width: 700px) { /* Adjusted breakpoint */
+            :root { --label-width: 110px; }
+
+            .input-group { flex-direction: column; align-items: flex-start; }
+            .input-group label { width: auto; margin-bottom: 3px; }
+            .input-group input[type="number"] { width: 100%; box-sizing: border-box; }
+            .input-group .currency-symbol-display { display: none; }
+            body { padding: 10px; }
+            h1 { font-size: 1.5em; }
+            th, td { padding: 8px 5px; white-space: normal; } /* Allow wrapping in cells */
+            th { white-space: nowrap; } /* Keep headers nowrap */
+            td input[type="number"].cost-input { width: 65px; }
+            td input[type="number"].percent-input { width: 50px; }
+            td .output-currency-symbol { min-width: auto; margin-right: 2px; }
+            td[data-output] span[data-value] { min-width: 40px; }
+            td[data-output].percent-output span[data-value] { min-width: 30px; }
+            table { font-size: 0.85em; }
+        }
+
+         input[type=number]::-webkit-inner-spin-button,
+         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+         input[type=number] { -moz-appearance: textfield; }
+
+    </style>
+</head>
+<body>
+
+    <h1>Coffee Retail Price Calculator</h1>
+
+    <!-- Section 1: Global Inputs -->
+    <fieldset>
+        <legend>Global Inputs</legend>
+
+        <div class="input-group">
+            <label for="greenCoffeeCost">Green coffee cost:</label>
+            <input type="number" id="greenCoffeeCost" step="0.01" min="0" value="4.50">
+            <span class="currency-symbol-display per-unit" id="greenCoffeeCostUnit">$/lb</span>
+        </div>
+        <div class="input-group">
+            <label for="roastShrinkage">Roast Shrinkage:</label>
+            <input type="number" id="roastShrinkage" step="0.1" min="0" max="99.9" value="15.0">
+            <span class="currency-symbol-display">%</span>
+        </div>
+        <div class="input-group">
+            <label for="roastLabourCost">Roast labour cost:</label>
+            <input type="number" id="roastLabourCost" step="0.01" min="0" value="1.20">
+            <span class="currency-symbol-display per-unit" id="roastLabourCostUnit">$/lb</span>
+            <small style="margin-left: calc(var(--label-width) + 10px); font-size: 0.8em; color: #666; width: 100%;"> (per lb of *roasted* coffee)</small>
+        </div>
+        <div class="input-group">
+            <label for="packingCost">Packing cost:</label>
+            <input type="number" id="packingCost" step="0.01" min="0" value="0.80">
+            <span class="currency-symbol-display per-unit" id="packingCostUnit">$/lb</span>
+            <small style="margin-left: calc(var(--label-width) + 10px); font-size: 0.8em; color: #666; width: 100%;"> (per lb of *roasted* coffee)</small>
+        </div>
+        <div class="input-group">
+            <label for="stickerCost">Sticker cost (optional):</label>
+            <input type="number" id="stickerCost" step="0.01" min="0" value="0.15">
+            <span class="currency-symbol-display per-unit" id="stickerCostUnit">$/unit</span>
+        </div>
+        <div class="input-group">
+            <label for="targetGrossMargin">Target Gross Margin:</label>
+            <input type="number" id="targetGrossMargin" step="0.1" min="0" max="99.9" value="40">
+            <span class="currency-symbol-display">%</span>
+        </div>
+         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 15px 0;">
+        <div class="input-group currency-toggle">
+             <label>Currency:</label>
+             <label><input type="radio" name="currency" value="CAD" checked> CAD</label>
+             <label><input type="radio" name="currency" value="USD"> USD</label>
+        </div>
+        <div class="input-group">
+             <label for="fxRate">Exchange rate:</label>
+             <span>1 USD = </span>
+             <input type="number" id="fxRate" step="0.0001" min="0" value="1.3850" style="margin: 0 5px; width: 80px;">
+             <span>CAD</span>
+        </div>
+    </fieldset>
+
+    <!-- Section 2: Gross Margin Pricing -->
+    <fieldset>
+        <legend>Gross Margin Pricing</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Net weight (lb)</th>
+                    <th>Bag cost (<span class="header-currency-symbol" id="headerBagCostCurrencySymbol"></span>/unit)</th>
+                    <th>Total unit cost (<span class="header-currency-symbol" id="headerTotalCostCurrencySymbol"></span>)</th>
+                    <th>Retail price needed (<span class="header-currency-symbol" id="headerRetailPriceCurrencySymbol"></span>)</th>
+                    <th>Achieved GM %</th>
+                </tr>
+            </thead>
+            <tbody id="grossMarginTableBody">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- Section 3: Net Margins -->
+    <fieldset>
+        <legend>Net Margins</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Transportation %</th>
+                    <th>Overhead %</th>
+                    <th>Total unit cost (<span class="header-currency-symbol" id="headerNmTotalCostCurrencySymbol"></span>)</th>
+                    <th>Retail price (<span class="header-currency-symbol" id="headerNmRetailPriceCurrencySymbol"></span>)</th>
+                    <th>Achieved NM %</th>
+                </tr>
+            </thead>
+            <tbody id="netMarginTableBody">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- TODO: Add a "+ Custom Size" button -->
+    <!-- TODO: Allow saving scenarios to localStorage -->
+
+
+    <script>
+        // --- Configuration ---
+        const packSizes = [
+            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.50, defaultTranspoPercent: 5.0, defaultOverheadPercent: 10.0 },
+            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.90, defaultTranspoPercent: 4.0, defaultOverheadPercent: 9.0 },
+            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 1.80, defaultTranspoPercent: 3.0, defaultOverheadPercent: 8.0 },
+            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 3.50, defaultTranspoPercent: 2.0, defaultOverheadPercent: 7.0 }
+        ];
+
+        // --- DOM Elements ---
+        const greenCoffeeCostInput = document.getElementById('greenCoffeeCost');
+        const roastShrinkageInput = document.getElementById('roastShrinkage');
+        const roastLabourCostInput = document.getElementById('roastLabourCost');
+        const packingCostInput = document.getElementById('packingCost');
+        const stickerCostInput = document.getElementById('stickerCost');
+        const targetGrossMarginInput = document.getElementById('targetGrossMargin');
+        const currencyRadios = document.querySelectorAll('input[name="currency"]');
+        const fxRateInput = document.getElementById('fxRate');
+        const grossMarginTableBody = document.getElementById('grossMarginTableBody');
+        const netMarginTableBody = document.getElementById('netMarginTableBody'); // New table body
+
+        // Store refs to dynamic elements for both tables, keyed by size.key
+        const dynamicElements = {};
+        let currentCurrency = 'CAD';
+
+        // --- Helper Functions ---
+        function formatMoney(value) { return value.toFixed(2); }
+        function formatPercent(value) { return value.toFixed(1); }
+        function sanitizeId(text) { return text.replace(/[\s.]+/g, '-'); }
+
+        // --- Initialization ---
+        // Initialize Gross Margin Table
+        function initializeGrossMarginTable() {
+            grossMarginTableBody.innerHTML = ''; // Clear previous rows if any
+            packSizes.forEach(size => {
+                const row = grossMarginTableBody.insertRow();
+                const sizeKey = size.key;
+                row.dataset.sizeKey = sizeKey;
+
+                // Initialize dynamicElements entry if it doesn't exist
+                if (!dynamicElements[sizeKey]) { dynamicElements[sizeKey] = {}; }
+
+                row.insertCell().textContent = size.name;
+                row.insertCell().textContent = size.weightLb.toFixed(3);
+
+                // Bag Cost
+                const bagCostCell = row.insertCell();
+                const bagCostInput = document.createElement('input');
+                bagCostInput.type = 'number';
+                bagCostInput.className = 'cost-input'; // Class for styling
+                bagCostInput.step = '0.01';
+                bagCostInput.min = '0';
+                bagCostInput.value = formatMoney(size.defaultBagCost);
+                bagCostInput.id = `bagCost-${sanitizeId(sizeKey)}`;
+                bagCostInput.dataset.moneyInput = 'true';
+                bagCostInput.addEventListener('input', calculateAndDisplayAll);
+                bagCostCell.appendChild(bagCostInput);
+                dynamicElements[sizeKey].bagCostInput = bagCostInput; // Store reference
+
+                // Total Cost Output
+                const totalCostCell = row.insertCell();
+                totalCostCell.dataset.output = 'totalCost';
+                const totalCostCurrencySpan = document.createElement('span');
+                totalCostCurrencySpan.className = 'output-currency-symbol';
+                const totalCostValueSpan = document.createElement('span');
+                totalCostValueSpan.dataset.value = 'totalCost';
+                totalCostCell.appendChild(totalCostCurrencySpan);
+                totalCostCell.appendChild(totalCostValueSpan);
+                dynamicElements[sizeKey].gmTotalCostValueSpan = totalCostValueSpan; // Store reference (gm prefix)
+                dynamicElements[sizeKey].gmTotalCostCurrencySpan = totalCostCurrencySpan; // Store reference
+
+                // Retail Price Output
+                const retailPriceCell = row.insertCell();
+                retailPriceCell.dataset.output = 'retailPrice';
+                const retailPriceCurrencySpan = document.createElement('span');
+                retailPriceCurrencySpan.className = 'output-currency-symbol';
+                const retailPriceValueSpan = document.createElement('span');
+                retailPriceValueSpan.dataset.value = 'retailPrice';
+                retailPriceCell.appendChild(retailPriceCurrencySpan);
+                retailPriceCell.appendChild(retailPriceValueSpan);
+                dynamicElements[sizeKey].gmRetailPriceValueSpan = retailPriceValueSpan; // Store reference (gm prefix)
+                dynamicElements[sizeKey].gmRetailPriceCurrencySpan = retailPriceCurrencySpan; // Store reference
+
+                // Achieved GM Output
+                const achievedGMCell = row.insertCell();
+                achievedGMCell.dataset.output = 'achievedGM';
+                achievedGMCell.classList.add('percent-output'); // Class for styling
+                const achievedGMValueSpan = document.createElement('span');
+                 achievedGMValueSpan.dataset.value = 'achievedGM';
+                const achievedGMPercentSpan = document.createElement('span');
+                achievedGMPercentSpan.textContent = '%';
+                achievedGMCell.appendChild(achievedGMValueSpan);
+                achievedGMCell.appendChild(achievedGMPercentSpan);
+                dynamicElements[sizeKey].gmAchievedPercentValueSpan = achievedGMValueSpan; // Store reference (gm prefix)
+            });
+        }
+
+        // Initialize Net Margin Table
+        function initializeNetMarginTable() {
+            netMarginTableBody.innerHTML = ''; // Clear previous rows if any
+            packSizes.forEach(size => {
+                const row = netMarginTableBody.insertRow();
+                const sizeKey = size.key;
+                row.dataset.sizeKey = sizeKey;
+
+                // Ensure dynamicElements entry exists
+                if (!dynamicElements[sizeKey]) { dynamicElements[sizeKey] = {}; }
+
+                row.insertCell().textContent = size.name;
+
+                // Transportation % Input
+                const transpoCell = row.insertCell();
+                const transpoInput = document.createElement('input');
+                transpoInput.type = 'number';
+                transpoInput.className = 'percent-input'; // Class for styling
+                transpoInput.step = '0.1';
+                transpoInput.min = '0';
+                transpoInput.value = formatPercent(size.defaultTranspoPercent);
+                transpoInput.id = `transpoPercent-${sanitizeId(sizeKey)}`;
+                transpoInput.addEventListener('input', calculateAndDisplayAll);
+                transpoCell.appendChild(transpoInput);
+                transpoCell.insertAdjacentHTML('beforeend', ' <span style="font-size:0.9em;">%</span>');
+                dynamicElements[sizeKey].transportationPercentInput = transpoInput; // Store reference
+
+                // Overhead % Input
+                const overheadCell = row.insertCell();
+                const overheadInput = document.createElement('input');
+                overheadInput.type = 'number';
+                overheadInput.className = 'percent-input'; // Class for styling
+                overheadInput.step = '0.1';
+                overheadInput.min = '0';
+                overheadInput.value = formatPercent(size.defaultOverheadPercent);
+                overheadInput.id = `overheadPercent-${sanitizeId(sizeKey)}`;
+                overheadInput.addEventListener('input', calculateAndDisplayAll);
+                overheadCell.appendChild(overheadInput);
+                overheadCell.insertAdjacentHTML('beforeend', ' <span style="font-size:0.9em;">%</span>');
+                dynamicElements[sizeKey].overheadPercentInput = overheadInput; // Store reference
+
+                // Total unit cost (Display Only - Copied from GM table)
+                const nmTotalCostCell = row.insertCell();
+                nmTotalCostCell.dataset.output = 'totalCost';
+                const nmTotalCostCurrencySpan = document.createElement('span');
+                nmTotalCostCurrencySpan.className = 'output-currency-symbol';
+                const nmTotalCostValueSpan = document.createElement('span');
+                nmTotalCostValueSpan.dataset.value = 'totalCost';
+                nmTotalCostCell.appendChild(nmTotalCostCurrencySpan);
+                nmTotalCostCell.appendChild(nmTotalCostValueSpan);
+                dynamicElements[sizeKey].nmTotalCostValueSpan = nmTotalCostValueSpan; // Store reference (nm prefix)
+                dynamicElements[sizeKey].nmTotalCostCurrencySpan = nmTotalCostCurrencySpan; // Store reference
+
+                // Retail price (Display Only - Copied from GM table)
+                const nmRetailPriceCell = row.insertCell();
+                nmRetailPriceCell.dataset.output = 'retailPrice';
+                const nmRetailPriceCurrencySpan = document.createElement('span');
+                nmRetailPriceCurrencySpan.className = 'output-currency-symbol';
+                const nmRetailPriceValueSpan = document.createElement('span');
+                nmRetailPriceValueSpan.dataset.value = 'retailPrice';
+                nmRetailPriceCell.appendChild(nmRetailPriceCurrencySpan);
+                nmRetailPriceCell.appendChild(nmRetailPriceValueSpan);
+                dynamicElements[sizeKey].nmRetailPriceValueSpan = nmRetailPriceValueSpan; // Store reference (nm prefix)
+                dynamicElements[sizeKey].nmRetailPriceCurrencySpan = nmRetailPriceCurrencySpan; // Store reference
+
+                // Achieved NM % (Calculated)
+                const achievedNMCell = row.insertCell();
+                achievedNMCell.dataset.output = 'achievedNM';
+                achievedNMCell.classList.add('percent-output'); // Class for styling
+                const achievedNMValueSpan = document.createElement('span');
+                 achievedNMValueSpan.dataset.value = 'achievedNM';
+                const achievedNMPercentSpan = document.createElement('span');
+                achievedNMPercentSpan.textContent = '%';
+                achievedNMCell.appendChild(achievedNMValueSpan);
+                achievedNMCell.appendChild(achievedNMPercentSpan);
+                dynamicElements[sizeKey].nmAchievedPercentValueSpan = achievedNMValueSpan; // Store reference (nm prefix)
+            });
+        }
+
+        // --- Core Calculation Logic ---
+        function calculateAndDisplayAll() {
+            const C_lb_green = parseFloat(greenCoffeeCostInput.value) || 0;
+            const shrinkagePercent = parseFloat(roastShrinkageInput.value) || 0;
+            const L_lb = parseFloat(roastLabourCostInput.value) || 0;
+            const P_lb = parseFloat(packingCostInput.value) || 0;
+            const S_u = parseFloat(stickerCostInput.value) || 0;
+            const targetGMPercent = parseFloat(targetGrossMarginInput.value) || 0;
+            const targetGM = targetGMPercent / 100;
+            const currentSelectedCurrency = getSelectedCurrency();
+
+            updateCurrencySymbols(currentSelectedCurrency);
+
+            let shrinkageFactor = 1 - (shrinkagePercent / 100);
+            if (shrinkageFactor <= 0.0001) shrinkageFactor = 0.0001; // Prevent division by zero/negative
+
+            const C_lb_roasted_equivalent = C_lb_green / shrinkageFactor;
+            const totalCostPerRoastedLb = C_lb_roasted_equivalent + L_lb + P_lb;
+
+            packSizes.forEach(size => {
+                const sizeKey = size.key;
+                const W_lb = size.weightLb;
+                const elements = dynamicElements[sizeKey];
+
+                if (!elements || !elements.bagCostInput || !elements.gmTotalCostValueSpan || !elements.transportationPercentInput) {
+                    console.error(`Could not find all required elements for size key: ${sizeKey}`);
+                    return;
+                }
+
+                const B_u = parseFloat(elements.bagCostInput.value) || 0;
+
+                // === Gross Margin Calculations ===
+                const T_u = (totalCostPerRoastedLb * W_lb) + B_u + S_u; // Total Unit Cost
+                let R_u = 0; // Retail Price Needed
+                if (1 - targetGM > 0.0001) {
+                    R_u = T_u / (1 - targetGM);
+                } else {
+                    R_u = T_u;
+                }
+                let achievedGM_actual_percent = 0; // Achieved Gross Margin %
+                 if (R_u > 0.0001) {
+                    achievedGM_actual_percent = ((R_u - T_u) / R_u) * 100;
+                 }
+
+                // === Net Margin Calculations ===
+                const transportationPercent = parseFloat(elements.transportationPercentInput.value) || 0;
+                const overheadPercent = parseFloat(elements.overheadPercentInput.value) || 0;
+
+                // Achieved Net Margin % = Achieved GM % - Transportation % - Overhead %
+                const achievedNM_percent = achievedGM_actual_percent - transportationPercent - overheadPercent;
+
+                // === Update Gross Margin Table Displays ===
+                elements.gmTotalCostValueSpan.textContent = formatMoney(T_u);
+                elements.gmRetailPriceValueSpan.textContent = formatMoney(R_u);
+                elements.gmAchievedPercentValueSpan.textContent = formatPercent(achievedGM_actual_percent);
+                elements.gmAchievedPercentValueSpan.classList.toggle('low-margin', achievedGM_actual_percent < targetGMPercent - 0.01);
+
+                // === Update Net Margin Table Displays ===
+                // Copy T_u and R_u
+                elements.nmTotalCostValueSpan.textContent = formatMoney(T_u);
+                elements.nmRetailPriceValueSpan.textContent = formatMoney(R_u);
+                // Display NM %
+                elements.nmAchievedPercentValueSpan.textContent = formatPercent(achievedNM_percent);
+                // Add class if NM is negative
+                elements.nmAchievedPercentValueSpan.classList.toggle('negative-margin', achievedNM_percent < 0);
+
+            });
+        }
+
+        // --- Currency Handling ---
+        function getSelectedCurrency() {
+            const checkedRadio = document.querySelector('input[name="currency"]:checked');
+            return checkedRadio ? checkedRadio.value : 'CAD';
+        }
+
+         function updateCurrencySymbols(currency) {
+            // Global Inputs
+            document.getElementById('greenCoffeeCostUnit').textContent = `${currency}/lb`;
+            document.getElementById('roastLabourCostUnit').textContent = `${currency}/lb`;
+            document.getElementById('packingCostUnit').textContent = `${currency}/lb`;
+            document.getElementById('stickerCostUnit').textContent = `${currency}/unit`;
+
+            // Gross Margin Table Headers
+            document.getElementById('headerBagCostCurrencySymbol').textContent = currency;
+            document.getElementById('headerTotalCostCurrencySymbol').textContent = currency;
+            document.getElementById('headerRetailPriceCurrencySymbol').textContent = currency;
+
+            // Net Margin Table Headers
+            document.getElementById('headerNmTotalCostCurrencySymbol').textContent = currency;
+            document.getElementById('headerNmRetailPriceCurrencySymbol').textContent = currency;
+
+
+            // Update currency symbols in table rows for both tables
+            packSizes.forEach(size => {
+                 const elements = dynamicElements[size.key];
+                 if (elements) {
+                     // GM Table Row Symbols
+                     if(elements.gmTotalCostCurrencySpan) elements.gmTotalCostCurrencySpan.textContent = currency;
+                     if(elements.gmRetailPriceCurrencySpan) elements.gmRetailPriceCurrencySpan.textContent = currency;
+                     // NM Table Row Symbols
+                     if(elements.nmTotalCostCurrencySpan) elements.nmTotalCostCurrencySpan.textContent = currency;
+                     if(elements.nmRetailPriceCurrencySpan) elements.nmRetailPriceCurrencySpan.textContent = currency;
+                 }
+            });
+         }
+
+        function handleCurrencyChange() {
+            const newCurrency = getSelectedCurrency();
+            if (newCurrency === currentCurrency) return;
+
+            let fxRate = parseFloat(fxRateInput.value) || 1.0;
+            if (fxRate <= 0) { fxRate = 1.0; }
+            let conversionFactor = 1.0;
+
+            if (currentCurrency === 'CAD' && newCurrency === 'USD') {
+                conversionFactor = 1 / fxRate;
+            } else if (currentCurrency === 'USD' && newCurrency === 'CAD') {
+                conversionFactor = fxRate;
+            }
+
+            // Convert global monetary inputs
+            [greenCoffeeCostInput, roastLabourCostInput, packingCostInput, stickerCostInput].forEach(input => {
+                const currentValue = parseFloat(input.value) || 0;
+                input.value = formatMoney(currentValue * conversionFactor);
+            });
+
+            // Convert per-pack monetary inputs (only bag cost)
+            packSizes.forEach(size => {
+                 const elements = dynamicElements[size.key];
+                 if (elements && elements.bagCostInput) {
+                     const input = elements.bagCostInput;
+                     const currentValue = parseFloat(input.value) || 0;
+                     input.value = formatMoney(currentValue * conversionFactor);
+                 }
+            });
+
+            currentCurrency = newCurrency;
+            calculateAndDisplayAll();
+        }
+
+        // --- Event Listeners ---
+        function attachGlobalListeners() {
+             const inputsToWatch = [
+                greenCoffeeCostInput, roastShrinkageInput, roastLabourCostInput,
+                packingCostInput, stickerCostInput, targetGrossMarginInput, fxRateInput
+            ];
+            inputsToWatch.forEach(input => {
+                 if(input) input.addEventListener('input', calculateAndDisplayAll);
+            });
+            currencyRadios.forEach(radio => {
+                radio.addEventListener('change', handleCurrencyChange);
+            });
+             // Note: Listeners for dynamic inputs (bag cost, transpo %, overhead %)
+             // are attached during table initialization.
+        }
+
+        // --- Initial Run ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeGrossMarginTable(); // Initialize first table
+            initializeNetMarginTable();   // Initialize second table
+            attachGlobalListeners();
+            currentCurrency = getSelectedCurrency();
+            calculateAndDisplayAll(); // Perform initial calculation for both tables
+        });
+
+    </script>
+
+</body>
+</html>
