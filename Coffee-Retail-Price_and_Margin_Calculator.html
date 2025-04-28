@@ -158,7 +158,7 @@
             display: inline-block;
         }
 
-        #greenCoffeeCost, #roastLabourCost, #packingCost, #stickerCost, #fxRate {
+        #greenCoffeeCost, #roastLabourCost, #packingCost, #fxRate { /* Removed #stickerCost */
             width: 100px;
         }
 
@@ -305,7 +305,7 @@
         }
 
 
-        @media (max-width: 0px) {
+        @media (max-width: 0px) { /* Set this low to prevent activation for now */
             :root { --label-width: 120px; }
 
             body {
@@ -411,11 +411,7 @@
                     <small>(per lb of *roasted* coffee)</small>
                 </div>
 
-                <div class="input-group">
-                    <label for="stickerCost">Sticker cost (optional):</label>
-                    <input type="number" id="stickerCost" step="0.01" min="0" value="0.25">
-                    <span class="currency-symbol-display per-unit" id="stickerCostUnit">$/unit</span>
-                </div>
+                <!-- REMOVED Sticker Cost Input Group from here -->
 
                 <div class="input-group">
                     <label for="targetGrossMargin">Target Gross Margin:</label>
@@ -444,11 +440,11 @@
         <div class="container instructions-card">
              <h2>How to Use This Calculator</h2>
              <p>This tool helps determine suggested retail prices for roasted coffee type (Minivan, Rubicon, Bon Décaf, etc.) based on costs and target profit margins.</p>
-             <p><strong>Global Inputs:</strong> Enter costs like Green coffee cost – based on the recipe (include cost of transportation and financing), Roast Shrinkage, Roast costs (include cost labour and equipment rental/usage), Packing, and Sticker costs. Set your desired <strong>Target Gross Margin</strong> (profit before overheads).</p>
+             <p><strong>Global Inputs:</strong> Enter costs like Green coffee cost – based on the recipe (include cost of transportation and financing), Roast Shrinkage, Roast costs (include cost labour and equipment rental/usage), and Packing costs. Set your desired <strong>Target Gross Margin</strong> (profit before overheads).</p> <!-- Removed sticker cost mention -->
              <p><strong>Currency & FX:</strong> Select your selling currency. Use the exchange rate if your green coffee cost is in a different currency (e.g., USD cost, CAD selling). Changing currency converts monetary inputs.</p>
              <p><strong>Tables Explained:</strong></p>
              <ul>
-                <li><strong>Suggested Retail Pricing:</strong> Shows unit cost (COGS) and the retail price needed to hit your target Gross Margin (GM). Adjust bag/container costs per size.</li>
+                <li><strong>Suggested Retail Pricing:</strong> Shows unit cost (COGS) and the retail price needed to hit your target Gross Margin (GM). Adjust bag and *sticker* costs per size.</li> <!-- Added sticker cost mention -->
                 <li><strong>Net DTC Margins:</strong> Calculates Direct-to-Consumer Net Margin (NM) after accounting for Transportation (default 20%) and Overhead percentages (applied to the retail price).<br><b> *** NOTE: Transactions fees of ~3% not included ***</b></li>
                 <li><strong>Net B2B Margins:</strong> Calculates Business-to-Business Net Margin after applying a Discount to the retail price, plus Transportation (default 8%) and Overhead percentages.</li>
              </ul>
@@ -465,8 +461,10 @@
                 <thead>
                     <tr>
                         <th>Size</th>
-                        <th>Net weight (lb)</th>
+                        <!-- REMOVED Net weight (lb) -->
                         <th>Bag cost (<span class="header-currency-symbol" id="headerBagCostCurrencySymbol">CAD</span>/unit)</th>
+                        <!-- ADDED Sticker cost column header -->
+                        <th>Sticker cost (<span class="header-currency-symbol" id="headerStickerCostCurrencySymbol">CAD</span>/unit)</th>
                         <th>Total unit cost (<span class="header-currency-symbol" id="headerTotalCostCurrencySymbol">CAD</span>)</th>
                         <th>Retail price needed (<span class="header-currency-symbol" id="headerRetailPriceCurrencySymbol">CAD</span>)</th>
                         <th>Achieved GM %</th>
@@ -527,12 +525,11 @@
     <script>
         // --- Configuration ---
         const packSizes = [
-             // *** MODIFICATION 1: Added separate default Transpo % ***
-            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.50, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
-            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.90, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
-            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 1.80, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
-            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 3.50, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 }
-            // *** END MODIFICATION 1 ***
+             // Added separate default Transpo % and defaultStickerCost
+            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.50, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
+            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.90, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
+            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 1.80, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
+            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 3.50, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 }
         ];
 
         // --- DOM Elements ---
@@ -540,13 +537,13 @@
         const roastShrinkageInput = document.getElementById('roastShrinkage');
         const roastLabourCostInput = document.getElementById('roastLabourCost');
         const packingCostInput = document.getElementById('packingCost');
-        const stickerCostInput = document.getElementById('stickerCost');
+        // REMOVED const stickerCostInput = document.getElementById('stickerCost');
         const targetGrossMarginInput = document.getElementById('targetGrossMargin');
         const currencyRadios = document.querySelectorAll('input[name="currency"]');
         const fxRateInput = document.getElementById('fxRate');
         const grossMarginTableBody = document.getElementById('grossMarginTableBody');
-        const netDTCMarginTableBody = document.getElementById('netDTCMarginTableBody'); // Updated ID
-        const netB2BMarginTableBody = document.getElementById('netB2BMarginTableBody'); // New ID
+        const netDTCMarginTableBody = document.getElementById('netDTCMarginTableBody');
+        const netB2BMarginTableBody = document.getElementById('netB2BMarginTableBody');
 
         // Store refs to dynamic elements for all tables, keyed by size.key
         const dynamicElements = {};
@@ -570,7 +567,7 @@
                 if (!dynamicElements[sizeKey]) { dynamicElements[sizeKey] = {}; }
 
                 row.insertCell().textContent = size.name;
-                row.insertCell().textContent = size.weightLb.toFixed(3);
+                // REMOVED Net Weight cell: row.insertCell().textContent = size.weightLb.toFixed(3);
 
                 // Bag Cost
                 const bagCostCell = row.insertCell();
@@ -585,6 +582,21 @@
                 bagCostInput.addEventListener('input', calculateAndDisplayAll);
                 bagCostCell.appendChild(bagCostInput);
                 dynamicElements[sizeKey].bagCostInput = bagCostInput; // Store reference
+
+                // ADDED Sticker Cost Input Cell
+                const stickerCostCell = row.insertCell();
+                const stickerCostInput_size = document.createElement('input');
+                stickerCostInput_size.type = 'number';
+                stickerCostInput_size.className = 'cost-input'; // Use same styling
+                stickerCostInput_size.step = '0.01';
+                stickerCostInput_size.min = '0';
+                stickerCostInput_size.value = formatMoney(size.defaultStickerCost); // Use new default
+                stickerCostInput_size.id = `stickerCost-${sanitizeId(sizeKey)}`;
+                stickerCostInput_size.dataset.moneyInput = 'true'; // Mark for currency conversion
+                stickerCostInput_size.addEventListener('input', calculateAndDisplayAll);
+                stickerCostCell.appendChild(stickerCostInput_size);
+                dynamicElements[sizeKey].stickerCostInput = stickerCostInput_size; // Store reference
+
 
                 // Total Cost Output
                 const totalCostCell = row.insertCell();
@@ -646,9 +658,7 @@
                 transpoInput.className = 'percent-input'; // Class for styling
                 transpoInput.step = '0.1';
                 transpoInput.min = '0';
-                // *** MODIFICATION 2: Use defaultDtcTranspoPercent ***
                 transpoInput.value = formatPercent(size.defaultDtcTranspoPercent);
-                // *** END MODIFICATION 2 ***
                 transpoInput.id = `dtcTranspoPercent-${sanitizeId(sizeKey)}`;
                 transpoInput.addEventListener('input', calculateAndDisplayAll);
                 transpoCell.appendChild(transpoInput);
@@ -709,7 +719,7 @@
             });
         }
 
-        // Initialize Net B2B Margin Table (New Function)
+        // Initialize Net B2B Margin Table
         function initializeNetB2BMarginTable() {
             netB2BMarginTableBody.innerHTML = ''; // Clear previous rows if any
             packSizes.forEach(size => {
@@ -729,9 +739,7 @@
                 transpoInput.className = 'percent-input';
                 transpoInput.step = '0.1';
                 transpoInput.min = '0';
-                // *** MODIFICATION 3: Use defaultB2bTranspoPercent ***
                 transpoInput.value = formatPercent(size.defaultB2bTranspoPercent);
-                // *** END MODIFICATION 3 ***
                 transpoInput.id = `b2bTranspoPercent-${sanitizeId(sizeKey)}`;
                 transpoInput.addEventListener('input', calculateAndDisplayAll);
                 transpoCell.appendChild(transpoInput);
@@ -745,7 +753,7 @@
                 overheadInput.className = 'percent-input';
                 overheadInput.step = '0.1';
                 overheadInput.min = '0';
-                overheadInput.value = formatPercent(size.defaultOverheadPercent); // Using same default as DTC for now
+                overheadInput.value = formatPercent(size.defaultOverheadPercent);
                 overheadInput.id = `b2bOverheadPercent-${sanitizeId(sizeKey)}`;
                 overheadInput.addEventListener('input', calculateAndDisplayAll);
                 overheadCell.appendChild(overheadInput);
@@ -778,14 +786,14 @@
                 dynamicElements[sizeKey].b2bRetailPriceValueSpan = retailPriceValueSpan; // b2b prefix
                 dynamicElements[sizeKey].b2bRetailPriceCurrencySpan = retailPriceCurrencySpan; // b2b prefix
 
-                // Discount % Input (NEW)
+                // Discount % Input
                 const discountCell = row.insertCell();
                 const discountInput = document.createElement('input');
                 discountInput.type = 'number';
                 discountInput.className = 'percent-input';
                 discountInput.step = '0.1';
                 discountInput.min = '0';
-                discountInput.max = '99.9'; // Discount shouldn't be 100% or more typically
+                discountInput.max = '99.9';
                 discountInput.value = formatPercent(size.defaultB2BDiscountPercent);
                 discountInput.id = `b2bDiscountPercent-${sanitizeId(sizeKey)}`;
                 discountInput.addEventListener('input', calculateAndDisplayAll);
@@ -814,7 +822,7 @@
             const shrinkagePercent = parseFloat(roastShrinkageInput.value) || 0;
             const L_lb = parseFloat(roastLabourCostInput.value) || 0;
             const P_lb = parseFloat(packingCostInput.value) || 0;
-            const S_u = parseFloat(stickerCostInput.value) || 0;
+            // REMOVED const S_u = parseFloat(stickerCostInput.value) || 0;
             const targetGMPercent = parseFloat(targetGrossMarginInput.value) || 0;
             const targetGM = targetGMPercent / 100;
             const currentSelectedCurrency = getSelectedCurrency();
@@ -838,16 +846,18 @@
                     return;
                 }
 
-                // Ensure required elements exist before proceeding
-                if (!elements.bagCostInput || !elements.gmTotalCostValueSpan || !elements.dtcTransportationPercentInput || !elements.b2bTransportationPercentInput || !elements.b2bDiscountPercentInput) {
+                // Ensure required elements exist before proceeding (Added stickerCostInput check)
+                if (!elements.bagCostInput || !elements.stickerCostInput || !elements.gmTotalCostValueSpan || !elements.dtcTransportationPercentInput || !elements.b2bTransportationPercentInput || !elements.b2bDiscountPercentInput) {
                     console.error(`Could not find all required elements for size key: ${sizeKey}`);
                     return;
                 }
 
                 const B_u = parseFloat(elements.bagCostInput.value) || 0;
+                const S_u_size = parseFloat(elements.stickerCostInput.value) || 0; // Get per-size sticker cost
 
                 // === Gross Margin Calculations ===
-                const T_u = (totalCostPerRoastedLb * W_lb) + B_u + S_u; // Total Unit Cost (COGS)
+                // Updated T_u to use per-size sticker cost (S_u_size)
+                const T_u = (totalCostPerRoastedLb * W_lb) + B_u + S_u_size; // Total Unit Cost (COGS)
                 let R_u = 0; // Retail Price Needed
                 if (1 - targetGM > 0.0001) {
                     R_u = T_u / (1 - targetGM);
@@ -930,10 +940,11 @@
             document.getElementById('greenCoffeeCostUnit').textContent = `${currency}/lb`;
             document.getElementById('roastLabourCostUnit').textContent = `${currency}/lb`;
             document.getElementById('packingCostUnit').textContent = `${currency}/lb`;
-            document.getElementById('stickerCostUnit').textContent = `${currency}/unit`;
+            // REMOVED document.getElementById('stickerCostUnit').textContent = `${currency}/unit`;
 
             // Gross Margin Table Headers
             document.getElementById('headerBagCostCurrencySymbol').textContent = currency;
+            document.getElementById('headerStickerCostCurrencySymbol').textContent = currency; // ADDED Sticker header symbol update
             document.getElementById('headerTotalCostCurrencySymbol').textContent = currency;
             document.getElementById('headerRetailPriceCurrencySymbol').textContent = currency;
 
@@ -941,7 +952,7 @@
             document.getElementById('headerNmDTCTotalCostCurrencySymbol').textContent = currency;
             document.getElementById('headerNmDTCRetailPriceCurrencySymbol').textContent = currency;
 
-            // Net B2B Margin Table Headers (NEW)
+            // Net B2B Margin Table Headers
             document.getElementById('headerNmB2BTotalCostCurrencySymbol').textContent = currency;
             document.getElementById('headerNmB2BRetailPriceCurrencySymbol').textContent = currency;
 
@@ -956,9 +967,10 @@
                     // DTC Table Row Symbols
                     if(elements.dtcTotalCostCurrencySpan) elements.dtcTotalCostCurrencySpan.textContent = currency;
                     if(elements.dtcRetailPriceCurrencySpan) elements.dtcRetailPriceCurrencySpan.textContent = currency;
-                    // B2B Table Row Symbols (NEW)
+                    // B2B Table Row Symbols
                     if(elements.b2bTotalCostCurrencySpan) elements.b2bTotalCostCurrencySpan.textContent = currency;
                     if(elements.b2bRetailPriceCurrencySpan) elements.b2bRetailPriceCurrencySpan.textContent = currency;
+                     // Sticker cost is an input, no symbol inside the cell to update here
                 }
             });
         }
@@ -982,18 +994,28 @@
             }
 
             // Convert global monetary inputs
-            [greenCoffeeCostInput, roastLabourCostInput, packingCostInput, stickerCostInput].forEach(input => {
+            // REMOVED stickerCostInput from this list
+            [greenCoffeeCostInput, roastLabourCostInput, packingCostInput].forEach(input => {
                 const currentValue = parseFloat(input.value) || 0;
                 input.value = formatMoney(currentValue * conversionFactor);
             });
 
-            // Convert per-pack monetary inputs (only bag cost)
+            // Convert per-pack monetary inputs (bag cost AND sticker cost)
             packSizes.forEach(size => {
                 const elements = dynamicElements[size.key];
-                if (elements && elements.bagCostInput) {
-                    const input = elements.bagCostInput;
-                    const currentValue = parseFloat(input.value) || 0;
-                    input.value = formatMoney(currentValue * conversionFactor);
+                if (elements) {
+                    // Convert Bag Cost
+                    if (elements.bagCostInput) {
+                        const input = elements.bagCostInput;
+                        const currentValue = parseFloat(input.value) || 0;
+                        input.value = formatMoney(currentValue * conversionFactor);
+                    }
+                    // Convert Sticker Cost (ADDED)
+                     if (elements.stickerCostInput) {
+                        const input = elements.stickerCostInput;
+                        const currentValue = parseFloat(input.value) || 0;
+                        input.value = formatMoney(currentValue * conversionFactor);
+                    }
                 }
             });
 
@@ -1005,7 +1027,7 @@
         function attachGlobalListeners() {
             const inputsToWatch = [
                 greenCoffeeCostInput, roastShrinkageInput, roastLabourCostInput,
-                packingCostInput, stickerCostInput, targetGrossMarginInput, fxRateInput
+                packingCostInput, /* REMOVED stickerCostInput, */ targetGrossMarginInput, fxRateInput
             ];
             inputsToWatch.forEach(input => {
                 if(input) input.addEventListener('input', calculateAndDisplayAll);
@@ -1013,7 +1035,7 @@
             currencyRadios.forEach(radio => {
                 radio.addEventListener('change', handleCurrencyChange);
             });
-            // Note: Listeners for dynamic inputs (bag cost, transpo %, overhead %, discount %)
+            // Note: Listeners for dynamic inputs (bag cost, sticker cost, transpo %, overhead %, discount %)
             // are attached during table initialization.
         }
 
