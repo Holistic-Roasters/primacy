@@ -439,7 +439,7 @@
         <!-- New Instructions Card -->
         <div class="container instructions-card">
              <h2>How to Use This Calculator</h2>
-             <p>This tool helps determine suggested retail prices for roasted coffee by type (Minivan, Rubicon, Bon Décaf, etc.) based on costs and target profit margins.</p>
+             <p>This tool helps determine suggested retail prices for roasted coffee type (Minivan, Rubicon, Bon Décaf, etc.) based on costs and target profit margins.</p>
              <p><strong>Global Inputs:</strong> Enter costs like Green coffee cost – based on the recipe (include cost of transportation and financing), Roast Shrinkage, Roast costs (include cost labour and equipment rental/usage), and Packing costs. Set your desired <strong>Target Gross Margin</strong> (profit before overheads).</p> <!-- Removed sticker cost mention -->
              <p><strong>Currency & FX:</strong> Select your selling currency. Use the exchange rate if your green coffee cost is in a different currency (e.g., USD cost, CAD selling). Changing currency converts monetary inputs.</p>
              <p><strong>Tables Explained:</strong></p>
@@ -526,10 +526,10 @@
         // --- Configuration ---
         const packSizes = [
              // Added separate default Transpo % and defaultStickerCost
-            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.50, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
-            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.90, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
-            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 1.80, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
-            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 3.50, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 20.0, defaultB2bTranspoPercent: 8.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 }
+            { key: '300g', name: '300 g', weightLb: 0.661387, defaultBagCost: 0.60, defaultStickerCost: 0.25, defaultDtcTranspoPercent: 18.0, defaultB2bTranspoPercent: 3.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
+            { key: '907g', name: '907 g', weightLb: 2.000, defaultBagCost: 0.79, defaultStickerCost: 0.12, defaultDtcTranspoPercent: 18.0, defaultB2bTranspoPercent: 3.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
+            { key: '2kg', name: '2.268 kg', weightLb: 5.000, defaultBagCost: 0.67, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 18.0, defaultB2bTranspoPercent: 3.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 },
+            { key: '5kg', name: '5 kg', weightLb: 11.0231, defaultBagCost: 0.00, defaultStickerCost: 0.00, defaultDtcTranspoPercent: 18.0, defaultB2bTranspoPercent: 3.0, defaultOverheadPercent: 30.0, defaultB2BDiscountPercent: 40.0 }
         ];
 
         // --- DOM Elements ---
