@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holistic Roasters - Green Coffee Annual Projection</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
         
@@ -41,7 +42,7 @@
         }
 
         .app-container {
-            max-width: 1000px;
+            max-width: 1400px; 
             margin: 20px auto;
             padding: 0 20px;
         }
@@ -84,6 +85,23 @@
             margin-left: auto;
             margin-right: auto;
         }
+        
+        .settings-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #eef7ea;
+            border-radius: 10px;
+            border-left: 4px solid var(--light-green);
+        }
+
+        .settings-row .input-field {
+            flex: 1;
+            min-width: 200px;
+        }
+
 
         .input-group {
             margin-bottom: 1.5rem;
@@ -112,16 +130,17 @@
             color: var(--dark-gray);
         }
 
-        input[type="number"] {
+        input[type="number"], select {
             width: 100%;
             padding: 0.8rem;
             border: 1px solid #ddd;
             border-radius: var(--button-radius);
             transition: var(--transition);
             font-family: var(--body-font);
+            background-color: white;
         }
 
-        input[type="number"]:focus {
+        input[type="number"]:focus, select:focus {
             border-color: var(--medium-green);
             outline: none;
             box-shadow: 0 0 0 2px rgba(0, 157, 78, 0.2);
@@ -133,11 +152,17 @@
             margin-top: 0.3rem;
         }
 
-        button {
-            display: block;
-            width: 100%;
-            max-width: 300px;
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
             margin: 2rem auto;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex-grow: 1;
+            max-width: 300px;
             padding: 1rem 1.5rem;
             background-color: var(--medium-green);
             color: white;
@@ -150,12 +175,34 @@
             letter-spacing: 0.5px;
             transition: var(--transition);
         }
+        
+        button#reset-btn {
+            background-color: var(--orange);
+        }
+       
+        button#export-csv-btn {
+            background-color: var(--dark-gray);
+        }
+      
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-        button:hover {
+        button:hover:not(:disabled) {
             background-color: var(--dark-green);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+        button#reset-btn:hover:not(:disabled) {
+            background-color: var(--red-orange);
+        }
+         button#export-csv-btn:hover:not(:disabled) {
+            background-color: #444; 
+        }
+
 
         .error {
             color: var(--red-orange);
@@ -195,6 +242,10 @@
             font-weight: 700;
             color: var(--dark-green);
         }
+        
+        .cost-value {
+            color: var(--orange); 
+        }
 
         .total-row {
             margin-top: 1.5rem;
@@ -216,98 +267,71 @@
             border-left: 4px solid var(--yellow);
         }
 
-        #growth-rate-table-container {
+        #growth-rate-table-container, #monthly-breakdown-container, #charts-container {
             margin-top: 2rem;
         }
 
-        #growth-rate-table {
+        #growth-rate-table, #monthly-breakdown-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
+            font-size: 0.9rem;
         }
 
-        #growth-rate-table th,
-        #growth-rate-table td {
+        #growth-rate-table th, #growth-rate-table td,
+        #monthly-breakdown-table th, #monthly-breakdown-table td {
             border: 1px solid #ddd;
-            padding: 0.8rem 1rem;
+            padding: 0.6rem 0.8rem;
             text-align: center;
         }
 
-        #growth-rate-table th {
+        #growth-rate-table th, #monthly-breakdown-table th {
             background-color: var(--medium-green);
             color: white;
             font-weight: 500;
         }
 
-        #growth-rate-table tbody tr:nth-child(even) {
+        #growth-rate-table tbody tr:nth-child(even),
+        #monthly-breakdown-table tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        #growth-rate-table tbody tr:hover {
+        #growth-rate-table tbody tr:hover,
+        #monthly-breakdown-table tbody tr:hover {
             background-color: #f2f9f5;
         }
-
-        .certification-badges {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 120px;
-        }
-
-        .badge-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--light-green);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem;
-            color: white;
-            font-size: 24px;
-        }
-
-        .badge-label {
+        
+        #monthly-breakdown-table td:nth-child(n+2):nth-child(-n+5) { 
             font-weight: 500;
-            font-size: 0.9rem;
+        }
+        #monthly-breakdown-table td:nth-child(n+6) { 
+            color: var(--orange);
         }
 
-        footer {
-            background-color: var(--dark-green);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .footer-text {
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .footer-logo {
-            margin-bottom: 1rem;
-        }
-
-        .copyright {
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
             margin-top: 1.5rem;
-            font-size: 0.8rem;
-            opacity: 0.6;
+        }
+        .chart-item {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: var(--card-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative; 
+            height: 700px; 
+            overflow: hidden; 
+        }
+        .pie-chart-item-container { /* Class not strictly needed if both items are same height */
+             /* height: 700px;  Example: if using this specific class */
+        }
+        .chart-item h3 {
+            font-size: 1.1rem;
+            color: var(--dark-green);
+            margin-bottom: 1rem;
+            text-align: left;
+            border-bottom: none;
         }
 
         @media (max-width: 768px) {
@@ -321,30 +345,63 @@
             .input-field {
                 min-width: 100%;
             }
+            .settings-row .input-field {
+                 min-width: calc(50% - 0.75rem); 
+            }
+            .settings-row .input-field:last-child { 
+                min-width: 100%;
+            }
+            .button-group button {
+                min-width: calc(50% - 0.5rem); 
+                max-width: none;
+            }
+            .button-group button:nth-child(3) { 
+                min-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    
-
     <div class="app-container">
         <div class="container">
             <h1>Green Coffee Annual Projection</h1>
             
             <p class="intro-text">
-                This tool helps project your annual green coffee needs across all Holistic Roasters operations. 
+                This tool helps project your annual green coffee needs and associated costs across all Holistic Roasters operations. 
                 Enter your current usage data and growth rates to forecast future requirements and plan accordingly.
             </p>
 
             <div id="inputs">
                 <h2>Input Base Data & Growth Rates</h2>
 
+                <div class="settings-row">
+                    <div class="input-field">
+                        <label for="projection-period">Projection Period (Months):</label>
+                        <select id="projection-period">
+                            <option value="12" selected>12 Months</option>
+                            <option value="18">18 Months</option>
+                            <option value="24">24 Months</option>
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label for="unit-selection">Units:</label>
+                        <select id="unit-selection">
+                            <option value="lbs" selected>Pounds (Lbs)</option>
+                            <option value="kg">Kilograms (Kg)</option>
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label for="cost-per-unit" id="cost-per-unit-label">Average Cost per Lb ($):</label>
+                        <input type="number" id="cost-per-unit" value="5.50" step="0.01">
+                    </div>
+                </div>
+
                 <div class="input-group">
                     <h3>Melk Site Sales</h3>
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="melk-base">Base Green Coffee (Lbs used in last 30 days):</label>
-                            <input type="number" id="melk-base" value="6441" step="any">
+                            <label for="melk-base" id="melk-base-label">Average Monthly Green Coffee Base (Lbs):</label>
+                            <input type="number" id="melk-base" value="6255" step="any">
                         </div>
                         <div class="input-field">
                             <label for="melk-growth">Projected Monthly Growth Rate (%):</label>
@@ -358,13 +415,12 @@
                     <h3>Biodynamic Site Sales</h3>
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="bio-base">Base Green Coffee (Lbs used in last 30 days):</label>
-                            <input type="number" id="bio-base" value="4260" step="any" placeholder="Enter 30-day green lbs">
+                            <label for="bio-base" id="bio-base-label">Average Monthly Green Coffee Base (Lbs):</label>
+                            <input type="number" id="bio-base" value="4137" step="any">
                         </div>
                         <div class="input-field">
                             <label for="bio-growth">Projected Monthly Growth Rate (%):</label>
-                            <input type="number" id="bio-growth" value="8" step="any">
-                            <p class="unit-note">Enter 1 for 1%, 0.5 for 0.5%, etc.</p>
+                            <input type="number" id="bio-growth" value="7" step="any">
                         </div>
                     </div>
                 </div>
@@ -373,42 +429,62 @@
                     <h3>NHP Wholesale</h3>
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="nhp-base">Base Green Coffee (Lbs used in last 12 months):</label>
-                            <input type="number" id="nhp-base" value="31623" step="any" placeholder="Enter 12-month green lbs">
+                            <label for="nhp-base" id="nhp-base-label">Base Green Coffee (Lbs used in last 12 months):</label>
+                            <input type="number" id="nhp-base" value="30709" step="any">
                         </div>
                         <div class="input-field">
                             <label for="nhp-growth">Projected Monthly Growth Rate (%):</label>
                             <input type="number" id="nhp-growth" value="0" step="any">
-                            <p class="unit-note">Enter 1 for 1%, 0.5 for 0.5%, etc.</p>
                         </div>
                     </div>
                 </div>
-
-                <button id="calculate-btn">Calculate 12-Month Projection</button>
+                
+                <div class="button-group">
+                    <button id="calculate-btn">Calculate Projection</button>
+                    <button id="reset-btn">Reset Inputs</button>
+                    <button id="export-csv-btn" disabled>Export to CSV</button>
+                </div>
                 <p id="error-message" class="error"></p>
             </div>
 
             <div id="results" style="display: none;">
-                <h2>Projected Annual Green Coffee Usage</h2>
+                <h2>Projected Green Coffee Usage & Costs (<span class="projection-duration-text">12</span> Months)</h2>
                 
+                <h3>Total Usage & Costs Over <span class="projection-duration-text">12</span> Months</h3>
                 <div class="result-item">
-                    <span class="result-label">Melk (Lbs):</span>
+                    <span class="result-label">Melk Usage (<span class="unit-text">Lbs</span>):</span>
                     <span id="melk-result" class="result-value"></span>
                 </div>
-                
-                <div class="result-item">
-                    <span class="result-label">Biodynamic (Lbs):</span>
-                    <span id="bio-result" class="result-value"></span>
+                 <div class="result-item">
+                    <span class="result-label">Melk Cost ($):</span>
+                    <span id="melk-cost-result" class="result-value cost-value"></span>
                 </div>
                 
                 <div class="result-item">
-                    <span class="result-label">NHP (Lbs):</span>
+                    <span class="result-label">Biodynamic Usage (<span class="unit-text">Lbs</span>):</span>
+                    <span id="bio-result" class="result-value"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Biodynamic Cost ($):</span>
+                    <span id="bio-cost-result" class="result-value cost-value"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">NHP Usage (<span class="unit-text">Lbs</span>):</span>
                     <span id="nhp-result" class="result-value"></span>
+                </div>
+                 <div class="result-item">
+                    <span class="result-label">NHP Cost ($):</span>
+                    <span id="nhp-cost-result" class="result-value cost-value"></span>
                 </div>
                 
                 <div class="result-item total-row">
-                    <span class="result-label">TOTAL (Lbs):</span>
+                    <span class="result-label">TOTAL USAGE (<span class="unit-text">Lbs</span>):</span>
                     <span id="total-result" class="result-value"></span>
+                </div>
+                <div class="result-item total-row" style="border-top: 1px dashed var(--red-orange); padding-top: 0.8rem; margin-top:0.8rem;">
+                    <span class="result-label">TOTAL COST ($):</span>
+                    <span id="total-cost-result" class="result-value"></span>
                 </div>
                 
                 <div class="container-info">
@@ -419,15 +495,46 @@
                     <span id="container-capacity-note" class="unit-note"></span>
                 </div>
             </div>
+        </div>
 
+        <div class="container" id="monthly-breakdown-container" style="display: none;">
+            <h2>Monthly Breakdown for <span class="projection-duration-text">12</span> Months (Usage in <span class="unit-text">Lbs</span>, Costs in $)</h2>
+            <table id="monthly-breakdown-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Melk (<span class="unit-text">Lbs</span>)</th>
+                        <th>Bio (<span class="unit-text">Lbs</span>)</th>
+                        <th>NHP (<span class="unit-text">Lbs</span>)</th>
+                        <th>Total (<span class="unit-text">Lbs</span>)</th>
+                        <th>Melk Cost ($)</th>
+                        <th>Bio Cost ($)</th>
+                        <th>NHP Cost ($)</th>
+                        <th>Total Cost ($)</th>
+                    </tr>
+                </thead>
+                <tbody id="monthly-breakdown-tbody"></tbody>
+            </table>
+        </div>
 
+        <div class="container" id="charts-container" style="display: none;">
+            <h2>Visualizations for <span class="projection-duration-text">12</span> Months</h2>
+            <div class="charts-grid">
+                <div class="chart-item">
+                    <h3>Total Monthly Green Coffee Usage (<span class="unit-text">Lbs</span>)</h3>
+                    <canvas id="monthly-usage-chart"></canvas>
+                </div>
+                <div class="chart-item pie-chart-item-container">
+                    <h3>Annual Usage Contribution by Site (<span class="unit-text">Lbs</span>)</h3>
+                    <canvas id="site-contribution-chart"></canvas>
+                </div>
+            </div>
         </div>
 
         <div class="container" id="growth-rate-table-container">
             <h2>Monthly to Annual Growth Rate Conversion</h2>
             <p class="intro-text">
-                This table shows how monthly growth rates compound over a year. Use this reference to understand 
-                the full annual impact of your projected monthly growth rates.
+                This table shows how monthly growth rates compound over a year.
             </p>
             <table id="growth-rate-table">
                 <thead>
@@ -436,144 +543,493 @@
                         <th>Equivalent Annual Rate</th>
                     </tr>
                 </thead>
-                <tbody id="growth-rate-tbody">
-                    <!-- Rows will be added here by JavaScript -->
-                </tbody>
+                <tbody id="growth-rate-tbody"></tbody>
             </table>
         </div>
     </div>
 
-
-
     <script>
         // --- DOM Element References ---
         const calculateBtn = document.getElementById('calculate-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const exportCsvBtn = document.getElementById('export-csv-btn');
         const resultsDiv = document.getElementById('results');
         const errorMessage = document.getElementById('error-message');
-        // Input fields
+        
+        const projectionPeriodSelect = document.getElementById('projection-period');
+        const unitSelectionSelect = document.getElementById('unit-selection');
+        const costPerUnitInput = document.getElementById('cost-per-unit');
+        const costPerUnitLabel = document.getElementById('cost-per-unit-label');
+
+        const melkBaseLabel = document.getElementById('melk-base-label');
+        const bioBaseLabel = document.getElementById('bio-base-label');
+        const nhpBaseLabel = document.getElementById('nhp-base-label');
+        
         const melkBaseInput = document.getElementById('melk-base');
         const melkGrowthInput = document.getElementById('melk-growth');
         const bioBaseInput = document.getElementById('bio-base');
         const bioGrowthInput = document.getElementById('bio-growth');
         const nhpBaseInput = document.getElementById('nhp-base');
         const nhpGrowthInput = document.getElementById('nhp-growth');
-        // Output fields
+        
         const melkResultSpan = document.getElementById('melk-result');
+        const melkCostResultSpan = document.getElementById('melk-cost-result');
         const bioResultSpan = document.getElementById('bio-result');
+        const bioCostResultSpan = document.getElementById('bio-cost-result');
         const nhpResultSpan = document.getElementById('nhp-result');
+        const nhpCostResultSpan = document.getElementById('nhp-cost-result');
         const totalResultSpan = document.getElementById('total-result');
+        const totalCostResultSpan = document.getElementById('total-cost-result');
         const containerResultSpan = document.getElementById('container-result');
         const containerCapacityNoteSpan = document.getElementById('container-capacity-note');
-        // Growth Rate Table Body
+        
+        const monthlyBreakdownContainer = document.getElementById('monthly-breakdown-container');
+        const monthlyBreakdownTbody = document.getElementById('monthly-breakdown-tbody');
+
+        const chartsContainer = document.getElementById('charts-container');
+        const monthlyUsageChartCanvasEl = document.getElementById('monthly-usage-chart');
+        const siteContributionChartCanvasEl = document.getElementById('site-contribution-chart');
+        let monthlyUsageChartInstance = null;
+        let siteContributionChartInstance = null;
+        
         const growthRateTbody = document.getElementById('growth-rate-tbody');
 
-        // --- Constants ---
+        const projectionDurationTexts = document.querySelectorAll('.projection-duration-text');
+        const unitTexts = document.querySelectorAll('.unit-text');
+
         const POUNDS_PER_BAG = 132;
         const BAGS_PER_CONTAINER = 320;
-        const POUNDS_PER_CONTAINER = BAGS_PER_CONTAINER * POUNDS_PER_BAG; // 42,240 lbs
+        const BASE_POUNDS_PER_CONTAINER = BAGS_PER_CONTAINER * POUNDS_PER_BAG; 
+        const KG_PER_LB = 0.45359237;
+        const LBS_PER_KG = 1 / KG_PER_LB;
 
-        // --- Functions ---
+        const initialValues = {
+            projectionPeriod: projectionPeriodSelect.value,
+            unitSelection: unitSelectionSelect.value,
+            costPerUnit: costPerUnitInput.value,
+            melkBase: melkBaseInput.value,
+            melkGrowth: melkGrowthInput.value,
+            bioBase: bioBaseInput.value,
+            bioGrowth: bioGrowthInput.value,
+            nhpBase: nhpBaseInput.value,
+            nhpGrowth: nhpGrowthInput.value,
+        };
 
-        /**
-         * Calculates the total annual amount based on an initial monthly amount
-         * and a constant monthly growth rate.
-         */
-        function calculateAnnualProjection(monthlyBaseAmount, monthlyGrowthRate) {
+        let exportableData = null;
+
+        function getCssVariableValue(variableName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+        }
+
+        function calculateTotalProjection(monthlyBaseAmount, monthlyGrowthRate, numMonths) {
             if (monthlyBaseAmount <= 0) return 0;
             if (monthlyGrowthRate === 0) {
-                return monthlyBaseAmount * 12;
+                return monthlyBaseAmount * numMonths;
             } else {
-                const factor = Math.pow(1 + monthlyGrowthRate, 12);
+                const factor = Math.pow(1 + monthlyGrowthRate, numMonths);
                 return monthlyBaseAmount * (factor - 1) / monthlyGrowthRate;
             }
         }
+        
+        function getMonthlyProjections(monthlyBaseAmount, monthlyGrowthRate, numMonths) {
+            const monthlyValues = [];
+            if (monthlyBaseAmount <= 0 || isNaN(monthlyBaseAmount) || isNaN(monthlyGrowthRate) || isNaN(numMonths) || numMonths <=0 ) {
+                 return Array(Math.max(0, numMonths || 0)).fill(0); // Return array of zeros if inputs are bad
+            }
+            let currentMonthAmount = monthlyBaseAmount; 
+            monthlyValues.push(currentMonthAmount);
+            for (let i = 1; i < numMonths; i++) { 
+                currentMonthAmount *= (1 + monthlyGrowthRate);
+                monthlyValues.push(currentMonthAmount);
+            }
+            return monthlyValues;
+        }
 
-        /**
-         * Populates the growth rate reference table.
-         */
         function populateGrowthRateTable() {
-             growthRateTbody.innerHTML = ''; // Clear existing rows (if any)
-
+             growthRateTbody.innerHTML = '';
              for (let monthlyPercent = 1; monthlyPercent <= 15; monthlyPercent++) {
                  const monthlyDecimal = monthlyPercent / 100;
-                 // Calculate equivalent annual rate: (1 + monthly)^12 - 1
                  const annualDecimal = Math.pow(1 + monthlyDecimal, 12) - 1;
                  const annualPercent = annualDecimal * 100;
-
-                 // Create table row and cells
                  const row = document.createElement('tr');
-                 const cellMonthly = document.createElement('td');
-                 const cellAnnual = document.createElement('td');
-
-                 cellMonthly.textContent = monthlyPercent + '%';
-                 cellAnnual.textContent = annualPercent.toFixed(1) + '%'; // Format to 1 decimal place
-
-                 row.appendChild(cellMonthly);
-                 row.appendChild(cellAnnual);
+                 row.innerHTML = `<td>${monthlyPercent}%</td><td>${annualPercent.toFixed(1)}%</td>`;
                  growthRateTbody.appendChild(row);
              }
-         }
-
-
-        // --- Event Listener for Calculation ---
-        calculateBtn.addEventListener('click', () => {
-            // Clear previous results and errors
-            resultsDiv.style.display = 'none';
-            errorMessage.textContent = '';
-            melkResultSpan.textContent = '';
-            bioResultSpan.textContent = '';
-            nhpResultSpan.textContent = '';
-            totalResultSpan.textContent = '';
-            containerResultSpan.textContent = '';
-            containerCapacityNoteSpan.textContent = '';
-
-            // Get and Validate Inputs
-            const melkBase = parseFloat(melkBaseInput.value);
-            const melkGrowth = parseFloat(melkGrowthInput.value) / 100;
-            const bioBase = parseFloat(bioBaseInput.value);
-            const bioGrowth = parseFloat(bioGrowthInput.value) / 100;
-            const nhpBaseAnnual = parseFloat(nhpBaseInput.value);
-            const nhpGrowth = parseFloat(nhpGrowthInput.value) / 100;
-
-            if (isNaN(melkBase) || isNaN(melkGrowth) || isNaN(bioBase) || isNaN(bioGrowth) || isNaN(nhpBaseAnnual) || isNaN(nhpGrowth)) {
-                 errorMessage.textContent = 'Error: Please ensure all inputs are valid numbers.';
-                 return;
-             }
-             if (melkBase < 0 || bioBase < 0 || nhpBaseAnnual < 0) {
-                 errorMessage.textContent = 'Error: Base coffee amounts cannot be negative.';
-                 return;
-             }
-
-            // Perform Calculations
-            const melkMonthlyBase = melkBase;
-            const bioMonthlyBase = bioBase;
-            const nhpMonthlyBase = nhpBaseAnnual / 12;
-
-            const melkProjectedAnnual = calculateAnnualProjection(melkMonthlyBase, melkGrowth);
-            const bioProjectedAnnual = calculateAnnualProjection(bioMonthlyBase, bioGrowth);
-            const nhpProjectedAnnual = calculateAnnualProjection(nhpMonthlyBase, nhpGrowth);
-
-            const totalProjectedAnnual = melkProjectedAnnual + bioProjectedAnnual + nhpProjectedAnnual;
-
-            let numberOfContainersExact = 0;
-            if (totalProjectedAnnual > 0 && POUNDS_PER_CONTAINER > 0) {
-                 numberOfContainersExact = totalProjectedAnnual / POUNDS_PER_CONTAINER;
+        }
+        
+        function formatNumber(num, decimals = 2, useLocaleString = true) {
+            if (num === null || num === undefined || typeof num !== 'number' || isNaN(num)) {
+                // Handle non-numeric inputs gracefully
+                return useLocaleString ? "N/A" : ""; // Empty string for CSV, N/A for display
             }
+            if (useLocaleString) {
+                return num.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+            }
+            return parseFloat(num.toFixed(decimals)); 
+        }
 
-            // Display Results
-            melkResultSpan.textContent = melkProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            bioResultSpan.textContent = bioProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            nhpResultSpan.textContent = nhpProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            totalResultSpan.textContent = totalProjectedAnnual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            containerResultSpan.textContent = numberOfContainersExact.toFixed(2);
-            containerCapacityNoteSpan.textContent = `(at ${POUNDS_PER_CONTAINER.toLocaleString()} lbs/container)`;
 
-            resultsDiv.style.display = 'block';
+        function updateUnitSpecificLabels(selectedUnit) {
+            const unitLabel = selectedUnit === 'kg' ? 'Kg' : 'Lbs';
+            costPerUnitLabel.textContent = `Average Cost per ${unitLabel} ($):`;
+            melkBaseLabel.textContent = `Average Monthly Green Coffee Base (${unitLabel}):`;
+            bioBaseLabel.textContent = `Average Monthly Green Coffee Base (${unitLabel}):`;
+            nhpBaseLabel.textContent = `Base Green Coffee (${unitLabel} used in last 12 months):`;
+            unitTexts.forEach(span => span.textContent = unitLabel);
+        }
+
+        unitSelectionSelect.addEventListener('change', (event) => {
+            updateUnitSpecificLabels(event.target.value);
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            projectionPeriodSelect.value = initialValues.projectionPeriod;
+            unitSelectionSelect.value = initialValues.unitSelection;
+            costPerUnitInput.value = initialValues.costPerUnit;
+            melkBaseInput.value = initialValues.melkBase;
+            melkGrowthInput.value = initialValues.melkGrowth;
+            bioBaseInput.value = initialValues.bioBase;
+            bioGrowthInput.value = initialValues.bioGrowth;
+            nhpBaseInput.value = initialValues.nhpBase;
+            nhpGrowthInput.value = initialValues.nhpGrowth;
+
+            resultsDiv.style.display = 'none';
+            monthlyBreakdownContainer.style.display = 'none';
+            chartsContainer.style.display = 'none';
+            errorMessage.textContent = '';
+            updateUnitSpecificLabels(initialValues.unitSelection); 
+            projectionDurationTexts.forEach(span => span.textContent = initialValues.projectionPeriod);
+            
+            if (monthlyUsageChartInstance) monthlyUsageChartInstance.destroy();
+            if (siteContributionChartInstance) siteContributionChartInstance.destroy();
+            monthlyUsageChartInstance = null;
+            siteContributionChartInstance = null;
+            exportCsvBtn.disabled = true; 
+            exportableData = null;
         });
 
-        // --- Initial Setup ---
-        // Populate the growth rate table when the script loads
+        calculateBtn.addEventListener('click', () => {
+            console.log("Calculate button clicked. Starting process...");
+            resultsDiv.style.display = 'none';
+            monthlyBreakdownContainer.style.display = 'none';
+            chartsContainer.style.display = 'none';
+            errorMessage.textContent = '';
+            monthlyBreakdownTbody.innerHTML = ''; 
+            exportCsvBtn.disabled = true; 
+            exportableData = null;
+
+            if (monthlyUsageChartInstance) {
+                monthlyUsageChartInstance.destroy();
+                monthlyUsageChartInstance = null;
+            }
+            if (siteContributionChartInstance) {
+                siteContributionChartInstance.destroy();
+                siteContributionChartInstance = null;
+            }
+
+            const numMonths = parseInt(projectionPeriodSelect.value);
+            const selectedUnit = unitSelectionSelect.value;
+            const costPerSelectedUnit = parseFloat(costPerUnitInput.value);
+            const unitLabel = selectedUnit === 'kg' ? 'Kg' : 'Lbs';
+
+            projectionDurationTexts.forEach(span => span.textContent = numMonths);
+            updateUnitSpecificLabels(selectedUnit);
+
+            const melkBaseRawOriginal = parseFloat(melkBaseInput.value);
+            const melkGrowthOriginal = parseFloat(melkGrowthInput.value);
+            const bioBaseRawOriginal = parseFloat(bioBaseInput.value);
+            const bioGrowthOriginal = parseFloat(bioGrowthInput.value);
+            const nhpBaseAnnualRawOriginal = parseFloat(nhpBaseInput.value);
+            const nhpGrowthOriginal = parseFloat(nhpGrowthInput.value);
+
+            let melkBaseRaw = melkBaseRawOriginal;
+            const melkGrowth = melkGrowthOriginal / 100;
+            let bioBaseRaw = bioBaseRawOriginal;
+            const bioGrowth = bioGrowthOriginal / 100;
+            let nhpBaseAnnualRaw = nhpBaseAnnualRawOriginal;
+            const nhpGrowth = nhpGrowthOriginal / 100;
+
+            if (isNaN(melkBaseRaw) || isNaN(melkGrowth) || isNaN(bioBaseRaw) || isNaN(bioGrowth) || 
+                isNaN(nhpBaseAnnualRaw) || isNaN(nhpGrowth) || isNaN(costPerSelectedUnit) || isNaN(numMonths) || numMonths <=0) {
+                 errorMessage.textContent = 'Error: Please ensure all inputs are valid numbers and projection period is positive.';
+                 console.error("Validation failed:", {melkBaseRaw, melkGrowth, bioBaseRaw, bioGrowth, nhpBaseAnnualRaw, nhpGrowth, costPerSelectedUnit, numMonths});
+                 return;
+            }
+            if (melkBaseRaw < 0 || bioBaseRaw < 0 || nhpBaseAnnualRaw < 0 || costPerSelectedUnit < 0) {
+                 errorMessage.textContent = 'Error: Base amounts and cost cannot be negative.';
+                 return;
+            }
+            console.log("Validation passed.");
+
+            let melkBaseLbs = melkBaseRaw, bioBaseLbs = bioBaseRaw, nhpBaseAnnualLbs = nhpBaseAnnualRaw, costPerLb;
+            if (selectedUnit === 'kg') {
+                melkBaseLbs = melkBaseRaw * LBS_PER_KG;
+                bioBaseLbs = bioBaseRaw * LBS_PER_KG;
+                nhpBaseAnnualLbs = nhpBaseAnnualRaw * LBS_PER_KG;
+                costPerLb = costPerSelectedUnit * KG_PER_LB; 
+            } else {
+                costPerLb = costPerSelectedUnit;
+            }
+            const nhpMonthlyBaseLbs = nhpBaseAnnualLbs / 12;
+
+            const melkMonthlyLbsArr = getMonthlyProjections(melkBaseLbs, melkGrowth, numMonths);
+            const bioMonthlyLbsArr = getMonthlyProjections(bioBaseLbs, bioGrowth, numMonths);
+            const nhpMonthlyLbsArr = getMonthlyProjections(nhpMonthlyBaseLbs, nhpGrowth, numMonths);
+
+            const melkProjectedTotalLbs = melkMonthlyLbsArr.reduce((sum, val) => sum + (val || 0), 0);
+            const bioProjectedTotalLbs = bioMonthlyLbsArr.reduce((sum, val) => sum + (val || 0), 0);
+            const nhpProjectedTotalLbs = nhpMonthlyLbsArr.reduce((sum, val) => sum + (val || 0), 0);
+            const totalProjectedLbs = melkProjectedTotalLbs + bioProjectedTotalLbs + nhpProjectedTotalLbs;
+
+            const melkProjectedTotalCost = melkProjectedTotalLbs * costPerLb;
+            const bioProjectedTotalCost = bioProjectedTotalLbs * costPerLb;
+            const nhpProjectedTotalCost = nhpProjectedTotalLbs * costPerLb;
+            const totalProjectedCost = totalProjectedLbs * costPerLb;
+
+            let poundsPerContainer = BASE_POUNDS_PER_CONTAINER;
+            let numberOfContainersExact = (totalProjectedLbs > 0 && poundsPerContainer > 0) ? totalProjectedLbs / poundsPerContainer : 0;
+            
+            let displayContainerCapacity = poundsPerContainer, containerUnitLabel = "Lbs";
+            if (selectedUnit === 'kg') {
+                displayContainerCapacity = poundsPerContainer * KG_PER_LB;
+                containerUnitLabel = "Kg";
+            }
+
+            let displayMelkTotal, displayBioTotal, displayNhpTotal, displayTotalOverall;
+            if (selectedUnit === 'kg') {
+                displayMelkTotal = melkProjectedTotalLbs * KG_PER_LB;
+                displayBioTotal = bioProjectedTotalLbs * KG_PER_LB;
+                displayNhpTotal = nhpProjectedTotalLbs * KG_PER_LB;
+                displayTotalOverall = totalProjectedLbs * KG_PER_LB;
+            } else {
+                displayMelkTotal = melkProjectedTotalLbs;
+                displayBioTotal = bioProjectedTotalLbs;
+                displayNhpTotal = nhpProjectedTotalLbs;
+                displayTotalOverall = totalProjectedLbs;
+            }
+            console.log("Calculations for display done.");
+
+            melkResultSpan.textContent = formatNumber(displayMelkTotal);
+            melkCostResultSpan.textContent = formatNumber(melkProjectedTotalCost);
+            bioResultSpan.textContent = formatNumber(displayBioTotal);
+            bioCostResultSpan.textContent = formatNumber(bioProjectedTotalCost);
+            nhpResultSpan.textContent = formatNumber(displayNhpTotal);
+            nhpCostResultSpan.textContent = formatNumber(nhpProjectedTotalCost);
+            totalResultSpan.textContent = formatNumber(displayTotalOverall);
+            totalCostResultSpan.textContent = formatNumber(totalProjectedCost);
+            containerResultSpan.textContent = formatNumber(numberOfContainersExact);
+            containerCapacityNoteSpan.textContent = `(at ${formatNumber(displayContainerCapacity,0)} ${containerUnitLabel}/container)`;
+            resultsDiv.style.display = 'block'; 
+            console.log("Annual results displayed.");
+            
+            const monthlyDataForExport = [];
+            const monthlyTotalsUsageForChart = []; 
+
+            for (let i = 0; i < numMonths; i++) {
+                const row = document.createElement('tr');
+                const melkMonthLbs = melkMonthlyLbsArr[i] || 0; // Ensure numeric
+                const bioMonthLbs = bioMonthlyLbsArr[i] || 0;   // Ensure numeric
+                const nhpMonthLbs = nhpMonthlyLbsArr[i] || 0;     // Ensure numeric
+                const totalMonthLbs = melkMonthLbs + bioMonthLbs + nhpMonthLbs;
+
+                const melkMonthCost = melkMonthLbs * costPerLb;
+                const bioMonthCost = bioMonthLbs * costPerLb;
+                const nhpMonthCost = nhpMonthLbs * costPerLb;
+                const totalMonthCost = totalMonthLbs * costPerLb;
+
+                let dMelkM, dBioM, dNhpM, dTotalM; 
+                if (selectedUnit === 'kg') {
+                    dMelkM = melkMonthLbs * KG_PER_LB; dBioM = bioMonthLbs * KG_PER_LB;
+                    dNhpM = nhpMonthLbs * KG_PER_LB; dTotalM = totalMonthLbs * KG_PER_LB;
+                } else {
+                    dMelkM = melkMonthLbs; dBioM = bioMonthLbs; dNhpM = nhpMonthLbs; dTotalM = totalMonthLbs;
+                }
+                monthlyTotalsUsageForChart.push(dTotalM); 
+
+                row.innerHTML = `
+                    <td>${i + 1}</td> <td>${formatNumber(dMelkM)}</td> <td>${formatNumber(dBioM)}</td>
+                    <td>${formatNumber(dNhpM)}</td> <td><strong>${formatNumber(dTotalM)}</strong></td>
+                    <td>${formatNumber(melkMonthCost)}</td> <td>${formatNumber(bioMonthCost)}</td>
+                    <td>${formatNumber(nhpMonthCost)}</td> <td><strong>${formatNumber(totalMonthCost)}</strong></td>
+                `;
+                monthlyBreakdownTbody.appendChild(row);
+
+                monthlyDataForExport.push({
+                    month: i + 1,
+                    melkUsage: formatNumber(dMelkM, 2, false),
+                    melkCost: formatNumber(melkMonthCost, 2, false),
+                    bioUsage: formatNumber(dBioM, 2, false),
+                    bioCost: formatNumber(bioMonthCost, 2, false),
+                    nhpUsage: formatNumber(dNhpM, 2, false),
+                    nhpCost: formatNumber(nhpMonthCost, 2, false),
+                    totalUsage: formatNumber(dTotalM, 2, false),
+                    totalCost: formatNumber(totalMonthCost, 2, false),
+                });
+            }
+            monthlyBreakdownContainer.style.display = 'block'; 
+            chartsContainer.style.display = 'block'; 
+            console.log("Monthly breakdown displayed.");
+
+            exportableData = {
+                parameters: {
+                    projectionPeriod: numMonths,
+                    selectedUnit: unitLabel,
+                    costPerUnit: costPerSelectedUnit,
+                    melkBase: melkBaseRawOriginal,
+                    melkGrowth: melkGrowthOriginal,
+                    bioBase: bioBaseRawOriginal,
+                    bioGrowth: bioGrowthOriginal,
+                    nhpBase: nhpBaseAnnualRawOriginal,
+                    nhpGrowth: nhpGrowthOriginal,
+                },
+                annualSummary: {
+                    melkUsage: formatNumber(displayMelkTotal, 2, false),
+                    melkCost: formatNumber(melkProjectedTotalCost, 2, false),
+                    bioUsage: formatNumber(displayBioTotal, 2, false),
+                    bioCost: formatNumber(bioProjectedTotalCost, 2, false),
+                    nhpUsage: formatNumber(displayNhpTotal, 2, false),
+                    nhpCost: formatNumber(nhpProjectedTotalCost, 2, false),
+                    totalUsage: formatNumber(displayTotalOverall, 2, false),
+                    totalCost: formatNumber(totalProjectedCost, 2, false),
+                },
+                monthlyBreakdown: monthlyDataForExport
+            };
+            exportCsvBtn.disabled = false; 
+            console.log("Exportable data prepared.");
+
+            requestAnimationFrame(() => { 
+                console.log("Rendering charts...");
+                const monthLabels = Array.from({ length: numMonths }, (_, i) => `Month ${i + 1}`);
+                
+                try {
+                    monthlyUsageChartInstance = new Chart(monthlyUsageChartCanvasEl.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: monthLabels,
+                            datasets: [{
+                                label: `Total Green Coffee Usage (${unitLabel})`,
+                                data: monthlyTotalsUsageForChart,
+                                backgroundColor: getCssVariableValue('--medium-green'),
+                                borderColor: getCssVariableValue('--dark-green'),
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: true, animation: false,
+                            scales: { y: { beginAtZero: true } },
+                            layout: { padding: { left: 5, right: 5, top: 5, bottom: 5 } }
+                        }
+                    });
+
+                    siteContributionChartInstance = new Chart(siteContributionChartCanvasEl.getContext('2d'), {
+                        type: 'pie',
+                        data: {
+                            labels: ['Melk', 'Biodynamic', 'NHP'],
+                            datasets: [{
+                                label: `Annual Usage Contribution (${unitLabel})`,
+                                data: [displayMelkTotal, displayBioTotal, displayNhpTotal],
+                                backgroundColor: [getCssVariableValue('--light-green'), getCssVariableValue('--orange'), getCssVariableValue('--yellow')],
+                                borderColor: [getCssVariableValue('--dark-green'), getCssVariableValue('--red-orange'), getCssVariableValue('--dark-gray')],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: true, animation: false,
+                            plugins: { legend: { position: 'top', } },
+                            layout: { padding: { left: 10, right: 10, top: 10, bottom: 10 } }
+                        }
+                    });
+                    console.log("Charts rendered.");
+                } catch (chartError) {
+                    console.error("Error rendering charts:", chartError);
+                    errorMessage.textContent = "Error displaying charts. Please check console.";
+                }
+            });
+            console.log("Calculate function finished.");
+        });
+
+        function escapeCsvValue(value) {
+            if (value === null || value === undefined) return '';
+            let stringValue = String(value);
+            if (stringValue.search(/("|,|\n)/g) >= 0) {
+                stringValue = '"' + stringValue.replace(/"/g, '""') + '"';
+            }
+            return stringValue;
+        }
+
+        exportCsvBtn.addEventListener('click', () => {
+            if (!exportableData) {
+                alert("Please calculate the projection first.");
+                return;
+            }
+            const { parameters, annualSummary, monthlyBreakdown } = exportableData;
+            const unit = parameters.selectedUnit;
+            let csvRows = [];
+            csvRows.push(["Projection Parameters:"]);
+            csvRows.push(["Projection Period (Months):", parameters.projectionPeriod]);
+            csvRows.push([`Selected Unit:`, parameters.selectedUnit]);
+            csvRows.push([`Average Cost per ${unit} ($):`, parameters.costPerUnit]);
+            csvRows.push([]); 
+            csvRows.push([`Melk - Base (${unit}):`, parameters.melkBase]);
+            csvRows.push([`Melk - Monthly Growth (%):`, parameters.melkGrowth]);
+            csvRows.push([`Bio - Base (${unit}):`, parameters.bioBase]);
+            csvRows.push([`Bio - Monthly Growth (%):`, parameters.bioGrowth]);
+            csvRows.push([`NHP - Annual Base (${unit}):`, parameters.nhpBase]);
+            csvRows.push([`NHP - Monthly Growth (%):`, parameters.nhpGrowth]);
+            csvRows.push([]); 
+            csvRows.push(["Annual Summary:"]);
+            csvRows.push(["Site", `Total Usage (${unit})`, "Total Cost ($)"]);
+            csvRows.push(["Melk", annualSummary.melkUsage, annualSummary.melkCost]);
+            csvRows.push(["Biodynamic", annualSummary.bioUsage, annualSummary.bioCost]);
+            csvRows.push(["NHP", annualSummary.nhpUsage, annualSummary.nhpCost]);
+            csvRows.push(["TOTAL", annualSummary.totalUsage, annualSummary.totalCost]);
+            csvRows.push([]); 
+            csvRows.push(["Monthly Breakdown:"]);
+            const monthlyHeader = [
+                "Month", `Melk Usage (${unit})`, "Melk Cost ($)",
+                `Bio Usage (${unit})`, "Bio Cost ($)",
+                `NHP Usage (${unit})`, "NHP Cost ($)",
+                `Total Usage (${unit})`, "Total Cost ($)"
+            ];
+            csvRows.push(monthlyHeader);
+            monthlyBreakdown.forEach(row => {
+                csvRows.push([
+                    row.month, row.melkUsage, row.melkCost,
+                    row.bioUsage, row.bioCost,
+                    row.nhpUsage, row.nhpCost,
+                    row.totalUsage, row.totalCost
+                ]);
+            });
+            
+            const csvContent = csvRows.map(row => row.map(escapeCsvValue).join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const currentDate = new Date();
+            const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+            const filename = `holistic_roasters_projection_${dateString}.csv`;
+
+            if (link.download !== undefined) { 
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url); 
+            } else {
+                if (window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveOrOpenBlob(blob, filename);
+                } else {
+                    alert("CSV export is not fully supported in this browser. Please try a modern browser.");
+                }
+            }
+        });
+
         populateGrowthRateTable();
+        updateUnitSpecificLabels(unitSelectionSelect.value); 
+        projectionDurationTexts.forEach(span => span.textContent = projectionPeriodSelect.value);
+        exportCsvBtn.disabled = true;
     </script>
 </body>
 </html>
