@@ -797,7 +797,7 @@
 	            initialRoastParams = {};
             
 	            eventLog.innerHTML = '<li>Simulator Idle. Set Preheat Target, Batch Size, Moisture, Density, Drum Speed.</li>';
-	            outcomeText.innerHTML = "<h2>Roast Outcome:</h2><p>-</p>"; 
+	            outcomeText.textContent = "-";
 	            preheatStatusDisplay.textContent = "Status: Idle";
             
 	            preheatBtn.disabled = false; chargeBtn.disabled = true; dropBtn.disabled = true; dropBtn.textContent = "Drop Beans";
