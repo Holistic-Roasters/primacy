@@ -239,20 +239,52 @@
         let chartData = getBaseChartDataStructure();
     
         // Constants
-        const AMBIENT_TEMP = 20; const GAS_INERTIA_FACTOR = 0.08; const AIRFLOW_INERTIA_FACTOR = 0.1; const DRUM_SPEED_INERTIA_FACTOR = 0.15; 
-        const DT_HEAT_FROM_GAS_FACTOR = 0.035; const DT_INERTIA_FACTOR = 0.03; const DT_COOLING_AMBIENT_FACTOR = 0.0005;
-        const DT_COOLING_FROM_BEANS_FACTOR = 0.05; const PREHEAT_ET_FROM_DT_FACTOR = 0.8; const PREHEAT_ET_AIRFLOW_EFFECT = 0.05; 
-        const BT_INITIAL_ABSORB_FROM_DT_FACTOR = 0.6; const ET_DROP_ON_CHARGE_FACTOR = 0.5;  const MOISTURE_EVAPORATION_BT_FACTOR = 0.0002;    
-        const MOISTURE_EVAPORATION_AIRFLOW_FACTOR = 0.0003; const MOISTURE_MIN_PERCENT = 1.0; const DRYING_ENDOTHERMIC_STRENGTH = 0.05;     
-        const DRYING_PHASE_MOISTURE_THRESHOLD = 4.0; const BT_CONDUCTIVE_FROM_DT_BASE = 0.008; const BT_CONVECTIVE_FROM_ET_AIR_BASE = 0.006; 
-        const BT_THERMAL_MASS_PENALTY_PER_KG = 0.00003; const ET_GAIN_FROM_GAS_AIR = 0.025; const ET_INFLUENCE_FROM_DT = 0.01;        
-        const ET_INFLUENCE_FROM_BT_EXCHANGE = 0.005; const ET_AIRFLOW_COOLING_NO_GAS = 0.006;  const ET_NATURAL_COOLING_FACTOR = 0.0015;
-        const FC_ENDOTHERMIC_DIP_TEMP_RANGE = 4; const FC_ENDOTHERMIC_DIP_STRENGTH = 0.10; const FC_EXOTHERMIC_BOOST_STRENGTH = 0.001; 
-        const FC_EXOTHERMIC_DURATION = 25; const SC_TARGET_TEMP_OFFSET = 25; const SC_EXOTHERMIC_DURATION = 20; 
-        const OPTIMAL_DRUM_SPEED_RPM = 48; const DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE = 0.15; const DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE = 0.20; 
-        const BASE_BEAN_DENSITY = 1.18; const DENSITY_TP_BT_MODIFIER = 0.3; const DENSITY_CONDUCTIVE_MULTIPLIER = 0.8; 
-        const DENSITY_INERTIA_MULTIPLIER = 0.4; const DENSITY_FC_TEMP_SHIFT_PER_0_01GDL = 0.15;
-        const COOLING_RATE_FACTOR = 0.08; const COOLING_TARGET_TEMP = 35; const BEAN_VISUAL_DRYING_END_BT = 160;
+        const AMBIENT_TEMP = 20;
+        const GAS_INERTIA_FACTOR = 0.08; 
+        const AIRFLOW_INERTIA_FACTOR = 0.1;
+        const DRUM_SPEED_INERTIA_FACTOR = 0.15; 
+        
+        // MODIFIED PARAMETERS TO SLOW DOWN THE ROAST
+        const DT_HEAT_FROM_GAS_FACTOR = 0.030;       // Original: 0.035 - Roaster drum heats slightly slower from gas
+        const ET_GAIN_FROM_GAS_AIR = 0.020;          // Original: 0.025 - Roaster environment heats slightly slower from gas/air
+        const BT_CONDUCTIVE_FROM_DT_BASE = 0.0035;   // Original: 0.008 - Reduced conductive heat transfer to beans
+        const BT_CONVECTIVE_FROM_ET_AIR_BASE = 0.0025; // Original: 0.006 - Reduced convective heat transfer to beans
+        // END OF MODIFIED PARAMETERS
+
+        const DT_INERTIA_FACTOR = 0.03;       
+        const DT_COOLING_AMBIENT_FACTOR = 0.0005;
+        const DT_COOLING_FROM_BEANS_FACTOR = 0.05; 
+        const PREHEAT_ET_FROM_DT_FACTOR = 0.8; 
+        const PREHEAT_ET_AIRFLOW_EFFECT = 0.05; 
+        const BT_INITIAL_ABSORB_FROM_DT_FACTOR = 0.6; 
+        const ET_DROP_ON_CHARGE_FACTOR = 0.5;  
+        const MOISTURE_EVAPORATION_BT_FACTOR = 0.0002;    
+        const MOISTURE_EVAPORATION_AIRFLOW_FACTOR = 0.0003; 
+        const MOISTURE_MIN_PERCENT = 1.0;
+        const DRYING_ENDOTHERMIC_STRENGTH = 0.05;     
+        const DRYING_PHASE_MOISTURE_THRESHOLD = 4.0; 
+        const BT_THERMAL_MASS_PENALTY_PER_KG = 0.00003; 
+        const ET_INFLUENCE_FROM_DT = 0.01;        
+        const ET_INFLUENCE_FROM_BT_EXCHANGE = 0.005; 
+        const ET_AIRFLOW_COOLING_NO_GAS = 0.006;  
+        const ET_NATURAL_COOLING_FACTOR = 0.0015;
+        const FC_ENDOTHERMIC_DIP_TEMP_RANGE = 4; 
+        const FC_ENDOTHERMIC_DIP_STRENGTH = 0.10; 
+        const FC_EXOTHERMIC_BOOST_STRENGTH = 0.001; 
+        const FC_EXOTHERMIC_DURATION = 25; 
+        const SC_TARGET_TEMP_OFFSET = 25; 
+        const SC_EXOTHERMIC_DURATION = 20; 
+        const OPTIMAL_DRUM_SPEED_RPM = 48;
+        const DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE = 0.15; 
+        const DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE = 0.20; 
+        const BASE_BEAN_DENSITY = 1.18; 
+        const DENSITY_TP_BT_MODIFIER = 0.3; 
+        const DENSITY_CONDUCTIVE_MULTIPLIER = 0.8; 
+        const DENSITY_INERTIA_MULTIPLIER = 0.4; 
+        const DENSITY_FC_TEMP_SHIFT_PER_0_01GDL = 0.15;
+        const COOLING_RATE_FACTOR = 0.08; 
+        const COOLING_TARGET_TEMP = 35; 
+        const BEAN_VISUAL_DRYING_END_BT = 160;
         const BEAN_VISUAL_FC_START_BT_FACTOR = 0.98; 
 
         function formatTime(seconds) { return `${Math.floor(seconds/60)}:${(Math.floor(seconds%60)+'').padStart(2,'0')}`; }
@@ -370,21 +402,17 @@
         function updateChart() {
             if (!chart) return;
 
-            // If idle and chartData.labels are already populated (e.g., by a loaded profile),
-            // we don't need to push new currentTime labels. The chart is static.
             if (roastState === 'idle' && chartData.labels.length > 0 && !timerInterval) {
-                 chart.update('none'); // Ensure it reflects any changes to reference visibility
+                 chart.update('none'); 
                  return;
             }
 
-            // Stop adding new data points if fully dropped (after cooling) and not in idle static display mode
             if (roastState === 'dropped' && currentBT <= COOLING_TARGET_TEMP) {
                 if (chartData.datasets[0].data.length > 0) chart.update('none'); 
                 return;
             }
             
-            // If we are actively simulating (not idle with static profile)
-            if (roastState !== 'idle' || timerInterval) { // timerInterval check for active preheat
+            if (roastState !== 'idle' || timerInterval) { 
                 let currentChartTimeLabel = formatTime(currentTime);
                 if (chartData.labels.length === 0 || chartData.labels[chartData.labels.length - 1] !== currentChartTimeLabel) {
                     chartData.labels.push(currentChartTimeLabel);
@@ -394,8 +422,7 @@
             const currentDataLength = chartData.datasets[0].data.length;
             const labelsLength = chartData.labels.length;
 
-            // Only update live data if simulation is running or has run
-            if (roastState !== 'idle' || (roastState === 'idle' && timerInterval) || currentDataLength < labelsLength) { // Add currentDataLength < labelsLength for initial fill if profile was loaded
+            if (roastState !== 'idle' || (roastState === 'idle' && timerInterval) || currentDataLength < labelsLength) {
                  if (currentDataLength < labelsLength || labelsLength === 0 ) { 
                      chartData.datasets[0].data.push(isNaN(currentBT) ? null : parseFloat(currentBT.toFixed(1))); 
                      chartData.datasets[1].data.push(isNaN(currentET) ? null : parseFloat(currentET.toFixed(1)));
@@ -413,8 +440,6 @@
             const maxDataPointsOnChart = 900; 
             if (chartData.labels.length > maxDataPointsOnChart) { 
                 chartData.labels.shift(); 
-                // Shift data for active series (0-3) if a live roast is happening
-                // If displaying a static profile, don't shift its data.
                 if(roastState !== 'idle' || timerInterval) {
                     for (let i = 0; i <= 3; i++) {
                         if (chartData.datasets[i].data.length > 0) { 
@@ -639,21 +664,19 @@
             controlChanges = []; tempDataPointsBT = []; preDropBT = 0; currentRoR = 0;
             
             if (chart) {
-                chartData.labels = []; // CRITICAL: Always reset labels for a new LIVE roast
-                for (let i = 0; i <= 3; i++) { // Clear live data series
+                chartData.labels = []; 
+                for (let i = 0; i <= 3; i++) { 
                     chartData.datasets[i].data = [];
                 }
-                // Reference data (datasets 4-7) is NOT cleared here.
-                // It persists until 'Clear Reference' or new profile load.
                 chart.update('none'); 
             } else {
-                initializeChart(); // This also initializes with empty labels and data
+                initializeChart(); 
             }
         }
 
         function resetRoast() { 
             stopSimulationTimer(); roastState = 'idle'; currentTime = 0;
-            resetRoastEssentialsForNewRoast(); // Resets live roast variables and chart's live data/labels
+            resetRoastEssentialsForNewRoast(); 
             currentBT = AMBIENT_TEMP; currentET = AMBIENT_TEMP; currentDT = AMBIENT_TEMP;
             initialMoistureSlider.value = 10; currentMoisturePercent = parseFloat(initialMoistureSlider.value);
             beanDensitySlider.value = "1.18"; currentBeanDensity = parseFloat(beanDensitySlider.value); 
@@ -671,7 +694,7 @@
             initialMoistureSlider.disabled = false; beanDensitySlider.disabled = false; 
             drumSpeedSlider.disabled = false; gasSlider.disabled = false; airflowSlider.disabled = false;
             
-            clearReferenceCurveData(); // Full reset should also clear reference
+            clearReferenceCurveData(); 
             updateUIDisplays(); 
             if (!chart) initializeChart(); else chart.update();
         }
@@ -737,7 +760,7 @@
                 reader.onload = (e) => {
                     try {
                         const importedProfile = JSON.parse(e.target.result);
-                        loadProfileAsReference(importedProfile); // This will now handle display correctly
+                        loadProfileAsReference(importedProfile); 
                         alert(`Profile "${importedProfile.name || 'Imported Profile'}" loaded.`);
                     } catch (err) { console.error("Error importing profile:", err); alert("Failed to import profile. Invalid JSON."); } 
                     finally { fileInput.value = ''; }
@@ -754,12 +777,10 @@
                 return;
             }
             
-            clearReferenceCurveData(); // Clear previous reference data first
+            clearReferenceCurveData(); 
 
-            if (roastState === 'idle' && !timerInterval) { // Check !timerInterval to ensure preheat isn't running in 'idle' like state
-                // If idle, use the profile's labels and data directly for display
+            if (roastState === 'idle' && !timerInterval) { 
                 chartData.labels = [...profile.chart.labels];
-
                 chartData.datasets[4].data = [...(profile.chart.bt || [])];
                 chartData.datasets[4].hidden = !(profile.chart.bt && profile.chart.bt.length > 0);
                 chartData.datasets[5].data = [...(profile.chart.et || [])];
@@ -768,15 +789,12 @@
                 chartData.datasets[6].hidden = !(profile.chart.dt && profile.chart.dt.length > 0);
                 chartData.datasets[7].data = [...(profile.chart.ror || [])];
                 chartData.datasets[7].hidden = !(profile.chart.ror && profile.chart.ror.length > 0);
-
-                // Fill live data series (0-3) with nulls to match the new label length
                 const numLabels = chartData.labels.length;
                 for (let i = 0; i <= 3; i++) {
                     chartData.datasets[i].data = new Array(numLabels).fill(null);
                 }
                 logEvent(`Profile "${profile.name || 'Reference'}" displayed using its own time axis.`);
             } else {
-                // If a roast is active (or preheating), load reference data to be plotted against the LIVE time axis
                 chartData.datasets[4].data = [...(profile.chart.bt || [])];
                 chartData.datasets[4].hidden = !(profile.chart.bt && profile.chart.bt.length > 0);
                 chartData.datasets[5].data = [...(profile.chart.et || [])];
@@ -792,10 +810,9 @@
     
         clearReferenceBtn.addEventListener('click', () => {
             clearReferenceCurveData();
-            // If idle and a profile was displayed, clearing reference should revert to empty chart or default state
             if (roastState === 'idle' && !timerInterval) {
-                resetRoastEssentialsForNewRoast(); // This clears labels and live data
-                updateChart(); // Update to show the cleared state
+                resetRoastEssentialsForNewRoast(); 
+                updateChart(); 
             } else {
                 chart.update();
             }
