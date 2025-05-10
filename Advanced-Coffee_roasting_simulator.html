@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holistic Roasters' Coffee Roaster Sim v3.2 (Enhanced ET & Exothermics)</title>
+    <title>Holistic Roasters' Coffee Roaster Sim v3.3 (Enhanced ET & Exothermics, Dynamic Charge Drop)</title> <!-- MODIFIED TITLE -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -355,21 +355,21 @@
             <ol>
                 <li><strong>Set Initial Parameters (Before Preheat):</strong>
                     <ul>
-                        <li><strong>Target Charge DT (°C):</strong> Set the desired Drum Temperature (DT) you want to reach before charging (adding) the beans. A common starting point is 180-220°C.</li>
-                        <li><strong>Batch Size:</strong> Select the weight of green coffee beans you want to roast. Larger batches have more thermal mass and may react differently.</li>
+                        <li><strong>Target Charge DT (°C):</strong> Set the desired Drum Temperature (DT) you want to reach before charging (adding) the beans. A common starting point is 180-220°C. This target also influences the ET drop dynamics at charge.</li>
+                        <li><strong>Batch Size:</strong> Select the weight of green coffee beans you want to roast. Larger batches have more thermal mass and may react differently, including a more significant ET drop at charge (modulated by airflow and charge temp accuracy).</li>
                         <li><strong>Initial Moisture (%):</strong> Set the starting moisture content of the green beans. Typical range is 8-12%. Higher moisture can prolong the drying phase.</li>
                         <li><strong>Bean Density (g/mL):</strong> Set the density of the green beans. Denser beans often require more energy and may roast differently.</li>
                         <li><strong>Drum Speed (RPM):</strong> This is an initial setting before preheat. Optimal drum speed helps with even heat distribution. You can adjust this during the roast too.</li>
                     </ul>
                 </li>
                 <li><strong>Preheat:</strong> Click the "Preheat" button. The simulator will start heating the roaster. The "Preheat Status" will show the current Drum Temperature (DT) and Environmental Temperature (ET).</li>
-                <li><strong>Charge Beans:</strong> Once the DT reaches your target (or you decide to charge earlier/later), click the "Charge Beans" button. This adds the beans to the roaster. You'll see an initial drop in temperatures as the beans absorb heat.</li>
+                <li><strong>Charge Beans:</strong> Once the DT reaches your target (or you decide to charge earlier/later), click the "Charge Beans" button. This adds the beans to the roaster. You'll see an initial drop in temperatures as the beans absorb heat. The magnitude of the ET drop is now more dynamic, considering batch size, actual vs. target charge DT, and airflow at charge.</li>
             </ol>
             <h3>During the Roast:</h3>
             <p>Once beans are charged, you can actively control the roast:</p>
             <ul>
                 <li><strong>Gas Power (%):</strong> Adjust the gas slider to increase or decrease heat input. This is your primary tool for controlling the rate of temperature rise.</li>
-                <li><strong>Airflow Damper (%):</strong> Adjust the airflow. Airflow affects convective heat transfer, helps remove smoke and chaff, and can influence moisture removal and bean temperature.</li>
+                <li><strong>Airflow Damper (%):</strong> Adjust the airflow. Airflow affects convective heat transfer, helps remove smoke and chaff, and can influence moisture removal and bean temperature. Airflow setting at charge now also modulates how batch size and charge temperature accuracy affect the initial ET drop.</li>
                 <li><strong>Drum Speed (RPM):</strong> Fine-tune the drum speed. This can affect conductive (bean-to-drum) and convective (bean-to-air) heat transfer.</li>
             </ul>
             <h3>Monitoring the Roast:</h3>
@@ -399,7 +399,7 @@
             </ul>
             <h3>Ending the Roast:</h3>
             <ul>
-                <li><strong>Drop Beans:</strong> When you've reached your desired roast level (based on BT, time, color, DTR, etc.), click the "Drop Beans" button. This will initiate the cooling phase.</li>
+                <li><strong>Drop Beans:</strong> When you'vereached your desired roast level (based on BT, time, color, DTR, etc.), click the "Drop Beans" button. This will initiate the cooling phase.</li>
                 <li><strong>Cooling:</strong> Beans are rapidly cooled to stop the roasting process. The simulation models this.</li>
                 <li><strong>Roast Outcome:</strong> After cooling, a detailed analysis of the roast, including probable quality, tasting notes, and suggestions, will be displayed.</li>
             </ul>
@@ -424,12 +424,12 @@
                     <tr>
                         <td>Target Charge DT</td>
                         <td>~160-250°C</td>
-                        <td>Higher charge temp means more initial energy into the beans.</td>
+                        <td>Higher charge temp means more initial energy into the beans. The accuracy of achieving this target now also influences the ET drop severity at charge.</td>
                     </tr>
                     <tr>
                         <td>Batch Size</td>
                         <td>10-25 kg</td>
-                        <td>Larger batches have more thermal inertia, taking longer to heat and cool. Also affects ET drop on charge and the duration of the FC exothermic phase.</td>
+                        <td>Larger batches have more thermal inertia. Affects ET drop on charge (more significantly with low airflow and when charge temp deviates from target) and the duration of the FC exothermic phase.</td>
                     </tr>
                      <tr>
                         <td>Initial Moisture</td>
@@ -444,12 +444,12 @@
                     <tr>
                         <td>Gas Power</td>
                         <td>0-100%</td>
-                        <td>Primary control for heat input. Higher gas = faster temperature rise for BT, DT, and ET (ET effect now more interactive with airflow).</td>
+                        <td>Primary control for heat input. Higher gas = faster temperature rise for BT, DT, and ET.</td>
                     </tr>
                     <tr>
                         <td>Airflow Damper</td>
                         <td>0-100%</td>
-                        <td>Affects convective heat transfer, chaff removal, and smoke. Higher airflow can increase ET with high gas by improving heat distribution from gas/DT, or cool ET/BT with low/no gas. More nuanced impact on ET calculation. Radiative effects from DT to ET also now included.</td>
+                        <td>Affects convective heat transfer, chaff removal, and smoke. Higher airflow can increase ET with high gas or cool ET/BT with low/no gas. At charge, higher airflow tends to normalize the ET drop, making it less sensitive to batch size and charge temperature variations.</td>
                     </tr>
                     <tr>
                         <td>Drum Speed</td>
@@ -547,12 +547,12 @@
         let roastState = 'idle';
         let firstCrackTime = null, firstCrackTemp = null, firstCrackLogged = false;
         let secondCrackTime = null, secondCrackTemp = null, secondCrackLogged = false, inSCPhase = false;
-        let inFCExothermicPhase = false, fcExothermicTimer = 0, scExothermicTimer = 0; // Added scExothermicTimer
+        let inFCExothermicPhase = false, fcExothermicTimer = 0, scExothermicTimer = 0;
         let crackSoundInterval = null;
         let preDropBT = 0;
 
         let controlChanges = [];
-        let initialRoastParams = {}; // Will store initial settings for feedback
+        let initialRoastParams = {};
 
         let chart;
         let tempDataPointsBT = [];
@@ -595,9 +595,9 @@
         const FC_ENDOTHERMIC_DIP_TEMP_RANGE = 4;
         const FC_ENDOTHERMIC_DIP_STRENGTH = 0.10;
         const FC_EXOTHERMIC_BOOST_STRENGTH = 0.001;
-        const FC_EXOTHERMIC_DURATION = 25; // Base duration, will be scaled by batch size
+        const FC_EXOTHERMIC_DURATION = 25;
         const SC_TARGET_TEMP_OFFSET = 25;
-        const SC_EXOTHERMIC_DURATION = 20; // Total duration for SC exothermic effects
+        const SC_EXOTHERMIC_DURATION = 20;
         const OPTIMAL_DRUM_SPEED_RPM = 48;
         const DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE = 0.15;
         const DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE = 0.20;
@@ -619,10 +619,9 @@
         const ET_DT_CONVERGENCE_FACTOR = 0.5;
         const ET_BT_EXCHANGE_FACTOR = 0.10;
         const ET_FIRST_CRACK_EXOTHERMIC_BOOST_DEG = 2.5;
-        const ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG = 1.0; // Peak boost for ET during SC
+        const ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG = 1.0;
         const ET_INERTIA_FACTOR = 0.20;
         const ET_AMBIENT_LOSS_FACTOR = 0.0025;
-
         const ET_RADIATION_FROM_DT_FACTOR = 0.002;
         const AIRFLOW_COOLING_GAS_THRESHOLD = 50;
         const AIRFLOW_COOLING_FACTOR = 0.005;
@@ -764,7 +763,7 @@
             }
             if (roastState !== 'idle' || timerInterval) {
                 let currentChartTimeLabel = formatTime(currentTime);
-                if (roastState === 'charged' || roastState === 'cooling' || roastState === 'preheating') { // Use roastPhaseTimer for charged/cooling
+                if (roastState === 'charged' || roastState === 'cooling' || roastState === 'preheating') {
                      currentChartTimeLabel = (roastState === 'charged' || roastState === 'cooling') ? formatTime(roastPhaseTimer) : formatTime(currentTime);
                 }
                 if (chartData.labels.length === 0 || chartData.labels[chartData.labels.length - 1] !== currentChartTimeLabel) {
@@ -872,24 +871,22 @@
                     let fcExothermicBoostBT = 0;
                     if (inFCExothermicPhase) {
                         fcExothermicBoostBT = FC_EXOTHERMIC_BOOST_STRENGTH; fcExothermicTimer++;
-                        const dynamicFcExothermicDuration = FC_EXOTHERMIC_DURATION * (batchSize / 15); // Dynamic duration
+                        const dynamicFcExothermicDuration = FC_EXOTHERMIC_DURATION * (batchSize / 15);
                         if (fcExothermicTimer > dynamicFcExothermicDuration) {
                             inFCExothermicPhase = false; fcExothermicTimer = 0; manageCrackSounds(false, 'firstCrack');
                             logEvent("First Crack Exothermic Phase ended.");
                         }
                     }
-                    let scExothermicBoostBT = 0; // if (inSCPhase) { /* SC exothermic logic for BT if needed */ }
+                    let scExothermicBoostBT = 0;
 
-                    if (inSCPhase && roastState === 'charged') { // Manage SC phase timer and end
+                    if (inSCPhase && roastState === 'charged') {
                         scExothermicTimer++;
                         if (scExothermicTimer > SC_EXOTHERMIC_DURATION) {
-                            inSCPhase = false; // Turn off the general SC phase flag
-                            // scExothermicTimer will be reset on next SC or full roast reset
+                            inSCPhase = false;
                             manageCrackSounds(false, 'secondCrack');
                             logEvent("Second Crack Exothermic Phase ended.");
                         }
                     }
-
 
                     let thermalMassFactor = 1 - (batchSize / 50) * BT_THERMAL_MASS_PENALTY_PER_KG * (currentDT);
                     thermalMassFactor = Math.max(0.2, thermalMassFactor);
@@ -918,9 +915,9 @@
                     if (inFCExothermicPhase && fcExothermicTimer < (FC_EXOTHERMIC_DURATION * (batchSize / 15) * 0.75)) {
                         targetET += ET_FIRST_CRACK_EXOTHERMIC_BOOST_DEG * (1 - (fcExothermicTimer / (FC_EXOTHERMIC_DURATION * (batchSize / 15) * 0.75)));
                     }
-                    if (inSCPhase && scExothermicTimer <= SC_EXOTHERMIC_DURATION) { // Decaying SC boost for ET
+                    if (inSCPhase && scExothermicTimer <= SC_EXOTHERMIC_DURATION) {
                         let scBoostDecayFactor = (1 - (scExothermicTimer / SC_EXOTHERMIC_DURATION));
-                        scBoostDecayFactor = Math.max(0, scBoostDecayFactor); // Ensure it's not negative
+                        scBoostDecayFactor = Math.max(0, scBoostDecayFactor);
                         targetET += ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG * scBoostDecayFactor;
                     }
                     if (effectiveGas < AIRFLOW_COOLING_GAS_THRESHOLD) {
@@ -936,7 +933,6 @@
                     currentET = Math.max(AMBIENT_TEMP - 5, Math.min(currentET, currentDT + 40));
                     // --- ET Calculation END ---
 
-
                     if (currentBT >= fcTargetTemp && !firstCrackTime) {
                         firstCrackTime = roastPhaseTimer; firstCrackTemp = currentBT;
                         logEvent(`First Crack @ BT ${safeToFixed(currentBT)}°C (Target: ${safeToFixed(fcTargetTemp,1)}°C, Density: ${safeToFixed(currentBeanDensity,2)} g/mL, Moisture: ${safeToFixed(currentMoisturePercent)}%)`, true);
@@ -948,7 +944,7 @@
                         logEvent(`Second Crack @ BT ${safeToFixed(currentBT)}°C`, true);
                         if (!secondCrackLogged) {
                              manageCrackSounds(true, 'secondCrack'); secondCrackLogged = true;
-                             inSCPhase = true; scExothermicTimer = 0; // Initialize SC timer
+                             inSCPhase = true; scExothermicTimer = 0;
                         }
                         if(inFCExothermicPhase) {
                             manageCrackSounds(false, 'firstCrack');
@@ -986,10 +982,7 @@
                             beanDensity: initialRoastParams.beanDensity,
                             chartData: {
                                 labels: [...chartData.labels],
-                                datasets: [
-                                    null, null, null,
-                                    { data: [...chartData.datasets[3].data] }
-                                ]
+                                datasets: [ null, null, null, { data: [...chartData.datasets[3].data] } ]
                             },
                             controlChanges: [...controlChanges]
                         };
@@ -1192,7 +1185,7 @@
                 alert(`Invalid Target Charge DT.`); targetChargeTempDTInput.value = "190"; targetChargeTempDT = 190; return;
             }
             roastState = 'preheating';
-            currentTime = 0; // Reset preheat timer
+            currentTime = 0;
             chartData.labels = [];
             for(let i=0; i<=3; i++) chartData.datasets[i].data = [];
 
@@ -1200,7 +1193,7 @@
             currentMoisturePercent = parseFloat(initialMoistureSlider.value);
             currentBeanDensity = parseFloat(beanDensitySlider.value);
             batchSize = parseFloat(batchSizeSelect.value);
-            effectiveDrumSpeed = parseInt(drumSpeedSlider.value);
+            effectiveDrumSpeed = parseInt(drumSpeedSlider.value); // Set effective drum speed directly
             initialRoastParams = {
                 targetChargeTempDT, batchSize,
                 initialMoisture: currentMoisturePercent,
@@ -1214,8 +1207,11 @@
             preheatBtn.disabled = true; chargeBtn.disabled = false; resetBtn.disabled = false;
             startSimulationTimer();
         }
+
         function handleChargeBeans() {
             if (roastState !== 'preheating' && roastState !== 'idle') return;
+
+            const etBeforeChargeModification = currentET; // Store ET before it's modified by drop logic
 
             if (chart && roastState === 'preheating') {
                 chartData.labels = [];
@@ -1230,15 +1226,16 @@
                 batchSize = parseFloat(batchSizeSelect.value);
                 effectiveDrumSpeed = parseInt(drumSpeedSlider.value);
                 initialRoastParams = {
-                    targetChargeTempDT: currentDT, batchSize,
+                    targetChargeTempDT: currentDT, // Ambient DT
+                    batchSize,
                     initialMoisture: currentMoisturePercent,
                     beanDensity: currentBeanDensity,
                     initialDrumSpeed: effectiveDrumSpeed
                 };
-            } else {
+            } else { // roastState === 'preheating'
                  initialRoastParams = {
-                    targetChargeTempDT: targetChargeTempDT,
-                    batchSize: batchSize, // Already set from preheat or current selection
+                    targetChargeTempDT: targetChargeTempDT, // User-set target
+                    batchSize: batchSize,
                     initialMoisture: parseFloat(initialMoistureSlider.value),
                     beanDensity: parseFloat(beanDensitySlider.value),
                     initialDrumSpeed: parseInt(drumSpeedSlider.value)
@@ -1248,13 +1245,27 @@
             roastState = 'charged'; roastPhaseTimer = 0; currentTime = 0;
             const dtBeforeCharge = currentDT;
             currentDT -= (dtBeforeCharge - AMBIENT_TEMP) * (batchSize / 50) * DT_COOLING_FROM_BEANS_FACTOR;
+
+            // --- Enhanced ET Drop Calculation ---
             let batchSizeDeviationEffect = (batchSize - ET_BASE_BATCH_SIZE_FOR_CHARGE_DROP) * ET_DROP_CHARGE_BATCH_SIZE_SENSITIVITY;
-            let dynamicChargeDropFactor = Math.min(0.85, Math.max(0.2, ET_DROP_ON_CHARGE_BASE_FACTOR + batchSizeDeviationEffect));
-            currentET = AMBIENT_TEMP + (currentET - AMBIENT_TEMP) * (1 - dynamicChargeDropFactor);
+
+            let actualTargetDTForRatio = Math.max(AMBIENT_TEMP, initialRoastParams.targetChargeTempDT || AMBIENT_TEMP);
+            let tempRatio = (actualTargetDTForRatio > 0 ? dtBeforeCharge / actualTargetDTForRatio : 1.0);
+            tempRatio = Math.min(2.0, Math.max(0.5, tempRatio)); // Clamp ratio [0.5, 2.0]
+
+            let airflowModulationTerm = (1 - effectiveAirflow / 100); // effectiveAirflow is already calculated
+
+            let dynamicChargeDropFactor = ET_DROP_ON_CHARGE_BASE_FACTOR + (batchSizeDeviationEffect * tempRatio * airflowModulationTerm);
+            dynamicChargeDropFactor = Math.min(0.85, Math.max(0.2, dynamicChargeDropFactor)); // Clamp drop factor [0.2, 0.85]
+            // --- End Enhanced ET Drop Calculation ---
+
+            currentET = AMBIENT_TEMP + (etBeforeChargeModification - AMBIENT_TEMP) * (1 - dynamicChargeDropFactor);
+
             const densityDiff = currentBeanDensity - BASE_BEAN_DENSITY;
             const densityTpModifier = 1.0 + (densityDiff * DENSITY_TP_BT_MODIFIER);
             currentBT = AMBIENT_TEMP + (dtBeforeCharge - AMBIENT_TEMP) * BT_INITIAL_ABSORB_FROM_DT_FACTOR * (1 - batchSize/100) * densityTpModifier;
             currentBT = Math.max(AMBIENT_TEMP / 1.5, currentBT);
+
             logEvent(`Beans Charged! DT: ${safeToFixed(currentDT)}, ET: ${safeToFixed(currentET)}, BT: ${safeToFixed(currentBT)} (TP). Moisture: ${safeToFixed(currentMoisturePercent)}%, Density: ${safeToFixed(currentBeanDensity,2)} g/mL`, true);
             preheatStatusDisplay.textContent = 'Beans Charged';
 
@@ -1277,22 +1288,20 @@
             dropBtn.textContent = "Cooling..."; dropBtn.disabled = true;
             gasSlider.disabled = true;
             drumSpeedSlider.disabled = true;
-            manageCrackSounds(false); // Stop all crack sounds
+            manageCrackSounds(false);
         }
 
         function resetRoastEssentialsForNewRoast() {
             roastPhaseTimer = 0; coolingTimer = 0;
             firstCrackTime = null; firstCrackTemp = null; firstCrackLogged = false;
             secondCrackTime = null; secondCrackTemp = null; secondCrackLogged = false; inSCPhase = false;
-            inFCExothermicPhase = false; fcExothermicTimer = 0; scExothermicTimer = 0; // Reset scExothermicTimer
+            inFCExothermicPhase = false; fcExothermicTimer = 0; scExothermicTimer = 0;
             controlChanges = []; tempDataPointsBT = []; preDropBT = 0; currentRoR = 0;
             initialRoastParams = {};
 
             if (chart) {
                 chartData.labels = [];
-                for (let i = 0; i <= 3; i++) {
-                    chartData.datasets[i].data = [];
-                }
+                for (let i = 0; i <= 3; i++) { chartData.datasets[i].data = []; }
                 chart.update('none');
             } else {
                 initializeChart();
@@ -1341,15 +1350,12 @@
             };
             const profileData = {
                 name: profileName, timestamp: new Date().toISOString(),
-                initialParams: {...initialRoastParams},
-                controlChanges: controlChanges,
+                initialParams: {...initialRoastParams}, controlChanges: controlChanges,
                 events: { firstCrackTime, firstCrackTemp, secondCrackTime, secondCrackTemp },
-                chart: liveChartDataForSave,
-                outcomeHTML: outcomeText.innerHTML,
-                finalDropBT: preDropBT,
+                chart: liveChartDataForSave, outcomeHTML: outcomeText.innerHTML, finalDropBT: preDropBT,
                 roastTimeToDrop: (roastState === 'dropped' || roastState === 'cooling') ? roastPhaseTimer - coolingTimer : roastPhaseTimer,
                 coolingTime: (roastState === 'dropped' || roastState === 'cooling') ? coolingTimer : 0,
-                batchSize: initialRoastParams.batchSize, // Ensure batchSize is from initialRoastParams
+                batchSize: initialRoastParams.batchSize,
                 initialMoisture: initialRoastParams.initialMoisture,
                 beanDensity: initialRoastParams.beanDensity
             };
@@ -1371,13 +1377,12 @@
             };
              const profileDataToExport = {
                 name: `Exported Roast ${new Date().toISOString()}`, timestamp: new Date().toISOString(),
-                initialParams: {...initialRoastParams},
-                controlChanges: controlChanges,
+                initialParams: {...initialRoastParams}, controlChanges: controlChanges,
                 events: { firstCrackTime, firstCrackTemp, secondCrackTime, secondCrackTemp },
                 chart: liveChartDataForExport, outcomeHTML: outcomeText.innerHTML, finalDropBT: preDropBT,
                 roastTimeToDrop: (roastState === 'dropped' || roastState === 'cooling') ? roastPhaseTimer - coolingTimer : roastPhaseTimer,
                 coolingTime: (roastState === 'dropped' || roastState === 'cooling') ? coolingTimer : 0,
-                batchSize: initialRoastParams.batchSize, // Ensure batchSize is from initialRoastParams
+                batchSize: initialRoastParams.batchSize,
                 initialMoisture: initialRoastParams.initialMoisture,
                 beanDensity: initialRoastParams.beanDensity
             };
@@ -1404,21 +1409,16 @@
                             if (typeof importedProfile.initialParams.targetChargeTempDT !== 'undefined') targetChargeTempDTInput.value = importedProfile.initialParams.targetChargeTempDT;
                             if (typeof importedProfile.initialParams.initialDrumSpeed !== 'undefined') drumSpeedSlider.value = importedProfile.initialParams.initialDrumSpeed;
 
-
                             batchSize = parseFloat(batchSizeSelect.value);
                             currentMoisturePercent = parseFloat(initialMoistureSlider.value);
                             currentBeanDensity = parseFloat(beanDensitySlider.value);
                             targetChargeTempDT = parseFloat(targetChargeTempDTInput.value);
                             targetDrumSpeed = parseInt(drumSpeedSlider.value);
-
                             initialRoastParams = { ...importedProfile.initialParams };
-
                             updateUIDisplays();
                             logEvent("Initial parameters updated from imported reference profile.");
                         }
-                         if(importedProfile.outcomeHTML && roastState === 'idle'){
-                            outcomeText.innerHTML = importedProfile.outcomeHTML;
-                        }
+                         if(importedProfile.outcomeHTML && roastState === 'idle'){ outcomeText.innerHTML = importedProfile.outcomeHTML; }
                         alert(`Profile "${importedProfile.name || 'Imported Profile'}" loaded as reference.`);
                     } catch (err) { console.error("Error importing profile:", err); alert("Failed to import profile. Invalid JSON."); }
                     finally { fileInput.value = ''; }
@@ -1429,34 +1429,23 @@
 
         function loadProfileAsReference(profile) {
             if (!profile || !profile.chart || !profile.chart.labels || profile.chart.labels.length === 0) {
-                logEvent("Cannot load invalid profile data (missing chart data or labels).", true);
-                return;
+                logEvent("Cannot load invalid profile data (missing chart data or labels).", true); return;
             }
             clearReferenceCurveData();
             if (roastState === 'idle' && !timerInterval) {
                 chartData.labels = [...profile.chart.labels];
-                chartData.datasets[4].data = [...(profile.chart.bt || [])];
-                chartData.datasets[4].hidden = !(profile.chart.bt && profile.chart.bt.length > 0);
-                chartData.datasets[5].data = [...(profile.chart.et || [])];
-                chartData.datasets[5].hidden = !(profile.chart.et && profile.chart.et.length > 0);
-                chartData.datasets[6].data = [...(profile.chart.dt || [])];
-                chartData.datasets[6].hidden = !(profile.chart.dt && profile.chart.dt.length > 0);
-                chartData.datasets[7].data = [...(profile.chart.ror || [])];
-                chartData.datasets[7].hidden = !(profile.chart.ror && profile.chart.ror.length > 0);
+                chartData.datasets[4].data = [...(profile.chart.bt || [])]; chartData.datasets[4].hidden = !(profile.chart.bt && profile.chart.bt.length > 0);
+                chartData.datasets[5].data = [...(profile.chart.et || [])]; chartData.datasets[5].hidden = !(profile.chart.et && profile.chart.et.length > 0);
+                chartData.datasets[6].data = [...(profile.chart.dt || [])]; chartData.datasets[6].hidden = !(profile.chart.dt && profile.chart.dt.length > 0);
+                chartData.datasets[7].data = [...(profile.chart.ror || [])]; chartData.datasets[7].hidden = !(profile.chart.ror && profile.chart.ror.length > 0);
                 const numLabels = chartData.labels.length;
-                for (let i = 0; i <= 3; i++) {
-                    chartData.datasets[i].data = new Array(numLabels).fill(null);
-                }
+                for (let i = 0; i <= 3; i++) { chartData.datasets[i].data = new Array(numLabels).fill(null); }
                 logEvent(`Profile "${profile.name || 'Reference'}" displayed using its own time axis.`);
             } else {
-                chartData.datasets[4].data = [...(profile.chart.bt || [])];
-                chartData.datasets[4].hidden = !(profile.chart.bt && profile.chart.bt.length > 0);
-                chartData.datasets[5].data = [...(profile.chart.et || [])];
-                chartData.datasets[5].hidden = !(profile.chart.et && profile.chart.et.length > 0);
-                chartData.datasets[6].data = [...(profile.chart.dt || [])];
-                chartData.datasets[6].hidden = !(profile.chart.dt && profile.chart.dt.length > 0);
-                chartData.datasets[7].data = [...(profile.chart.ror || [])];
-                chartData.datasets[7].hidden = !(profile.chart.ror && profile.chart.ror.length > 0);
+                chartData.datasets[4].data = [...(profile.chart.bt || [])]; chartData.datasets[4].hidden = !(profile.chart.bt && profile.chart.bt.length > 0);
+                chartData.datasets[5].data = [...(profile.chart.et || [])]; chartData.datasets[5].hidden = !(profile.chart.et && profile.chart.et.length > 0);
+                chartData.datasets[6].data = [...(profile.chart.dt || [])]; chartData.datasets[6].hidden = !(profile.chart.dt && profile.chart.dt.length > 0);
+                chartData.datasets[7].data = [...(profile.chart.ror || [])]; chartData.datasets[7].hidden = !(profile.chart.ror && profile.chart.ror.length > 0);
                 logEvent(`Profile "${profile.name || 'Reference'}" loaded as overlay for current/next roast.`);
             }
             if (chart) chart.update(); else if (document.getElementById('simulatorTabContent').classList.contains('active')) initializeChart();
@@ -1466,9 +1455,7 @@
             clearReferenceCurveData();
             if (roastState === 'idle' && !timerInterval && chartData.datasets[0].data.every(d => d === null)) {
                 chartData.labels = [];
-                 for (let i = 0; i <= 3; i++) {
-                    chartData.datasets[i].data = [];
-                }
+                 for (let i = 0; i <= 3; i++) { chartData.datasets[i].data = []; }
             }
             if (chart) chart.update();
             logEvent("Reference curve cleared.");
@@ -1477,8 +1464,7 @@
         function clearReferenceCurveData(){
             for(let i=4; i<=7; i++){
                 if(chartData.datasets[i]) {
-                    chartData.datasets[i].data = [];
-                    chartData.datasets[i].hidden = true;
+                    chartData.datasets[i].data = []; chartData.datasets[i].hidden = true;
                 }
             }
         }
@@ -1496,8 +1482,8 @@
                     const li = document.createElement('li');
                     const profileDesc = `${profile.name || 'Unnamed Profile'} (${new Date(profile.timestamp).toLocaleDateString()})
                         ${profile.batchSize ? 'BS:'+profile.batchSize+'kg' : ''}
-                        ${profile.initialMoisture ? 'M:'+profile.initialMoisture.toFixed(1)+'%' : ''}
-                        ${profile.beanDensity ? 'D:'+profile.beanDensity.toFixed(2)+'g/mL' : ''}`;
+                        ${profile.initialMoisture ? 'M:'+(typeof profile.initialMoisture === 'number' ? profile.initialMoisture.toFixed(1) : profile.initialMoisture)+ '%' : ''}
+                        ${profile.beanDensity ? 'D:'+(typeof profile.beanDensity === 'number' ? profile.beanDensity.toFixed(2) : profile.beanDensity)+'g/mL' : ''}`;
                     li.textContent = profileDesc.trim();
 
                     const loadBtn = document.createElement('button'); loadBtn.textContent = 'Load as Ref';
@@ -1515,14 +1501,11 @@
                              currentBeanDensity = parseFloat(beanDensitySlider.value);
                              targetChargeTempDT = parseFloat(targetChargeTempDTInput.value);
                              targetDrumSpeed = parseInt(drumSpeedSlider.value);
-
                              initialRoastParams = { ...profile.initialParams };
                              updateUIDisplays();
                              logEvent("Initial parameters updated from loaded reference profile.");
                         }
-                         if(profile.outcomeHTML && roastState === 'idle'){
-                            outcomeText.innerHTML = profile.outcomeHTML;
-                        }
+                         if(profile.outcomeHTML && roastState === 'idle'){ outcomeText.innerHTML = profile.outcomeHTML; }
                         profileModal.style.display = 'none';
                     };
                     const deleteBtn = document.createElement('button'); deleteBtn.textContent = 'Delete';
@@ -1548,7 +1531,7 @@
         airflowSlider.addEventListener('input', (e) => { targetAirflowSetting = parseInt(e.target.value); recordControlChange('airflow', targetAirflowSetting); updateUIDisplays(); });
         drumSpeedSlider.addEventListener('input', (e) => { targetDrumSpeed = parseInt(e.target.value); recordControlChange('drumSpeed', targetDrumSpeed); updateUIDisplays(); });
         batchSizeSelect.addEventListener('change', (e) => { if(roastState === 'idle' || roastState === 'preheating') { batchSize = parseFloat(e.target.value); if (initialRoastParams) initialRoastParams.batchSize = batchSize; } updateUIDisplays(); });
-        targetChargeTempDTInput.addEventListener('change', (e) => { if(roastState === 'idle') { let nt = parseFloat(e.target.value); if (!isNaN(nt) && nt >= AMBIENT_TEMP && nt <= 300) targetChargeTempDT = nt; else e.target.value = safeToFixed(targetChargeTempDT, 0); } updateUIDisplays(); });
+        targetChargeTempDTInput.addEventListener('change', (e) => { if(roastState === 'idle') { let nt = parseFloat(e.target.value); if (!isNaN(nt) && nt >= AMBIENT_TEMP && nt <= 300) targetChargeTempDT = nt; else e.target.value = safeToFixed(targetChargeTempDT, 0); if(initialRoastParams) initialRoastParams.targetChargeTempDT = targetChargeTempDT;} updateUIDisplays(); });
         initialMoistureSlider.addEventListener('input', (e) => { let nm = parseFloat(e.target.value); if(roastState === 'idle') { currentMoisturePercent = nm; if (initialRoastParams) initialRoastParams.initialMoisture = nm; } initialMoistureDisplay.textContent = `${safeToFixed(nm,1)}%`; });
         beanDensitySlider.addEventListener('input', (e) => { let nd = parseFloat(e.target.value); if (roastState === 'idle') { currentBeanDensity = nd; if (initialRoastParams) initialRoastParams.beanDensity = nd; } beanDensityDisplay.textContent = `${safeToFixed(nd, 2)} g/mL`; });
 
