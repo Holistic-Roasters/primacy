@@ -9,6 +9,40 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; background-color: #e8e8e8; margin: 0; padding: 20px; box-sizing: border-box; color: #333; }
         .container { background-color: #fdfdfd; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 950px; }
         h1, h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+        
+        /* Tab Styles */
+        .tabs-navigation {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-link {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 1.1em;
+            color: #555;
+            border-bottom: 3px solid transparent; /* For active indicator */
+            margin-bottom: -2px; /* Align with container border */
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .tab-link:hover {
+            color: #007bff;
+        }
+        .tab-link.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none; /* Hidden by default */
+        }
+        .tab-content.active {
+            display: block; /* Shown when active */
+        }
+
+        /* Existing Styles (some might need slight adjustments if conflicts arise) */
         .main-controls, .roast-parameters, .roast-info, .events, .outcome, .preheat-section, .profile-management { margin-bottom: 25px; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; }
         .main-controls, .profile-management { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-around; }
         .main-controls button, .profile-management button, .profile-management input[type="file"] { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95em; transition: background-color 0.2s ease, transform 0.1s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -50,92 +84,258 @@
         .modal-content button { font-size: 0.8em; padding: 5px 10px; margin-left: 5px;}
         #fileInput { display: none; } /* Hide default file input */
         #customImportButton { background-color: #1abc9c; color: white; }
+
+        /* Styles for Instructions Tab */
+        #instructionsTabContent {
+            padding: 15px;
+            line-height: 1.6;
+        }
+        #instructionsTabContent h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        #instructionsTabContent ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        #instructionsTabContent p, #instructionsTabContent li {
+            margin-bottom: 10px;
+        }
+        #instructionsTabContent strong {
+            color: #34495e;
+        }
+        #instructionsTabContent .parameter-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        #instructionsTabContent .parameter-table th, 
+        #instructionsTabContent .parameter-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #instructionsTabContent .parameter-table th {
+            background-color: #f2f2f2;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Holistic Roasters' Coffee Roaster Sim</h1>
 
-        <div class="main-controls">
-            <button id="preheatBtn">Preheat</button>
-            <button id="chargeBtn" disabled>Charge Beans</button> 
-            <button id="dropBtn" disabled>Drop Beans</button>
-            <button id="resetBtn">Reset</button>
-        </div>
-        
-        <div class="preheat-section">
-            <label for="targetChargeTempDT">Target Charge DT (°C):</label>
-            <input type="number" id="targetChargeTempDT" value="190" step="5">
-            <span id="preheatStatus">Status: Idle</span>
+        <div class="tabs-navigation">
+            <button class="tab-link active" data-tab="simulatorTabContent">Simulator</button>
+            <button class="tab-link" data-tab="instructionsTabContent">Instructions</button>
         </div>
 
-        <div class="profile-management">
-            <button id="saveProfileBtn" class="secondary">Save Profile</button>
-            <button id="loadProfileListBtn">Load Stored Profiles</button>
-            <input type="file" id="fileInput" accept=".json">
-            <button id="customImportButton">Import Profile (JSON)</button>
-            <button id="exportProfileBtn" class="tertiary">Export Current Roast Data</button>
-            <button id="clearReferenceBtn">Clear Reference Curve</button>
+        <div id="simulatorTabContent" class="tab-content active">
+            <!-- All existing simulator content will go here -->
+            <div class="main-controls">
+                <button id="preheatBtn">Preheat</button>
+                <button id="chargeBtn" disabled>Charge Beans</button> 
+                <button id="dropBtn" disabled>Drop Beans</button>
+                <button id="resetBtn">Reset</button>
+            </div>
+            
+            <div class="preheat-section">
+                <label for="targetChargeTempDT">Target Charge DT (°C):</label>
+                <input type="number" id="targetChargeTempDT" value="190" step="5">
+                <span id="preheatStatus">Status: Idle</span>
+            </div>
+    
+            <div class="profile-management">
+                <button id="saveProfileBtn" class="secondary">Save Profile</button>
+                <button id="loadProfileListBtn">Load Stored Profiles</button>
+                <input type="file" id="fileInput" accept=".json">
+                <button id="customImportButton">Import Profile (JSON)</button>
+                <button id="exportProfileBtn" class="tertiary">Export Current Roast Data</button>
+                <button id="clearReferenceBtn">Clear Reference Curve</button>
+            </div>
+    
+            <div class="roast-parameters">
+                <div class="param-control">
+                    <label for="batchSizeSelect">Batch Size:</label>
+                    <select id="batchSizeSelect">
+                        <option value="10">10 kg</option>
+                        <option value="15" selected>15 kg</option>
+                        <option value="20">20 kg</option>
+                        <option value="25">25 kg</option>
+                    </select>
+                    <span id="batchSizeDisplay">15 kg</span>
+                </div>
+                <div class="param-control">
+                    <label for="initialMoisture">Initial Moisture (%):</label>
+                    <input type="range" id="initialMoisture" min="8" max="12" value="10" step="0.5">
+                    <span id="initialMoistureDisplay">10.0 %</span>
+                </div>
+                <div class="param-control">
+                    <label for="beanDensitySlider">Bean Density (g/mL):</label>
+                    <input type="range" id="beanDensitySlider" min="1.10" max="1.25" value="1.18" step="0.01">
+                    <span id="beanDensityDisplay">1.18 g/mL</span>
+                </div>
+                <div class="param-control">
+                    <label for="gasSlider">Gas Power (%):</label>
+                    <input type="range" id="gasSlider" min="0" max="100" value="70" step="1">
+                    <span id="gasValueDisplay">70 %</span>
+                </div>
+                <div class="param-control">
+                    <label for="airflowSlider">Airflow Damper (%):</label>
+                    <input type="range" id="airflowSlider" min="0" max="100" value="20" step="1">
+                    <span id="airflowValueDisplay">20 %</span>
+                </div>
+                <div class="param-control">
+                    <label for="drumSpeedSlider">Drum Speed (RPM):</label>
+                    <input type="range" id="drumSpeedSlider" min="30" max="60" value="45" step="1">
+                    <span id="drumSpeedDisplay">45 RPM</span>
+                </div>
+            </div>
+    
+            <div class="roast-info">
+                <div class="info-item"><strong>Time</strong><span id="timeDisplay">0:00</span></div>
+                <div class="info-item"><strong>BT</strong><span id="btDisplay">20.0</span>°C</div>
+                <div class="info-item"><strong>ET</strong><span id="etDisplay">20.0</span>°C</div>
+                <div class="info-item"><strong>DT</strong><span id="dtDisplay">20.0</span>°C</div>
+                <div class="info-item"><strong>RoR(BT)</strong><span id="rorDisplay">0.0</span>°C/m</div>
+                <div class="info-item"><strong>Moisture</strong><span id="moistureDisplay">10.0</span>%</div>
+                <div class="info-item bean-visual-container">
+                    <strong>Bean Color</strong> <div id="beanVisual"></div>
+                </div>
+            </div>
+    
+            <div class="events">
+                <h2>Events Log:</h2>
+                <ul id="eventLog"><li>Simulator Idle. Set Preheat Target, Batch Size, Moisture, Density, Drum Speed.</li></ul>
+            </div>
+    
+            <div class="chart-container"><canvas id="roastChart"></canvas></div>
+            <div id="roastOutcome" class="outcome"><p id="outcomeText">-</p></div>
         </div>
 
+        <div id="instructionsTabContent" class="tab-content">
+            <h2>How to Use the Coffee Roaster Simulator</h2>
+            <p>Welcome to the Holistic Roasters' Coffee Roaster Simulator! This tool allows you to practice and understand the coffee roasting process by controlling various parameters and observing their effects in real-time.</p>
 
-        <div class="roast-parameters">
-            <div class="param-control">
-                <label for="batchSizeSelect">Batch Size:</label>
-                <select id="batchSizeSelect">
-                    <option value="10">10 kg</option>
-                    <option value="15" selected>15 kg</option>
-                    <option value="20">20 kg</option>
-                    <option value="25">25 kg</option>
-                </select>
-                <span id="batchSizeDisplay">15 kg</span>
-            </div>
-            <div class="param-control">
-                <label for="initialMoisture">Initial Moisture (%):</label>
-                <input type="range" id="initialMoisture" min="8" max="12" value="10" step="0.5">
-                <span id="initialMoistureDisplay">10.0 %</span>
-            </div>
-            <div class="param-control">
-                <label for="beanDensitySlider">Bean Density (g/mL):</label>
-                <input type="range" id="beanDensitySlider" min="1.10" max="1.25" value="1.18" step="0.01">
-                <span id="beanDensityDisplay">1.18 g/mL</span>
-            </div>
-            <div class="param-control">
-                <label for="gasSlider">Gas Power (%):</label>
-                <input type="range" id="gasSlider" min="0" max="100" value="70" step="1">
-                <span id="gasValueDisplay">70 %</span>
-            </div>
-            <div class="param-control">
-                <label for="airflowSlider">Airflow Damper (%):</label>
-                <input type="range" id="airflowSlider" min="0" max="100" value="20" step="1">
-                <span id="airflowValueDisplay">20 %</span>
-            </div>
-            <div class="param-control">
-                <label for="drumSpeedSlider">Drum Speed (RPM):</label>
-                <input type="range" id="drumSpeedSlider" min="30" max="60" value="45" step="1">
-                <span id="drumSpeedDisplay">45 RPM</span>
-            </div>
+            <h3>Getting Started:</h3>
+            <ol>
+                <li><strong>Set Initial Parameters (Before Preheat):</strong>
+                    <ul>
+                        <li><strong>Target Charge DT (°C):</strong> Set the desired Drum Temperature (DT) you want to reach before charging (adding) the beans. A common starting point is 180-220°C.</li>
+                        <li><strong>Batch Size:</strong> Select the weight of green coffee beans you want to roast. Larger batches have more thermal mass and may react differently.</li>
+                        <li><strong>Initial Moisture (%):</strong> Set the starting moisture content of the green beans. Typical range is 8-12%. Higher moisture can prolong the drying phase.</li>
+                        <li><strong>Bean Density (g/mL):</strong> Set the density of the green beans. Denser beans often require more energy and may roast differently.</li>
+                        <li><strong>Drum Speed (RPM):</strong> This is an initial setting before preheat. Optimal drum speed helps with even heat distribution. You can adjust this during the roast too.</li>
+                    </ul>
+                </li>
+                <li><strong>Preheat:</strong> Click the "Preheat" button. The simulator will start heating the roaster. The "Preheat Status" will show the current Drum Temperature (DT) and Environmental Temperature (ET).</li>
+                <li><strong>Charge Beans:</strong> Once the DT reaches your target (or you decide to charge earlier/later), click the "Charge Beans" button. This adds the beans to the roaster. You'll see an initial drop in temperatures as the beans absorb heat.</li>
+            </ol>
+
+            <h3>During the Roast:</h3>
+            <p>Once beans are charged, you can actively control the roast:</p>
+            <ul>
+                <li><strong>Gas Power (%):</strong> Adjust the gas slider to increase or decrease heat input. This is your primary tool for controlling the rate of temperature rise.</li>
+                <li><strong>Airflow Damper (%):</strong> Adjust the airflow. Airflow affects convective heat transfer, helps remove smoke and chaff, and can influence moisture removal and bean temperature.</li>
+                <li><strong>Drum Speed (RPM):</strong> Fine-tune the drum speed. This can affect conductive (bean-to-drum) and convective (bean-to-air) heat transfer.</li>
+            </ul>
+
+            <h3>Monitoring the Roast:</h3>
+            <ul>
+                <li><strong>Roast Info Panel:</strong>
+                    <ul>
+                        <li><strong>Time:</strong> Elapsed time of the current phase (Preheat, Roast, Cooling).</li>
+                        <li><strong>BT (Bean Temperature):</strong> The temperature of the coffee beans. This is a key indicator.</li>
+                        <li><strong>ET (Environmental Temperature):</strong> The air temperature inside the drum.</li>
+                        <li><strong>DT (Drum Temperature):</strong> The temperature of the roaster drum surface.</li>
+                        <li><strong>RoR(BT) (Rate of Rise of BT):</strong> How quickly the bean temperature is increasing, measured in °C per minute. Crucial for managing roast development.</li>
+                        <li><strong>Moisture:</strong> Estimated current moisture content of the beans.</li>
+                        <li><strong>Bean Color:</strong> A visual representation of the beans' color changing as they roast.</li>
+                    </ul>
+                </li>
+                <li><strong>Events Log:</strong> Shows important events like "First Crack," "Second Crack," control changes, and warnings.</li>
+                <li><strong>Roast Chart:</strong> Plots BT, ET, DT, and RoR over time. This is essential for visualizing the roast profile.</li>
+            </ul>
+
+            <h3>Key Roast Milestones:</h3>
+            <ul>
+                <li><strong>Turning Point (TP):</strong> The point after charging where the bean temperature stops dropping and starts to rise.</li>
+                <li><strong>Drying Phase:</strong> From charge until beans turn yellow (around 150-160°C BT). Focus on steady RoR.</li>
+                <li><strong>Maillard Phase (Browning):</strong> From yellowing to First Crack. Development of aroma precursors. RoR typically starts to decline.</li>
+                <li><strong>First Crack (FC):</strong> An audible popping sound as moisture and gases are rapidly released. Usually occurs around 195-205°C BT. This marks the beginning of "Development Time."</li>
+                <li><strong>Development Time:</strong> Time from First Crack to dropping the beans. Critical for flavor development. Often expressed as Development Time Ratio (DTR) = (Development Time / Total Roast Time) * 100%. A common target DTR is 20-25%.</li>
+                <li><strong>Second Crack (SC):</strong> A more rapid, crackling sound. Beans are becoming darker and oils may migrate to the surface. Occurs significantly after First Crack.</li>
+            </ul>
+
+            <h3>Ending the Roast:</h3>
+            <ul>
+                <li><strong>Drop Beans:</strong> When you've reached your desired roast level (based on BT, time, color, DTR, etc.), click the "Drop Beans" button. This will initiate the cooling phase.</li>
+                <li><strong>Cooling:</strong> Beans are rapidly cooled to stop the roasting process. The simulation models this.</li>
+                <li><strong>Roast Outcome:</strong> After cooling, a summary of the roast will be displayed.</li>
+            </ul>
+
+            <h3>Profile Management:</h3>
+            <ul>
+                <li><strong>Save Profile:</strong> Saves the current roast data (initial settings, control changes, chart data, outcome) to your browser's local storage.</li>
+                <li><strong>Load Stored Profiles:</strong> Opens a modal to view saved profiles. You can load a saved profile as a "Reference Curve" on the chart to compare with your live roast.</li>
+                <li><strong>Import Profile (JSON):</strong> Load a roast profile from a .json file (if you have one exported previously or from elsewhere). This also loads as a reference curve.</li>
+                <li><strong>Export Current Roast Data:</strong> Saves the data from the current (or just completed) roast as a .json file to your computer.</li>
+                <li><strong>Clear Reference Curve:</strong> Removes any loaded reference profile from the chart.</li>
+            </ul>
+            
+            <h3>Understanding the Parameters (Advanced):</h3>
+            <table class="parameter-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Range/Value</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Target Charge DT</td>
+                        <td>~160-250°C</td>
+                        <td>Higher charge temp means more initial energy into the beans.</td>
+                    </tr>
+                    <tr>
+                        <td>Batch Size</td>
+                        <td>10-25 kg</td>
+                        <td>Larger batches have more thermal inertia, taking longer to heat and cool.</td>
+                    </tr>
+                     <tr>
+                        <td>Initial Moisture</td>
+                        <td>8-12%</td>
+                        <td>Higher moisture may prolong drying and affect heat transfer.</td>
+                    </tr>
+                     <tr>
+                        <td>Bean Density</td>
+                        <td>1.10-1.25 g/mL</td>
+                        <td>Denser beans often require more energy and may have different heat absorption characteristics, potentially shifting crack temperatures.</td>
+                    </tr>
+                    <tr>
+                        <td>Gas Power</td>
+                        <td>0-100%</td>
+                        <td>Primary control for heat input. Higher gas = faster temperature rise.</td>
+                    </tr>
+                    <tr>
+                        <td>Airflow Damper</td>
+                        <td>0-100%</td>
+                        <td>Affects convective heat transfer, chaff removal, and smoke. Higher airflow can increase ET with high gas, or cool BT with low/no gas.</td>
+                    </tr>
+                    <tr>
+                        <td>Drum Speed</td>
+                        <td>30-60 RPM</td>
+                        <td>Influences bean agitation and contact with drum/hot air. Optimal speed (around 45-50 RPM in this sim) provides balanced heat. Too slow/fast can lead to uneven roasting or inefficient transfer.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Experiment with different settings and control strategies to see how they affect the roast profile and outcome. Happy Roasting!</p>
         </div>
 
-        <div class="roast-info">
-            <div class="info-item"><strong>Time</strong><span id="timeDisplay">0:00</span></div>
-            <div class="info-item"><strong>BT</strong><span id="btDisplay">20.0</span>°C</div>
-            <div class="info-item"><strong>ET</strong><span id="etDisplay">20.0</span>°C</div>
-            <div class="info-item"><strong>DT</strong><span id="dtDisplay">20.0</span>°C</div>
-            <div class="info-item"><strong>RoR(BT)</strong><span id="rorDisplay">0.0</span>°C/m</div>
-            <div class="info-item"><strong>Moisture</strong><span id="moistureDisplay">10.0</span>%</div>
-            <div class="info-item bean-visual-container">
-                <strong>Bean Color</strong> <div id="beanVisual"></div>
-            </div>
-        </div>
-
-        <div class="events">
-            <h2>Events Log:</h2>
-            <ul id="eventLog"><li>Simulator Idle. Set Preheat Target, Batch Size, Moisture, Density, Drum Speed.</li></ul>
-        </div>
-
-        <div class="chart-container"><canvas id="roastChart"></canvas></div>
-        <div id="roastOutcome" class="outcome"><p id="outcomeText">-</p></div>
     </div>
 
     <!-- Profile Management Modal -->
@@ -150,6 +350,25 @@
     </div>
 
     <script>
+    // Tab switching logic
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const targetTab = link.getAttribute('data-tab');
+
+            // Deactivate all tabs and content
+            tabLinks.forEach(l => l.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            // Activate clicked tab and corresponding content
+            link.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+
+    // --- Existing Simulator JavaScript ---
     document.addEventListener('DOMContentLoaded', () => {
         // DOM Elements
         const preheatBtn = document.getElementById('preheatBtn');
@@ -238,19 +457,15 @@
         });
         let chartData = getBaseChartDataStructure();
     
-        // Constants
+        // Constants (with previous adjustments for slower roast)
         const AMBIENT_TEMP = 20;
         const GAS_INERTIA_FACTOR = 0.08; 
         const AIRFLOW_INERTIA_FACTOR = 0.1;
         const DRUM_SPEED_INERTIA_FACTOR = 0.15; 
-        
-        // MODIFIED PARAMETERS TO SLOW DOWN THE ROAST
-        const DT_HEAT_FROM_GAS_FACTOR = 0.030;       // Original: 0.035 - Roaster drum heats slightly slower from gas
-        const ET_GAIN_FROM_GAS_AIR = 0.020;          // Original: 0.025 - Roaster environment heats slightly slower from gas/air
-        const BT_CONDUCTIVE_FROM_DT_BASE = 0.0035;   // Original: 0.008 - Reduced conductive heat transfer to beans
-        const BT_CONVECTIVE_FROM_ET_AIR_BASE = 0.0025; // Original: 0.006 - Reduced convective heat transfer to beans
-        // END OF MODIFIED PARAMETERS
-
+        const DT_HEAT_FROM_GAS_FACTOR = 0.030;       
+        const ET_GAIN_FROM_GAS_AIR = 0.020;          
+        const BT_CONDUCTIVE_FROM_DT_BASE = 0.0035;   
+        const BT_CONVECTIVE_FROM_ET_AIR_BASE = 0.0025; 
         const DT_INERTIA_FACTOR = 0.03;       
         const DT_COOLING_AMBIENT_FACTOR = 0.0005;
         const DT_COOLING_FROM_BEANS_FACTOR = 0.05; 
@@ -384,23 +599,35 @@
         function updateRoR() { currentRoR = parseFloat(calculateRoR()); }
 
         function initializeChart() {
-            const ctx = roastChartCanvas.getContext('2d'); if (chart) chart.destroy();
-            chartData = getBaseChartDataStructure(); 
-            chart = new Chart(ctx, { type: 'line', data: chartData, options: { 
-                responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
-                scales: { x: { title: { display: true, text: 'Time (min:sec)' } },
-                    'y-temp': { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Temperature (°C)' }, suggestedMin: 0, suggestedMax: 280 },
-                    'y-ror': { type: 'linear', display: true, position: 'right', title: { display: true, text: 'RoR (°C/min)' }, suggestedMin: -5, suggestedMax: 30, grid: { drawOnChartArea: false } }
-                }, animation: { duration: 0 }, plugins: { tooltip: { callbacks: {
-                    label: function(context) { let label = context.dataset.label || ''; if (label) label += ': ';
-                        if (context.parsed.y !== null && !isNaN(context.parsed.y)) { label += context.parsed.y.toFixed(1);
-                            if (context.dataset.yAxisID === 'y-temp') label += ' °C'; else if (context.dataset.yAxisID === 'y-ror') label += ' °C/min';
-                        } else label += '...'; return label;
-                }}}}}});
+            // Ensure chart initializes only if on the simulator tab and canvas exists
+            if (document.getElementById('simulatorTabContent').classList.contains('active') && roastChartCanvas) {
+                const ctx = roastChartCanvas.getContext('2d'); if (chart) chart.destroy();
+                chartData = getBaseChartDataStructure(); 
+                chart = new Chart(ctx, { type: 'line', data: chartData, options: { 
+                    responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                    scales: { x: { title: { display: true, text: 'Time (min:sec)' } },
+                        'y-temp': { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Temperature (°C)' }, suggestedMin: 0, suggestedMax: 280 },
+                        'y-ror': { type: 'linear', display: true, position: 'right', title: { display: true, text: 'RoR (°C/min)' }, suggestedMin: -5, suggestedMax: 30, grid: { drawOnChartArea: false } }
+                    }, animation: { duration: 0 }, plugins: { tooltip: { callbacks: {
+                        label: function(context) { let label = context.dataset.label || ''; if (label) label += ': ';
+                            if (context.parsed.y !== null && !isNaN(context.parsed.y)) { label += context.parsed.y.toFixed(1);
+                                if (context.dataset.yAxisID === 'y-temp') label += ' °C'; else if (context.dataset.yAxisID === 'y-ror') label += ' °C/min';
+                            } else label += '...'; return label;
+                    }}}}}});
+            }
         }
 
+
         function updateChart() {
-            if (!chart) return;
+            if (!chart) { // If chart isn't initialized (e.g. instructions tab was active on load), try to initialize it.
+                if (document.getElementById('simulatorTabContent').classList.contains('active') && roastChartCanvas) {
+                    initializeChart();
+                    if(!chart) return; // If still no chart, exit
+                } else {
+                    return; // Not on simulator tab or canvas not ready
+                }
+            }
+
 
             if (roastState === 'idle' && chartData.labels.length > 0 && !timerInterval) {
                  chart.update('none'); 
@@ -805,7 +1032,7 @@
                 chartData.datasets[7].hidden = !(profile.chart.ror && profile.chart.ror.length > 0);
                 logEvent(`Profile "${profile.name || 'Reference'}" loaded as overlay for current/next roast.`);
             }
-            chart.update();
+            if (chart) chart.update(); else if (document.getElementById('simulatorTabContent').classList.contains('active')) initializeChart();
         }
     
         clearReferenceBtn.addEventListener('click', () => {
@@ -814,7 +1041,7 @@
                 resetRoastEssentialsForNewRoast(); 
                 updateChart(); 
             } else {
-                chart.update();
+                if (chart) chart.update();
             }
             logEvent("Reference curve cleared.");
         });
@@ -870,9 +1097,29 @@
         initialMoistureSlider.addEventListener('input', (e) => { let nm = parseFloat(e.target.value); if(roastState === 'idle') { currentMoisturePercent = nm; } initialMoistureDisplay.textContent = `${safeToFixed(nm,1)}%`; });
         beanDensitySlider.addEventListener('input', (e) => { let nd = parseFloat(e.target.value); if (roastState === 'idle') { currentBeanDensity = nd; } beanDensityDisplay.textContent = `${safeToFixed(nd, 2)} g/mL`; });
         
-        // Initial setup
-        resetRoast(); 
-    });
+        // Initial setup - ensure chart is initialized if simulator tab is active
+        if (document.getElementById('simulatorTabContent').classList.contains('active')) {
+            resetRoast(); 
+        } else {
+            // If instructions tab is active by default, still set up basics but chart init will wait
+            // Call only parts of resetRoast that don't depend on UI elements in the sim tab being fully ready for chart.
+            // Or, simply ensure resetRoast() is called, and initializeChart has guards.
+            stopSimulationTimer(); roastState = 'idle'; currentTime = 0;
+            currentBT = AMBIENT_TEMP; currentET = AMBIENT_TEMP; currentDT = AMBIENT_TEMP;
+            initialMoistureSlider.value = 10; currentMoisturePercent = parseFloat(initialMoistureSlider.value);
+            // ... other non-UI critical resets if needed
+            updateUIDisplays(); // Update displays that are visible
+        }
+        // Ensure chart is created when switching to simulator tab if not already
+        document.querySelector('.tab-link[data-tab="simulatorTabContent"]').addEventListener('click', () => {
+            if (!chart && roastChartCanvas) {
+                initializeChart();
+                //Potentially update chart with any existing data if needed after init
+                if(chart && chartData.labels.length > 0) chart.update(); 
+            }
+        });
+
+    }); // End of DOMContentLoaded for simulator
     </script>
 </body>
 </html>
