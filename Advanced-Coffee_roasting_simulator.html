@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holistic Roasters'Coffee Roaster Sim</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-color: #e8e8e8;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fdfdfd;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 950px; /* Wider for more controls */
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .main-controls, .roast-parameters, .roast-info, .events, .outcome, .preheat-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .main-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .main-controls button {
+            padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 1.05em; transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .main-controls button:active { transform: translateY(1px); }
+
+        #preheatBtn { background-color: #3498db; color: white; }
+        #chargeBtn { background-color: #f39c12; color: white; }
+        #dropBtn { background-color: #e74c3c; color: white; }
+        #resetBtn { background-color: #95a5a6; color: white; }
+
+        .main-controls button:disabled { background-color: #bdc3c7; cursor: not-allowed; box-shadow: none; }
+        
+        .preheat-section { display: flex; gap: 15px; align-items: center; }
+        .preheat-section label { font-weight: bold; }
+        .preheat-section input[type="number"] { padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 80px; }
+
+        .roast-parameters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjusted for more params, possibly needing slightly less minwidth */
+            gap: 15px; 
+        }
+
+        .param-control { display: flex; flex-direction: column; }
+        .param-control label { margin-bottom: 8px; font-weight: bold; color: #555; }
+        .param-control input[type="range"], .param-control select {
+            width: 100%; margin-bottom: 5px; padding: 8px;
+            border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;
+        }
+        .param-control span { font-size: 0.9em; color: #34495e; align-self: flex-end; }
+
+        .roast-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+            gap: 8px; 
+            background-color: #ecf0f1;
+        }
+
+        .info-item {
+            font-size: 0.9em; 
+            padding: 7px; background-color: #fff; border-radius: 5px;
+            border: 1px solid #dcdcdc; text-align: center;
+        }
+        .info-item strong { display: block; margin-bottom: 3px; color: #2980b9; }
+
+        .bean-visual-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #beanVisual {
+            width: 25px; height: 25px; border: 1px solid #ccc; border-radius: 50%;
+            margin-top: 4px; background-color: #90EE90; transition: background-color 0.5s ease;
+        }
+
+        .events ul { list-style-type: none; padding: 0; max-height: 120px; overflow-y: auto;
+            border: 1px solid #ddd; padding: 10px; border-radius: 5px; background-color: #fff; }
+        .events ul li { padding: 5px 0; border-bottom: 1px dashed #eee; font-size: 0.9em; } 
+        .events ul li:last-child { border-bottom: none; }
+
+        .chart-container { width: 100%; height: 400px; margin-bottom: 20px; }
+        .outcome { background-color: #e7f3fe; border-left: 6px solid #2196F3; padding: 15px; border-radius: 5px; }
+        .outcome p { margin: 0; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Coffee Roaster Simulator v3.1</h1>
+
+        <div class="main-controls">
+            <button id="preheatBtn">Preheat</button>
+            <button id="chargeBtn" disabled>Charge Beans</button> 
+            <button id="dropBtn" disabled>Drop Beans</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+        
+        <div class="preheat-section">
+            <label for="targetChargeTempDT">Target Charge DT (°C):</label>
+            <input type="number" id="targetChargeTempDT" value="190" step="5">
+            <span id="preheatStatus">Status: Idle</span>
+        </div>
+
+        <div class="roast-parameters">
+            <div class="param-control">
+                <label for="batchSizeSelect">Batch Size:</label>
+                <select id="batchSizeSelect">
+                    <option value="10">10 kg</option>
+                    <option value="15" selected>15 kg</option>
+                    <option value="20">20 kg</option>
+                    <option value="25">25 kg</option>
+                </select>
+                <span id="batchSizeDisplay">15 kg</span>
+            </div>
+            <div class="param-control">
+                <label for="initialMoisture">Initial Moisture (%):</label>
+                <input type="range" id="initialMoisture" min="8" max="12" value="10" step="0.5">
+                <span id="initialMoistureDisplay">10.0 %</span>
+            </div>
+            <div class="param-control"> <!-- NEW BEAN DENSITY SLIDER -->
+                <label for="beanDensitySlider">Bean Density (g/mL):</label>
+                <input type="range" id="beanDensitySlider" min="1.10" max="1.25" value="1.18" step="0.01">
+                <span id="beanDensityDisplay">1.18 g/mL</span>
+            </div>
+            <div class="param-control">
+                <label for="gasSlider">Gas Power (%):</label>
+                <input type="range" id="gasSlider" min="0" max="100" value="70" step="1">
+                <span id="gasValueDisplay">70 %</span>
+            </div>
+            <div class="param-control">
+                <label for="airflowSlider">Airflow Damper (%):</label>
+                <input type="range" id="airflowSlider" min="0" max="100" value="20" step="1">
+                <span id="airflowValueDisplay">20 %</span>
+            </div>
+            <div class="param-control">
+                <label for="drumSpeedSlider">Drum Speed (RPM):</label>
+                <input type="range" id="drumSpeedSlider" min="30" max="60" value="45" step="1">
+                <span id="drumSpeedDisplay">45 RPM</span>
+            </div>
+        </div>
+
+        <div class="roast-info">
+            <div class="info-item"><strong>Time</strong><span id="timeDisplay">0:00</span></div>
+            <div class="info-item"><strong>BT</strong><span id="btDisplay">20.0</span>°C</div>
+            <div class="info-item"><strong>ET</strong><span id="etDisplay">20.0</span>°C</div>
+            <div class="info-item"><strong>DT</strong><span id="dtDisplay">20.0</span>°C</div>
+            <div class="info-item"><strong>RoR(BT)</strong><span id="rorDisplay">0.0</span>°C/m</div>
+            <div class="info-item"><strong>Moisture</strong><span id="moistureDisplay">10.0</span>%</div>
+            <div class="info-item bean-visual-container">
+                <strong>Bean Color</strong> <div id="beanVisual"></div>
+            </div>
+        </div>
+
+        <div class="events">
+            <h2>Events Log:</h2>
+            <ul id="eventLog"><li>Simulator Idle. Set Preheat Target, Batch Size, Moisture, Density, Drum Speed.</li></ul>
+        </div>
+
+        <div class="chart-container"><canvas id="roastChart"></canvas></div>
+        <div id="roastOutcome" class="outcome"><h2>Roast Outcome:</h2><p id="outcomeText">-</p></div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // DOM Elements
+        const preheatBtn = document.getElementById('preheatBtn');
+        const chargeBtn = document.getElementById('chargeBtn');
+        const dropBtn = document.getElementById('dropBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const targetChargeTempDTInput = document.getElementById('targetChargeTempDT');
+        const preheatStatusDisplay = document.getElementById('preheatStatus');
+        const batchSizeSelect = document.getElementById('batchSizeSelect');
+        const batchSizeDisplay = document.getElementById('batchSizeDisplay');
+        const initialMoistureSlider = document.getElementById('initialMoisture');
+        const initialMoistureDisplay = document.getElementById('initialMoistureDisplay');
+        const beanDensitySlider = document.getElementById('beanDensitySlider'); 
+        const beanDensityDisplay = document.getElementById('beanDensityDisplay'); 
+        const gasSlider = document.getElementById('gasSlider');
+        const gasValueDisplay = document.getElementById('gasValueDisplay');
+        const airflowSlider = document.getElementById('airflowSlider');
+        const airflowValueDisplay = document.getElementById('airflowValueDisplay');
+        const drumSpeedSlider = document.getElementById('drumSpeedSlider'); 
+        const drumSpeedDisplay = document.getElementById('drumSpeedDisplay'); 
+        const timeDisplay = document.getElementById('timeDisplay');
+        const btDisplay = document.getElementById('btDisplay');
+        const etDisplay = document.getElementById('etDisplay');
+        const dtDisplay = document.getElementById('dtDisplay');
+        const rorDisplay = document.getElementById('rorDisplay');
+        const moistureDisplay = document.getElementById('moistureDisplay');
+        const beanVisual = document.getElementById('beanVisual');
+        const eventLog = document.getElementById('eventLog');
+        const outcomeText = document.getElementById('outcomeText');
+        const roastChartCanvas = document.getElementById('roastChart');
+
+        let audioCtx = null;
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.warn("Web Audio API is not supported in this browser.");
+        }
+
+        function playSound(type = 'firstCrack') { 
+            if (!audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); 
+            if (type === 'firstCrack') {
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(300, audioCtx.currentTime); 
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3); 
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'secondCrack') {
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(450, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.2); 
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            }
+        }
+
+        // Roast State
+        let timerInterval = null, currentTime = 0, roastPhaseTimer = 0;
+        let currentBT = 20, currentET = 20, currentDT = 20, currentRoR = 0;
+        let currentMoisturePercent = parseFloat(initialMoistureSlider.value);
+        let currentBeanDensity = parseFloat(beanDensitySlider.value); 
+        let targetGasSetting = parseInt(gasSlider.value), effectiveGas = 0; 
+        let targetAirflowSetting = parseInt(airflowSlider.value), effectiveAirflow = 0; 
+        let targetDrumSpeed = parseInt(drumSpeedSlider.value), effectiveDrumSpeed = 30; 
+        let batchSize = parseFloat(batchSizeSelect.value);
+        let targetChargeTempDT = parseFloat(targetChargeTempDTInput.value);
+        let roastState = 'idle'; 
+        let firstCrackTime = null, firstCrackTemp = null, firstCrackLogged = false;
+        let secondCrackTime = null, secondCrackTemp = null, secondCrackLogged = false;
+        let inFCExothermicPhase = false, fcExothermicTimer = 0;
+
+        // Chart Data
+        let chart;
+        let tempDataPointsBT = [];
+        const MAX_TEMP_DATA_POINTS_FOR_ROR = 180; 
+
+        let chartData = {
+            labels: [],
+            datasets: [
+                { label: 'BT (°C)', data: [], borderColor: 'rgb(220, 53, 69)', yAxisID: 'y-temp', tension: 0.2, fill: false, pointRadius: 1 },
+                { label: 'ET (°C)', data: [], borderColor: 'rgb(0, 123, 255)', yAxisID: 'y-temp', tension: 0.2, fill: false, pointRadius: 1 },
+                { label: 'DT (°C)', data: [], borderColor: 'rgb(255, 193, 7)', yAxisID: 'y-temp', tension: 0.2, fill: false, pointRadius: 1 },
+                { label: 'RoR (°C/min)', data: [], borderColor: 'rgb(40, 167, 69)', yAxisID: 'y-ror', tension: 0.2, fill: false, borderDash: [5, 5], pointRadius: 1 }
+            ]
+        };
+        
+        // Simulation Constants
+        const AMBIENT_TEMP = 20;
+        const GAS_INERTIA_FACTOR = 0.08; 
+        const AIRFLOW_INERTIA_FACTOR = 0.1;
+        const DRUM_SPEED_INERTIA_FACTOR = 0.15; 
+        const DT_HEAT_FROM_GAS_FACTOR = 0.035; 
+        const DT_INERTIA_FACTOR = 0.03;       
+        const DT_COOLING_AMBIENT_FACTOR = 0.0005;
+        const DT_COOLING_FROM_BEANS_FACTOR = 0.05; 
+        const PREHEAT_ET_FROM_DT_FACTOR = 0.8; 
+        const PREHEAT_ET_AIRFLOW_EFFECT = 0.05; 
+        const BT_INITIAL_ABSORB_FROM_DT_FACTOR = 0.6; 
+        const ET_DROP_ON_CHARGE_FACTOR = 0.5;  
+        const MOISTURE_EVAPORATION_BT_FACTOR = 0.0002;    
+        const MOISTURE_EVAPORATION_AIRFLOW_FACTOR = 0.0003; 
+        const MOISTURE_MIN_PERCENT = 1.0;
+        const DRYING_ENDOTHERMIC_STRENGTH = 0.05;     
+        const DRYING_PHASE_MOISTURE_THRESHOLD = 4.0; 
+        const BT_CONDUCTIVE_FROM_DT_BASE = 0.008;     
+        const BT_CONVECTIVE_FROM_ET_AIR_BASE = 0.006; 
+        const BT_THERMAL_MASS_PENALTY_PER_KG = 0.00003; 
+        const ET_GAIN_FROM_GAS_AIR = 0.025;       
+        const ET_INFLUENCE_FROM_DT = 0.01;        
+        const ET_INFLUENCE_FROM_BT_EXCHANGE = 0.005; 
+        const ET_AIRFLOW_COOLING_NO_GAS = 0.006;  
+        const ET_NATURAL_COOLING_FACTOR = 0.0015;
+        const FC_ENDOTHERMIC_DIP_TEMP_RANGE = 4; 
+        const FC_ENDOTHERMIC_DIP_STRENGTH = 0.10; 
+        const FC_EXOTHERMIC_BOOST_STRENGTH = 0.001; 
+        const FC_EXOTHERMIC_DURATION = 25; 
+        const OPTIMAL_DRUM_SPEED_RPM = 48;
+        const DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE = 0.15; 
+        const DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE = 0.20; 
+
+        const BASE_BEAN_DENSITY = 1.18; 
+        const DENSITY_TP_BT_MODIFIER = 0.3; 
+        const DENSITY_CONDUCTIVE_MULTIPLIER = 0.8; 
+        const DENSITY_INERTIA_MULTIPLIER = 0.4; 
+        const DENSITY_FC_TEMP_SHIFT_PER_0_01GDL = 0.15; 
+
+        function formatTime(seconds) { return `${Math.floor(seconds/60)}:${(Math.floor(seconds%60)+'').padStart(2,'0')}`; }
+        function safeToFixed(value, digits = 1) { return (typeof value === 'number' && !isNaN(value)) ? value.toFixed(digits) : "NaN"; }
+
+        function updateUIDisplays() {
+            timeDisplay.textContent = formatTime(roastState === 'preheating' ? currentTime : roastPhaseTimer);
+            btDisplay.textContent = safeToFixed(currentBT);
+            etDisplay.textContent = safeToFixed(currentET);
+            dtDisplay.textContent = safeToFixed(currentDT);
+            rorDisplay.textContent = safeToFixed(currentRoR);
+            moistureDisplay.textContent = safeToFixed(currentMoisturePercent);
+            gasValueDisplay.textContent = `${targetGasSetting}% (Eff: ${safeToFixed(effectiveGas,0)})`;
+            airflowValueDisplay.textContent = `${targetAirflowSetting}% (Eff: ${safeToFixed(effectiveAirflow,0)})`;
+            drumSpeedDisplay.textContent = `${targetDrumSpeed}RPM (Eff: ${safeToFixed(effectiveDrumSpeed,0)})`;
+            batchSizeDisplay.textContent = `${batchSize} kg`;
+            initialMoistureDisplay.textContent = `${safeToFixed(parseFloat(initialMoistureSlider.value),1)}%`;
+            beanDensityDisplay.textContent = `${safeToFixed(parseFloat(beanDensitySlider.value), 2)} g/mL`; 
+            targetChargeTempDTInput.value = safeToFixed(targetChargeTempDT,0);
+            updateBeanVisual();
+        }
+
+        function updateBeanVisual() { 
+            let color = '#D2B48C'; 
+            if (currentBT <= AMBIENT_TEMP + 5 && currentMoisturePercent > 8) color = '#90EE90';
+            else if (currentBT >= 235) color = '#2F1700'; else if (currentBT >= 225) color = '#4A2500'; 
+            else if (currentBT >= 215) color = '#65360F'; else if (currentBT >= 205) color = '#80451E'; 
+            else if (currentBT >= 195) color = '#A05A2C'; else if (currentBT >= 180) color = '#C19A6B'; 
+            else if (currentBT >= 150 || currentMoisturePercent < 5) color = '#F5DEB3';
+            beanVisual.style.backgroundColor = color;
+        }
+        function logEvent(message, isCritical = false) { 
+            const li = document.createElement('li');
+            const timeMarker = roastState === 'preheating' ? `PHeat [${formatTime(currentTime)}]` : `Roast [${formatTime(roastPhaseTimer)}]`;
+            li.textContent = `${timeMarker} ${message}`;
+            if (isCritical) li.style.fontWeight = 'bold';
+            if (eventLog.firstChild && eventLog.firstChild.textContent.includes("Simulator Idle")) eventLog.removeChild(eventLog.firstChild);
+            eventLog.insertBefore(li, eventLog.firstChild);
+        }
+
+        function calculateRoR() { 
+            const windowSeconds = 30; if (tempDataPointsBT.length < 2) return 0;
+            const relevantData = tempDataPointsBT.filter(dp => roastPhaseTimer - dp.time <= windowSeconds && dp.time <= roastPhaseTimer);
+            if (relevantData.length < 2) {
+                if (tempDataPointsBT.length >=2) {
+                    const firstPoint = tempDataPointsBT[0], lastPoint = tempDataPointsBT[tempDataPointsBT.length -1];
+                    if (isNaN(firstPoint.temp) || isNaN(lastPoint.temp)) return 0; 
+                    const tempChange = lastPoint.temp - firstPoint.temp, timeChange = (lastPoint.time - firstPoint.time) / 60; 
+                    return timeChange > 0 ? (tempChange / timeChange) : 0;
+                } return 0;
+            }
+            const firstPointInWindow = relevantData[0], lastPointInWindow = relevantData[relevantData.length - 1];
+            if (isNaN(firstPointInWindow.temp) || isNaN(lastPointInWindow.temp)) return 0; 
+            const tempChange = lastPointInWindow.temp - firstPointInWindow.temp, timeChangeInMinutes = (lastPointInWindow.time - firstPointInWindow.time) / 60;
+            return timeChangeInMinutes > 0 ? (tempChange / timeChangeInMinutes) : 0;
+        }
+        function updateRoR() { currentRoR = parseFloat(calculateRoR()); }
+
+        function initializeChart() { 
+            const ctx = roastChartCanvas.getContext('2d'); if (chart) chart.destroy();
+            chart = new Chart(ctx, { type: 'line', data: chartData, options: { 
+                responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                scales: { x: { title: { display: true, text: 'Time (min:sec)' } },
+                    'y-temp': { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Temperature (°C)' }, suggestedMin: 0, suggestedMax: 280 },
+                    'y-ror': { type: 'linear', display: true, position: 'right', title: { display: true, text: 'RoR (°C/min)' }, suggestedMin: -5, suggestedMax: 30, grid: { drawOnChartArea: false } }
+                }, animation: { duration: 0 }, plugins: { tooltip: { callbacks: {
+                    label: function(context) { let label = context.dataset.label || ''; if (label) label += ': ';
+                        if (context.parsed.y !== null && !isNaN(context.parsed.y)) { label += context.parsed.y.toFixed(1);
+                            if (context.dataset.yAxisID === 'y-temp') label += ' °C'; else if (context.dataset.yAxisID === 'y-ror') label += ' °C/min';
+                        } else label += '...'; return label;
+                }}}}}});
+        }
+        function updateChart() { 
+            if (!chart) return;
+            const currentChartTime = formatTime(roastState === 'preheating' ? currentTime : roastPhaseTimer);
+            chartData.labels.push(currentChartTime);
+            chartData.datasets[0].data.push(isNaN(currentBT) ? null : parseFloat(currentBT.toFixed(1))); 
+            chartData.datasets[1].data.push(isNaN(currentET) ? null : parseFloat(currentET.toFixed(1)));
+            chartData.datasets[2].data.push(isNaN(currentDT) ? null : parseFloat(currentDT.toFixed(1))); 
+            chartData.datasets[3].data.push(roastState === 'charged' && !isNaN(currentRoR) ? parseFloat(currentRoR.toFixed(1)) : null);
+            
+            const maxDataPointsOnChart = 900; 
+            if (chartData.labels.length > maxDataPointsOnChart) { chartData.labels.shift(); chartData.datasets.forEach(dataset => dataset.data.shift()); }
+            
+            chart.update('none'); 
+        }
+
+        function simulationTick() {
+            try { 
+                currentTime++;
+                effectiveGas += (targetGasSetting - effectiveGas) * GAS_INERTIA_FACTOR;
+                effectiveAirflow += (targetAirflowSetting - effectiveAirflow) * AIRFLOW_INERTIA_FACTOR;
+                effectiveDrumSpeed += (targetDrumSpeed - effectiveDrumSpeed) * DRUM_SPEED_INERTIA_FACTOR; 
+                effectiveGas = Math.max(0, Math.min(100, effectiveGas));
+                effectiveAirflow = Math.max(0, Math.min(100, effectiveAirflow));
+                effectiveDrumSpeed = Math.max(30, Math.min(60, effectiveDrumSpeed)); 
+                
+                let dtTarget = AMBIENT_TEMP + (effectiveGas * DT_HEAT_FROM_GAS_FACTOR * 100); 
+                currentDT += (dtTarget - currentDT) * DT_INERTIA_FACTOR;
+                currentDT -= (currentDT - AMBIENT_TEMP) * DT_COOLING_AMBIENT_FACTOR;
+                currentDT = Math.max(AMBIENT_TEMP, currentDT);
+
+                if (roastState === 'preheating') { 
+                    roastPhaseTimer = 0; 
+                    let targetETForPreheat = currentDT * PREHEAT_ET_FROM_DT_FACTOR + (effectiveAirflow - 50) * PREHEAT_ET_AIRFLOW_EFFECT;
+                    currentET += (targetETForPreheat - currentET) * 0.1; 
+                    currentET = Math.max(AMBIENT_TEMP, Math.min(currentET, currentDT + 20)); 
+                    currentBT = AMBIENT_TEMP; 
+                    
+                    if (currentDT >= targetChargeTempDT && !isNaN(targetChargeTempDT)) {
+                        if (!preheatStatusDisplay.textContent.includes("Ready to Charge")) { // Log only once when target is first met
+                             logEvent(`Preheat target ${targetChargeTempDT}°C reached. Ready to charge.`);
+                        }
+                        preheatStatusDisplay.textContent = `Target Reached. Ready to Charge. DT: ${safeToFixed(currentDT)}°C`;
+                    } else {
+                        preheatStatusDisplay.textContent = `PHeat... DT: ${safeToFixed(currentDT)} ET: ${safeToFixed(currentET)}`;
+                    }
+
+                } else if (roastState === 'charged') {
+                    roastPhaseTimer++;
+                    if (currentMoisturePercent > MOISTURE_MIN_PERCENT && !isNaN(currentMoisturePercent)) { 
+                        let moistureLoss = 0;
+                        if (currentBT > AMBIENT_TEMP + 10) {
+                            moistureLoss += (currentBT - (AMBIENT_TEMP + 10)) * MOISTURE_EVAPORATION_BT_FACTOR;
+                            moistureLoss += (effectiveAirflow / 100) * MOISTURE_EVAPORATION_AIRFLOW_FACTOR;
+                        }
+                        if(!isNaN(moistureLoss)) currentMoisturePercent -= moistureLoss;
+                        currentMoisturePercent = Math.max(MOISTURE_MIN_PERCENT, currentMoisturePercent);
+                    }
+
+                    let drumSpeedDiff = Math.abs(effectiveDrumSpeed - OPTIMAL_DRUM_SPEED_RPM);
+                    let conductiveEfficiency = 1.0 - (drumSpeedDiff / (OPTIMAL_DRUM_SPEED_RPM - 30)) * DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE; 
+                    let convectiveEfficiency = 1.0 - (drumSpeedDiff / (OPTIMAL_DRUM_SPEED_RPM - 30)) * DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE;
+                    conductiveEfficiency = Math.max(1.0 - DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE, Math.min(1.0, conductiveEfficiency)); 
+                    convectiveEfficiency = Math.max(1.0 - DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE, Math.min(1.0, convectiveEfficiency)); 
+                    
+                    const densityDiff = currentBeanDensity - BASE_BEAN_DENSITY;
+                    const densityConductiveFactor = 1.0 + (densityDiff * DENSITY_CONDUCTIVE_MULTIPLIER);
+                    let btConductiveGain = (currentDT - currentBT) * BT_CONDUCTIVE_FROM_DT_BASE * conductiveEfficiency * densityConductiveFactor; 
+                    
+                    let airflowBoostFactor = 0.5 + (effectiveAirflow / 100) * 1.5; 
+                    let btConvectiveGain = (currentET - currentBT) * BT_CONVECTIVE_FROM_ET_AIR_BASE * airflowBoostFactor * convectiveEfficiency; 
+                    btConvectiveGain = Math.max(0, btConvectiveGain); 
+                    
+                    let endothermicDryingEffect = 0;
+                    if (currentMoisturePercent > DRYING_PHASE_MOISTURE_THRESHOLD && !isNaN(currentMoisturePercent) && !isNaN(parseFloat(initialMoistureSlider.value)) && parseFloat(initialMoistureSlider.value) !== 0) {
+                        endothermicDryingEffect = (btConductiveGain + btConvectiveGain) * DRYING_ENDOTHERMIC_STRENGTH * (currentMoisturePercent / parseFloat(initialMoistureSlider.value));
+                    }
+
+                    const fcTargetTemp = 195 + ((densityDiff) / 0.01) * DENSITY_FC_TEMP_SHIFT_PER_0_01GDL;
+
+                    let fcEndothermicDipFactor = 1.0;
+                    if (!firstCrackTime && currentBT > (fcTargetTemp - FC_ENDOTHERMIC_DIP_TEMP_RANGE) && currentBT < fcTargetTemp) {
+                        fcEndothermicDipFactor = 1.0 - FC_ENDOTHERMIC_DIP_STRENGTH;
+                    }
+                    
+                    let fcExothermicBoost = 0;
+                    if (inFCExothermicPhase) { fcExothermicBoost = FC_EXOTHERMIC_BOOST_STRENGTH; fcExothermicTimer++;
+                        if (fcExothermicTimer > FC_EXOTHERMIC_DURATION) { inFCExothermicPhase = false; fcExothermicTimer = 0; }
+                    }
+                    
+                    let thermalMassFactor = 1 - (batchSize / 50) * BT_THERMAL_MASS_PENALTY_PER_KG * (currentDT);
+                    thermalMassFactor = Math.max(0.2, thermalMassFactor); 
+                    
+                    let deltaBT = ((btConductiveGain + btConvectiveGain) * fcEndothermicDipFactor - endothermicDryingEffect + fcExothermicBoost) * thermalMassFactor;
+                    
+                    const densityInertiaFactor = 1.0 - (densityDiff * DENSITY_INERTIA_MULTIPLIER); 
+                    if (!isNaN(deltaBT)) deltaBT *= densityInertiaFactor;
+
+                    if (isNaN(deltaBT)) { console.error(`deltaBT is NaN. BT: ${currentBT}, CondGain: ${btConductiveGain}, ConvGain: ${btConvectiveGain}, DryingEff: ${endothermicDryingEffect}, ExoBoost: ${fcExothermicBoost}, DensityInertia: ${densityInertiaFactor}`); logEvent(`SIM WARN: deltaBT NaN.`, true);
+                    } else currentBT += deltaBT;
+                    currentBT = Math.max(AMBIENT_TEMP - 10, currentBT); 
+                    
+                    tempDataPointsBT.push({ time: roastPhaseTimer, temp: currentBT });
+                    if (tempDataPointsBT.length > MAX_TEMP_DATA_POINTS_FOR_ROR) tempDataPointsBT.shift();
+                    updateRoR();
+                    
+                    let etGasAirFactor = (effectiveGas / 100) * (0.5 + effectiveAirflow / 200); 
+                    let targetET = AMBIENT_TEMP + (effectiveGas * ET_GAIN_FROM_GAS_AIR * 50); 
+                    targetET += (currentDT - targetET) * ET_INFLUENCE_FROM_DT; 
+                    targetET += (currentBT - targetET) * ET_INFLUENCE_FROM_BT_EXCHANGE; 
+                    if (effectiveGas < 15 && effectiveAirflow > 30) targetET -= (currentET - AMBIENT_TEMP) * (effectiveAirflow / 100) * ET_AIRFLOW_COOLING_NO_GAS;
+                    currentET += (targetET - currentET) * 0.15; 
+                    currentET -= (currentET - AMBIENT_TEMP) * ET_NATURAL_COOLING_FACTOR;
+                    currentET = Math.max(AMBIENT_TEMP, Math.min(currentET, currentDT + 50)); 
+                    
+                    if (currentBT >= fcTargetTemp && !firstCrackTime) { 
+                        firstCrackTime = roastPhaseTimer; firstCrackTemp = currentBT; 
+                        logEvent(`First Crack @ BT ${safeToFixed(currentBT)}°C (Target: ${safeToFixed(fcTargetTemp,1)}°C, Density: ${safeToFixed(currentBeanDensity,2)} g/mL, Moisture: ${safeToFixed(currentMoisturePercent)}%)`, true); 
+                        if (!firstCrackLogged) { playSound('firstCrack'); firstCrackLogged = true; } 
+                        inFCExothermicPhase = true; fcExothermicTimer = 0; 
+                    }
+                    if (currentBT >= 220 && firstCrackTime && !secondCrackTime) { secondCrackTime = roastPhaseTimer; secondCrackTemp = currentBT; logEvent(`Second Crack @ BT ${safeToFixed(currentBT)}°C`, true); if (!secondCrackLogged) { playSound('secondCrack'); secondCrackLogged = true; } }
+                    if (currentBT >= 255 && roastState === 'charged') { logEvent(`DANGER! High BT. Auto-drop @ ${safeToFixed(currentBT)}°C`, true); dropBeans(); }
+                }
+                updateUIDisplays(); 
+                updateChart();
+            } catch (error) { 
+                console.error("Error in simulationTick:", error, error.stack); 
+                logEvent(`SIMULATION ERROR: ${error.message}. Sim Halted.`, true); 
+                stopSimulationTimer(); 
+                preheatStatusDisplay.textContent = "ERROR! Sim Halted."; 
+            }
+        }
+        
+        function startSimulationTimer() { 
+            if (!timerInterval) timerInterval = setInterval(simulationTick, 1000); 
+        }
+        function stopSimulationTimer() { 
+            clearInterval(timerInterval); 
+            timerInterval = null; 
+        }
+
+        function handlePreheat() { 
+            if (roastState !== 'idle') return;
+            targetChargeTempDT = parseFloat(targetChargeTempDTInput.value);
+            if (isNaN(targetChargeTempDT) || targetChargeTempDT < AMBIENT_TEMP || targetChargeTempDT > 300) {
+                alert(`Invalid Target Charge DT. Please enter a sensible temperature.`);
+                targetChargeTempDTInput.value = "190"; targetChargeTempDT = 190; return;
+            }
+            roastState = 'preheating'; currentTime = 0; roastPhaseTimer = 0;
+            currentDT = AMBIENT_TEMP; currentET = AMBIENT_TEMP; currentBT = AMBIENT_TEMP;
+            
+            currentMoisturePercent = parseFloat(initialMoistureSlider.value); 
+            currentBeanDensity = parseFloat(beanDensitySlider.value); 
+            batchSize = parseFloat(batchSizeSelect.value);
+            effectiveDrumSpeed = parseInt(drumSpeedSlider.value);
+
+            logEvent(`Preheating. Target DT: ${targetChargeTempDT}°C. Batch: ${batchSize}kg. Moisture: ${safeToFixed(currentMoisturePercent)}%. Density: ${safeToFixed(currentBeanDensity,2)} g/mL. Drum: ${effectiveDrumSpeed}RPM.`);
+            preheatStatusDisplay.textContent = `PHeat... DT: ${safeToFixed(currentDT)}`;
+            
+            targetChargeTempDTInput.disabled = true; batchSizeSelect.disabled = true; 
+            initialMoistureSlider.disabled = true; beanDensitySlider.disabled = true; 
+            drumSpeedSlider.disabled = true; 
+            
+            preheatBtn.disabled = true; 
+            chargeBtn.disabled = false; 
+            resetBtn.disabled = false;
+            startSimulationTimer();
+        }
+
+        function handleChargeBeans() { 
+            if (roastState !== 'preheating' && roastState !== 'idle') {
+                console.warn("Charge button clicked in an invalid state:", roastState);
+                return;
+            }
+
+            if (roastState === 'idle') {
+                if (!confirm("Preheat not initiated. Are you sure you want to charge beans now? This will use current ambient temperatures as a starting point for the drum.")) {
+                    return;
+                }
+                currentMoisturePercent = parseFloat(initialMoistureSlider.value);
+                currentBeanDensity = parseFloat(beanDensitySlider.value);
+                batchSize = parseFloat(batchSizeSelect.value);
+                effectiveDrumSpeed = parseInt(drumSpeedSlider.value); 
+            }
+            
+            roastState = 'charged'; 
+            roastPhaseTimer = 0;
+
+            const dtBeforeCharge = currentDT;
+            currentDT -= (dtBeforeCharge - AMBIENT_TEMP) * (batchSize / 50) * DT_COOLING_FROM_BEANS_FACTOR; 
+            currentET = AMBIENT_TEMP + (currentET - AMBIENT_TEMP) * (1 - ET_DROP_ON_CHARGE_FACTOR); 
+            
+            const densityDiff = currentBeanDensity - BASE_BEAN_DENSITY;
+            const densityTpModifier = 1.0 + (densityDiff * DENSITY_TP_BT_MODIFIER);
+            currentBT = AMBIENT_TEMP + (dtBeforeCharge - AMBIENT_TEMP) * BT_INITIAL_ABSORB_FROM_DT_FACTOR * (1 - batchSize/100) * densityTpModifier;
+            currentBT = Math.max(AMBIENT_TEMP / 1.5, currentBT); 
+
+            logEvent(`Beans Charged! DT: ${safeToFixed(currentDT)}, ET: ${safeToFixed(currentET)}, BT: ${safeToFixed(currentBT)} (TP). Moisture: ${safeToFixed(currentMoisturePercent)}%, Density: ${safeToFixed(currentBeanDensity,2)} g/mL`, true);
+            preheatStatusDisplay.textContent = 'Beans Charged';
+            
+            firstCrackTime = null; secondCrackTime = null; firstCrackLogged = false; secondCrackLogged = false;
+            inFCExothermicPhase = false; fcExothermicTimer = 0;
+            tempDataPointsBT = [{ time: roastPhaseTimer, temp: currentBT }]; 
+            updateRoR(); 
+            
+            preheatBtn.disabled = true; 
+            chargeBtn.disabled = true; 
+            dropBtn.disabled = false;
+
+            targetChargeTempDTInput.disabled = true; 
+            batchSizeSelect.disabled = true; 
+            initialMoistureSlider.disabled = true; 
+            beanDensitySlider.disabled = true; 
+            
+            gasSlider.disabled = false; 
+            airflowSlider.disabled = false; 
+            drumSpeedSlider.disabled = false;
+
+            updateUIDisplays(); 
+            updateChart();    
+            startSimulationTimer(); 
+        }
+
+        function dropBeans() { 
+            if (roastState !== 'charged') return; stopSimulationTimer(); roastState = 'dropped';
+            let dtrPercent = 0;
+            if (firstCrackTime && roastPhaseTimer > firstCrackTime && roastPhaseTimer > 0) {
+                const developmentTime = roastPhaseTimer - firstCrackTime;
+                dtrPercent = (developmentTime / roastPhaseTimer) * 100;
+            }
+            logEvent(`Beans dropped @ BT ${safeToFixed(currentBT)}°C. Roast Time: ${formatTime(roastPhaseTimer)}. DTR: ${safeToFixed(dtrPercent)}%`, true);
+            let outcome = `Drop: ${safeToFixed(currentBT)}°C @ ${formatTime(roastPhaseTimer)}. DTR: ${safeToFixed(dtrPercent)}%. Moisture: ${safeToFixed(currentMoisturePercent)}%. Density: ${safeToFixed(currentBeanDensity,2)} g/mL. `;
+            if (currentBT < 185) outcome += "Underdeveloped.";
+            else if (currentBT < 198) outcome += `Cinnamon/Light. (DTR ${dtrPercent < 15 ? "low" : dtrPercent > 22 ? "high" : "ok"})`;
+            else if (currentBT < 210) outcome += `City/Medium-Light. (DTR ${dtrPercent < 16 ? "low" : dtrPercent > 24 ? "high" : "ok"})`;
+            else if (currentBT < 220) outcome += `Full City/Medium.`; else if (currentBT < 228) outcome += `Vienna/Medium-Dark.`;
+            else if (currentBT < 235) outcome += `French/Dark.`; else outcome += "Likely Burnt!";
+            outcomeText.innerHTML = outcome; logEvent(outcome);
+            
+            dropBtn.disabled = true; 
+            gasSlider.disabled = true; 
+            airflowSlider.disabled = true; 
+            drumSpeedSlider.disabled = true;
+        }
+
+        function resetRoast() { 
+            stopSimulationTimer(); roastState = 'idle'; currentTime = 0; roastPhaseTimer = 0;
+            currentBT = AMBIENT_TEMP; currentET = AMBIENT_TEMP; currentDT = AMBIENT_TEMP; currentRoR = 0; 
+            
+            initialMoistureSlider.value = 10; 
+            currentMoisturePercent = parseFloat(initialMoistureSlider.value);
+            beanDensitySlider.value = "1.18"; 
+            currentBeanDensity = parseFloat(beanDensitySlider.value); 
+
+            targetGasSetting = 70; gasSlider.value = targetGasSetting; effectiveGas = 0; 
+            targetAirflowSetting = 20; airflowSlider.value = targetAirflowSetting; effectiveAirflow = 0;
+            targetDrumSpeed = 45; drumSpeedSlider.value = targetDrumSpeed; effectiveDrumSpeed = targetDrumSpeed; 
+            batchSizeSelect.value = "15"; batchSize = parseFloat(batchSizeSelect.value);
+            targetChargeTempDTInput.value = "190"; targetChargeTempDT = parseFloat(targetChargeTempDTInput.value);
+            
+            firstCrackTime = null; secondCrackTime = null; firstCrackLogged = false; secondCrackLogged = false;
+            inFCExothermicPhase = false; fcExothermicTimer = 0; tempDataPointsBT = []; 
+            
+            if (chartData && chartData.datasets) {
+                chartData.labels = []; 
+                chartData.datasets.forEach(ds => ds.data = []);
+            } else { 
+                chartData = { labels: [], datasets: [ /* re-init structure if needed */ ] };
+            }
+
+            eventLog.innerHTML = '<li>Simulator Idle. Set Preheat Target, Batch Size, Moisture, Density, Drum Speed.</li>';
+            outcomeText.textContent = "-"; preheatStatusDisplay.textContent = "Status: Idle";
+            
+            preheatBtn.disabled = false; 
+            chargeBtn.disabled = true; 
+            dropBtn.disabled = true; 
+            
+            targetChargeTempDTInput.disabled = false; 
+            batchSizeSelect.disabled = false; 
+            initialMoistureSlider.disabled = false; 
+            beanDensitySlider.disabled = false; 
+            drumSpeedSlider.disabled = false; 
+            gasSlider.disabled = false; 
+            airflowSlider.disabled = false;
+            
+            updateUIDisplays(); 
+            initializeChart();
+        }
+
+        preheatBtn.addEventListener('click', handlePreheat);
+        chargeBtn.addEventListener('click', handleChargeBeans); 
+        dropBtn.addEventListener('click', dropBeans);
+        resetBtn.addEventListener('click', resetRoast);
+        gasSlider.addEventListener('input', (e) => { targetGasSetting = parseInt(e.target.value); updateUIDisplays(); });
+        airflowSlider.addEventListener('input', (e) => { targetAirflowSetting = parseInt(e.target.value); updateUIDisplays(); });
+        drumSpeedSlider.addEventListener('input', (e) => { targetDrumSpeed = parseInt(e.target.value); updateUIDisplays(); }); 
+        batchSizeSelect.addEventListener('change', (e) => { if(roastState === 'idle' || roastState === 'preheating') batchSize = parseFloat(e.target.value); updateUIDisplays(); });
+        targetChargeTempDTInput.addEventListener('change', (e) => { if(roastState === 'idle') { let nt = parseFloat(e.target.value); if (!isNaN(nt) && nt >= AMBIENT_TEMP && nt <= 300) targetChargeTempDT = nt; else e.target.value = safeToFixed(targetChargeTempDT, 0); } updateUIDisplays(); });
+        
+        initialMoistureSlider.addEventListener('input', (e) => {
+            let nm = parseFloat(e.target.value);
+            if(roastState === 'idle') {
+                currentMoisturePercent = nm; 
+            }
+            initialMoistureDisplay.textContent = `${safeToFixed(nm,1)}%`;
+        });
+        
+        beanDensitySlider.addEventListener('input', (e) => { 
+            let newDensity = parseFloat(e.target.value);
+            if (roastState === 'idle') {
+                currentBeanDensity = newDensity; 
+            }
+            beanDensityDisplay.textContent = `${safeToFixed(newDensity, 2)} g/mL`;
+        });
+        
+        resetRoast(); // Initial setup
+    });
+    </script>
+</body>
+</html>
