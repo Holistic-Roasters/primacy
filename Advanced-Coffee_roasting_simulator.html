@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holistic Roasters' Coffee Roaster Sim v3.2 (Enhanced ET)</title>
+    <title>Holistic Roasters' Coffee Roaster Sim v3.2 (Enhanced ET & Exothermics)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -393,9 +393,9 @@
                 <li><strong>Turning Point (TP):</strong> The point after charging where the bean temperature stops dropping and starts to rise.</li>
                 <li><strong>Drying Phase:</strong> From charge until beans turn yellow (around 150-160°C BT). Focus on steady RoR.</li>
                 <li><strong>Maillard Phase (Browning):</strong> From yellowing to First Crack. Development of aroma precursors. RoR typically starts to decline.</li>
-                <li><strong>First Crack (FC):</strong> An audible popping sound as moisture and gases are rapidly released. Usually occurs around 195-205°C BT. This marks the beginning of "Development Time."</li>
+                <li><strong>First Crack (FC):</strong> An audible popping sound as moisture and gases are rapidly released. Usually occurs around 195-205°C BT. This marks the beginning of "Development Time." The exothermic (heat-releasing) phase of FC is now scaled by batch size.</li>
                 <li><strong>Development Time:</strong> Time from First Crack to dropping the beans. Critical for flavor development. Often expressed as Development Time Ratio (DTR) = (Development Time / Total Roast Time) * 100%. A common target DTR is 20-25%.</li>
-                <li><strong>Second Crack (SC):</strong> A more rapid, crackling sound. Beans are becoming darker and oils may migrate to the surface. Occurs significantly after First Crack.</li>
+                <li><strong>Second Crack (SC):</strong> A more rapid, crackling sound. Beans are becoming darker and oils may migrate to the surface. Occurs significantly after First Crack. The exothermic boost to ET during SC is now modeled with a decaying effect.</li>
             </ul>
             <h3>Ending the Roast:</h3>
             <ul>
@@ -429,7 +429,7 @@
                     <tr>
                         <td>Batch Size</td>
                         <td>10-25 kg</td>
-                        <td>Larger batches have more thermal inertia, taking longer to heat and cool. Also affects ET drop on charge.</td>
+                        <td>Larger batches have more thermal inertia, taking longer to heat and cool. Also affects ET drop on charge and the duration of the FC exothermic phase.</td>
                     </tr>
                      <tr>
                         <td>Initial Moisture</td>
@@ -547,7 +547,7 @@
         let roastState = 'idle';
         let firstCrackTime = null, firstCrackTemp = null, firstCrackLogged = false;
         let secondCrackTime = null, secondCrackTemp = null, secondCrackLogged = false, inSCPhase = false;
-        let inFCExothermicPhase = false, fcExothermicTimer = 0;
+        let inFCExothermicPhase = false, fcExothermicTimer = 0, scExothermicTimer = 0; // Added scExothermicTimer
         let crackSoundInterval = null;
         let preDropBT = 0;
 
@@ -595,9 +595,9 @@
         const FC_ENDOTHERMIC_DIP_TEMP_RANGE = 4;
         const FC_ENDOTHERMIC_DIP_STRENGTH = 0.10;
         const FC_EXOTHERMIC_BOOST_STRENGTH = 0.001;
-        const FC_EXOTHERMIC_DURATION = 25;
+        const FC_EXOTHERMIC_DURATION = 25; // Base duration, will be scaled by batch size
         const SC_TARGET_TEMP_OFFSET = 25;
-        const SC_EXOTHERMIC_DURATION = 20;
+        const SC_EXOTHERMIC_DURATION = 20; // Total duration for SC exothermic effects
         const OPTIMAL_DRUM_SPEED_RPM = 48;
         const DRUM_SPEED_EFFICIENCY_FACTOR_CONDUCTIVE = 0.15;
         const DRUM_SPEED_EFFICIENCY_FACTOR_CONVECTIVE = 0.20;
@@ -619,17 +619,13 @@
         const ET_DT_CONVERGENCE_FACTOR = 0.5;
         const ET_BT_EXCHANGE_FACTOR = 0.10;
         const ET_FIRST_CRACK_EXOTHERMIC_BOOST_DEG = 2.5;
-        const ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG = 1.0;
-        // const ET_AIRFLOW_COOLING_LOW_GAS_THRESHOLD_GAS = 20; // OLD - Replaced
-        // const ET_AIRFLOW_COOLING_LOW_GAS_THRESHOLD_AIRFLOW = 35; // OLD - Replaced
-        // const ET_AIRFLOW_COOLING_LOW_GAS_FACTOR = 0.010; // OLD - Replaced
+        const ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG = 1.0; // Peak boost for ET during SC
         const ET_INERTIA_FACTOR = 0.20;
         const ET_AMBIENT_LOSS_FACTOR = 0.0025;
 
-        // NEW CONSTANTS FOR ET ENHANCEMENTS
-        const ET_RADIATION_FROM_DT_FACTOR = 0.002;    // For radiative heat from DT to ET
-        const AIRFLOW_COOLING_GAS_THRESHOLD = 50;     // Gas level below which airflow cooling is active
-        const AIRFLOW_COOLING_FACTOR = 0.005;         // Scaling factor for airflow cooling effect
+        const ET_RADIATION_FROM_DT_FACTOR = 0.002;
+        const AIRFLOW_COOLING_GAS_THRESHOLD = 50;
+        const AIRFLOW_COOLING_FACTOR = 0.005;
 
 
         function formatTime(seconds) { return `${Math.floor(seconds/60)}:${(Math.floor(seconds%60)+'').padStart(2,'0')}`; }
@@ -876,12 +872,25 @@
                     let fcExothermicBoostBT = 0;
                     if (inFCExothermicPhase) {
                         fcExothermicBoostBT = FC_EXOTHERMIC_BOOST_STRENGTH; fcExothermicTimer++;
-                        if (fcExothermicTimer > FC_EXOTHERMIC_DURATION) {
+                        const dynamicFcExothermicDuration = FC_EXOTHERMIC_DURATION * (batchSize / 15); // Dynamic duration
+                        if (fcExothermicTimer > dynamicFcExothermicDuration) {
                             inFCExothermicPhase = false; fcExothermicTimer = 0; manageCrackSounds(false, 'firstCrack');
                             logEvent("First Crack Exothermic Phase ended.");
                         }
                     }
-                    let scExothermicBoostBT = 0; if (inSCPhase) { /* SC exothermic logic for BT if needed */ }
+                    let scExothermicBoostBT = 0; // if (inSCPhase) { /* SC exothermic logic for BT if needed */ }
+
+                    if (inSCPhase && roastState === 'charged') { // Manage SC phase timer and end
+                        scExothermicTimer++;
+                        if (scExothermicTimer > SC_EXOTHERMIC_DURATION) {
+                            inSCPhase = false; // Turn off the general SC phase flag
+                            // scExothermicTimer will be reset on next SC or full roast reset
+                            manageCrackSounds(false, 'secondCrack');
+                            logEvent("Second Crack Exothermic Phase ended.");
+                        }
+                    }
+
+
                     let thermalMassFactor = 1 - (batchSize / 50) * BT_THERMAL_MASS_PENALTY_PER_KG * (currentDT);
                     thermalMassFactor = Math.max(0.2, thermalMassFactor);
                     let deltaBT = ((btConductiveGain + btConvectiveGain) * fcEndothermicDipFactor - endothermicDryingEffect + fcExothermicBoostBT + scExothermicBoostBT) * thermalMassFactor;
@@ -896,48 +905,35 @@
 
                     // --- ET Calculation START ---
                     let targetET;
-
-                    // 1. Base ET from Gas and DT convergence
                     let airflowFactorForGasHeating = ET_AIRFLOW_EFFECTIVENESS_ON_GAS_HEATING_MIN +
                                                   (effectiveAirflow / 100) * (ET_AIRFLOW_EFFECTIVENESS_ON_GAS_HEATING_MAX - ET_AIRFLOW_EFFECTIVENESS_ON_GAS_HEATING_MIN);
                     let gasDrivenTargetETContribution = (effectiveGas / 100) * (ET_MAX_RISE_FROM_GAS - AMBIENT_TEMP) * airflowFactorForGasHeating;
                     let gasAndDtDrivenTargetET = AMBIENT_TEMP + gasDrivenTargetETContribution * (1 - ET_DT_CONVERGENCE_FACTOR) + (currentDT - AMBIENT_TEMP) * ET_DT_CONVERGENCE_FACTOR;
                     targetET = gasAndDtDrivenTargetET;
-
-                    // 2. Add Radiative Heat from DT to ET
-                    if (currentDT > currentET) { // Only add heat if DT is hotter than ET
-                        // (currentDT / 200) term scales the effect, making it more significant at higher drum temps
+                    if (currentDT > currentET) {
                         let radiationEffect = (currentDT - currentET) * ET_RADIATION_FROM_DT_FACTOR * (currentDT / 200);
                         targetET += radiationEffect;
                     }
-
-                    // 3. Heat Exchange with BT
                     targetET += (currentBT - targetET) * ET_BT_EXCHANGE_FACTOR;
-
-                    // 4. Exothermic Boosts (FC, SC)
-                    if (inFCExothermicPhase && fcExothermicTimer < (FC_EXOTHERMIC_DURATION * 0.75)) {
-                        targetET += ET_FIRST_CRACK_EXOTHERMIC_BOOST_DEG * (1 - (fcExothermicTimer / (FC_EXOTHERMIC_DURATION * 0.75)));
+                    if (inFCExothermicPhase && fcExothermicTimer < (FC_EXOTHERMIC_DURATION * (batchSize / 15) * 0.75)) {
+                        targetET += ET_FIRST_CRACK_EXOTHERMIC_BOOST_DEG * (1 - (fcExothermicTimer / (FC_EXOTHERMIC_DURATION * (batchSize / 15) * 0.75)));
                     }
-                    if (inSCPhase) {
-                        targetET += ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG;
+                    if (inSCPhase && scExothermicTimer <= SC_EXOTHERMIC_DURATION) { // Decaying SC boost for ET
+                        let scBoostDecayFactor = (1 - (scExothermicTimer / SC_EXOTHERMIC_DURATION));
+                        scBoostDecayFactor = Math.max(0, scBoostDecayFactor); // Ensure it's not negative
+                        targetET += ET_SECOND_CRACK_EXOTHERMIC_BOOST_DEG * scBoostDecayFactor;
                     }
-
-                    // 5. Continuous Airflow Cooling (replaces old threshold-based logic)
                     if (effectiveGas < AIRFLOW_COOLING_GAS_THRESHOLD) {
-                        // gasModulationFactor is 1 when gas is 0, and 0 when gas is at threshold, scaling cooling effect
                         let gasModulationFactor = (1 - (effectiveGas / AIRFLOW_COOLING_GAS_THRESHOLD));
-                        gasModulationFactor = Math.max(0, gasModulationFactor); // Ensure it's not negative
-
-                        if (currentET > AMBIENT_TEMP) { // Only cool if ET is above ambient
+                        gasModulationFactor = Math.max(0, gasModulationFactor);
+                        if (currentET > AMBIENT_TEMP) {
                             let airflowCoolingEffect = (currentET - AMBIENT_TEMP) * (effectiveAirflow / 100) * AIRFLOW_COOLING_FACTOR * gasModulationFactor;
                             targetET -= airflowCoolingEffect;
                         }
                     }
-
-                    // 6. ET Inertia and Ambient Loss (final steps for currentET)
                     currentET += (targetET - currentET) * ET_INERTIA_FACTOR;
                     currentET -= (currentET - AMBIENT_TEMP) * ET_AMBIENT_LOSS_FACTOR;
-                    currentET = Math.max(AMBIENT_TEMP - 5, Math.min(currentET, currentDT + 40)); // Clamping
+                    currentET = Math.max(AMBIENT_TEMP - 5, Math.min(currentET, currentDT + 40));
                     // --- ET Calculation END ---
 
 
@@ -950,7 +946,10 @@
                     if (currentBT >= scTargetTemp && firstCrackTime && !secondCrackTime) {
                         secondCrackTime = roastPhaseTimer; secondCrackTemp = currentBT;
                         logEvent(`Second Crack @ BT ${safeToFixed(currentBT)}°C`, true);
-                        if (!secondCrackLogged) { manageCrackSounds(true, 'secondCrack'); secondCrackLogged = true; inSCPhase = true; }
+                        if (!secondCrackLogged) {
+                             manageCrackSounds(true, 'secondCrack'); secondCrackLogged = true;
+                             inSCPhase = true; scExothermicTimer = 0; // Initialize SC timer
+                        }
                         if(inFCExothermicPhase) {
                             manageCrackSounds(false, 'firstCrack');
                             logEvent("First Crack sounds stopped due to Second Crack onset.");
@@ -1239,7 +1238,7 @@
             } else {
                  initialRoastParams = {
                     targetChargeTempDT: targetChargeTempDT,
-                    batchSize: batchSize,
+                    batchSize: batchSize, // Already set from preheat or current selection
                     initialMoisture: parseFloat(initialMoistureSlider.value),
                     beanDensity: parseFloat(beanDensitySlider.value),
                     initialDrumSpeed: parseInt(drumSpeedSlider.value)
@@ -1260,7 +1259,7 @@
             preheatStatusDisplay.textContent = 'Beans Charged';
 
             firstCrackTime = null; secondCrackTime = null; firstCrackLogged = false; secondCrackLogged = false; inSCPhase = false;
-            inFCExothermicPhase = false; fcExothermicTimer = 0;
+            inFCExothermicPhase = false; fcExothermicTimer = 0; scExothermicTimer = 0;
 
             tempDataPointsBT = [{ time: roastPhaseTimer, temp: currentBT }]; updateRoR();
             preheatBtn.disabled = true; chargeBtn.disabled = true; dropBtn.disabled = false;
@@ -1278,14 +1277,14 @@
             dropBtn.textContent = "Cooling..."; dropBtn.disabled = true;
             gasSlider.disabled = true;
             drumSpeedSlider.disabled = true;
-            manageCrackSounds(false);
+            manageCrackSounds(false); // Stop all crack sounds
         }
 
         function resetRoastEssentialsForNewRoast() {
             roastPhaseTimer = 0; coolingTimer = 0;
             firstCrackTime = null; firstCrackTemp = null; firstCrackLogged = false;
             secondCrackTime = null; secondCrackTemp = null; secondCrackLogged = false; inSCPhase = false;
-            inFCExothermicPhase = false; fcExothermicTimer = 0;
+            inFCExothermicPhase = false; fcExothermicTimer = 0; scExothermicTimer = 0; // Reset scExothermicTimer
             controlChanges = []; tempDataPointsBT = []; preDropBT = 0; currentRoR = 0;
             initialRoastParams = {};
 
@@ -1350,7 +1349,7 @@
                 finalDropBT: preDropBT,
                 roastTimeToDrop: (roastState === 'dropped' || roastState === 'cooling') ? roastPhaseTimer - coolingTimer : roastPhaseTimer,
                 coolingTime: (roastState === 'dropped' || roastState === 'cooling') ? coolingTimer : 0,
-                batchSize: initialRoastParams.batchSize,
+                batchSize: initialRoastParams.batchSize, // Ensure batchSize is from initialRoastParams
                 initialMoisture: initialRoastParams.initialMoisture,
                 beanDensity: initialRoastParams.beanDensity
             };
@@ -1378,7 +1377,7 @@
                 chart: liveChartDataForExport, outcomeHTML: outcomeText.innerHTML, finalDropBT: preDropBT,
                 roastTimeToDrop: (roastState === 'dropped' || roastState === 'cooling') ? roastPhaseTimer - coolingTimer : roastPhaseTimer,
                 coolingTime: (roastState === 'dropped' || roastState === 'cooling') ? coolingTimer : 0,
-                batchSize: initialRoastParams.batchSize,
+                batchSize: initialRoastParams.batchSize, // Ensure batchSize is from initialRoastParams
                 initialMoisture: initialRoastParams.initialMoisture,
                 beanDensity: initialRoastParams.beanDensity
             };
@@ -1548,10 +1547,10 @@
         gasSlider.addEventListener('input', (e) => { targetGasSetting = parseInt(e.target.value); recordControlChange('gas', targetGasSetting); updateUIDisplays(); });
         airflowSlider.addEventListener('input', (e) => { targetAirflowSetting = parseInt(e.target.value); recordControlChange('airflow', targetAirflowSetting); updateUIDisplays(); });
         drumSpeedSlider.addEventListener('input', (e) => { targetDrumSpeed = parseInt(e.target.value); recordControlChange('drumSpeed', targetDrumSpeed); updateUIDisplays(); });
-        batchSizeSelect.addEventListener('change', (e) => { if(roastState === 'idle' || roastState === 'preheating') batchSize = parseFloat(e.target.value); updateUIDisplays(); });
+        batchSizeSelect.addEventListener('change', (e) => { if(roastState === 'idle' || roastState === 'preheating') { batchSize = parseFloat(e.target.value); if (initialRoastParams) initialRoastParams.batchSize = batchSize; } updateUIDisplays(); });
         targetChargeTempDTInput.addEventListener('change', (e) => { if(roastState === 'idle') { let nt = parseFloat(e.target.value); if (!isNaN(nt) && nt >= AMBIENT_TEMP && nt <= 300) targetChargeTempDT = nt; else e.target.value = safeToFixed(targetChargeTempDT, 0); } updateUIDisplays(); });
-        initialMoistureSlider.addEventListener('input', (e) => { let nm = parseFloat(e.target.value); if(roastState === 'idle') { currentMoisturePercent = nm; } initialMoistureDisplay.textContent = `${safeToFixed(nm,1)}%`; });
-        beanDensitySlider.addEventListener('input', (e) => { let nd = parseFloat(e.target.value); if (roastState === 'idle') { currentBeanDensity = nd; } beanDensityDisplay.textContent = `${safeToFixed(nd, 2)} g/mL`; });
+        initialMoistureSlider.addEventListener('input', (e) => { let nm = parseFloat(e.target.value); if(roastState === 'idle') { currentMoisturePercent = nm; if (initialRoastParams) initialRoastParams.initialMoisture = nm; } initialMoistureDisplay.textContent = `${safeToFixed(nm,1)}%`; });
+        beanDensitySlider.addEventListener('input', (e) => { let nd = parseFloat(e.target.value); if (roastState === 'idle') { currentBeanDensity = nd; if (initialRoastParams) initialRoastParams.beanDensity = nd; } beanDensityDisplay.textContent = `${safeToFixed(nd, 2)} g/mL`; });
 
         if (document.getElementById('simulatorTabContent').classList.contains('active')) {
             resetRoast();
