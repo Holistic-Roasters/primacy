@@ -979,7 +979,7 @@
     <section class="hero">
         <div class="hero-content fade-in">
             <h1>UPGRADE YOUR OS.</h1>
-            <p>This isn't coffee. This is a comprehensive cognitive toolkit engineered for flawless execution. Clean energy, unshakeable focus, and zero crash. Welcome to your new benchmark.</p>
+            <p>This is more than coffee. It's a comprehensive cognitive toolkit engineered for flawless execution. Clean energy, unshakeable focus, and zero crash. Welcome to your new benchmark.</p>
             <a href="#pricing" class="cta-button">Activate APEX</a>
         </div>
     </section>
@@ -1055,7 +1055,18 @@
                                     <path d="M50 20 C30 20, 20 35, 20 50 C20 65, 30 80, 50 80 C70 80, 80 65, 80 50 C80 35, 70 20, 50 20" 
                                           fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
                                     <path d="M35 35 Q50 25, 65 35 Q75 50, 65 65 Q50 75, 35 65 Q25 50, 35 35" 
-                                          fill="rgba(0, 255, 157, 0.1)" stroke="#00ff9d" stroke-width="1" opacity="0.7"/>
+                                          fill="rgba(0, 255, 157, 0.1)" stroke="#00ff9d" stroke-width="1" opacity="0.7">
+                                        <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+                                    </path>
+                                    <circle cx="40" cy="40" r="3" fill="#00ff9d">
+                                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="60" cy="40" r="3" fill="#00ff9d">
+                                        <animate attributeName="r" values="3;5;3" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="50" cy="60" r="3" fill="#00ff9d">
+                                        <animate attributeName="r" values="3;5;3" dur="2s" begin="1s" repeatCount="indefinite"/>
+                                    </circle>
                                 </svg>
                                 <div class="action-label" style="top: 20%; left: -30%;">Blocks Adenosine</div>
                                 <div class="action-label" style="top: 60%; right: -40%; animation-delay: 0.3s;">Boosts Alertness</div>
@@ -1090,6 +1101,12 @@
                                     <path d="M30 50 Q40 40, 50 50 T70 50" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.8">
                                         <animate attributeName="d" values="M30 50 Q40 40, 50 50 T70 50; M30 50 Q40 60, 50 50 T70 50; M30 50 Q40 40, 50 50 T70 50" dur="4s" repeatCount="indefinite"/>
                                     </path>
+                                    <path d="M25 50 Q37 35, 50 50 T75 50" stroke="#00ff9d" stroke-width="1.5" fill="none" opacity="0.6">
+                                        <animate attributeName="d" values="M25 50 Q37 35, 50 50 T75 50; M25 50 Q37 65, 50 50 T75 50; M25 50 Q37 35, 50 50 T75 50" dur="4s" begin="0.5s" repeatCount="indefinite"/>
+                                    </path>
+                                    <path d="M20 50 Q35 30, 50 50 T80 50" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.4">
+                                        <animate attributeName="d" values="M20 50 Q35 30, 50 50 T80 50; M20 50 Q35 70, 50 50 T80 50; M20 50 Q35 30, 50 50 T80 50" dur="4s" begin="1s" repeatCount="indefinite"/>
+                                    </path>
                                 </svg>
                                 <div class="action-label" style="top: 15%; left: 50%; transform: translateX(-50%);">Alpha Waves</div>
                                 <div class="action-label" style="bottom: 15%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Calm Focus</div>
@@ -1121,10 +1138,18 @@
                             <div class="brain-diagram">
                                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
-                                    <circle cx="35" cy="40" r="8" fill="#00ff9d" opacity="0.6"/>
-                                    <circle cx="65" cy="40" r="8" fill="#00ff9d" opacity="0.6"/>
-                                    <circle cx="50" cy="60" r="8" fill="#00ff9d" opacity="0.6"/>
-                                    <path d="M35 40 L50 60 L65 40" stroke="#00ff9d" stroke-width="1.5" fill="none" opacity="0.8"/>
+                                    <circle cx="35" cy="40" r="8" fill="#00ff9d" opacity="0.6">
+                                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="65" cy="40" r="8" fill="#00ff9d" opacity="0.6">
+                                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="50" cy="60" r="8" fill="#00ff9d" opacity="0.6">
+                                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <path d="M35 40 L50 60 L65 40" stroke="#00ff9d" stroke-width="1.5" fill="none" opacity="0.8">
+                                        <animate attributeName="stroke-width" values="1.5;2.5;1.5" dur="2s" repeatCount="indefinite"/>
+                                    </path>
                                 </svg>
                                 <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">Acetylcholine Supply</div>
                                 <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Enhanced Focus</div>
@@ -1161,10 +1186,15 @@
                                             <stop offset="100%" style="stop-color:#00ff9d;stop-opacity:0.8" />
                                         </linearGradient>
                                     </defs>
-                                    <circle cx="50" cy="50" r="35" fill="url(#ketoneGradient)" opacity="0.5"/>
+                                    <circle cx="50" cy="50" r="35" fill="url(#ketoneGradient)" opacity="0.5">
+                                        <animate attributeName="r" values="35;38;35" dur="3s" repeatCount="indefinite"/>
+                                    </circle>
                                     <path d="M20 50 Q30 30, 50 40 Q70 50, 80 50" stroke="#00ff9d" stroke-width="3" fill="none">
                                         <animate attributeName="stroke-dasharray" values="0 100; 100 0" dur="3s" repeatCount="indefinite"/>
                                     </path>
+                                    <circle cx="50" cy="50" r="5" fill="#00ff9d">
+                                        <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
+                                    </circle>
                                 </svg>
                                 <div class="action-label" style="top: 15%; left: 50%; transform: translateX(-50%);">Ketone Production</div>
                                 <div class="action-label" style="bottom: 15%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Sustained Energy</div>
@@ -1201,9 +1231,15 @@
                                         <line x1="50" y1="65" x2="50" y2="80" stroke="#00ff9d" stroke-width="2"/>
                                         <line x1="20" y1="50" x2="35" y2="50" stroke="#00ff9d" stroke-width="2"/>
                                         <line x1="65" y1="50" x2="80" y2="50" stroke="#00ff9d" stroke-width="2"/>
+                                        <line x1="32" y1="32" x2="42" y2="42" stroke="#00ff9d" stroke-width="1.5"/>
+                                        <line x1="68" y1="32" x2="58" y2="42" stroke="#00ff9d" stroke-width="1.5"/>
+                                        <line x1="32" y1="68" x2="42" y2="58" stroke="#00ff9d" stroke-width="1.5"/>
+                                        <line x1="68" y1="68" x2="58" y2="58" stroke="#00ff9d" stroke-width="1.5"/>
                                         <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="20s" repeatCount="indefinite"/>
                                     </g>
-                                    <circle cx="50" cy="50" r="12" fill="#00ff9d" opacity="0.3"/>
+                                    <circle cx="50" cy="50" r="12" fill="#00ff9d" opacity="0.3">
+                                        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                                    </circle>
                                 </svg>
                                 <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">NGF Stimulation</div>
                                 <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Neuroplasticity</div>
@@ -1235,8 +1271,12 @@
                             <div class="brain-diagram">
                                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
-                                    <path d="M25 50 C25 50, 40 35, 50 50 S75 50, 75 50" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.8"/>
-                                    <path d="M30 60 C30 60, 45 70, 50 60 S70 60, 70 60" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.6"/>
+                                    <path d="M25 50 C25 50, 40 35, 50 50 S75 50, 75 50" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.8">
+                                        <animate attributeName="d" values="M25 50 C25 50, 40 35, 50 50 S75 50, 75 50; M25 50 C25 50, 40 45, 50 50 S75 50, 75 50; M25 50 C25 50, 40 35, 50 50 S75 50, 75 50" dur="4s" repeatCount="indefinite"/>
+                                    </path>
+                                    <path d="M30 60 C30 60, 45 70, 50 60 S70 60, 70 60" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.6">
+                                        <animate attributeName="d" values="M30 60 C30 60, 45 70, 50 60 S70 60, 70 60; M30 60 C30 60, 45 65, 50 60 S70 60, 70 60; M30 60 C30 60, 45 70, 50 60 S70 60, 70 60" dur="4s" begin="0.5s" repeatCount="indefinite"/>
+                                    </path>
                                 </svg>
                                 <div class="action-label" style="top: 15%; left: 50%; transform: translateX(-50%);">GABA Activation</div>
                                 <div class="action-label" style="bottom: 15%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Anxiety Shield</div>
@@ -1268,10 +1308,17 @@
                             <div class="brain-diagram">
                                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
-                                    <circle cx="50" cy="30" r="10" fill="none" stroke="#00ff9d" stroke-width="1.5" opacity="0.7"/>
-                                    <circle cx="50" cy="70" r="10" fill="none" stroke="#00ff9d" stroke-width="1.5" opacity="0.7"/>
+                                    <circle cx="50" cy="30" r="10" fill="none" stroke="#00ff9d" stroke-width="1.5" opacity="0.7">
+                                        <animate attributeName="r" values="10;12;10" dur="2s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="50" cy="70" r="10" fill="none" stroke="#00ff9d" stroke-width="1.5" opacity="0.7">
+                                        <animate attributeName="r" values="10;12;10" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                                    </circle>
                                     <path d="M50 40 L50 60" stroke="#00ff9d" stroke-width="2" opacity="0.8">
                                         <animate attributeName="stroke-width" values="2;4;2" dur="2s" repeatCount="indefinite"/>
+                                    </path>
+                                    <path d="M40 50 L60 50" stroke="#00ff9d" stroke-width="1.5" opacity="0.6">
+                                        <animate attributeName="stroke-width" values="1.5;3;1.5" dur="2s" begin="1s" repeatCount="indefinite"/>
                                     </path>
                                 </svg>
                                 <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">Blood Flow ↑</div>
@@ -1306,7 +1353,12 @@
                                     <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
                                     <path d="M20 50 L80 50" stroke="#00ff9d" stroke-width="3" opacity="0.8"/>
                                     <path d="M30 40 L30 60 M40 35 L40 65 M50 40 L50 60 M60 35 L60 65 M70 40 L70 60" 
-                                          stroke="#00ff9d" stroke-width="1.5" opacity="0.6"/>
+                                          stroke="#00ff9d" stroke-width="1.5" opacity="0.6">
+                                        <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+                                    </path>
+                                    <circle cx="20" cy="50" r="3" fill="#00ff9d">
+                                        <animate attributeName="cx" values="20;80;20" dur="4s" repeatCount="indefinite"/>
+                                    </circle>
                                 </svg>
                                 <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">Blood Sugar Control</div>
                                 <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">No Crash</div>
@@ -1925,11 +1977,25 @@
                 
                 // Position popup near scrubber
                 const scrubberRect = scrubber.getBoundingClientRect();
+                const containerRect = scrubber.closest('.curve-container').getBoundingClientRect();
                 const popupRect = effectPopup.getBoundingClientRect();
-                const handlePos = scrubberRect.left + 30 + percentage * (scrubberRect.width - 60);
+                const handlePos = 30 + percentage * (scrubberRect.width - 60);
+                
+                // Determine if popup should appear on left or right side
+                // Switch to left side after 5 hours (62.5% of 8 hours)
+                const switchPoint = 0.625;
+                
+                if (percentage > switchPoint) {
+                    // Position on the left side
+                    effectPopup.style.left = 'auto';
+                    effectPopup.style.right = (containerRect.right - scrubberRect.left - handlePos + popupRect.width/2) + 'px';
+                } else {
+                    // Position on the right side
+                    effectPopup.style.right = 'auto';
+                    effectPopup.style.left = (handlePos - popupRect.width/2) + 'px';
+                }
 
                 popupTitle.innerHTML = `<span style="color: var(--color-accent);">APEX:</span> ${apexDesc} <br><br> <span style="color: var(--color-coffee);">Coffee:</span> ${coffeeDesc}`;
-                effectPopup.style.left = `${handlePos - popupRect.width/2}px`;
                 effectPopup.style.bottom = '80px';
                 effectPopup.classList.add('active');
             }
