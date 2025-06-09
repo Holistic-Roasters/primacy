@@ -16,7 +16,7 @@
             --color-mid-grey: #2e2e2e;
             --color-light-grey: #888888;
             --color-white: #f5f5f5;
-            --color-accent: #00ff9d;
+            --color-accent: #00ff9d; /* APEX Green */
             --font-primary: 'Roboto', sans-serif;
             --font-display: 'Roboto Condensed', sans-serif;
         }
@@ -127,7 +127,7 @@
         }
 
         .hero {
-            background-image: linear-gradient(rgba(8, 8, 8, 0.8), rgba(8, 8, 8, 1)), url('https://images.unsplash.com/photo-1511920170033-f832972d4d56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
             background-size: cover;
             background-position: center;
             text-align: center;
@@ -173,87 +173,78 @@
             color: var(--color-accent);
         }
 
-        /* --- PROBLEM SECTION --- */
-        .problem-section {
+        /* --- SHARED STYLES --- */
+        .problem-section, .recap-section, .pricing-section, .faq-section, .persona-section {
             background-color: var(--color-dark-grey);
+        }
+        .formula-section, .ecosystem-section, .advantage-section, .experience-section {
+            background-color: var(--color-black);
         }
 
         /* --- FORMULA SECTION --- */
         .formula-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 4rem;
         }
-
         .formula-card {
-            background-color: var(--color-dark-grey);
+            background-color: var(--color-black);
             padding: 2rem;
             border: 1px solid var(--color-mid-grey);
             border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
-        
-        .formula-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.1);
-        }
-
         .formula-card h3 {
             color: var(--color-accent);
             margin-bottom: 1rem;
-            font-size: 1.5rem;
         }
-
         .formula-card p {
             text-align: left;
             font-size: 1rem;
         }
         
-        .formula-card ul {
-            list-style: none;
-            margin-top: 1rem;
+        /* --- ECOSYSTEM SECTION --- */
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start; /* CORRECTED: Aligns items to the top for horizontal alignment */
+            margin-top: 4rem;
         }
-        
-        .formula-card li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        .ecosystem-item {
+            text-align: center;
         }
-        
-        .formula-card li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--color-accent);
+        .ecosystem-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .ecosystem-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .ecosystem-item p {
+            max-width: 450px;
         }
         
         /* --- RECAP BLUEPRINT TABLE SECTION --- */
-        .recap-section {
-             background-color: var(--color-dark-grey);
-        }
         .table-container {
-            overflow-x: auto;
-            margin-top: 4rem;
+             margin-top: 4rem;
         }
         .blueprint-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 900px; /* Force scroll on smaller screens */
+            min-width: 900px;
         }
         .blueprint-table th, .blueprint-table td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid var(--color-mid-grey);
         }
-        .blueprint-table thead {
-            background-color: var(--color-black);
-        }
         .blueprint-table th {
             font-family: var(--font-display);
             text-transform: uppercase;
-            letter-spacing: 1px;
             color: var(--color-accent);
         }
         .blueprint-table td {
@@ -267,9 +258,6 @@
         }
 
         /* --- ADVANTAGE SECTION --- */
-        .advantage-section {
-            background-color: var(--color-black);
-        }
         .comparison-table {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -284,25 +272,25 @@
         }
         .comparison-table h3 {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
         .comparison-table .apex-column h3 {
             color: var(--color-accent);
         }
-        .comparison-table ul {
-            list-style: none;
-        }
-        .comparison-table li {
+        .comparison-table ul { list-style: none; }
+        .comparison-table li { 
             margin-bottom: 1.5rem;
-            padding-left: 30px;
+            padding-left: 35px;
             position: relative;
+            font-size: 1rem;
         }
         .comparison-table li::before {
             position: absolute;
             left: 0;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             line-height: 1;
+            font-weight: bold;
         }
         .apex-column li::before {
             content: '✓';
@@ -312,24 +300,26 @@
             content: '×';
             color: #ff4d4d;
         }
-        .comparison-table strong {
-            display: block;
+        .comparison-table strong { 
+            display: block; 
             color: var(--color-white);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem; 
+            font-size: 1.1rem;
+        }
+        .comparison-table p {
+            font-size: 1rem;
+            text-align: left;
+            max-width: 100%;
+            margin: 0;
         }
 
         /* --- PERSONA SECTION --- */
-        .persona-section {
-             background-color: var(--color-dark-grey);
-        }
-        
         .persona-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-top: 4rem;
+            grid-template-columns: 1fr; /* Mobile: 1 column */
         }
-        
         .persona-card {
             text-align: center;
             padding: 2rem;
@@ -337,91 +327,64 @@
             border: 1px solid var(--color-mid-grey);
             border-radius: 8px;
         }
-
         .persona-card svg {
             width: 50px;
             height: 50px;
             fill: var(--color-accent);
             margin-bottom: 1rem;
         }
-
         .persona-card h3 {
             font-size: 1.2rem;
             color: var(--color-white);
             margin-bottom: 0.5rem;
         }
-        
         .persona-card p {
             font-size: 0.9rem;
             color: var(--color-light-grey);
             max-width: 100%;
         }
 
-
-        /* --- EXPERIENCE SECTION --- */
-        .experience-section {
-            background-color: var(--color-black);
-            text-align: center;
-        }
-
         /* --- PRICING SECTION --- */
-        .pricing-section {
-            background-color: var(--color-dark-grey);
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: stretch;
         }
-        
         .pricing-card {
             background-color: var(--color-black);
             border: 2px solid var(--color-mid-grey);
             padding: 2.5rem;
-            max-width: 450px;
-            margin: 2rem auto 0 auto;
             border-radius: 10px;
             text-align: center;
-            transition: border-color 0.3s;
+            display: flex;
+            flex-direction: column;
         }
-
         .pricing-card.highlight-card {
             border-color: var(--color-accent);
         }
-        
+        .pricing-card img {
+            max-width: 150px;
+            height: auto;
+            margin: 0 auto 1.5rem auto;
+        }
         .pricing-card h3 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
-        
         .price {
             font-size: 3rem;
             font-family: var(--font-display);
             color: var(--color-accent);
             margin-bottom: 1rem;
         }
-
         .price span {
             font-size: 1rem;
             color: var(--color-light-grey);
         }
-
-        .pricing-card ul {
-            list-style: none;
-            margin: 2rem 0;
-            text-align: left;
-            display: inline-block;
+        .pricing-card .cta-button {
+            margin-top: auto;
         }
-        
-        .pricing-card li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .pricing-card li::before {
-            content: '✓';
-            color: var(--color-accent);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-        
         .save-badge {
             background-color: var(--color-accent);
             color: var(--color-black);
@@ -434,22 +397,13 @@
         }
         
         /* --- FAQ SECTION --- */
-        .faq-section {
-            background-color: var(--color-black);
-        }
-        
-        .faq-container {
-            max-width: 750px;
-            margin: 2rem auto 0 auto;
-        }
-
+        .faq-container { margin: 2rem auto 0 auto; max-width: 750px; }
         .faq-item {
             background-color: var(--color-dark-grey);
             margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid var(--color-mid-grey);
         }
-
         .faq-question {
             padding: 20px;
             cursor: pointer;
@@ -457,54 +411,66 @@
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            font-size: 1.1rem;
         }
-
-        .faq-question::after {
-            content: '+';
-            font-size: 1.5rem;
-            color: var(--color-accent);
-            transition: transform 0.3s;
-        }
-        
-        .faq-item.active .faq-question::after {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            padding: 0 20px;
-        }
-        
-        .faq-answer p {
-            padding-bottom: 20px;
-            text-align: left;
-            max-width: 100%;
-        }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--color-accent); transition: transform 0.3s; }
+        .faq-item.active .faq-question::after { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px; }
+        .faq-answer p { padding-bottom: 20px; text-align: left; max-width: 100%; }
         
         /* --- FOOTER --- */
-        .footer {
-            background-color: var(--color-dark-grey);
-            padding: 40px 0;
-            text-align: center;
-            border-top: 1px solid var(--color-mid-grey);
-        }
-        
-        .footer p {
-            font-size: 0.9rem;
-            color: var(--color-light-grey);
-            margin: 0;
-        }
+        .footer { background-color: var(--color-dark-grey); padding: 40px 0; text-align: center; }
+        .footer p { font-size: 0.9rem; color: var(--color-light-grey); margin: 0; }
 
         /* --- RESPONSIVE DESIGN --- */
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
+            .persona-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 992px) {
+            /* CORRECTED: This now creates the 3x2 layout on desktop */
+            .persona-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .persona-grid .persona-card:nth-child(4), .persona-grid .persona-card:nth-child(5) {
+                grid-column: span 1;
+            }
+            .persona-grid .persona-card:nth-child(4) {
+                 grid-column-start: 1;
+            }
+            .persona-grid .persona-card:nth-child(5) {
+                 grid-column-start: 2;
+            }
+            /* To center the last two cards, we'll need a wrapper or use flex, but this is a solid grid approach */
+             .persona-grid-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .persona-grid {
+                width:100%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .persona-card {
+                flex: 1 1 calc(33.333% - 2rem);
+                max-width: calc(33.333% - 2rem);
+            }
+        }
+        @media (max-width: 991px) and (min-width: 768px) {
+            .persona-grid {
+                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
             h1 { font-size: 3rem; }
             h2 { font-size: 2rem; }
-            .nav-links { display: none; } /* Simplified for demo */
+            .nav-links { display: none; }
             .hero { min-height: 70vh; }
-            .comparison-table { grid-template-columns: 1fr; }
+            .ecosystem-grid, .comparison-table { grid-template-columns: 1fr; }
+            .blueprint-table { min-width: 100%; }
         }
 
     </style>
@@ -516,11 +482,11 @@
         <nav class="navbar">
             <a href="#" class="logo">KICKSHOT<span class="highlight">:APEX</span></a>
             <div class="nav-links">
-                <a href="#formula">Formula</a>
+                <a href="#ecosystem">Ecosystem</a>
                 <a href="#blueprint">Blueprint</a>
                 <a href="#advantage">Advantage</a>
-                <a href="#personas">Who It's For</a>
                 <a href="#pricing">Get Apex</a>
+                <a href="#faq">FAQ</a>
             </div>
         </nav>
     </header>
@@ -542,42 +508,46 @@
         </div>
     </section>
 
-    <!-- FORMULA SECTION -->
+    <!-- FORMULA HIGHLIGHTS -->
     <section id="formula" class="formula-section">
         <div class="container">
-            <h2 class="fade-in">DECONSTRUCT THE <span class="highlight">FORMULA.</span></h2>
-            <p class="fade-in">APEX isn't a flavored drink; it's a fortified coffee. Every ingredient is a precision tool with a specific mission: to optimize your cognitive and metabolic state for peak performance.</p>
+            <h2 class="fade-in">A <span class="highlight">PRECISION-ENGINEERED</span> SYSTEM.</h2>
             <div class="formula-grid">
                 <div class="formula-card fade-in">
                     <h3>THE CORE ENGINE</h3>
-                    <p>Laser focus, zero jitter. We synchronized a precise dose of natural caffeine with its perfect counterpart to channel a tidal wave of clean energy into a state of calm, locked-in focus.</p>
-                    <ul>
-                        <li>Natural Caffeine</li>
-                        <li>L-Theanine</li>
-                    </ul>
+                    <p>Laser focus, zero jitter. We synchronized caffeine and L-Theanine to channel clean energy into calm, locked-in focus.</p>
                 </div>
                 <div class="formula-card fade-in" style="transition-delay: 100ms;">
                     <h3>THE FUEL SYSTEM</h3>
-                    <p>Stable power, no crash. APEX deploys a dual-pathway energy solution to supply instant ketone fuel for clarity while stabilizing blood sugar to eliminate the afternoon fade.</p>
-                    <ul>
-                        <li>C8/C10 MCT Powder</li>
-                        <li>Ceylon Cinnamon</li>
-                    </ul>
+                    <p>Stable power, no crash. A dual-pathway system of MCTs and Cinnamon supplies ketone fuel while stabilizing blood sugar.</p>
                 </div>
                 <div class="formula-card fade-in" style="transition-delay: 200ms;">
-                    <h3>THE COGNITIVE HARDWARE</h3>
-                    <p>High-speed processing. We provide the raw materials for neurotransmitter production, boosting processing speed and memory recall while keeping the system cool under pressure.</p>
-                    <ul>
-                        <li>Alpha-GPC</li>
-                        <li>Taurine</li>
-                    </ul>
+                    <h3>COGNITIVE HARDWARE</h3>
+                    <p>High-speed processing. Alpha-GPC and Taurine provide raw materials for neurotransmitters, boosting processing speed.</p>
                 </div>
                  <div class="formula-card fade-in" style="transition-delay: 300ms;">
                     <h3>THE LONG GAME</h3>
-                    <p>Fortify your architecture. Performance today is mandatory. Dominance tomorrow is the goal. APEX supports long-term brain health and neurogenesis as an investment in your future cognitive capital.</p>
-                    <ul>
-                        <li>Lion's Mane (8:1 Extract)</li>
-                    </ul>
+                    <p>Fortify your architecture. Lion's Mane supports long-term brain health and neurogenesis as an investment in your cognitive capital.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ECOSYSTEM SECTION -->
+    <section id="ecosystem" class="ecosystem-section">
+        <div class="container">
+            <h2 class="fade-in">THE APEX ECOSYSTEM: <br>YOUR PROTOCOL, <span class="highlight">ANYWHERE.</span></h2>
+            <p class="fade-in">Performance is not confined to your desk. Your protocol shouldn't be either. The APEX Ecosystem is designed for seamless integration into every facet of your high-stakes life.</p>
+            <div class="ecosystem-grid">
+                <div class="ecosystem-item fade-in">
+                    <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                    <h3>THE SYSTEM CORE</h3>
+                    <p>The anchor of your daily ritual. The System Core is your at-home supply depot, precision-engineered for the perfect, consistent dose to initiate your day's mission.</p>
+                </div>
+                <div class="ecosystem-item fade-in" style="transition-delay:100ms;">
+                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit Dispenser">
+                    <h3>THE FIELD KIT</h3>
+                    <p>Tactical readiness in a dispenser. The Field Kit ensures your protocol is never interrupted, whether you're at the office, the gym, or crossing time zones. Elite performance, deployed anywhere.</p>
                 </div>
             </div>
         </div>
@@ -657,99 +627,94 @@
     <section id="advantage" class="advantage-section">
         <div class="container">
             <h2 class="fade-in">THE APEX <span class="highlight">ADVANTAGE</span></h2>
-            <p class="fade-in">A spike vs. a plateau. A crash vs. a controlled landing. The difference is by design. Here's how APEX stacks up against a standard cup of coffee over time.</p>
+            <p class="fade-in">A spike vs. a plateau. A crash vs. a controlled landing. The difference is by design.</p>
             <div class="comparison-table fade-in">
                 <div class="coffee-column">
                     <h3>REGULAR COFFEE</h3>
                     <ul>
-                        <li><strong>0-45 MINS: The Jolt</strong>A rapid, sometimes jarring rush of energy. Can be accompanied by restlessness or anxiety.</li>
-                        <li><strong>1-2 HOURS: Scattered Peak</strong>High alertness, but focus can be chaotic and undirected. The system is over-stimulated.</li>
-                        <li><strong>2-4 HOURS: The Crash</strong>The caffeine effect plummets. Adenosine rushes back, causing fatigue. Brain fog sets in.</li>
-                        <li><strong>4+ HOURS: The Aftermath</strong>Lingering fatigue and irritability. The positive effects are gone but the system remains disrupted.</li>
+                        <li><strong>0-45 MINS: The Jolt</strong><p>A rapid, sometimes jarring rush of energy. Can be accompanied by restlessness or anxiety.</p></li>
+                        <li><strong>1-2 HOURS: Scattered Peak</strong><p>High alertness, but focus can be chaotic and undirected. The system is over-stimulated.</p></li>
+                        <li><strong>2-4 HOURS: The Crash</strong><p>The caffeine effect plummets. Adenosine rushes back, causing fatigue. Brain fog sets in.</p></li>
+                        <li><strong>4+ HOURS: The Aftermath</strong><p>Lingering fatigue and irritability. The positive effects are gone but the system remains disrupted.</p></li>
                     </ul>
                 </div>
                 <div class="apex-column">
                     <h3>KICKSHOT: APEX</h3>
                     <ul>
-                        <li><strong>0-45 MINS: Smooth Ascent</strong>A calm, controlled "coming online" feeling. Energy builds without the jarring rush.</li>
-                        <li><strong>1-4 HOURS: Performance Plateau</strong>Sustained, high-level focus. Ketone and caffeine energy work in tandem for deep work.</li>
-                        <li><strong>4-6 HOURS: Controlled Off-Ramp</strong>A gradual return to baseline. Metabolic stabilizers prevent the crash. Focus remains intact.</li>
-                        <li><strong>6+ HOURS: Clean Return</strong>You feel normal and productive, not depleted. Ready for the next task without residual effects.</li>
+                        <li><strong>0-45 MINS: Smooth Ascent</strong><p>A calm, controlled "coming online" feeling. Energy builds without the jarring rush.</p></li>
+                        <li><strong>1-4 HOURS: Performance Plateau</strong><p>Sustained, high-level focus. Ketone and caffeine energy work in tandem for deep work.</p></li>
+                        <li><strong>4-6 HOURS: Controlled Off-Ramp</strong><p>A gradual return to baseline. Metabolic stabilizers prevent the crash. Focus remains intact.</p></li>
+                        <li><strong>6+ HOURS: Clean Return</strong><p>You feel normal and productive, not depleted. Ready for the next task without residual effects.</p></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- PERSONA SECTION -->
     <section id="personas" class="persona-section">
         <div class="container">
             <h2 class="fade-in">BUILT FOR THE <span class="highlight">RELENTLESS.</span></h2>
             <p class="fade-in">APEX is the operating system for those who refuse to settle. Whether you're building an empire, mastering a craft, or dominating a leaderboard, this is your fuel.</p>
-            <div class="persona-grid">
-                <div class="persona-card fade-in">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm3.444 13.444L11 11V5h2v5l3.556 3.556L15.444 15.444z"/></svg>
-                    <h3>THE BIOHACKER</h3>
-                    <p>Optimize your protocol with a scientifically formulated stack that delivers sustained clarity without the crash. Data is king.</p>
-                </div>
-                <div class="persona-card fade-in" style="transition-delay: 100ms;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7.414 9.803 2.121 15.096l5.657 5.657 5.293-5.293 6.974-6.974zM16.5 6.5l1 1-2.5 2.5-1-1 2.5-2.5zm-3 3l1 1-6.5 6.5-1-1 6.5-6.5zM3.536 16.513l1.414-1.414 4.242 4.242-1.414 1.414a2 2 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.828z"/></svg>
-                    <h3>THE CREATIVE</h3>
-                    <p>Sustain your creative flow. Tap into consistent energy and cognitive enhancement that fuels deep work sessions and shatters creative blocks.</p>
-                </div>
-                <div class="persona-card fade-in" style="transition-delay: 200ms;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zm0 14c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6z"/><path d="M11 11h2v6h-2zm0-4h2v2h-2z"/></svg>
-                    <h3>THE PROFESSIONAL</h3>
-                    <p>Command your day. A reliable, premium solution that delivers the sustained focus required for high-stakes decisions and marathon workdays.</p>
-                </div>
-                 <div class="persona-card fade-in" style="transition-delay: 300ms;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.707 6.293-17 22l-1.414-1.414L20.293 4.879l-4.586-4.586-1.414 1.414 4.586 4.586-2.586 2.586-1.414-1.414 2.586-2.586L13 2.293l-1.414 1.414L15.172 7.3l-2.586 2.586-1.414-1.414L13.758 6.06l-1.414-1.414L7.3 9.692l-1.414-1.414L2.293 12l1.414 1.414L7.3 9.828l1.414 1.414L6.121 13.83l1.414 1.414L10.121 12.66l1.414 1.414L8.949 16.66l1.414 1.414L12.949 15.5l1.414 1.414-2.586 2.586-1.414-1.414 2.586-2.586-4.586-4.586-1.414 1.414L13 18.293l4.586-4.586 1.414 1.414L14.414 19.707l1.414 1.414 5.293-5.293-1.414-1.414z"/></svg>
-                    <h3>THE ATHLETE</h3>
-                    <p>Fuel peak performance. A clean pre-workout boost that supports intense training and recovery with sustained energy release, not a post-session crash.</p>
-                </div>
-                 <div class="persona-card fade-in" style="transition-delay: 400ms;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 16V4h16l.002 12H4z"/><path d="M6 12h2v2H6zm3 0h2v2H9zm3 0h2v2h-2zm3 0h2v2h-2z"/></svg>
-                    <h3>THE GAMER</h3>
-                    <p>Dominate your session. The cognitive boost for sustained concentration and faster reflexes during marathon ranked matches, without the sugar crash.</p>
+            <div class="persona-grid-wrapper">
+                 <div class="persona-grid">
+                    <div class="persona-card fade-in">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm3.444 13.444L11 11V5h2v5l3.556 3.556L15.444 15.444z"/></svg>
+                        <h3>THE BIOHACKER</h3>
+                        <p>Optimize your protocol with a scientifically formulated stack that delivers sustained clarity without the crash. Data is king.</p>
+                    </div>
+                    <div class="persona-card fade-in" style="transition-delay: 100ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7.414 9.803 2.121 15.096l5.657 5.657 5.293-5.293 6.974-6.974zM16.5 6.5l1 1-2.5 2.5-1-1 2.5-2.5zm-3 3l1 1-6.5 6.5-1-1 6.5-6.5zM3.536 16.513l1.414-1.414 4.242 4.242-1.414 1.414a2 2 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.828z"/></svg>
+                        <h3>THE CREATIVE</h3>
+                        <p>Sustain your creative flow. Tap into consistent energy and cognitive enhancement that fuels deep work sessions and shatters creative blocks.</p>
+                    </div>
+                    <div class="persona-card fade-in" style="transition-delay: 200ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zm0 14c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6z"/><path d="M11 11h2v6h-2zm0-4h2v2h-2z"/></svg>
+                        <h3>THE PROFESSIONAL</h3>
+                        <p>Command your day. A reliable, premium solution that delivers the sustained focus required for high-stakes decisions and marathon workdays.</p>
+                    </div>
+                     <div class="persona-card fade-in" style="transition-delay: 300ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.707 6.293-17 22l-1.414-1.414L20.293 4.879l-4.586-4.586-1.414 1.414 4.586 4.586-2.586 2.586-1.414-1.414 2.586-2.586L13 2.293l-1.414 1.414L15.172 7.3l-2.586 2.586-1.414-1.414L13.758 6.06l-1.414-1.414L7.3 9.692l-1.414-1.414L2.293 12l1.414 1.414L7.3 9.828l1.414 1.414L6.121 13.83l1.414 1.414L10.121 12.66l1.414 1.414L8.949 16.66l1.414 1.414L12.949 15.5l1.414 1.414-2.586 2.586-1.414-1.414 2.586-2.586-4.586-4.586-1.414 1.414L13 18.293l4.586-4.586 1.414 1.414L14.414 19.707l1.414 1.414 5.293-5.293-1.414-1.414z"/></svg>
+                        <h3>THE ATHLETE</h3>
+                        <p>Fuel peak performance. A clean pre-workout boost that supports intense training and recovery with sustained energy release, not a post-session crash.</p>
+                    </div>
+                     <div class="persona-card fade-in" style="transition-delay: 400ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 16V4h16l.002 12H4z"/><path d="M6 12h2v2H6zm3 0h2v2H9zm3 0h2v2h-2zm3 0h2v2h-2z"/></svg>
+                        <h3>THE GAMER</h3>
+                        <p>Dominate your session. The cognitive boost for sustained concentration and faster reflexes during marathon ranked matches, without the sugar crash.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- EXPERIENCE SECTION -->
-    <section id="experience" class="experience-section">
-        <div class="container">
-            <h2 class="fade-in">FUNCTION OVER <span class="highlight">FLAVOR.</span></h2>
-            <p class="fade-in">This is coffee with a purpose. We chose Alkalized Cacao and Ceylon Cinnamon for their functional benefits first. These compounds support metabolic health and enhance cognitive clarity, amplifying what coffee already does best. The fact they also create a uniquely smooth, rich flavor? We call that a fortunate side effect.</p>
-        </div>
-    </section>
-    
     <!-- PRICING SECTION -->
     <section id="pricing" class="pricing-section">
         <div class="container">
             <h2 class="fade-in">ACTIVATE <span class="highlight">APEX.</span></h2>
-            <div class="pricing-card highlight-card fade-in">
-                <span class="save-badge">SUBSCRIBE & SAVE</span>
-                <h3>APEX SYSTEM</h3>
-                <div class="price">$69 <span>/month</span></div>
-                <ul>
-                    <li>30 Servings of Kickshot: APEX</li>
-                    <li>Automatic monthly delivery</li>
-                    <li>Full access to performance protocols</li>
-                    <li>Cancel or modify anytime</li>
-                </ul>
-                <a href="#" class="cta-button">Engage Subscription</a>
-            </div>
-            <div class="pricing-card fade-in" style="margin-top: 1rem;">
-                <h3>ONE-TIME SUPPLY</h3>
-                <div class="price">$79</div>
-                 <ul>
-                    <li>30 Servings of Kickshot: APEX</li>
-                    <li>One-time purchase</li>
-                    <li>Perfect for trial runs</li>
-                    <li>No commitment</li>
-                </ul>
-                <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
+            <div class="pricing-grid">
+                 <div class="pricing-card fade-in">
+                    <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                    <h3>THE SYSTEM CORE</h3>
+                    <div class="price">$69 <span>/month</span></div>
+                    <p>The at-home subscription. 30 servings of your daily protocol.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe</a>
+                </div>
+                <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
+                    <span class="save-badge">BEST VALUE & PERFORMANCE</span>
+                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit" style="max-width:120px;">
+                    <h3>COMPLETE PROTOCOL</h3>
+                    <div class="price">$89 <span>/month</span></div>
+                    <p>The ultimate setup: A 30-serving System Core tub AND a 15-serving Field Kit each month.</p>
+                    <a href="#" class="cta-button">Engage Full System</a>
+                </div>
+                 <div class="pricing-card fade-in" style="transition-delay:200ms;">
+                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit">
+                    <h3>THE FIELD KIT</h3>
+                    <div class="price">$39</div>
+                     <p>One-time purchase of a 15-serving Field Kit for travel or trial.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
+                </div>
             </div>
         </div>
     </section>
@@ -761,51 +726,35 @@
             <div class="faq-container fade-in">
                 <div class="faq-item">
                     <div class="faq-question">Is APEX tested for banned substances?</div>
-                    <div class="faq-answer">
-                        <p><strong>Engineered for Elite Compliance.</strong> APEX contains zero banned substances or grey-market stimulants and is fully compliant with WADA standards, making it safe for professional athletes, military personnel, and anyone subject to rigorous testing. Our third-party lab tests verify purity, potency, and the absence of contaminants. This is a professional-grade tool, and its integrity is non-negotiable.</p>
-                    </div>
+                    <div class="faq-answer"><p><strong>Engineered for Elite Compliance.</strong> APEX contains zero banned substances or grey-market stimulants and is fully compliant with WADA standards, making it safe for professional athletes, military personnel, and anyone subject to rigorous testing. Our third-party lab tests verify purity, potency, and the absence of contaminants.</p></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Should I cycle APEX? Can I take it every day?</div>
-                    <div class="faq-answer">
-                        <p><strong>Protocol Over Habit.</strong> We designed APEX for daily mission-critical use. However, to maintain maximum sensitivity, we recommend a simple cycling protocol: <strong>5 days on, 2 days off</strong> (e.g., weekdays on, weekends off). This ensures the system remains highly responsive and delivers maximum impact when you need it most.</p>
-                    </div>
+                    <div class="faq-answer"><p><strong>Protocol Over Habit.</strong> We designed APEX for daily mission-critical use. However, to maintain maximum sensitivity, we recommend a simple cycling protocol: <strong>5 days on, 2 days off</strong> (e.g., weekdays on, weekends off). This ensures the system remains highly responsive.</p></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Can I take APEX with other supplements or medication?</div>
-                    <div class="faq-answer">
-                        <p>APEX is a comprehensive system. If you are taking prescription medication, particularly for cardiovascular health, ADHD, or psychiatric conditions, you must provide the <strong>APEX Blueprint</strong> to your qualified healthcare provider before use. Your health protocol is your responsibility.</p>
-                    </div>
+                    <div class="faq-answer"><p>APEX is a comprehensive system. If you are taking prescription medication, particularly for cardiovascular health, ADHD, or psychiatric conditions, you must provide the <strong>APEX Blueprint</strong> to your qualified healthcare provider before use. Your health protocol is your responsibility.</p></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">How is APEX different from MUD/WTR or Ryze?</div>
-                    <div class="faq-answer">
-                        <p><strong>Performance vs. Wellness.</strong> We are playing a different game. Brands like MUD/WTR are "coffee alternatives" for gentle wellness. APEX is a <strong>coffee-based performance protocol</strong> for cognitive enhancement. We use full, clinical dosages, provide a dual-fuel energy system with MCTs, and focus relentlessly on measurable outcomes. They are for unwinding; we are for winning.</p>
-                    </div>
+                    <div class="faq-answer"><p><strong>Performance vs. Wellness.</strong> We are playing a different game. Brands like MUD/WTR are "coffee alternatives" for gentle wellness. APEX is a <strong>coffee-based performance protocol</strong> for cognitive enhancement. We use full, clinical dosages and a dual-fuel system for measurable outcomes. They are for unwinding; we are for winning.</p></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Will APEX break my fast?</div>
-                    <div class="faq-answer">
-                        <p><strong>Strictly speaking, yes. Functionally, it enhances it.</strong> APEX contains ~40 calories, primarily from MCT powder. For a strict zero-calorie fast, this will break it. However, for metabolic health and ketone production, APEX is a powerful accelerator, deepening the ketogenic state that fasting aims to achieve and making your fasting window more productive.</p>
-                    </div>
+                    <div class="faq-answer"><p><strong>Strictly speaking, yes. Functionally, it enhances it.</strong> APEX contains ~40 calories from MCT powder. For a strict zero-calorie fast, this will break it. However, for metabolic health, APEX is a powerful accelerator, deepening the ketogenic state that fasting aims to achieve.</p></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Can I take more than one serving of APEX per day?</div>
-                    <div class="faq-answer">
-                        <p><strong>Protocol adherence is key.</strong> One serving is a precisely calibrated dose. We do not recommend exceeding one serving per day. The 4-6 hour duration of APEX is designed to carry you through the core of your workday without the need for a "top-up," which could disrupt your sleep architecture.</p>
-                    </div>
+                    <div class="faq-answer"><p><strong>Protocol adherence is key.</strong> One serving is a precisely calibrated dose. We do not recommend exceeding one serving per day. The 4-6 hour duration of APEX is designed to carry you through the core of your workday without the need for a "top-up," which could disrupt your sleep architecture.</p></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">How long does it take to "feel" APEX?</div>
-                    <div class="faq-answer">
-                        <p>The initial effects are rapid. You will feel the smooth energy and focus from the Caffeine/L-Theanine synergy within <strong>15-30 minutes</strong>. The enhanced mental clarity from MCT-driven ketone production typically becomes more noticeable around the <strong>45-60 minute mark</strong>. The long-term benefits of Lion's Mane are cumulative and build over several weeks.</p>
-                    </div>
+                    <div class="faq-answer"><p>The initial effects are rapid. You will feel the smooth energy and focus from the Caffeine/L-Theanine synergy within <strong>15-30 minutes</strong>. The enhanced mental clarity from MCT-driven ketone production typically becomes more noticeable around the <strong>45-60 minute mark</strong>. The long-term benefits of Lion's Mane are cumulative.</p></div>
                 </div>
                  <div class="faq-item">
                     <div class="faq-question">Can I mix APEX with something other than hot water?</div>
-                    <div class="faq-answer">
-                        <p>Yes. APEX is designed for versatility. It works exceptionally well mixed into a cold protein shake for a pre-workout boost or blended with ice and unsweetened almond milk for a cold brew-style functional beverage. The core protocol remains effective regardless of the delivery system.</p>
-                    </div>
+                    <div class="faq-answer"><p>Yes. APEX is designed for versatility. It works exceptionally well mixed into a cold protein shake for a pre-workout boost or blended with ice and unsweetened almond milk for a cold brew-style functional beverage. The core protocol remains effective regardless of the delivery system.</p></div>
                 </div>
             </div>
         </div>
@@ -816,11 +765,8 @@
         <p>© 2025 Kickshot Industries. All Rights Reserved. Upgrade Your OS.</p>
     </footer>
 
-
     <script>
-        // --- FAQ ACCORDION SCRIPT ---
         const faqItems = document.querySelectorAll('.faq-item');
-
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
             question.addEventListener('click', () => {
@@ -829,7 +775,6 @@
                     currentlyActive.classList.remove('active');
                     currentlyActive.querySelector('.faq-answer').style.maxHeight = 0;
                 }
-
                 item.classList.toggle('active');
                 const answer = item.querySelector('.faq-answer');
                 if (item.classList.contains('active')) {
@@ -840,32 +785,16 @@
             });
         });
 
-        // --- FADE-IN ON SCROLL SCRIPT ---
         const faders = document.querySelectorAll('.fade-in');
-        
-        const appearOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const appearOnScroll = new IntersectionObserver(function(
-            entries,
-            appearOnScroll
-        ) {
+        const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
             entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    return;
-                } else {
-                    entry.target.classList.add('visible');
-                    appearOnScroll.unobserve(entry.target);
-                }
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
             });
         }, appearOptions);
-
-        faders.forEach(fader => {
-            appearOnScroll.observe(fader);
-        });
-
+        faders.forEach(fader => { appearOnScroll.observe(fader); });
     </script>
 </body>
 </html>
