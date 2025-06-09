@@ -979,7 +979,7 @@
     <section class="hero">
         <div class="hero-content fade-in">
             <h1>UPGRADE YOUR OS.</h1>
-            <p>This is more than coffee. It's a comprehensive cognitive toolkit engineered for flawless execution. Clean energy, unshakeable focus, and zero crash. Welcome to your new benchmark.</p>
+            <p>This isn't coffee. This is a comprehensive cognitive toolkit engineered for flawless execution. Clean energy, unshakeable focus, and zero crash. Welcome to your new benchmark.</p>
             <a href="#pricing" class="cta-button">Activate APEX</a>
         </div>
     </section>
@@ -1969,10 +1969,14 @@
                     title = "Mid-Session";
                     apexDesc = "Performance plateau continues with stable energy.";
                     coffeeDesc = "Energy crash beginning, brain fog sets in.";
-                } else {
+                } else if (hours < 6) {
                     title = "Controlled Off-Ramp";
                     apexDesc = "Gradual return to baseline, focus remains intact.";
                     coffeeDesc = "Lingering fatigue and system disruption.";
+                } else {
+                    title = "Clean Return";
+                    apexDesc = "You feel normal and productive, not depleted.";
+                    coffeeDesc = "The positive effects are gone, system disrupted.";
                 }
                 
                 // Position popup near scrubber
@@ -1982,17 +1986,17 @@
                 const handlePos = 30 + percentage * (scrubberRect.width - 60);
                 
                 // Determine if popup should appear on left or right side
-                // Switch to left side after 5 hours (62.5% of 8 hours)
-                const switchPoint = 0.625;
+                // Switch to left side just after halfway point (50% of timeline)
+                const switchPoint = 0.5;
                 
                 if (percentage > switchPoint) {
                     // Position on the left side
                     effectPopup.style.left = 'auto';
                     effectPopup.style.right = (containerRect.right - scrubberRect.left - handlePos + popupRect.width/2) + 'px';
                 } else {
-                    // Position on the right side
+                    // Position on the right side - moved further right to avoid covering graph
                     effectPopup.style.right = 'auto';
-                    effectPopup.style.left = (handlePos - popupRect.width/2) + 'px';
+                    effectPopup.style.left = (handlePos + popupRect.width/2 + 20) + 'px';
                 }
 
                 popupTitle.innerHTML = `<span style="color: var(--color-accent);">APEX:</span> ${apexDesc} <br><br> <span style="color: var(--color-coffee);">Coffee:</span> ${coffeeDesc}`;
