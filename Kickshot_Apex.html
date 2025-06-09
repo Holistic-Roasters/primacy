@@ -41,6 +41,10 @@
             overflow-x: hidden;
         }
 
+        body.no-scroll {
+            overflow: hidden;
+        }
+
         .container {
             width: 90%;
             max-width: 1100px;
@@ -107,6 +111,7 @@
             font-size: 1.8rem;
             color: var(--color-white);
             text-decoration: none;
+            z-index: 1001;
         }
 
         .logo .highlight {
@@ -126,6 +131,23 @@
         .nav-links a:hover {
             color: var(--color-accent);
         }
+        
+        /* --- MOBILE NAVIGATION --- */
+        .hamburger-menu {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger-menu .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--color-white);
+            transition: all 0.3s ease-in-out;
+        }
+
 
         .hero {
             background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
@@ -604,6 +626,7 @@
         /* --- RECAP BLUEPRINT TABLE SECTION --- */
         .table-container {
              margin-top: 4rem;
+             overflow-x: auto;
         }
         .blueprint-table {
             width: 100%;
@@ -881,7 +904,6 @@
         @media (max-width: 767px) {
             h1 { font-size: 3rem; }
             h2 { font-size: 2rem; }
-            .nav-links { display: none; }
             .hero { min-height: 70vh; }
             .ecosystem-grid, .comparison-table { grid-template-columns: 1fr; }
             .blueprint-table { min-width: 100%; }
@@ -890,6 +912,43 @@
             }
             .chart-wrapper {
                 height: 300px;
+            }
+
+            /* --- MOBILE NAV STYLES --- */
+            .hamburger-menu {
+                display: block;
+            }
+            
+            .hamburger-menu.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger-menu.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .hamburger-menu.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .nav-links {
+                position: fixed;
+                left: 100%;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--color-black);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: left 0.3s ease-in-out;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+                margin: 2rem 0;
             }
         }
 
@@ -907,6 +966,11 @@
                 <a href="#advantage">Advantage</a>
                 <a href="#pricing">Get Apex</a>
                 <a href="#faq">FAQ</a>
+            </div>
+            <div class="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
         </nav>
     </header>
@@ -1543,6 +1607,31 @@
     </footer>
 
     <script>
+        // --- MOBILE NAVIGATION SCRIPT ---
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const navLinksA = document.querySelectorAll('.nav-links a');
+        const body = document.body;
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            body.classList.toggle('no-scroll');
+        });
+
+        // Close menu when a link is clicked
+        navLinksA.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    body.classList.remove('no-scroll');
+                }
+            });
+        });
+
+        // --- EXISTING SCRIPTS ---
+
         // FAQ Functionality
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
@@ -1599,296 +1688,304 @@
 
         // Energy Curve Visualization
         const canvas = document.getElementById('energyChart');
-        const ctx = canvas.getContext('2d');
-        const scrubber = document.getElementById('timeScrubber');
-        const scrubberHandle = document.getElementById('scrubberHandle');
-        const scrubberProgress = document.getElementById('scrubberProgress');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const workdayToggle = document.getElementById('workdayToggle');
-        const workdayOverlay = document.getElementById('workdayOverlay');
-        const effectPopup = document.getElementById('effectPopup');
-        const popupTitle = document.getElementById('popupTitle');
-        const popupDescription = document.getElementById('popupDescription');
+        if (canvas) { // Check if canvas exists to prevent errors on other pages
+            const ctx = canvas.getContext('2d');
+            const scrubber = document.getElementById('timeScrubber');
+            const scrubberHandle = document.getElementById('scrubberHandle');
+            const scrubberProgress = document.getElementById('scrubberProgress');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const workdayToggle = document.getElementById('workdayToggle');
+            const workdayOverlay = document.getElementById('workdayOverlay');
+            const effectPopup = document.getElementById('effectPopup');
+            const popupTitle = document.getElementById('popupTitle');
+            const popupDescription = document.getElementById('popupDescription');
 
-        // Set canvas size
-        function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-            drawChart();
-        }
-
-        // Energy curve data (0-8 hours)
-        const timePoints = [];
-        const coffeeData = [];
-        const apexData = [];
-        
-        for (let i = 0; i <= 480; i += 5) { // 5-minute intervals
-            const hours = i / 60;
-            timePoints.push(hours);
-            
-            // Coffee curve - sharp spike and crash
-            let coffeeLevel;
-            if (hours < 0.5) {
-                coffeeLevel = Math.sin((hours / 0.5) * Math.PI / 2) * 95;
-            } else if (hours < 2) {
-                coffeeLevel = 95 - (hours - 0.5) * 10;
-            } else if (hours < 3) {
-                coffeeLevel = 80 - (hours - 2) * 50;
-            } else {
-                coffeeLevel = Math.max(30 - (hours - 3) * 5, 15);
+            // Set canvas size
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * window.devicePixelRatio;
+                canvas.height = rect.height * window.devicePixelRatio;
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                drawChart();
             }
-            coffeeData.push(coffeeLevel);
+
+            // Energy curve data (0-8 hours)
+            const timePoints = [];
+            const coffeeData = [];
+            const apexData = [];
             
-            // APEX curve - smooth rise and sustained plateau
-            let apexLevel;
-            if (hours < 1) {
-                apexLevel = (1 - Math.cos((hours / 1) * Math.PI)) * 40;
-            } else if (hours < 4) {
-                apexLevel = 80 + Math.sin((hours - 1) * 0.5) * 5;
-            } else if (hours < 6) {
-                apexLevel = 85 - (hours - 4) * 15;
-            } else {
-                apexLevel = Math.max(55 - (hours - 6) * 10, 40);
+            for (let i = 0; i <= 480; i += 5) { // 5-minute intervals
+                const hours = i / 60;
+                timePoints.push(hours);
+                
+                // Coffee curve - sharp spike and crash
+                let coffeeLevel;
+                if (hours < 0.5) {
+                    coffeeLevel = Math.sin((hours / 0.5) * Math.PI / 2) * 95;
+                } else if (hours < 2) {
+                    coffeeLevel = 95 - (hours - 0.5) * 10;
+                } else if (hours < 3) {
+                    coffeeLevel = 80 - (hours - 2) * 50;
+                } else {
+                    coffeeLevel = Math.max(30 - (hours - 3) * 5, 15);
+                }
+                coffeeData.push(coffeeLevel);
+                
+                // APEX curve - smooth rise and sustained plateau
+                let apexLevel;
+                if (hours < 1) {
+                    apexLevel = (1 - Math.cos((hours / 1) * Math.PI)) * 40;
+                } else if (hours < 4) {
+                    apexLevel = 80 + Math.sin((hours - 1) * 0.5) * 5;
+                } else if (hours < 6) {
+                    apexLevel = 85 - (hours - 4) * 15;
+                } else {
+                    apexLevel = Math.max(55 - (hours - 6) * 10, 40);
+                }
+                apexData.push(apexLevel);
             }
-            apexData.push(apexLevel);
-        }
 
-        // Draw the energy curves
-        function drawChart() {
-            const width = canvas.width / window.devicePixelRatio;
-            const height = canvas.height / window.devicePixelRatio;
-            const padding = 40;
-            const chartWidth = width - padding * 2;
-            const chartHeight = height - padding * 2;
+            // Draw the energy curves
+            let currentTimeIndex = null;
+            function drawChart() {
+                const width = canvas.width / window.devicePixelRatio;
+                const height = canvas.height / window.devicePixelRatio;
+                const padding = 40;
+                const chartWidth = width - padding * 2;
+                const chartHeight = height - padding * 2;
 
-            // Clear canvas
-            ctx.clearRect(0, 0, width, height);
+                // Clear canvas
+                ctx.clearRect(0, 0, width, height);
 
-            // Draw grid
-            ctx.strokeStyle = 'rgba(136, 136, 136, 0.2)';
-            ctx.lineWidth = 1;
-            
-            // Horizontal grid lines
-            for (let i = 0; i <= 4; i++) {
-                const y = padding + (chartHeight / 4) * i;
+                // Draw grid
+                ctx.strokeStyle = 'rgba(136, 136, 136, 0.2)';
+                ctx.lineWidth = 1;
+                
+                // Horizontal grid lines
+                for (let i = 0; i <= 4; i++) {
+                    const y = padding + (chartHeight / 4) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(width - padding, y);
+                    ctx.stroke();
+                }
+
+                // Vertical grid lines (hourly)
+                for (let i = 0; i <= 8; i++) {
+                    const x = padding + (chartWidth / 8) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, height - padding);
+                    ctx.stroke();
+                }
+
+                // Draw axes
+                ctx.strokeStyle = '#888';
+                ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(padding, y);
-                ctx.lineTo(width - padding, y);
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, height - padding);
+                ctx.lineTo(width - padding, height - padding);
                 ctx.stroke();
+
+                // Y-axis labels
+                ctx.fillStyle = '#888';
+                ctx.font = '12px Roboto';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                
+                const yLabels = ['100%', '75%', '50%', '25%', '0%'];
+                yLabels.forEach((label, i) => {
+                    const y = padding + (chartHeight / 4) * i;
+                    ctx.fillText(label, padding - 10, y);
+                });
+
+                // X-axis labels
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                for (let i = 0; i <= 8; i++) {
+                    const x = padding + (chartWidth / 8) * i;
+                    ctx.fillText(i + 'h', x, height - padding + 10);
+                }
+
+                // Draw curves
+                function drawCurve(data, color, lineWidth = 3) {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = lineWidth;
+                    ctx.beginPath();
+                    
+                    data.forEach((value, index) => {
+                        const x = padding + (index / (data.length - 1)) * chartWidth;
+                        const y = padding + chartHeight - (value / 100) * chartHeight;
+                        
+                        if (index === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    });
+                    
+                    ctx.stroke();
+                }
+
+                // Draw coffee curve
+                drawCurve(coffeeData, '#ff6b6b');
+                
+                // Draw APEX curve
+                drawCurve(apexData, '#00ff9d');
+
+                // Draw current time indicator
+                if (currentTimeIndex !== null) {
+                    const x = padding + (currentTimeIndex / (timePoints.length - 1)) * chartWidth;
+                    
+                    // Vertical line
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, height - padding);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    
+                    // Points on curves
+                    const coffeeY = padding + chartHeight - (coffeeData[currentTimeIndex] / 100) * chartHeight;
+                    const apexY = padding + chartHeight - (apexData[currentTimeIndex] / 100) * chartHeight;
+                    
+                    // Coffee point
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.beginPath();
+                    ctx.arc(x, coffeeY, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // APEX point
+                    ctx.fillStyle = '#00ff9d';
+                    ctx.beginPath();
+                    ctx.arc(x, apexY, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             }
 
-            // Vertical grid lines (hourly)
-            for (let i = 0; i <= 8; i++) {
-                const x = padding + (chartWidth / 8) * i;
-                ctx.beginPath();
-                ctx.moveTo(x, padding);
-                ctx.lineTo(x, height - padding);
-                ctx.stroke();
+            // Scrubber functionality
+            let isDragging = false;
+
+            function updateScrubber(clientX) {
+                const rect = scrubber.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const percentage = Math.max(0, Math.min(1, x / rect.width));
+                
+                currentTimeIndex = Math.floor(percentage * (timePoints.length - 1));
+                const hours = timePoints[currentTimeIndex];
+                
+                // Update scrubber position
+                scrubberProgress.style.width = (percentage * 100) + '%';
+                scrubberHandle.style.left = (30 + percentage * (rect.width - 60)) + 'px';
+                
+                // Update time display
+                const totalMinutes = hours * 60;
+                const displayHours = Math.floor(totalMinutes / 60) + 7; // Start at 7 AM
+                const displayMinutes = Math.floor(totalMinutes % 60);
+                const ampm = displayHours >= 12 ? 'PM' : 'AM';
+                const displayHour = displayHours > 12 ? displayHours - 12 : (displayHours === 0 ? 12 : displayHours);
+                timeDisplay.textContent = `${displayHour}:${displayMinutes.toString().padStart(2, '0')} ${ampm}`;
+                timeDisplay.classList.add('active');
+                
+                // Update chart
+                drawChart();
+                
+                // Show effect popup
+                updateEffectPopup(hours, percentage);
             }
 
-            // Draw axes
-            ctx.strokeStyle = '#888';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(padding, padding);
-            ctx.lineTo(padding, height - padding);
-            ctx.lineTo(width - padding, height - padding);
-            ctx.stroke();
+            function updateEffectPopup(hours, percentage) {
+                let title, apexDesc, coffeeDesc;
 
-            // Y-axis labels
-            ctx.fillStyle = '#888';
-            ctx.font = '12px Roboto';
-            ctx.textAlign = 'right';
-            ctx.textBaseline = 'middle';
-            
-            const yLabels = ['100%', '75%', '50%', '25%', '0%'];
-            yLabels.forEach((label, i) => {
-                const y = padding + (chartHeight / 4) * i;
-                ctx.fillText(label, padding - 10, y);
+                if (hours < 0.75) {
+                    title = "Initial Response";
+                    apexDesc = "A calm, controlled 'coming online' feeling.";
+                    coffeeDesc = "A rapid, sometimes jarring rush of energy.";
+                } else if (hours < 2) {
+                    title = "Peak Performance";
+                    apexDesc = "Sustained, high-level focus. Dual-fuel system active.";
+                    coffeeDesc = "High alertness, but focus can be scattered.";
+                } else if (hours < 4) {
+                    title = "Mid-Session";
+                    apexDesc = "Performance plateau continues with stable energy.";
+                    coffeeDesc = "Energy crash beginning, brain fog sets in.";
+                } else {
+                    title = "Controlled Off-Ramp";
+                    apexDesc = "Gradual return to baseline, focus remains intact.";
+                    coffeeDesc = "Lingering fatigue and system disruption.";
+                }
+                
+                // Position popup near scrubber
+                const scrubberRect = scrubber.getBoundingClientRect();
+                const popupRect = effectPopup.getBoundingClientRect();
+                const handlePos = scrubberRect.left + 30 + percentage * (scrubberRect.width - 60);
+
+                popupTitle.innerHTML = `<span style="color: var(--color-accent);">APEX:</span> ${apexDesc} <br><br> <span style="color: var(--color-coffee);">Coffee:</span> ${coffeeDesc}`;
+                effectPopup.style.left = `${handlePos - popupRect.width/2}px`;
+                effectPopup.style.bottom = '80px';
+                effectPopup.classList.add('active');
+            }
+
+            scrubber.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                scrubberHandle.style.cursor = 'grabbing';
+                updateScrubber(e.clientX);
             });
 
-            // X-axis labels
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'top';
-            for (let i = 0; i <= 8; i++) {
-                const x = padding + (chartWidth / 8) * i;
-                ctx.fillText(i + 'h', x, height - padding + 10);
-            }
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    updateScrubber(e.clientX);
+                }
+            });
 
-            // Draw curves
-            function drawCurve(data, color, lineWidth = 3) {
-                ctx.strokeStyle = color;
-                ctx.lineWidth = lineWidth;
-                ctx.beginPath();
-                
-                data.forEach((value, index) => {
-                    const x = padding + (index / (data.length - 1)) * chartWidth;
-                    const y = padding + chartHeight - (value / 100) * chartHeight;
-                    
-                    if (index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                });
-                
-                ctx.stroke();
-            }
+            document.addEventListener('mouseup', () => {
+                if(isDragging) {
+                    isDragging = false;
+                    scrubberHandle.style.cursor = 'grab';
+                    timeDisplay.classList.remove('active');
+                    effectPopup.classList.remove('active');
+                    currentTimeIndex = null;
+                    drawChart();
+                }
+            });
 
-            // Draw coffee curve
-            drawCurve(coffeeData, '#ff6b6b');
-            
-            // Draw APEX curve
-            drawCurve(apexData, '#00ff9d');
-
-            // Draw current time indicator
-            if (currentTimeIndex !== null) {
-                const x = padding + (currentTimeIndex / (timePoints.length - 1)) * chartWidth;
-                
-                // Vertical line
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-                ctx.lineWidth = 2;
-                ctx.setLineDash([5, 5]);
-                ctx.beginPath();
-                ctx.moveTo(x, padding);
-                ctx.lineTo(x, height - padding);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                
-                // Points on curves
-                const coffeeY = padding + chartHeight - (coffeeData[currentTimeIndex] / 100) * chartHeight;
-                const apexY = padding + chartHeight - (apexData[currentTimeIndex] / 100) * chartHeight;
-                
-                // Coffee point
-                ctx.fillStyle = '#ff6b6b';
-                ctx.beginPath();
-                ctx.arc(x, coffeeY, 6, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // APEX point
-                ctx.fillStyle = '#00ff9d';
-                ctx.beginPath();
-                ctx.arc(x, apexY, 6, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        // Scrubber functionality
-        let isDragging = false;
-        let currentTimeIndex = null;
-
-        function updateScrubber(clientX) {
-            const rect = scrubber.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const percentage = Math.max(0, Math.min(1, x / rect.width));
-            
-            currentTimeIndex = Math.floor(percentage * (timePoints.length - 1));
-            const hours = timePoints[currentTimeIndex];
-            
-            // Update scrubber position
-            scrubberProgress.style.width = (percentage * 100) + '%';
-            scrubberHandle.style.left = (30 + percentage * (rect.width - 60)) + 'px';
-            
-            // Update time display
-            const totalMinutes = hours * 60;
-            const displayHours = Math.floor(totalMinutes / 60) + 7; // Start at 7 AM
-            const displayMinutes = Math.floor(totalMinutes % 60);
-            const ampm = displayHours >= 12 ? 'PM' : 'AM';
-            const displayHour = displayHours > 12 ? displayHours - 12 : displayHours;
-            timeDisplay.textContent = `${displayHour}:${displayMinutes.toString().padStart(2, '0')} ${ampm}`;
-            timeDisplay.classList.add('active');
-            
-            // Update chart
-            drawChart();
-            
-            // Show effect popup
-            updateEffectPopup(hours);
-        }
-
-        function updateEffectPopup(hours) {
-            let title, description, isApex = false;
-            
-            if (hours < 0.75) {
-                title = "Initial Response";
-                description = isApex ? 
-                    "APEX: Smooth energy build-up with L-Theanine modulation" : 
-                    "Coffee: Rapid caffeine absorption causing energy spike";
-            } else if (hours < 2) {
-                title = "Peak Performance";
-                description = isApex ? 
-                    "APEX: Sustained focus plateau with dual-fuel system active" : 
-                    "Coffee: High alertness but potential jitters and anxiety";
-            } else if (hours < 4) {
-                title = hours < 3 ? "Mid-Session" : "Transition Phase";
-                description = isApex ? 
-                    "APEX: Maintained performance with stable energy" : 
-                    "Coffee: Energy crash beginning, adenosine flooding back";
-            } else {
-                title = "Late Stage";
-                description = isApex ? 
-                    "APEX: Controlled energy taper, still productive" : 
-                    "Coffee: Fatigue and brain fog, system disrupted";
-            }
-            
-            // Position popup near scrubber
-            const rect = scrubber.getBoundingClientRect();
-            const popupRect = effectPopup.getBoundingClientRect();
-            effectPopup.style.left = Math.min(rect.width - popupRect.width - 20, Math.max(20, (currentTimeIndex / timePoints.length) * rect.width - popupRect.width / 2)) + 'px';
-            effectPopup.style.bottom = '80px';
-            
-            popupTitle.textContent = title;
-            popupDescription.textContent = description;
-            effectPopup.classList.add('active');
-        }
-
-        scrubber.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            updateScrubber(e.clientX);
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                updateScrubber(e.clientX);
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            timeDisplay.classList.remove('active');
-            effectPopup.classList.remove('active');
-        });
-
-        // Touch events for mobile
-        scrubber.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            updateScrubber(e.touches[0].clientX);
-        });
-
-        document.addEventListener('touchmove', (e) => {
-            if (isDragging) {
+            // Touch events for mobile
+            scrubber.addEventListener('touchstart', (e) => {
+                isDragging = true;
                 updateScrubber(e.touches[0].clientX);
-            }
-        });
+            }, {passive: true});
 
-        document.addEventListener('touchend', () => {
-            isDragging = false;
-            timeDisplay.classList.remove('active');
-            effectPopup.classList.remove('active');
-        });
+            document.addEventListener('touchmove', (e) => {
+                if (isDragging) {
+                    updateScrubber(e.touches[0].clientX);
+                }
+            }, {passive: true});
 
-        // Workday toggle
-        workdayToggle.addEventListener('click', () => {
-            workdayToggle.classList.toggle('active');
-            workdayOverlay.classList.toggle('active');
-        });
+            document.addEventListener('touchend', () => {
+                if(isDragging) {
+                    isDragging = false;
+                    timeDisplay.classList.remove('active');
+                    effectPopup.classList.remove('active');
+                    currentTimeIndex = null;
+                    drawChart();
+                }
+            });
 
-        // Initialize
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+            // Workday toggle
+            workdayToggle.addEventListener('click', () => {
+                workdayToggle.classList.toggle('active');
+                workdayOverlay.classList.toggle('active');
+            });
+
+            // Initialize
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+        }
     </script>
 </body>
 </html>
