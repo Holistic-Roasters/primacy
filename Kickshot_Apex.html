@@ -17,6 +17,7 @@
             --color-light-grey: #888888;
             --color-white: #f5f5f5;
             --color-accent: #00ff9d; /* APEX Green */
+            --color-coffee: #ff6b6b; /* Coffee Red */
             --font-primary: 'Roboto', sans-serif;
             --font-display: 'Roboto Condensed', sans-serif;
         }
@@ -181,6 +182,378 @@
             background-color: var(--color-black);
         }
 
+        /* --- INTERACTIVE INGREDIENT EXPLORER --- */
+        .ingredient-explorer {
+            margin-top: 3rem;
+            background: var(--color-dark-grey);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .ingredient-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .ingredient-tab {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredient-tab:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .ingredient-tab.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        .ingredient-content {
+            min-height: 400px;
+            position: relative;
+        }
+
+        .ingredient-detail {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .ingredient-detail.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .ingredient-info h3 {
+            color: var(--color-accent);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .ingredient-dose {
+            background: var(--color-black);
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--color-accent);
+        }
+
+        .ingredient-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--color-white);
+        }
+
+        .synergy-list {
+            list-style: none;
+        }
+
+        .synergy-list li {
+            background: var(--color-black);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent);
+            transition: transform 0.3s ease;
+        }
+
+        .synergy-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .synergy-list strong {
+            color: var(--color-accent);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .ingredient-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .brain-diagram {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .brain-diagram svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 157, 0.3));
+        }
+
+        .action-label {
+            position: absolute;
+            background: var(--color-accent);
+            color: var(--color-black);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            animation: fadeInUp 0.8s ease forwards;
+            box-shadow: 0 4px 20px rgba(0, 255, 157, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--color-accent); }
+            50% { box-shadow: 0 0 40px var(--color-accent), 0 0 60px var(--color-accent); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ENERGY CURVE VISUALIZATION --- */
+        .energy-curve-section {
+            background: var(--color-black);
+            padding: 80px 0;
+        }
+
+        .curve-container {
+            background: var(--color-dark-grey);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .curve-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .curve-legend {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.apex { background: var(--color-accent); }
+        .legend-dot.coffee { background: var(--color-coffee); }
+
+        .workday-toggle {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            color: var(--color-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .workday-toggle:hover {
+            border-color: var(--color-accent);
+        }
+
+        .workday-toggle.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-bottom: 2rem;
+        }
+
+        .energy-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .time-scrubber {
+            position: relative;
+            height: 60px;
+            background: var(--color-black);
+            border-radius: 30px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .scrubber-track {
+            position: absolute;
+            top: 50%;
+            left: 30px;
+            right: 30px;
+            height: 4px;
+            background: var(--color-mid-grey);
+            transform: translateY(-50%);
+        }
+
+        .scrubber-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--color-accent);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .scrubber-handle {
+            position: absolute;
+            top: 50%;
+            left: 30px;
+            width: 30px;
+            height: 30px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+            transition: transform 0.1s ease;
+        }
+
+        .scrubber-handle:active {
+            cursor: grabbing;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .time-display {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-accent);
+            color: var(--color-black);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .time-display.active {
+            opacity: 1;
+        }
+
+        .workday-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .workday-overlay.active {
+            opacity: 1;
+        }
+
+        .workday-marker {
+            position: absolute;
+            top: 10%;
+            height: 80%;
+            border-left: 2px dashed var(--color-light-grey);
+            opacity: 0.5;
+        }
+
+        .workday-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+            white-space: nowrap;
+        }
+
+        .effect-popup {
+            position: absolute;
+            background: var(--color-black);
+            border: 2px solid var(--color-accent);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 250px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .effect-popup.active {
+            opacity: 1;
+        }
+
+        .effect-popup h4 {
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .effect-popup p {
+            font-size: 0.9rem;
+            margin: 0;
+            text-align: left;
+        }
+
         /* --- FORMULA SECTION --- */
         .formula-grid {
             display: grid;
@@ -208,7 +581,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
-            align-items: start; /* CORRECTED: Aligns items to the top for horizontal alignment */
+            align-items: start;
             margin-top: 4rem;
         }
         .ecosystem-item {
@@ -318,7 +691,7 @@
             display: grid;
             gap: 1.5rem;
             margin-top: 4rem;
-            grid-template-columns: 1fr; /* Mobile: 1 column */
+            grid-template-columns: 1fr;
         }
         .persona-card {
             text-align: center;
@@ -350,50 +723,93 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             align-items: stretch;
+            margin-top: 3rem;
         }
         .pricing-card {
-            background-color: var(--color-black);
+            background-color: rgba(26, 26, 26, 0.8);
             border: 2px solid var(--color-mid-grey);
             padding: 2.5rem;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-accent);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.2);
         }
         .pricing-card.highlight-card {
             border-color: var(--color-accent);
+            background-color: rgba(26, 26, 26, 0.95);
         }
         .pricing-card img {
-            max-width: 150px;
-            height: auto;
-            margin: 0 auto 1.5rem auto;
+            max-width: 180px;
+            height: 200px;
+            object-fit: contain;
+            margin: 0 auto 2rem auto;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 157, 0.2));
         }
         .pricing-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .price {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-family: var(--font-display);
             color: var(--color-accent);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1;
         }
-        .price span {
-            font-size: 1rem;
+        .price-period {
+            font-size: 0.9rem;
             color: var(--color-light-grey);
+            margin-bottom: 2rem;
+        }
+        .pricing-card p {
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            color: var(--color-light-grey);
+            font-size: 1rem;
+            line-height: 1.6;
         }
         .pricing-card .cta-button {
             margin-top: auto;
+            width: 100%;
+            padding: 18px 40px;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+        .pricing-card .cta-button:hover {
+            background: var(--color-accent);
+            color: var(--color-black);
+        }
+        .pricing-card.highlight-card .cta-button {
+            background: var(--color-accent);
+            color: var(--color-black);
+        }
+        .pricing-card.highlight-card .cta-button:hover {
+            background: transparent;
+            color: var(--color-accent);
         }
         .save-badge {
             background-color: var(--color-accent);
             color: var(--color-black);
             font-family: var(--font-display);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.75rem;
             display: inline-block;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
         
         /* --- FAQ SECTION --- */
@@ -428,7 +844,6 @@
             }
         }
         @media (min-width: 992px) {
-            /* CORRECTED: This now creates the 3x2 layout on desktop */
             .persona-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -441,7 +856,6 @@
             .persona-grid .persona-card:nth-child(5) {
                  grid-column-start: 2;
             }
-            /* To center the last two cards, we'll need a wrapper or use flex, but this is a solid grid approach */
              .persona-grid-wrapper {
                 display: flex;
                 flex-direction: column;
@@ -471,6 +885,12 @@
             .hero { min-height: 70vh; }
             .ecosystem-grid, .comparison-table { grid-template-columns: 1fr; }
             .blueprint-table { min-width: 100%; }
+            .ingredient-detail.active {
+                grid-template-columns: 1fr;
+            }
+            .chart-wrapper {
+                height: 300px;
+            }
         }
 
     </style>
@@ -508,7 +928,7 @@
         </div>
     </section>
 
-    <!-- FORMULA HIGHLIGHTS -->
+    <!-- FORMULA HIGHLIGHTS WITH INTERACTIVE EXPLORER -->
     <section id="formula" class="formula-section">
         <div class="container">
             <h2 class="fade-in">A <span class="highlight">PRECISION-ENGINEERED</span> SYSTEM.</h2>
@@ -528,6 +948,307 @@
                  <div class="formula-card fade-in" style="transition-delay: 300ms;">
                     <h3>THE LONG GAME</h3>
                     <p>Fortify your architecture. Lion's Mane supports long-term brain health and neurogenesis as an investment in your cognitive capital.</p>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE INGREDIENT EXPLORER -->
+            <div class="ingredient-explorer fade-in">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--color-white);">EXPLORE THE FORMULA</h3>
+                <div class="ingredient-tabs">
+                    <div class="ingredient-tab active" data-ingredient="caffeine">Caffeine</div>
+                    <div class="ingredient-tab" data-ingredient="ltheanine">L-Theanine</div>
+                    <div class="ingredient-tab" data-ingredient="alphagpc">Alpha-GPC</div>
+                    <div class="ingredient-tab" data-ingredient="mct">MCT Powder</div>
+                    <div class="ingredient-tab" data-ingredient="lionsmane">Lion's Mane</div>
+                    <div class="ingredient-tab" data-ingredient="taurine">Taurine</div>
+                    <div class="ingredient-tab" data-ingredient="cacao">Cacao</div>
+                    <div class="ingredient-tab" data-ingredient="cinnamon">Cinnamon</div>
+                </div>
+                <div class="ingredient-content">
+                    <!-- Caffeine -->
+                    <div class="ingredient-detail active" id="caffeine">
+                        <div class="ingredient-info">
+                            <h3>CAFFEINE</h3>
+                            <div class="ingredient-dose">100mg</div>
+                            <p class="ingredient-description">
+                                The engine of APEX. Caffeine blocks adenosine receptors in your brain, preventing fatigue signals and boosting alertness. Our precise 100mg dose is calibrated to provide clean energy without the jitters or anxiety of excessive caffeine intake.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With L-Theanine (1:2 Ratio)</strong>
+                                    Forms the legendary "calm focus" state - energy without anxiety, alertness without jitters
+                                </li>
+                                <li>
+                                    <strong>With Alpha-GPC</strong>
+                                    Creates the "Demand & Supply" system - caffeine increases acetylcholine demand, Alpha-GPC provides the supply
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M50 20 C30 20, 20 35, 20 50 C20 65, 30 80, 50 80 C70 80, 80 65, 80 50 C80 35, 70 20, 50 20" 
+                                          fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <path d="M35 35 Q50 25, 65 35 Q75 50, 65 65 Q50 75, 35 65 Q25 50, 35 35" 
+                                          fill="rgba(0, 255, 157, 0.1)" stroke="#00ff9d" stroke-width="1" opacity="0.7"/>
+                                </svg>
+                                <div class="action-label" style="top: 20%; left: -30%;">Blocks Adenosine</div>
+                                <div class="action-label" style="top: 60%; right: -40%; animation-delay: 0.3s;">Boosts Alertness</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- L-Theanine -->
+                    <div class="ingredient-detail" id="ltheanine">
+                        <div class="ingredient-info">
+                            <h3>L-THEANINE</h3>
+                            <div class="ingredient-dose">200mg</div>
+                            <p class="ingredient-description">
+                                The precision steering system. L-Theanine promotes alpha brain waves associated with relaxed alertness. It smooths out caffeine's rough edges, eliminating jitters while enhancing focus. This creates the "flow state" professionals seek.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With Caffeine</strong>
+                                    The most studied nootropic combination - proven to improve focus, reaction time, and working memory
+                                </li>
+                                <li>
+                                    <strong>With Taurine</strong>
+                                    Double-layer anxiety protection - both work through GABA pathways for comprehensive calm
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <path d="M30 50 Q40 40, 50 50 T70 50" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.8">
+                                        <animate attributeName="d" values="M30 50 Q40 40, 50 50 T70 50; M30 50 Q40 60, 50 50 T70 50; M30 50 Q40 40, 50 50 T70 50" dur="4s" repeatCount="indefinite"/>
+                                    </path>
+                                </svg>
+                                <div class="action-label" style="top: 15%; left: 50%; transform: translateX(-50%);">Alpha Waves</div>
+                                <div class="action-label" style="bottom: 15%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Calm Focus</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alpha-GPC -->
+                    <div class="ingredient-detail" id="alphagpc">
+                        <div class="ingredient-info">
+                            <h3>ALPHA-GPC</h3>
+                            <div class="ingredient-dose">200mg</div>
+                            <p class="ingredient-description">
+                                The focus fuel supply. Alpha-GPC is the most bioavailable form of choline, rapidly crossing the blood-brain barrier to become acetylcholine - the neurotransmitter of focus and learning. Critical for preventing the "brain fog" that comes from depleted neurotransmitters.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With Caffeine</strong>
+                                    Prevents acetylcholine depletion - maintains sharp focus even as caffeine increases demand
+                                </li>
+                                <li>
+                                    <strong>With Lion's Mane</strong>
+                                    Supports the neurons that Lion's Mane helps protect and regenerate
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <circle cx="35" cy="40" r="8" fill="#00ff9d" opacity="0.6"/>
+                                    <circle cx="65" cy="40" r="8" fill="#00ff9d" opacity="0.6"/>
+                                    <circle cx="50" cy="60" r="8" fill="#00ff9d" opacity="0.6"/>
+                                    <path d="M35 40 L50 60 L65 40" stroke="#00ff9d" stroke-width="1.5" fill="none" opacity="0.8"/>
+                                </svg>
+                                <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">Acetylcholine Supply</div>
+                                <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Enhanced Focus</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MCT Powder -->
+                    <div class="ingredient-detail" id="mct">
+                        <div class="ingredient-info">
+                            <h3>MCT POWDER (C8/C10)</h3>
+                            <div class="ingredient-dose">5000mg</div>
+                            <p class="ingredient-description">
+                                The metabolic fuel system. MCTs bypass normal fat digestion to rapidly convert into ketones - your brain's premium fuel. This creates the "dual-fuel" system: caffeine for immediate energy, ketones for sustained power without the crash.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With Caffeine</strong>
+                                    Creates a longer, more stable energy curve - ketones take over as caffeine wanes
+                                </li>
+                                <li>
+                                    <strong>With Cinnamon</strong>
+                                    The ultimate crash-prevention duo - stable blood sugar + sustained ketone energy
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="ketoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00ff9d;stop-opacity:0.3" />
+                                            <stop offset="100%" style="stop-color:#00ff9d;stop-opacity:0.8" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="50" cy="50" r="35" fill="url(#ketoneGradient)" opacity="0.5"/>
+                                    <path d="M20 50 Q30 30, 50 40 Q70 50, 80 50" stroke="#00ff9d" stroke-width="3" fill="none">
+                                        <animate attributeName="stroke-dasharray" values="0 100; 100 0" dur="3s" repeatCount="indefinite"/>
+                                    </path>
+                                </svg>
+                                <div class="action-label" style="top: 15%; left: 50%; transform: translateX(-50%);">Ketone Production</div>
+                                <div class="action-label" style="bottom: 15%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Sustained Energy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lion's Mane -->
+                    <div class="ingredient-detail" id="lionsmane">
+                        <div class="ingredient-info">
+                            <h3>LION'S MANE (8:1 EXTRACT)</h3>
+                            <div class="ingredient-dose">500mg</div>
+                            <p class="ingredient-description">
+                                The long-term architect. Lion's Mane stimulates Nerve Growth Factor (NGF), supporting neuroplasticity and brain health. While other ingredients optimize today's performance, Lion's Mane invests in tomorrow's cognitive capacity.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With The Entire Stack</strong>
+                                    Improves the physical "hardware" that other ingredients use for immediate performance
+                                </li>
+                                <li>
+                                    <strong>Cumulative Benefits</strong>
+                                    Daily use compounds benefits - better focus today, stronger cognitive foundation tomorrow
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <g opacity="0.7">
+                                        <line x1="50" y1="20" x2="50" y2="35" stroke="#00ff9d" stroke-width="2"/>
+                                        <line x1="50" y1="65" x2="50" y2="80" stroke="#00ff9d" stroke-width="2"/>
+                                        <line x1="20" y1="50" x2="35" y2="50" stroke="#00ff9d" stroke-width="2"/>
+                                        <line x1="65" y1="50" x2="80" y2="50" stroke="#00ff9d" stroke-width="2"/>
+                                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="20s" repeatCount="indefinite"/>
+                                    </g>
+                                    <circle cx="50" cy="50" r="12" fill="#00ff9d" opacity="0.3"/>
+                                </svg>
+                                <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">NGF Stimulation</div>
+                                <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Neuroplasticity</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Taurine -->
+                    <div class="ingredient-detail" id="taurine">
+                        <div class="ingredient-info">
+                            <h3>TAURINE</h3>
+                            <div class="ingredient-dose">250mg</div>
+                            <p class="ingredient-description">
+                                The system safety regulator. Taurine calms the central nervous system through GABA pathways while supporting cardiovascular health. It's your protection against overstimulation, ensuring smooth, controlled energy.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With L-Theanine</strong>
+                                    Comprehensive anti-anxiety shield - multiple pathways to maintain calm focus
+                                </li>
+                                <li>
+                                    <strong>With Caffeine</strong>
+                                    Directly mitigates potential side effects - protects heart rate and blood pressure
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <path d="M25 50 C25 50, 40 35, 50 50 S75 50, 75 50" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.8"/>
+                                    <path d="M30 60 C30 60, 45 70, 50 60 S70 60, 70 60" stroke="#00ff9d" stroke-width="2" fill="none" opacity="0.6"/>
+                                </svg>
+                                <div class="action-label" style="top: 15%; left: 50%; transform: translateX(-50%);">GABA Activation</div>
+                                <div class="action-label" style="bottom: 15%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Anxiety Shield</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cacao -->
+                    <div class="ingredient-detail" id="cacao">
+                        <div class="ingredient-info">
+                            <h3>ALKALIZED CACAO</h3>
+                            <div class="ingredient-dose">750mg</div>
+                            <p class="ingredient-description">
+                                Flavor fortification with benefits. Cacao provides theobromine - caffeine's gentler cousin - for mild, sustained stimulation. Rich in flavonoids that enhance blood flow, improving nutrient delivery to your brain.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With Caffeine</strong>
+                                    Theobromine smooths the energy curve - complementary stimulation without spikes
+                                </li>
+                                <li>
+                                    <strong>Enhanced Blood Flow</strong>
+                                    Improves delivery of all other ingredients to brain tissue
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <circle cx="50" cy="30" r="10" fill="none" stroke="#00ff9d" stroke-width="1.5" opacity="0.7"/>
+                                    <circle cx="50" cy="70" r="10" fill="none" stroke="#00ff9d" stroke-width="1.5" opacity="0.7"/>
+                                    <path d="M50 40 L50 60" stroke="#00ff9d" stroke-width="2" opacity="0.8">
+                                        <animate attributeName="stroke-width" values="2;4;2" dur="2s" repeatCount="indefinite"/>
+                                    </path>
+                                </svg>
+                                <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">Blood Flow ↑</div>
+                                <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">Theobromine Boost</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cinnamon -->
+                    <div class="ingredient-detail" id="cinnamon">
+                        <div class="ingredient-info">
+                            <h3>CEYLON CINNAMON</h3>
+                            <div class="ingredient-dose">300mg</div>
+                            <p class="ingredient-description">
+                                The metabolic stabilizer. Ceylon cinnamon helps regulate blood sugar, preventing the energy crashes that destroy focus. This creates a stable platform for sustained cognitive performance throughout your day.
+                            </p>
+                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">SYNERGISTIC EFFECTS</h4>
+                            <ul class="synergy-list">
+                                <li>
+                                    <strong>With MCT Powder</strong>
+                                    The ultimate crash-prevention duo - stable glucose + sustained ketones
+                                </li>
+                                <li>
+                                    <strong>With The Stack</strong>
+                                    Makes the entire experience more stable and predictable
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ingredient-visual">
+                            <div class="brain-diagram">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff9d" stroke-width="2" opacity="0.5"/>
+                                    <path d="M20 50 L80 50" stroke="#00ff9d" stroke-width="3" opacity="0.8"/>
+                                    <path d="M30 40 L30 60 M40 35 L40 65 M50 40 L50 60 M60 35 L60 65 M70 40 L70 60" 
+                                          stroke="#00ff9d" stroke-width="1.5" opacity="0.6"/>
+                                </svg>
+                                <div class="action-label" style="top: 10%; left: 50%; transform: translateX(-50%);">Blood Sugar Control</div>
+                                <div class="action-label" style="bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0.3s;">No Crash</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -623,11 +1344,67 @@
         </div>
     </section>
 
-    <!-- ADVANTAGE SECTION -->
-    <section id="advantage" class="advantage-section">
+    <!-- ENHANCED ENERGY CURVE VISUALIZATION -->
+    <section class="energy-curve-section">
         <div class="container">
             <h2 class="fade-in">THE APEX <span class="highlight">ADVANTAGE</span></h2>
             <p class="fade-in">A spike vs. a plateau. A crash vs. a controlled landing. The difference is by design.</p>
+            
+            <div class="curve-container fade-in">
+                <div class="curve-controls">
+                    <div class="curve-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot apex"></div>
+                            <span>APEX Protocol</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot coffee"></div>
+                            <span>Regular Coffee</span>
+                        </div>
+                    </div>
+                    <button class="workday-toggle" id="workdayToggle">Show Workday</button>
+                </div>
+
+                <div class="chart-wrapper">
+                    <canvas class="energy-chart" id="energyChart"></canvas>
+                    <div class="workday-overlay" id="workdayOverlay">
+                        <div class="workday-marker" style="left: 0%;">
+                            <div class="workday-label">7 AM - Start</div>
+                        </div>
+                        <div class="workday-marker" style="left: 20%;">
+                            <div class="workday-label">9 AM - Deep Work</div>
+                        </div>
+                        <div class="workday-marker" style="left: 40%;">
+                            <div class="workday-label">12 PM - Lunch</div>
+                        </div>
+                        <div class="workday-marker" style="left: 55%;">
+                            <div class="workday-label">2 PM - Meetings</div>
+                        </div>
+                        <div class="workday-marker" style="left: 75%;">
+                            <div class="workday-label">4 PM - Wrap Up</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-scrubber" id="timeScrubber">
+                    <div class="time-display" id="timeDisplay">7:00 AM</div>
+                    <div class="scrubber-track">
+                        <div class="scrubber-progress" id="scrubberProgress"></div>
+                    </div>
+                    <div class="scrubber-handle" id="scrubberHandle"></div>
+                </div>
+
+                <div class="effect-popup" id="effectPopup">
+                    <h4 id="popupTitle"></h4>
+                    <p id="popupDescription"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADVANTAGE SECTION -->
+    <section id="advantage" class="advantage-section">
+        <div class="container">
             <div class="comparison-table fade-in">
                 <div class="coffee-column">
                     <h3>REGULAR COFFEE</h3>
@@ -688,36 +1465,36 @@
         </div>
     </section>
 
-    <!-- PRICING SECTION -->
-    <section id="pricing" class="pricing-section">
-        <div class="container">
-            <h2 class="fade-in">ACTIVATE <span class="highlight">APEX.</span></h2>
-            <div class="pricing-grid">
-                 <div class="pricing-card fade-in">
-                    <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
-                    <h3>THE SYSTEM CORE</h3>
-                    <div class="price">$69 <span>/month</span></div>
-                    <p>The at-home subscription. 30 servings of your daily protocol.</p>
-                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe</a>
-                </div>
-                <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
-                    <span class="save-badge">BEST VALUE & PERFORMANCE</span>
-                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit" style="max-width:120px;">
-                    <h3>COMPLETE PROTOCOL</h3>
-                    <div class="price">$89 <span>/month</span></div>
-                    <p>The ultimate setup: A 30-serving System Core tub AND a 15-serving Field Kit each month.</p>
-                    <a href="#" class="cta-button">Engage Full System</a>
-                </div>
-                 <div class="pricing-card fade-in" style="transition-delay:200ms;">
-                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit">
-                    <h3>THE FIELD KIT</h3>
-                    <div class="price">$39</div>
-                     <p>One-time purchase of a 15-serving Field Kit for travel or trial.</p>
-                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- PRICING SECTION -->
+   <section id="pricing" class="pricing-section">
+       <div class="container">
+           <h2 class="fade-in">ACTIVATE <span class="highlight">APEX.</span></h2>
+           <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                   <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                   <h3>THE SYSTEM CORE</h3>
+                   <div class="price">$69 <span>/month</span></div>
+                   <p>The at-home subscription. 30 servings of your daily protocol.</p>
+                   <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe</a>
+               </div>
+               <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
+                   <span class="save-badge">BEST VALUE & PERFORMANCE</span>
+                   <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit" style="max-width:120px;">
+                   <h3>COMPLETE PROTOCOL</h3>
+                   <div class="price">$89 <span>/month</span></div>
+                   <p>The ultimate setup: A 30-serving System Core tub AND a 15-serving Field Kit each month.</p>
+                   <a href="#" class="cta-button">Engage Full System</a>
+               </div>
+                <div class="pricing-card fade-in" style="transition-delay:200ms;">
+                   <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit">
+                   <h3>THE FIELD KIT</h3>
+                   <div class="price">$39</div>
+                    <p>One-time purchase of a 15-serving Field Kit for travel or trial.</p>
+                   <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
+               </div>
+           </div>
+       </div>
+   </section>
 
     <!-- FAQ SECTION -->
     <section id="faq" class="faq-section">
@@ -766,6 +1543,7 @@
     </footer>
 
     <script>
+        // FAQ Functionality
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
@@ -785,6 +1563,7 @@
             });
         });
 
+        // Fade-in observer
         const faders = document.querySelectorAll('.fade-in');
         const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
         const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
@@ -795,6 +1574,321 @@
             });
         }, appearOptions);
         faders.forEach(fader => { appearOnScroll.observe(fader); });
+
+        // Ingredient Explorer
+        const ingredientTabs = document.querySelectorAll('.ingredient-tab');
+        const ingredientDetails = document.querySelectorAll('.ingredient-detail');
+
+        ingredientTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetIngredient = tab.dataset.ingredient;
+                
+                // Update active tab
+                ingredientTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                ingredientDetails.forEach(detail => {
+                    detail.classList.remove('active');
+                    if (detail.id === targetIngredient) {
+                        detail.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Energy Curve Visualization
+        const canvas = document.getElementById('energyChart');
+        const ctx = canvas.getContext('2d');
+        const scrubber = document.getElementById('timeScrubber');
+        const scrubberHandle = document.getElementById('scrubberHandle');
+        const scrubberProgress = document.getElementById('scrubberProgress');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const workdayToggle = document.getElementById('workdayToggle');
+        const workdayOverlay = document.getElementById('workdayOverlay');
+        const effectPopup = document.getElementById('effectPopup');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupDescription = document.getElementById('popupDescription');
+
+        // Set canvas size
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            drawChart();
+        }
+
+        // Energy curve data (0-8 hours)
+        const timePoints = [];
+        const coffeeData = [];
+        const apexData = [];
+        
+        for (let i = 0; i <= 480; i += 5) { // 5-minute intervals
+            const hours = i / 60;
+            timePoints.push(hours);
+            
+            // Coffee curve - sharp spike and crash
+            let coffeeLevel;
+            if (hours < 0.5) {
+                coffeeLevel = Math.sin((hours / 0.5) * Math.PI / 2) * 95;
+            } else if (hours < 2) {
+                coffeeLevel = 95 - (hours - 0.5) * 10;
+            } else if (hours < 3) {
+                coffeeLevel = 80 - (hours - 2) * 50;
+            } else {
+                coffeeLevel = Math.max(30 - (hours - 3) * 5, 15);
+            }
+            coffeeData.push(coffeeLevel);
+            
+            // APEX curve - smooth rise and sustained plateau
+            let apexLevel;
+            if (hours < 1) {
+                apexLevel = (1 - Math.cos((hours / 1) * Math.PI)) * 40;
+            } else if (hours < 4) {
+                apexLevel = 80 + Math.sin((hours - 1) * 0.5) * 5;
+            } else if (hours < 6) {
+                apexLevel = 85 - (hours - 4) * 15;
+            } else {
+                apexLevel = Math.max(55 - (hours - 6) * 10, 40);
+            }
+            apexData.push(apexLevel);
+        }
+
+        // Draw the energy curves
+        function drawChart() {
+            const width = canvas.width / window.devicePixelRatio;
+            const height = canvas.height / window.devicePixelRatio;
+            const padding = 40;
+            const chartWidth = width - padding * 2;
+            const chartHeight = height - padding * 2;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw grid
+            ctx.strokeStyle = 'rgba(136, 136, 136, 0.2)';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (chartHeight / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(width - padding, y);
+                ctx.stroke();
+            }
+
+            // Vertical grid lines (hourly)
+            for (let i = 0; i <= 8; i++) {
+                const x = padding + (chartWidth / 8) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, height - padding);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#888';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+
+            // Y-axis labels
+            ctx.fillStyle = '#888';
+            ctx.font = '12px Roboto';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            
+            const yLabels = ['100%', '75%', '50%', '25%', '0%'];
+            yLabels.forEach((label, i) => {
+                const y = padding + (chartHeight / 4) * i;
+                ctx.fillText(label, padding - 10, y);
+            });
+
+            // X-axis labels
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (let i = 0; i <= 8; i++) {
+                const x = padding + (chartWidth / 8) * i;
+                ctx.fillText(i + 'h', x, height - padding + 10);
+            }
+
+            // Draw curves
+            function drawCurve(data, color, lineWidth = 3) {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.beginPath();
+                
+                data.forEach((value, index) => {
+                    const x = padding + (index / (data.length - 1)) * chartWidth;
+                    const y = padding + chartHeight - (value / 100) * chartHeight;
+                    
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+            }
+
+            // Draw coffee curve
+            drawCurve(coffeeData, '#ff6b6b');
+            
+            // Draw APEX curve
+            drawCurve(apexData, '#00ff9d');
+
+            // Draw current time indicator
+            if (currentTimeIndex !== null) {
+                const x = padding + (currentTimeIndex / (timePoints.length - 1)) * chartWidth;
+                
+                // Vertical line
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, height - padding);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Points on curves
+                const coffeeY = padding + chartHeight - (coffeeData[currentTimeIndex] / 100) * chartHeight;
+                const apexY = padding + chartHeight - (apexData[currentTimeIndex] / 100) * chartHeight;
+                
+                // Coffee point
+                ctx.fillStyle = '#ff6b6b';
+                ctx.beginPath();
+                ctx.arc(x, coffeeY, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // APEX point
+                ctx.fillStyle = '#00ff9d';
+                ctx.beginPath();
+                ctx.arc(x, apexY, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Scrubber functionality
+        let isDragging = false;
+        let currentTimeIndex = null;
+
+        function updateScrubber(clientX) {
+            const rect = scrubber.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const percentage = Math.max(0, Math.min(1, x / rect.width));
+            
+            currentTimeIndex = Math.floor(percentage * (timePoints.length - 1));
+            const hours = timePoints[currentTimeIndex];
+            
+            // Update scrubber position
+            scrubberProgress.style.width = (percentage * 100) + '%';
+            scrubberHandle.style.left = (30 + percentage * (rect.width - 60)) + 'px';
+            
+            // Update time display
+            const totalMinutes = hours * 60;
+            const displayHours = Math.floor(totalMinutes / 60) + 7; // Start at 7 AM
+            const displayMinutes = Math.floor(totalMinutes % 60);
+            const ampm = displayHours >= 12 ? 'PM' : 'AM';
+            const displayHour = displayHours > 12 ? displayHours - 12 : displayHours;
+            timeDisplay.textContent = `${displayHour}:${displayMinutes.toString().padStart(2, '0')} ${ampm}`;
+            timeDisplay.classList.add('active');
+            
+            // Update chart
+            drawChart();
+            
+            // Show effect popup
+            updateEffectPopup(hours);
+        }
+
+        function updateEffectPopup(hours) {
+            let title, description, isApex = false;
+            
+            if (hours < 0.75) {
+                title = "Initial Response";
+                description = isApex ? 
+                    "APEX: Smooth energy build-up with L-Theanine modulation" : 
+                    "Coffee: Rapid caffeine absorption causing energy spike";
+            } else if (hours < 2) {
+                title = "Peak Performance";
+                description = isApex ? 
+                    "APEX: Sustained focus plateau with dual-fuel system active" : 
+                    "Coffee: High alertness but potential jitters and anxiety";
+            } else if (hours < 4) {
+                title = hours < 3 ? "Mid-Session" : "Transition Phase";
+                description = isApex ? 
+                    "APEX: Maintained performance with stable energy" : 
+                    "Coffee: Energy crash beginning, adenosine flooding back";
+            } else {
+                title = "Late Stage";
+                description = isApex ? 
+                    "APEX: Controlled energy taper, still productive" : 
+                    "Coffee: Fatigue and brain fog, system disrupted";
+            }
+            
+            // Position popup near scrubber
+            const rect = scrubber.getBoundingClientRect();
+            const popupRect = effectPopup.getBoundingClientRect();
+            effectPopup.style.left = Math.min(rect.width - popupRect.width - 20, Math.max(20, (currentTimeIndex / timePoints.length) * rect.width - popupRect.width / 2)) + 'px';
+            effectPopup.style.bottom = '80px';
+            
+            popupTitle.textContent = title;
+            popupDescription.textContent = description;
+            effectPopup.classList.add('active');
+        }
+
+        scrubber.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateScrubber(e.clientX);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                updateScrubber(e.clientX);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            timeDisplay.classList.remove('active');
+            effectPopup.classList.remove('active');
+        });
+
+        // Touch events for mobile
+        scrubber.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            updateScrubber(e.touches[0].clientX);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                updateScrubber(e.touches[0].clientX);
+            }
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+            timeDisplay.classList.remove('active');
+            effectPopup.classList.remove('active');
+        });
+
+        // Workday toggle
+        workdayToggle.addEventListener('click', () => {
+            workdayToggle.classList.toggle('active');
+            workdayOverlay.classList.toggle('active');
+        });
+
+        // Initialize
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
     </script>
 </body>
 </html>
