@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kickshot: APEX - Interactive Synergy Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL STYLES & RESET --- */
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #aaaaaa;
+            --color-white: #e0e0e0; /* Softer white for less eye strain */
+            --color-highlight: #f5f5f5; /* Brighter white for highlights */
+            --color-accent: #00ff9d;
+            --color-coffee: #ff6b6b;
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- SYNERGY MAP SECTION --- */
+        .synergy-section {
+            min-height: 100vh;
+            padding: 80px 0;
+            background: var(--color-black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .synergy-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 255, 157, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            color: var(--color-highlight);
+        }
+
+        .section-header .highlight {
+            color: var(--color-accent);
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--color-light-grey);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- SYNERGY MAP CONTAINER --- */
+        .synergy-map-container {
+            background: var(--color-dark-grey);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+        }
+
+        .synergy-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, rgba(0, 255, 157, 0.02) 0%, transparent 50%);
+        }
+
+        #synergyCanvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        #synergyCanvas.grabbing {
+            cursor: grabbing;
+        }
+
+        /* --- INGREDIENT INFO PANEL --- */
+        .ingredient-info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: calc(100% - 40px);
+            background: rgba(26, 26, 26, 0.95);
+            border: 2px solid var(--color-accent);
+            border-radius: 15px;
+            padding: 25px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            overflow-y: auto;
+            pointer-events: none; /* Inactive by default */
+        }
+
+        .ingredient-info-panel.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all; /* Active when shown */
+        }
+
+        .panel-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--color-light-grey);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+        .panel-close-btn:hover {
+            color: var(--color-accent);
+        }
+
+        .ingredient-info-panel::-webkit-scrollbar { width: 8px; }
+        .ingredient-info-panel::-webkit-scrollbar-track { background: var(--color-black); border-radius: 4px; }
+        .ingredient-info-panel::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 4px; }
+        .ingredient-info-panel::-webkit-scrollbar-thumb:hover { background: var(--color-highlight); }
+
+        .panel-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .ingredient-icon {
+            width: 50px; height: 50px; border-radius: 50%; background: var(--color-accent);
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; font-weight: bold; font-size: 1.2rem; color: var(--color-black);
+        }
+        .panel-header h3 {
+            font-family: var(--font-display); font-size: 1.4rem; color: var(--color-highlight);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .dose-badge {
+            background: var(--color-black); border: 2px solid var(--color-accent); padding: 8px 16px;
+            border-radius: 20px; font-size: 1.1rem; color: var(--color-accent);
+            display: inline-block; margin-bottom: 15px;
+        }
+        .panel-description {
+            color: var(--color-light-grey); line-height: 1.8; margin-bottom: 20px; font-size: 1rem;
+        }
+        .synergy-list, .neuro-effects { list-style: none; margin-top: 25px; }
+        .synergy-list h4, .neuro-effects h4 {
+            color: var(--color-accent); font-size: 1.1rem; margin-bottom: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .neuro-effects p { color: var(--color-light-grey); font-size: 1rem; }
+        .synergy-item {
+            background: var(--color-black); padding: 12px; margin-bottom: 10px;
+            border-radius: 8px; border-left: 3px solid var(--color-accent);
+            font-size: 0.95rem; color: var(--color-light-grey); transition: all 0.3s ease;
+        }
+        .synergy-item:hover { transform: translateX(5px); border-left-color: var(--color-highlight); }
+        .synergy-item strong { color: var(--color-highlight); display: block; margin-bottom: 3px; }
+
+        /* --- CONTROLS --- */
+        .map-controls { display: flex; justify-content: center; gap: 15px; margin-top: 2rem; }
+        .control-btn {
+            background: var(--color-black); border: 2px solid var(--color-mid-grey); color: var(--color-light-grey);
+            padding: 10px 20px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;
+        }
+        .control-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        .control-btn.active { background: var(--color-accent); color: var(--color-black); border-color: var(--color-accent); }
+
+        /* --- BRAIN VISUALIZATION --- */
+        .brain-overlay {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 300px; height: 300px; pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
+        }
+        .brain-overlay.active { opacity: 0.15; }
+        .brain-svg { width: 100%; height: 100%; }
+
+        /* --- LEGENDS & TOOLTIP --- */
+        .map-legend, .neurotransmitter-legend {
+            position: absolute; background: rgba(26, 26, 26, 0.9); padding: 15px 20px;
+            border-radius: 10px; border: 1px solid var(--color-mid-grey); backdrop-filter: blur(10px);
+        }
+        .map-legend { bottom: 20px; left: 20px; }
+        .neurotransmitter-legend { top: 20px; left: 20px; max-width: 200px; }
+        .legend-title, .neurotransmitter-legend h4 {
+            font-size: 0.9rem; color: var(--color-accent); margin-bottom: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .legend-item, .neuro-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9rem; color: var(--color-light-grey); }
+        .legend-line { width: 30px; height: 2px; margin-right: 10px; }
+        .legend-line.strong { background: var(--color-accent); box-shadow: 0 0 5px var(--color-accent); }
+        .legend-line.moderate { background: var(--color-light-grey); }
+        .neuro-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 5px currentColor; }
+
+        .synergy-tooltip {
+            position: absolute; background: var(--color-black); border: 1px solid var(--color-accent);
+            padding: 10px 15px; border-radius: 8px; font-size: 0.85rem; color: var(--color-white);
+            pointer-events: none; opacity: 0; transform: translate(-50%, -10px); transition: all 0.2s ease; z-index: 20; max-width: 250px;
+        }
+        .synergy-tooltip.active { opacity: 1; transform: translate(-50%, 0); }
+
+        /* --- MOBILE RESPONSIVE STYLES --- */
+        @media (max-width: 768px) {
+            .synergy-section { padding: 40px 0; }
+            .synergy-map-container { padding: 1rem; display: flex; flex-direction: column; }
+            .synergy-canvas-wrapper { height: 500px; order: 1; }
+            .map-controls { order: 2; flex-wrap: wrap; }
+
+            .ingredient-info-panel,
+            .map-legend,
+            .neurotransmitter-legend {
+                position: static;
+                width: 100%;
+                margin-top: 20px;
+                transform: none;
+                opacity: 1;
+                max-width: none;
+                max-height: none;
+                backdrop-filter: none;
+                pointer-events: all; /* Always active in flow */
+            }
+            .ingredient-info-panel { order: 3; }
+            .map-legend { order: 4; }
+            .neurotransmitter-legend { order: 5; }
+
+            /* Hide panel by default on mobile, show when active class is added */
+            .ingredient-info-panel:not(.active) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="synergy-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>THE <span class="highlight">SYNERGY NETWORK</span></h2>
+                <p>Explore how each ingredient amplifies the others. Click and drag to discover the intricate relationships that make APEX more than the sum of its parts.</p>
+            </div>
+
+            <div class="synergy-map-container">
+                <div class="synergy-canvas-wrapper">
+                    <canvas id="synergyCanvas"></canvas>
+                    <div class="brain-overlay" id="brainOverlay">
+                        <svg class="brain-svg" viewBox="0 0 100 100">
+                            <path d="M50 20 C30 20, 20 35, 20 50 C20 65, 30 80, 50 80 C70 80, 80 65, 80 50 C80 35, 70 20, 50 20" fill="none" stroke="#00ff9d" stroke-width="1" opacity="0.5"/>
+                            <path d="M35 35 Q50 25, 65 35 Q75 50, 65 65 Q50 75, 35 65 Q25 50, 35 35" fill="rgba(0, 255, 157, 0.1)" stroke="#00ff9d" stroke-width="0.5" opacity="0.7"/>
+                        </svg>
+                    </div>
+
+                    <div class="ingredient-info-panel" id="infoPanel">
+                        <button class="panel-close-btn" id="closePanelBtn" aria-label="Close ingredient info">×</button>
+                        <div class="panel-header">
+                            <div class="ingredient-icon" id="ingredientIcon"></div>
+                            <h3 id="ingredientName"></h3>
+                        </div>
+                        <div class="dose-badge" id="ingredientDose"></div>
+                        <p class="panel-description" id="ingredientDescription"></p>
+                        <div class="synergy-list">
+                            <h4>Key Synergies</h4>
+                            <div id="synergyConnections"></div>
+                        </div>
+                        <div class="neuro-effects">
+                            <h4>Primary Brain Effects</h4>
+                            <p id="neuroDescription"></p>
+                        </div>
+                    </div>
+
+                    <div class="neurotransmitter-legend">
+                        <h4>Neurotransmitters</h4>
+                        <div class="neuro-item"><div class="neuro-dot" style="background-color: #FFD700;"></div><span>Dopamine (Motivation)</span></div>
+                        <div class="neuro-item"><div class="neuro-dot" style="background-color: #00ff9d;"></div><span>Acetylcholine (Focus)</span></div>
+                        <div class="neuro-item"><div class="neuro-dot" style="background-color: #9370DB;"></div><span>GABA (Calm)</span></div>
+                        <div class="neuro-item"><div class="neuro-dot" style="background-color: #87CEEB;"></div><span>Serotonin (Mood)</span></div>
+                        <div class="neuro-item"><div class="neuro-dot" style="background-color: #FF6347;"></div><span>Glutamate (Learning)</span></div>
+                        <div class="neuro-item"><div class="neuro-dot" style="background-color: #FFA500;"></div><span>Norepinephrine (Alert)</span></div>
+                    </div>
+
+                    <div class="map-legend">
+                        <div class="legend-title">Connection Strength</div>
+                        <div class="legend-item"><div class="legend-line strong"></div><span>Primary Synergy</span></div>
+                        <div class="legend-item"><div class="legend-line moderate"></div><span>Supporting Effect</span></div>
+                    </div>
+
+                    <div class="synergy-tooltip" id="tooltip"></div>
+                </div>
+
+                <div class="map-controls">
+                    <button class="control-btn active" data-view="all">All Connections</button>
+                    <button class="control-btn" data-view="focus">Focus System</button>
+                    <button class="control-btn" data-view="energy">Energy System</button>
+                    <button class="control-btn" data-view="protection">Protection System</button>
+                    <button class="control-btn" data-view="reset">Reset View</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // --- DATA ---
+    // Moved data to the top for easier management, simulating loading from a JSON file.
+    const INGREDIENT_DATA = [
+        { id: 'caffeine', name: 'Caffeine', shortName: 'Ca', dose: '100mg', color: '#00ff9d', description: 'The engine of APEX. Blocks adenosine receptors for clean energy and alertness.', category: ['energy', 'focus'] },
+        { id: 'ltheanine', name: 'L-Theanine', shortName: 'Th', dose: '200mg', color: '#00ff9d', description: 'The precision steering system. Promotes alpha brain waves for calm focus.', category: ['focus', 'protection'] },
+        { id: 'alphagpc', name: 'Alpha-GPC', shortName: 'GPC', dose: '200mg', color: '#00ccff', description: 'The focus fuel supply. Rapidly converts to acetylcholine for enhanced cognition.', category: ['focus'] },
+        { id: 'mct', name: 'MCT Powder', shortName: 'MCT', dose: '5000mg', color: '#ffcc00', description: 'The metabolic fuel system. Converts to ketones for sustained brain energy.', category: ['energy'] },
+        { id: 'lionsmane', name: "Lion's Mane", shortName: 'LM', dose: '500mg', color: '#ff9966', description: 'The long-term architect. Stimulates NGF for neuroplasticity and brain health.', category: ['protection'] },
+        { id: 'taurine', name: 'Taurine', shortName: 'Tau', dose: '250mg', color: '#9966ff', description: 'The system safety regulator. Calms the CNS and protects cardiovascular health.', category: ['protection', 'energy'] },
+        { id: 'cacao', name: 'Cacao', shortName: 'Cac', dose: '750mg', color: '#cc6666', description: 'Flavor fortification with benefits. Provides theobromine and enhances blood flow.', category: ['energy', 'focus'] },
+        { id: 'cinnamon', name: 'Cinnamon', shortName: 'Cin', dose: '300mg', color: '#ff6b6b', description: 'The metabolic stabilizer. Regulates blood sugar to prevent energy crashes.', category: ['energy', 'protection'] }
+    ];
+
+    const CONNECTION_DATA = [
+        { from: 'caffeine', to: 'ltheanine', strength: 'primary', description: 'The legendary 1:2 ratio for calm focus without jitters', neurotransmitter: 'dopamine' },
+        { from: 'caffeine', to: 'alphagpc', strength: 'primary', description: 'Demand & Supply: Caffeine increases acetylcholine demand, Alpha-GPC supplies it', neurotransmitter: 'acetylcholine' },
+        { from: 'mct', to: 'cinnamon', strength: 'primary', description: 'The crash-prevention duo: stable glucose + sustained ketones', neurotransmitter: 'glutamate' },
+        { from: 'ltheanine', to: 'taurine', strength: 'moderate', description: 'Double-layer anxiety protection through GABA pathways', neurotransmitter: 'gaba' },
+        { from: 'caffeine', to: 'cacao', strength: 'moderate', description: 'Complementary stimulation: caffeine + theobromine', neurotransmitter: 'norepinephrine' },
+        { from: 'alphagpc', to: 'lionsmane', strength: 'moderate', description: 'Supporting the neurons that Lion\'s Mane protects', neurotransmitter: 'acetylcholine' },
+        { from: 'mct', to: 'caffeine', strength: 'moderate', description: 'Dual-fuel system: immediate + sustained energy', neurotransmitter: 'dopamine' },
+        { from: 'cacao', to: 'ltheanine', strength: 'moderate', description: 'Enhanced blood flow improves ingredient delivery', neurotransmitter: 'serotonin' },
+        { from: 'taurine', to: 'caffeine', strength: 'moderate', description: 'Protects against overstimulation and side effects', neurotransmitter: 'gaba' },
+        { from: 'cinnamon', to: 'mct', strength: 'moderate', description: 'Stabilizes energy delivery throughout the day', neurotransmitter: 'glutamate' }
+    ];
+        
+    class NeurotransmitterSystem {
+        constructor() {
+            this.transmitters = [];
+            this.cascadeEffects = [];
+            this.cascadeMap = {
+                'caffeine': { primary: ['dopamine', 'norepinephrine'], secondary: ['acetylcholine', 'glutamate'], delay: 30 },
+                'ltheanine': { primary: ['gaba', 'serotonin'], secondary: ['dopamine'], delay: 45 },
+                'alphagpc': { primary: ['acetylcholine'], secondary: ['dopamine', 'norepinephrine'], delay: 60 },
+                'mct': { primary: ['glutamate'], secondary: ['dopamine'], delay: 90 },
+                'taurine': { primary: ['gaba'], secondary: ['serotonin'], delay: 40 }
+            };
+            this.colors = { dopamine: '#FFD700', serotonin: '#87CEEB', acetylcholine: '#00ff9d', gaba: '#9370DB', glutamate: '#FF6347', norepinephrine: '#FFA500' };
+        }
+
+        createTransmitter(type, startPos, endPos, color, size = null, speed = null) {
+            return { type, position: { ...startPos }, start: { ...startPos }, end: { ...endPos }, progress: 0, speed: speed || (0.02 + Math.random() * 0.01), size: size || (3 + Math.random() * 2), color, trail: [] };
+        }
+
+        activateCascade(ingredient) {
+            this.cascadeEffects = [];
+            const cascade = this.cascadeMap[ingredient.id];
+            if (cascade) {
+                cascade.primary.forEach(nt => this.cascadeEffects.push({ ingredient, neurotransmitter: nt, delay: 0, duration: 180, timer: 0, intensity: 1.0 }));
+                cascade.secondary.forEach(nt => this.cascadeEffects.push({ ingredient, neurotransmitter: nt, delay: cascade.delay, duration: 150, timer: 0, intensity: 0.7 }));
+            }
+        }
+        
+        clearEffects() {
+            this.transmitters = [];
+            this.cascadeEffects = [];
+        }
+
+        update() {
+            this.transmitters = this.transmitters.filter(t => {
+                t.progress += t.speed;
+                const dx = t.end.x - t.start.x, dy = t.end.y - t.start.y;
+                const cx = t.start.x + dx / 2 + dy * 0.1, cy = t.start.y + dy / 2 - dx * 0.1;
+                const t1 = 1 - t.progress, t2 = t.progress;
+                t.position.x = t1 * t1 * t.start.x + 2 * t1 * t2 * cx + t2 * t2 * t.end.x;
+                t.position.y = t1 * t1 * t.start.y + 2 * t1 * t2 * cy + t2 * t2 * t.end.y;
+                t.trail.push({ x: t.position.x, y: t.position.y });
+                if (t.trail.length > 10) t.trail.shift();
+                return t.progress < 1;
+            });
+
+            this.cascadeEffects = this.cascadeEffects.filter(effect => {
+                effect.timer++;
+                if (effect.timer > effect.delay && effect.timer < effect.delay + effect.duration) {
+                    if ((effect.timer - effect.delay) % 20 === 0) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const distance = 50 + Math.random() * 100;
+                        const endPos = { x: effect.ingredient.position.x + Math.cos(angle) * distance, y: effect.ingredient.position.y + Math.sin(angle) * distance };
+                        this.transmitters.push(this.createTransmitter(effect.neurotransmitter, effect.ingredient.position, endPos, this.colors[effect.neurotransmitter], 4 * effect.intensity, 0.015 * effect.intensity));
+                    }
+                }
+                return effect.timer < effect.delay + effect.duration;
+            });
+        }
+
+        draw(ctx) {
+            this.transmitters.forEach(t => {
+                ctx.save();
+                ctx.strokeStyle = t.color;
+                ctx.lineWidth = t.size * 0.5;
+                ctx.lineCap = 'round';
+                ctx.globalAlpha = 0.3;
+                ctx.beginPath();
+                t.trail.forEach((point, i) => i === 0 ? ctx.moveTo(point.x, point.y) : ctx.lineTo(point.x, point.y));
+                ctx.stroke();
+                
+                ctx.globalAlpha = 0.8;
+                ctx.fillStyle = t.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = t.color;
+                ctx.beginPath();
+                ctx.arc(t.position.x, t.position.y, t.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(t.position.x, t.position.y, t.size * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+    }
+
+    class SynergyMap {
+        constructor() {
+            this.canvas = document.getElementById('synergyCanvas');
+            this.ctx = this.canvas.getContext('2d');
+            this.neurotransmitterSystem = new NeurotransmitterSystem();
+            
+            this.ingredients = []; this.connections = [];
+            this.selectedIngredient = null; this.hoveredIngredient = null; this.draggedIngredient = null;
+            this.mousePos = { x: 0, y: 0 }; this.currentView = 'all'; this.animationFrame = 0;
+
+            // Touch-specific properties for differentiating tap vs drag
+            this.touchStartTime = 0; this.touchStartPos = { x: 0, y: 0 }; this.isDragging = false;
+
+            this.setupCanvas();
+            this.createIngredients();
+            this.connections = CONNECTION_DATA.map(c => ({...c, visible: true}));
+            this.setupEventListeners();
+            this.animate();
+        }
+
+        setupCanvas() {
+            const rect = this.canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            this.canvas.width = rect.width * dpr;
+            this.canvas.height = rect.height * dpr;
+            this.ctx.scale(dpr, dpr);
+            this.width = rect.width;
+            this.height = rect.height;
+        }
+
+        createIngredients() {
+            this.ingredients = INGREDIENT_DATA.map(data => ({
+                ...data,
+                position: { x: 0, y: 0 }, // Will be set by resetPositions
+                velocity: { x: (Math.random() - 0.5) * 0.2, y: (Math.random() - 0.5) * 0.2 },
+                radius: 35,
+                pulsePhase: Math.random() * Math.PI * 2,
+                visible: true,
+            }));
+            this.resetPositions();
+        }
+
+        setupEventListeners() {
+            this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+            this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+            this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+            this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
+            
+            this.canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+            this.canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+            this.canvas.addEventListener('touchend', () => this.handleTouchEnd());
+
+            document.querySelectorAll('.control-btn').forEach(btn => btn.addEventListener('click', (e) => this.handleControlClick(e)));
+            document.getElementById('closePanelBtn').addEventListener('click', () => this.deselectIngredient());
+            window.addEventListener('resize', () => { this.setupCanvas(); this.resetPositions(); });
+        }
+        
+        // --- EVENT HANDLERS ---
+        handleMouseMove(e) {
+            const rect = this.canvas.getBoundingClientRect();
+            this.mousePos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+
+            const prevHovered = this.hoveredIngredient;
+            this.hoveredIngredient = this.getIngredientAtPos(this.mousePos);
+            
+            if (this.hoveredIngredient !== prevHovered) {
+                this.canvas.style.cursor = this.hoveredIngredient ? 'pointer' : 'grab';
+                if (this.hoveredIngredient) this.showTooltip(this.hoveredIngredient);
+                else this.hideTooltip();
+            }
+
+            if (this.draggedIngredient) {
+                this.draggedIngredient.position = { ...this.mousePos };
+                this.canvas.style.cursor = 'grabbing';
+            }
+        }
+
+        handleMouseDown(e) {
+            const ingredient = this.getIngredientAtPos(this.mousePos);
+            if (ingredient) {
+                this.draggedIngredient = ingredient;
+                ingredient.velocity = {x: 0, y: 0}; // Stop drifting when grabbed
+                this.canvas.classList.add('grabbing');
+            }
+        }
+
+        handleMouseUp() {
+            if (this.draggedIngredient && !this.isDragging) {
+                this.selectIngredient(this.draggedIngredient);
+            }
+            this.draggedIngredient = null;
+            this.isDragging = false;
+            this.canvas.classList.remove('grabbing');
+        }
+
+        handleMouseLeave() {
+            this.hoveredIngredient = null;
+            this.draggedIngredient = null;
+            this.hideTooltip();
+            this.canvas.style.cursor = 'grab';
+        }
+
+        handleTouchStart(e) {
+            const touch = e.touches[0];
+            const rect = this.canvas.getBoundingClientRect();
+            this.touchStartTime = Date.now();
+            this.isDragging = false;
+            this.touchStartPos = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+
+            const ingredient = this.getIngredientAtPos(this.touchStartPos);
+            if (ingredient) {
+                e.preventDefault();
+                this.draggedIngredient = ingredient;
+                ingredient.velocity = {x: 0, y: 0};
+            }
+        }
+
+        handleTouchMove(e) {
+            if (this.draggedIngredient) {
+                e.preventDefault();
+                this.isDragging = true;
+                const touch = e.touches[0];
+                const rect = this.canvas.getBoundingClientRect();
+                this.draggedIngredient.position = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+            }
+        }
+
+        handleTouchEnd() {
+            // Check for tap: minimal movement and short duration
+            if (this.draggedIngredient && !this.isDragging && (Date.now() - this.touchStartTime < 200)) {
+                this.selectIngredient(this.draggedIngredient);
+                const infoPanel = document.getElementById('infoPanel');
+                if (window.innerWidth <= 768) {
+                    // Timeout allows panel to become visible before scrolling
+                    setTimeout(() => infoPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+                }
+            }
+            this.draggedIngredient = null;
+        }
+
+        handleControlClick(e) {
+            const btn = e.target;
+            const view = btn.dataset.view;
+            
+            document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (view === 'reset') this.resetPositions();
+            else { this.currentView = view; this.filterView(view); }
+        }
+
+        // --- CORE LOGIC ---
+        getIngredientAtPos(pos) {
+            return this.ingredients.find(ing => {
+                if (!ing.visible) return false;
+                const dx = pos.x - ing.position.x;
+                const dy = pos.y - ing.position.y;
+                return Math.sqrt(dx * dx + dy * dy) < ing.radius;
+            });
+        }
+
+        selectIngredient(ingredient) {
+            this.selectedIngredient = ingredient;
+            this.showInfoPanel(ingredient);
+            this.neurotransmitterSystem.activateCascade(ingredient);
+            
+            const brainOverlay = document.getElementById('brainOverlay');
+            brainOverlay.classList.toggle('active', ingredient.category.includes('focus'));
+        }
+
+        deselectIngredient() {
+            this.selectedIngredient = null;
+            this.neurotransmitterSystem.clearEffects();
+            document.getElementById('infoPanel').classList.remove('active');
+            document.getElementById('brainOverlay').classList.remove('active');
+        }
+
+        showInfoPanel(ingredient) {
+            const panel = document.getElementById('infoPanel');
+            document.getElementById('ingredientIcon').textContent = ingredient.shortName;
+            document.getElementById('ingredientIcon').style.background = ingredient.color;
+            document.getElementById('ingredientName').textContent = ingredient.name;
+            document.getElementById('ingredientDose').textContent = ingredient.dose;
+            document.getElementById('ingredientDescription').textContent = ingredient.description;
+
+            const connectionsDiv = document.getElementById('synergyConnections');
+            connectionsDiv.innerHTML = '';
+            this.connections.filter(c => c.from === ingredient.id || c.to === ingredient.id)
+                .forEach(conn => {
+                    const partner = this.ingredients.find(ing => ing.id === (conn.from === ingredient.id ? conn.to : conn.from));
+                    const item = document.createElement('div');
+                    item.className = 'synergy-item';
+                    item.innerHTML = `<strong>${partner.name}</strong>${conn.description}`;
+                    connectionsDiv.appendChild(item);
+                });
+            
+            const neuroDesc = document.getElementById('neuroDescription');
+            const cascade = this.neurotransmitterSystem.cascadeMap[ingredient.id];
+            if (cascade) {
+                const effects = [...new Set([...cascade.primary, ...cascade.secondary])];
+                neuroDesc.textContent = `Directly impacts: ${effects.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')}.`;
+            } else {
+                neuroDesc.textContent = 'Primarily supports overall system health and metabolic function.';
+            }
+
+            panel.classList.add('active');
+        }
+
+        showTooltip(ingredient) {
+            if (window.innerWidth <= 768) return; // Don't show tooltip on mobile
+            const tooltip = document.getElementById('tooltip');
+            tooltip.textContent = `${ingredient.name} - ${ingredient.dose}`;
+            tooltip.style.left = `${ingredient.position.x}px`;
+            tooltip.style.top = `${ingredient.position.y - ingredient.radius - 20}px`;
+            tooltip.classList.add('active');
+        }
+
+        hideTooltip() {
+            document.getElementById('tooltip').classList.remove('active');
+        }
+
+        filterView(view) {
+            const isAll = view === 'all';
+            this.ingredients.forEach(ing => ing.visible = isAll || ing.category.includes(view));
+            this.connections.forEach(conn => {
+                const fromIng = this.ingredients.find(ing => ing.id === conn.from);
+                const toIng = this.ingredients.find(ing => ing.id === conn.to);
+                conn.visible = fromIng.visible && toIng.visible;
+            });
+        }
+        
+        resetPositions() {
+            const centerX = this.width / 2;
+            const centerY = this.height / 2;
+            const isMobile = this.width < 768;
+            
+            // Adapt layout for mobile screens
+            const radiusX = isMobile ? this.width * 0.35 : Math.min(this.width, this.height) * 0.35;
+            const radiusY = isMobile ? this.height * 0.4 : Math.min(this.width, this.height) * 0.35;
+            
+            this.ingredients.forEach((ing, i) => {
+                const angle = (Math.PI * 2 / this.ingredients.length) * i - Math.PI / 2;
+                ing.position = {
+                    x: centerX + Math.cos(angle) * radiusX,
+                    y: centerY + Math.sin(angle) * radiusY
+                };
+            });
+        }
+
+        // --- ANIMATION & DRAWING ---
+        animate() {
+            this.animationFrame++;
+            this.ctx.clearRect(0, 0, this.width, this.height);
+            this.updatePhysics();
+            this.neurotransmitterSystem.update();
+            this.drawConnections();
+            this.neurotransmitterSystem.draw(this.ctx);
+            this.drawIngredients();
+            requestAnimationFrame(() => this.animate());
+        }
+        
+        updatePhysics() {
+            // This function creates the ambient drifting and repulsion effect
+            const repulsionForce = 0.1;
+            const centerPull = 0.001;
+
+            this.ingredients.forEach((ingA, i) => {
+                if (this.draggedIngredient === ingA) return;
+
+                // Repel from other nodes
+                for (let j = i + 1; j < this.ingredients.length; j++) {
+                    const ingB = this.ingredients[j];
+                    const dx = ingB.position.x - ingA.position.x;
+                    const dy = ingB.position.y - ingA.position.y;
+                    const distSq = dx * dx + dy * dy;
+                    if (distSq < (ingA.radius * 4) ** 2) {
+                        const dist = Math.sqrt(distSq);
+                        const force = repulsionForce * (1 - dist / (ingA.radius * 4));
+                        const forceX = (dx / dist) * force;
+                        const forceY = (dy / dist) * force;
+                        ingA.velocity.x -= forceX;
+                        ingA.velocity.y -= forceY;
+                        ingB.velocity.x += forceX;
+                        ingB.velocity.y += forceY;
+                    }
+                }
+
+                // Gently pull toward center to prevent drifting away
+                ingA.velocity.x += (this.width / 2 - ingA.position.x) * centerPull;
+                ingA.velocity.y += (this.height / 2 - ingA.position.y) * centerPull;
+
+                // Apply velocity and damping
+                ingA.position.x += ingA.velocity.x;
+                ingA.position.y += ingA.velocity.y;
+                ingA.velocity.x *= 0.95; // Damping
+                ingA.velocity.y *= 0.95;
+            });
+        }
+
+        drawConnections() {
+            this.connections.forEach(conn => {
+                if (!conn.visible) return;
+                const from = this.ingredients.find(ing => ing.id === conn.from);
+                const to = this.ingredients.find(ing => ing.id === conn.to);
+                if (!from || !to || !from.visible || !to.visible) return;
+
+                const isHighlighted = this.selectedIngredient && (this.selectedIngredient.id === conn.from || this.selectedIngredient.id === conn.to);
+                
+                this.ctx.save();
+                this.ctx.beginPath();
+                this.ctx.moveTo(from.position.x, from.position.y);
+                const dx = to.position.x - from.position.x, dy = to.position.y - from.position.y;
+                this.ctx.quadraticCurveTo(from.position.x + dx/2 + dy*0.1, from.position.y + dy/2 - dx*0.1, to.position.x, to.position.y);
+                
+                if (conn.strength === 'primary') {
+                    this.ctx.strokeStyle = isHighlighted ? '#00ff9d' : 'rgba(0, 255, 157, 0.4)';
+                    this.ctx.lineWidth = isHighlighted ? 3 : 2;
+                    this.ctx.shadowBlur = isHighlighted ? 15 : 5;
+                    this.ctx.shadowColor = '#00ff9d';
+                } else {
+                    this.ctx.strokeStyle = isHighlighted ? '#bbbbbb' : 'rgba(136, 136, 136, 0.4)';
+                    this.ctx.lineWidth = isHighlighted ? 2 : 1;
+                }
+                
+                if (isHighlighted) {
+                    this.ctx.setLineDash([10, 5]);
+                    this.ctx.lineDashOffset = -this.animationFrame * 0.5;
+                }
+                
+                this.ctx.stroke();
+                this.ctx.restore();
+            });
+        }
+
+        drawIngredients() {
+            this.ingredients.forEach(ing => {
+                if (!ing.visible) return;
+
+                const isSelected = this.selectedIngredient === ing;
+                const isHovered = this.hoveredIngredient === ing;
+                
+                this.ctx.save();
+                
+                if (isSelected || isHovered) {
+                    const glowRadius = ing.radius + 15;
+                    const gradient = this.ctx.createRadialGradient(ing.position.x, ing.position.y, ing.radius, ing.position.x, ing.position.y, glowRadius);
+                    gradient.addColorStop(0, 'transparent');
+                    gradient.addColorStop(1, isSelected ? 'rgba(0, 255, 157, 0.3)' : 'rgba(255, 255, 255, 0.1)');
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.beginPath();
+                    this.ctx.arc(ing.position.x, ing.position.y, glowRadius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+                
+                const pulseScale = 1 + Math.sin(this.animationFrame * 0.02 + ing.pulsePhase) * 0.05;
+                const radius = ing.radius * pulseScale;
+                
+                this.ctx.beginPath();
+                this.ctx.arc(ing.position.x, ing.position.y, radius, 0, Math.PI * 2);
+                const gradient = this.ctx.createRadialGradient(ing.position.x - radius*0.3, ing.position.y - radius*0.3, 0, ing.position.x, ing.position.y, radius);
+                gradient.addColorStop(0, ing.color);
+                gradient.addColorStop(1, this.adjustColor(ing.color, -50));
+                this.ctx.fillStyle = gradient;
+                this.ctx.fill();
+                
+                this.ctx.strokeStyle = isSelected ? '#ffffff' : ing.color;
+                this.ctx.lineWidth = isSelected ? 3 : 2;
+                this.ctx.stroke();
+                
+                this.ctx.fillStyle = '#000000';
+                this.ctx.font = 'bold 16px Roboto Condensed';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                this.ctx.fillText(ing.shortName, ing.position.x, ing.position.y);
+                
+                this.ctx.restore();
+            });
+        }
+
+        adjustColor(color, amount) {
+            const num = parseInt(color.slice(1), 16);
+            const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+            const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+            return `#${(b | (g << 8) | (r << 16)).toString(16).padStart(6, '0')}`;
+        }
+    }
+
+    window.addEventListener('load', () => new SynergyMap());
+    </script>
+
+</body>
+</html>
