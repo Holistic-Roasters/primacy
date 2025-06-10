@@ -162,6 +162,25 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: transparent;
+            border: none;
+            color: var(--color-light-grey);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--color-white);
         }
 
         .ingredient-icon {
@@ -214,6 +233,26 @@
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .brain-effects {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-mid-grey);
+        }
+
+        .brain-effects h4 {
+            color: var(--color-accent);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .brain-effects p {
+            color: var(--color-light-grey);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .synergy-item {
@@ -465,12 +504,17 @@
                         <div class="panel-header">
                             <div class="ingredient-icon" id="ingredientIcon">Ca</div>
                             <h3 id="ingredientName">Caffeine</h3>
+                            <button class="close-btn" id="closePanel">&times;</button>
                         </div>
                         <div class="dose-badge" id="ingredientDose">100mg</div>
                         <p class="panel-description" id="ingredientDescription"></p>
                         <div class="synergy-list">
                             <h4>Key Synergies</h4>
                             <div id="synergyConnections"></div>
+                        </div>
+                        <div class="brain-effects">
+                            <h4>Primary Brain Effects</h4>
+                            <p id="brainEffects"></p>
                         </div>
                     </div>
 
@@ -823,7 +867,8 @@
                         dose: '100mg',
                         color: '#00ff9d',
                         description: 'The engine of APEX. Blocks adenosine receptors for clean energy and alertness.',
-                        category: ['energy', 'focus']
+                        category: ['energy', 'focus'],
+                        brainEffects: 'Directly impacts: Dopamine, Norepinephrine, Acetylcholine, Glutamate.'
                     },
                     {
                         id: 'ltheanine',
@@ -832,7 +877,8 @@
                         dose: '200mg',
                         color: '#00ff9d',
                         description: 'The precision steering system. Promotes alpha brain waves for calm focus.',
-                        category: ['focus', 'protection']
+                        category: ['focus', 'protection'],
+                        brainEffects: 'Directly impacts: GABA, Serotonin, Dopamine.'
                     },
                     {
                         id: 'alphagpc',
@@ -841,7 +887,8 @@
                         dose: '200mg',
                         color: '#00ccff',
                         description: 'The focus fuel supply. Rapidly converts to acetylcholine for enhanced cognition.',
-                        category: ['focus']
+                        category: ['focus'],
+                        brainEffects: 'Directly impacts: Acetylcholine, Dopamine, Norepinephrine.'
                     },
                     {
                         id: 'mct',
@@ -850,7 +897,8 @@
                         dose: '5000mg',
                         color: '#ffcc00',
                         description: 'The metabolic fuel system. Converts to ketones for sustained brain energy.',
-                        category: ['energy']
+                        category: ['energy'],
+                        brainEffects: 'Directly impacts: Glutamate, Dopamine.'
                     },
                     {
                         id: 'lionsmane',
@@ -859,7 +907,8 @@
                         dose: '500mg',
                         color: '#ff9966',
                         description: 'The long-term architect. Stimulates NGF for neuroplasticity and brain health.',
-                        category: ['protection']
+                        category: ['protection'],
+                        brainEffects: 'Primarily supports overall neural health and neurogenesis through NGF stimulation.'
                     },
                     {
                         id: 'taurine',
@@ -868,7 +917,8 @@
                         dose: '250mg',
                         color: '#9966ff',
                         description: 'The system safety regulator. Calms the CNS and protects cardiovascular health.',
-                        category: ['protection', 'energy']
+                        category: ['protection', 'energy'],
+                        brainEffects: 'Directly impacts: GABA, Serotonin.'
                     },
                     {
                         id: 'cacao',
@@ -877,7 +927,8 @@
                         dose: '750mg',
                         color: '#cc6666',
                         description: 'Flavor fortification with benefits. Provides theobromine and enhances blood flow.',
-                        category: ['energy', 'focus']
+                        category: ['energy', 'focus'],
+                        brainEffects: 'Primarily supports overall system health and metabolic function.'
                     },
                     {
                         id: 'cinnamon',
@@ -886,7 +937,8 @@
                         dose: '300mg',
                         color: '#ff6b6b',
                         description: 'The metabolic stabilizer. Regulates blood sugar to prevent energy crashes.',
-                        category: ['energy', 'protection']
+                        category: ['energy', 'protection'],
+                        brainEffects: 'Primarily supports overall system health and metabolic function.'
                     }
                 ];
 
@@ -970,6 +1022,12 @@
                 document.querySelectorAll('.control-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => this.handleControlClick(e));
                 });
+
+                // Close button
+                const closeBtn = document.getElementById('closePanel');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => this.hideInfoPanel());
+                }
 
                 // Window resize
                 window.addEventListener('resize', () => this.handleResize());
@@ -1113,12 +1171,14 @@
                 const dose = document.getElementById('ingredientDose');
                 const description = document.getElementById('ingredientDescription');
                 const connections = document.getElementById('synergyConnections');
+                const brainEffects = document.getElementById('brainEffects');
 
                 icon.textContent = ingredient.shortName;
                 icon.style.background = ingredient.color;
                 name.textContent = ingredient.name;
                 dose.textContent = ingredient.dose;
                 description.textContent = ingredient.description;
+                brainEffects.textContent = ingredient.brainEffects;
 
                 // Show synergies
                 connections.innerHTML = '';
@@ -1140,6 +1200,16 @@
                 });
 
                 panel.classList.add('active');
+            }
+
+            hideInfoPanel() {
+                const panel = document.getElementById('infoPanel');
+                panel.classList.remove('active');
+                this.selectedIngredient = null;
+                
+                // Hide brain overlay
+                const brainOverlay = document.getElementById('brainOverlay');
+                brainOverlay.classList.remove('active');
             }
 
             showTooltip(ingredient) {
