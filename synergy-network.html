@@ -1082,6 +1082,7 @@
 
             getIngredientAtPos(pos) {
                 return this.ingredients.find(ing => {
+                    if (ing.visible === false) return false;
                     const dx = pos.x - ing.position.x;
                     const dy = pos.y - ing.position.y;
                     return Math.sqrt(dx * dx + dy * dy) < ing.radius;
@@ -1281,7 +1282,17 @@
 
             drawIngredients() {
                 this.ingredients.forEach(ing => {
-                    if (ing.visible === false) return;
+                    if (ing.visible === false) {
+                        // Draw a faded placeholder for hidden ingredients
+                        this.ctx.save();
+                        this.ctx.globalAlpha = 0.1;
+                        this.ctx.beginPath();
+                        this.ctx.arc(ing.position.x, ing.position.y, ing.radius * 0.5, 0, Math.PI * 2);
+                        this.ctx.fillStyle = '#2e2e2e';
+                        this.ctx.fill();
+                        this.ctx.restore();
+                        return;
+                    }
 
                     const isSelected = this.selectedIngredient === ing;
                     const isHovered = this.hoveredIngredient === ing;
