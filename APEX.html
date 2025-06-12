@@ -1,0 +1,3277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primacy: APEX - Upgrade Your OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL STYLES & RESET --- */
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-accent: #00ff9d; /* APEX Green */
+            --color-coffee: #ff6b6b; /* Coffee Red */
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h2 .highlight {
+            color: var(--color-accent);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--color-light-grey);
+            max-width: 650px;
+            margin: 0 auto 1.5rem auto;
+            text-align: center;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HEADER & HERO --- */
+        .header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(8, 8, 8, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-mid-grey);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-white);
+            text-decoration: none;
+            z-index: 1001;
+        }
+
+        .logo .highlight {
+            color: var(--color-accent);
+        }
+
+        .nav-links a {
+            color: var(--color-light-grey);
+            text-decoration: none;
+            margin: 0 15px;f
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent);
+        }
+        
+        /* --- MOBILE NAVIGATION --- */
+        .hamburger-menu {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger-menu .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--color-white);
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        .hero {
+            background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--color-white);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: var(--color-black);
+            padding: 15px 40px;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            border: 2px solid var(--color-accent);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--color-accent);
+        }
+
+        /* --- SHARED STYLES --- */
+        .problem-section, .recap-section, .pricing-section, .faq-section, .persona-section {
+            background-color: var(--color-dark-grey);
+        }
+        .formula-section, .ecosystem-section, .advantage-section, .experience-section {
+            background-color: var(--color-black);
+        }
+
+        /* --- INTERACTIVE INGREDIENT EXPLORER --- */
+        .ingredient-explorer {
+            margin-top: 3rem;
+            background: var(--color-dark-grey);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .ingredient-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .ingredient-tab {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredient-tab:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .ingredient-tab.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        .ingredient-content {
+            min-height: 400px;
+            position: relative;
+        }
+
+        .ingredient-detail {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .ingredient-detail.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .ingredient-info h3 {
+            color: var(--color-accent);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .ingredient-dose {
+            background: var(--color-black);
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--color-accent);
+        }
+
+        .ingredient-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--color-white);
+        }
+
+        .synergy-list {
+            list-style: none;
+        }
+
+        .synergy-list li {
+            background: var(--color-black);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent);
+            transition: transform 0.3s ease;
+        }
+
+        .synergy-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .synergy-list strong {
+            color: var(--color-accent);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .ingredient-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .brain-diagram {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .brain-diagram svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 157, 0.3));
+        }
+
+        .action-label {
+            position: absolute;
+            background: var(--color-accent);
+            color: var(--color-black);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            animation: fadeInUp 0.8s ease forwards;
+            box-shadow: 0 4px 20px rgba(0, 255, 157, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--color-accent); }
+            50% { box-shadow: 0 0 40px var(--color-accent), 0 0 60px var(--color-accent); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ENERGY CURVE VISUALIZATION --- */
+        .energy-curve-section {
+            background: var(--color-black);
+            padding: 80px 0;
+        }
+
+        .curve-container {
+            background: var(--color-dark-grey);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .curve-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .curve-legend {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.apex { background: var(--color-accent); }
+        .legend-dot.coffee { background: var(--color-coffee); }
+
+        .workday-toggle {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            color: var(--color-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .workday-toggle:hover {
+            border-color: var(--color-accent);
+        }
+
+        .workday-toggle.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-bottom: 2rem;
+        }
+
+        .energy-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .time-scrubber {
+            position: relative;
+            height: 60px;
+            background: var(--color-black);
+            border-radius: 30px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .scrubber-track {
+            position: absolute;
+            top: 50%;
+            left: 30px;
+            right: 30px;
+            height: 4px;
+            background: var(--color-mid-grey);
+            transform: translateY(-50%);
+        }
+
+        .scrubber-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--color-accent);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .scrubber-handle {
+            position: absolute;
+            top: 50%;
+            left: 30px;
+            width: 30px;
+            height: 30px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+            transition: transform 0.1s ease;
+        }
+
+        .scrubber-handle:active {
+            cursor: grabbing;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .time-display {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-accent);
+            color: var(--color-black);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .time-display.active {
+            opacity: 1;
+        }
+
+        .workday-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .workday-overlay.active {
+            opacity: 1;
+        }
+
+        .workday-marker {
+            position: absolute;
+            top: 10%;
+            height: 80%;
+            border-left: 2px dashed var(--color-light-grey);
+            opacity: 0.5;
+        }
+
+        .workday-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+            white-space: nowrap;
+        }
+
+        .effect-popup {
+            position: absolute;
+            background: var(--color-black);
+            border: 2px solid var(--color-accent);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 250px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .effect-popup.active {
+            opacity: 1;
+        }
+
+        .effect-popup h4 {
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .effect-popup p {
+            font-size: 0.9rem;
+            margin: 0;
+            text-align: left;
+        }
+
+        /* --- FORMULA SECTION --- */
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .formula-card {
+            background-color: var(--color-black);
+            padding: 2rem;
+            border: 1px solid var(--color-mid-grey);
+            border-radius: 8px;
+        }
+        .formula-card h3 {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+        .formula-card p {
+            text-align: left;
+            font-size: 1rem;
+        }
+        
+        /* --- ECOSYSTEM SECTION --- */
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 4rem;
+        }
+        .ecosystem-item {
+            text-align: center;
+        }
+        .ecosystem-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .ecosystem-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .ecosystem-item p {
+            max-width: 450px;
+        }
+        
+        /* --- RECAP BLUEPRINT TABLE SECTION --- */
+        .table-container {
+             margin-top: 4rem;
+             overflow-x: auto;
+        }
+        .blueprint-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        .blueprint-table th, .blueprint-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-mid-grey);
+        }
+        .blueprint-table th {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            color: var(--color-accent);
+        }
+        .blueprint-table td {
+            vertical-align: top;
+            font-size: 0.95rem;
+            color: var(--color-light-grey);
+        }
+        .blueprint-table td:first-child {
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
+        /* --- ADVANTAGE SECTION --- */
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background-color: var(--color-mid-grey);
+            border: 1px solid var(--color-mid-grey);
+            margin-top: 4rem;
+        }
+        .comparison-table > div {
+            background-color: var(--color-dark-grey);
+            padding: 2rem;
+        }
+        .comparison-table h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .comparison-table .apex-column h3 {
+            color: var(--color-accent);
+        }
+        .comparison-table ul { list-style: none; }
+        .comparison-table li { 
+            margin-bottom: 1.5rem;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1rem;
+        }
+        .comparison-table li::before {
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            line-height: 1;
+            font-weight: bold;
+        }
+        .apex-column li::before {
+            content: '✓';
+            color: var(--color-accent);
+        }
+        .coffee-column li::before {
+            content: '×';
+            color: #ff4d4d;
+        }
+        .comparison-table strong { 
+            display: block; 
+            color: var(--color-white);
+            margin-bottom: 0.5rem; 
+            font-size: 1.1rem;
+        }
+        .comparison-table p {
+            font-size: 1rem;
+            text-align: left;
+            max-width: 100%;
+            margin: 0;
+        }
+
+        /* --- PERSONA SECTION --- */
+        .persona-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 4rem;
+            grid-template-columns: 1fr;
+        }
+        .persona-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--color-black);
+            border: 1px solid var(--color-mid-grey);
+            border-radius: 8px;
+        }
+        .persona-card svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+        .persona-card h3 {
+            font-size: 1.2rem;
+            color: var(--color-white);
+            margin-bottom: 0.5rem;
+        }
+        .persona-card p {
+            font-size: 0.9rem;
+            color: var(--color-light-grey);
+            max-width: 100%;
+        }
+
+        /* --- PRICING SECTION --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: stretch;
+            margin-top: 3rem;
+        }
+        .pricing-card {
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 2px solid var(--color-mid-grey);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-accent);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.2);
+        }
+        .pricing-card.highlight-card {
+            border-color: var(--color-accent);
+            background-color: rgba(26, 26, 26, 0.95);
+        }
+        .pricing-card img {
+            max-width: 180px;
+            height: 200px;
+            object-fit: contain;
+            margin: 0 auto 2rem auto;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 157, 0.2));
+        }
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .price {
+            font-size: 3.5rem;
+            font-family: var(--font-display);
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        .price-period {
+            font-size: 0.9rem;
+            color: var(--color-light-grey);
+            margin-bottom: 2rem;
+        }
+        .pricing-card p {
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            color: var(--color-light-grey);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .pricing-card .cta-button {
+            margin-top: auto;
+            width: 100%;
+            padding: 18px 40px;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+        .pricing-card .cta-button:hover {
+            background: var(--color-accent);
+            color: var(--color-black);
+        }
+        .pricing-card.highlight-card .cta-button {
+            background: var(--color-accent);
+            color: var(--color-black);
+        }
+        .pricing-card.highlight-card .cta-button:hover {
+            background: transparent;
+            color: var(--color-accent);
+        }
+        .save-badge {
+            background-color: var(--color-accent);
+            color: var(--color-black);
+            font-family: var(--font-display);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        /* --- FAQ SECTION --- */
+        .faq-container { margin: 2rem auto 0 auto; max-width: 750px; }
+        .faq-item {
+            background-color: var(--color-dark-grey);
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--color-mid-grey);
+        }
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--color-accent); transition: transform 0.3s; }
+        .faq-item.active .faq-question::after { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px; }
+        .faq-answer p { padding-bottom: 20px; text-align: left; max-width: 100%; }
+        
+        /* --- FOOTER --- */
+        .footer { background-color: var(--color-dark-grey); padding: 40px 0; text-align: center; }
+        .footer p { font-size: 0.9rem; color: var(--color-light-grey); margin: 0; }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (min-width: 768px) {
+            .persona-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 992px) {
+            .persona-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .persona-grid .persona-card:nth-child(4), .persona-grid .persona-card:nth-child(5) {
+                grid-column: span 1;
+            }
+            .persona-grid .persona-card:nth-child(4) {
+                 grid-column-start: 1;
+            }
+            .persona-grid .persona-card:nth-child(5) {
+                 grid-column-start: 2;
+            }
+             .persona-grid-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .persona-grid {
+                width:100%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .persona-card {
+                flex: 1 1 calc(33.333% - 2rem);
+                max-width: calc(33.333% - 2rem);
+            }
+        }
+        @media (max-width: 991px) and (min-width: 768px) {
+            .persona-grid {
+                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            .hero { min-height: 70vh; }
+            .ecosystem-grid, .comparison-table { grid-template-columns: 1fr; }
+            .blueprint-table { min-width: 100%; }
+            .ingredient-detail.active {
+                grid-template-columns: 1fr;
+            }
+            .chart-wrapper {
+                height: 300px;
+            }
+
+            /* --- MOBILE NAV STYLES --- */
+            .hamburger-menu {
+                display: block;
+            }
+            
+            .hamburger-menu.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger-menu.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .hamburger-menu.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .nav-links {
+                position: fixed;
+                left: 100%;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--color-black);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: left 0.3s ease-in-out;
+                display: flex;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+                margin: 2rem 0;
+                display: block;
+                text-align: center;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="logo">PRIMACY<span class="highlight">:APEX</span></a>
+            <div class="nav-links">
+                <a href="#ecosystem">Ecosystem</a>
+                <a href="#blueprint">Blueprint</a>
+                <a href="#advantage">Advantage</a>
+                <a href="#pricing">Get Apex</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div class="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content fade-in">
+            <h1>UPGRADE YOUR OS.</h1>
+            <p>This isn't just coffee. This is a comprehensive cognitive toolkit engineered for flawless execution. Clean energy, unshakeable focus, and zero crash. Welcome to your new benchmark.</p>
+            <a href="#pricing" class="cta-button">Activate APEX</a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section id="problem" class="problem-section">
+        <div class="container">
+            <h2 class="fade-in">STOP <span class="highlight">HACKING</span> YOUR MORNING.</h2>
+            <p class="fade-in">You're juggling basic coffee for the jolt, a handful of pills for focus, and an energy drink for the desperate 2 PM push. Your ambition runs at 100%. Your fuel doesn't. Jitters are a bug. The crash is mission failure. You don't have an energy problem—you have a system problem.</p>
+        </div>
+    </section>
+
+    <!-- FORMULA HIGHLIGHTS WITH INTERACTIVE EXPLORER -->
+    <section id="formula" class="formula-section">
+        <div class="container">
+            <h2 class="fade-in">A <span class="highlight">PRECISION-ENGINEERED</span> SYSTEM.</h2>
+            <div class="formula-grid">
+                <div class="formula-card fade-in">
+                    <h3>THE CORE ENGINE</h3>
+                    <p>Laser focus, zero jitter. We synchronized caffeine and L-Theanine to channel clean energy into calm, locked-in focus.</p>
+                </div>
+                <div class="formula-card fade-in" style="transition-delay: 100ms;">
+                    <h3>THE FUEL SYSTEM</h3>
+                    <p>Stable power, no crash. A dual-pathway system of MCTs and Cinnamon supplies ketone fuel while stabilizing blood sugar.</p>
+                </div>
+                <div class="formula-card fade-in" style="transition-delay: 200ms;">
+                    <h3>COGNITIVE HARDWARE</h3>
+                    <p>High-speed processing. Alpha-GPC and Taurine provide raw materials for neurotransmitters, boosting processing speed.</p>
+                </div>
+                 <div class="formula-card fade-in" style="transition-delay: 300ms;">
+                    <h3>THE LONG GAME</h3>
+                    <p>Fortify your architecture. Lion's Mane supports long-term brain health and neurogenesis as an investment in your cognitive capital.</p>
+                </div>
+            </div>
+
+		       <style>
+		           /* --- GLOBAL STYLES & RESET --- */
+		           :root {
+		               --color-black: #080808;
+		               --color-dark-grey: #1a1a1a;
+		               --color-mid-grey: #2e2e2e;
+		               --color-light-grey: #888888;
+		               --color-white: #f5f5f5;
+		               --color-accent: #00ff9d;
+		               --color-coffee: #ff6b6b;
+		               --font-primary: 'Roboto', sans-serif;
+		               --font-display: 'Roboto Condensed', sans-serif;
+		           }
+
+		           * {
+		               margin: 0;
+		               padding: 0;
+		               box-sizing: border-box;
+		           }
+
+		           body {
+		               background-color: var(--color-black);
+		               font-family: var(--font-primary);
+		               color: var(--color-white);
+		               line-height: 1.6;
+		               overflow-x: hidden;
+		           }
+
+		           /* --- SYNERGY MAP SECTION --- */
+		           .synergy-section {
+		               min-height: 100vh;
+		               padding: 80px 0;
+		               background: var(--color-black);
+		               position: relative;
+		               overflow: hidden;
+		           }
+
+		           .synergy-section::before {
+		               content: '';
+		               position: absolute;
+		               top: 0;
+		               left: 0;
+		               right: 0;
+		               bottom: 0;
+		               background: radial-gradient(ellipse at center, rgba(0, 255, 157, 0.05) 0%, transparent 70%);
+		               pointer-events: none;
+		           }
+
+		           .container {
+		               width: 90%;
+		               max-width: 1400px;
+		               margin: 0 auto;
+		               position: relative;
+		               z-index: 1;
+		           }
+
+		           .section-header {
+		               text-align: center;
+		               margin-bottom: 3rem;
+		           }
+
+		           .section-header h2 {
+		               font-family: var(--font-display);
+		               font-size: 2.5rem;
+		               text-transform: uppercase;
+		               letter-spacing: 2px;
+		               margin-bottom: 1rem;
+		           }
+
+		           .section-header .highlight {
+		               color: var(--color-accent);
+		           }
+
+		           .section-header p {
+		               font-size: 1.1rem;
+		               color: var(--color-light-grey);
+		               max-width: 600px;
+		               margin: 0 auto;
+		           }
+
+		           /* --- SYNERGY MAP CONTAINER --- */
+		           .synergy-map-container {
+		               background: var(--color-dark-grey);
+		               border-radius: 20px;
+		               padding: 2rem;
+		               position: relative;
+		               box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+		           }
+
+		           .synergy-canvas-wrapper {
+		               position: relative;
+		               width: 100%;
+		               height: 600px;
+		               border-radius: 15px;
+		               overflow: hidden;
+		               background: radial-gradient(ellipse at center, rgba(0, 255, 157, 0.02) 0%, transparent 50%);
+		           }
+
+		           #synergyCanvas {
+		               width: 100%;
+		               height: 100%;
+		               cursor: grab;
+		           }
+
+		           #synergyCanvas.grabbing {
+		               cursor: grabbing;
+		           }
+
+		           /* --- INGREDIENT INFO PANEL --- */
+		           .ingredient-info-panel {
+		               position: absolute;
+		               top: 20px;
+		               right: 20px;
+		               width: 350px;
+		               max-height: calc(100% - 40px);
+		               background: rgba(26, 26, 26, 0.95);
+		               border: 2px solid var(--color-accent);
+		               border-radius: 15px;
+		               padding: 25px;
+		               opacity: 0;
+		               transform: translateX(20px);
+		               transition: all 0.3s ease;
+		               backdrop-filter: blur(10px);
+		               z-index: 10;
+		               overflow-y: auto;
+		           }
+
+		           .ingredient-info-panel::-webkit-scrollbar {
+		               width: 8px;
+		           }
+
+		           .ingredient-info-panel::-webkit-scrollbar-track {
+		               background: var(--color-black);
+		               border-radius: 4px;
+		           }
+
+		           .ingredient-info-panel::-webkit-scrollbar-thumb {
+		               background: var(--color-accent);
+		               border-radius: 4px;
+		           }
+
+		           .ingredient-info-panel::-webkit-scrollbar-thumb:hover {
+		               background: var(--color-white);
+		           }
+
+		           .ingredient-info-panel.active {
+		               opacity: 1;
+		               transform: translateX(0);
+		           }
+
+		           .panel-header {
+		               display: flex;
+		               align-items: center;
+		               margin-bottom: 20px;
+		               position: relative;
+		           }
+
+		           .close-btn {
+		               position: absolute;
+		               top: -5px;
+		               right: -5px;
+		               background: transparent;
+		               border: none;
+		               color: var(--color-light-grey);
+		               font-size: 1.5rem;
+		               cursor: pointer;
+		               padding: 5px;
+		               line-height: 1;
+		               transition: color 0.3s ease;
+		           }
+
+		           .close-btn:hover {
+		               color: var(--color-white);
+		           }
+
+		           .ingredient-icon {
+		               width: 50px;
+		               height: 50px;
+		               border-radius: 50%;
+		               background: var(--color-accent);
+		               display: flex;
+		               align-items: center;
+		               justify-content: center;
+		               margin-right: 15px;
+		               font-weight: bold;
+		               font-size: 1.2rem;
+		               color: var(--color-black);
+		           }
+
+		           .panel-header h3 {
+		               font-family: var(--font-display);
+		               font-size: 1.4rem;
+		               color: var(--color-white);
+		               text-transform: uppercase;
+		               letter-spacing: 1px;
+		           }
+
+		           .dose-badge {
+		               background: var(--color-black);
+		               border: 2px solid var(--color-accent);
+		               padding: 8px 16px;
+		               border-radius: 20px;
+		               font-size: 1.1rem;
+		               color: var(--color-accent);
+		               display: inline-block;
+		               margin-bottom: 15px;
+		           }
+
+		           .panel-description {
+		               color: var(--color-light-grey);
+		               line-height: 1.8;
+		               margin-bottom: 20px;
+		               font-size: 0.95rem;
+		           }
+
+		           .synergy-list {
+		               list-style: none;
+		           }
+
+		           .synergy-list h4 {
+		               color: var(--color-accent);
+		               font-size: 1.1rem;
+		               margin-bottom: 10px;
+		               text-transform: uppercase;
+		               letter-spacing: 1px;
+		           }
+
+		           .brain-effects {
+		               margin-top: 25px;
+		               padding-top: 20px;
+		               border-top: 1px solid var(--color-mid-grey);
+		           }
+
+		           .brain-effects h4 {
+		               color: var(--color-accent);
+		               font-size: 1.1rem;
+		               margin-bottom: 10px;
+		               text-transform: uppercase;
+		               letter-spacing: 1px;
+		           }
+
+		           .brain-effects p {
+		               color: var(--color-light-grey);
+		               font-size: 0.95rem;
+		               line-height: 1.6;
+		           }
+
+		           .synergy-item {
+		               background: var(--color-black);
+		               padding: 12px;
+		               margin-bottom: 10px;
+		               border-radius: 8px;
+		               border-left: 3px solid var(--color-accent);
+		               font-size: 0.9rem;
+		               color: var(--color-light-grey);
+		               transition: all 0.3s ease;
+		           }
+
+		           .synergy-item:hover {
+		               transform: translateX(5px);
+		               border-left-color: var(--color-white);
+		           }
+
+		           .synergy-item strong {
+		               color: var(--color-white);
+		               display: block;
+		               margin-bottom: 3px;
+		           }
+
+		           /* --- CONTROLS --- */
+		           .map-controls {
+		               display: flex;
+		               justify-content: center;
+		               gap: 15px;
+		               margin-top: 2rem;
+		           }
+
+		           .control-btn {
+		               background: var(--color-black);
+		               border: 2px solid var(--color-mid-grey);
+		               color: var(--color-light-grey);
+		               padding: 10px 20px;
+		               border-radius: 25px;
+		               cursor: pointer;
+		               transition: all 0.3s ease;
+		               text-transform: uppercase;
+		               letter-spacing: 1px;
+		               font-size: 0.9rem;
+		           }
+
+		           .control-btn:hover {
+		               border-color: var(--color-accent);
+		               color: var(--color-accent);
+		           }
+
+		           .control-btn.active {
+		               background: var(--color-accent);
+		               color: var(--color-black);
+		               border-color: var(--color-accent);
+		           }
+
+		           /* --- BRAIN VISUALIZATION --- */
+		           .brain-overlay {
+		               position: absolute;
+		               top: 50%;
+		               left: 50%;
+		               transform: translate(-50%, -50%);
+		               width: 300px;
+		               height: 300px;
+		               pointer-events: none;
+		               opacity: 0;
+		               transition: opacity 0.5s ease;
+		           }
+
+		           .brain-overlay.active {
+		               opacity: 0.15;
+		           }
+
+		           .brain-svg {
+		               width: 100%;
+		               height: 100%;
+		           }
+
+		           /* --- LEGEND --- */
+		           .map-legend {
+		               position: absolute;
+		               bottom: 20px;
+		               left: 20px;
+		               background: rgba(26, 26, 26, 0.9);
+		               padding: 15px 20px;
+		               border-radius: 10px;
+		               border: 1px solid var(--color-mid-grey);
+		               backdrop-filter: blur(10px);
+		           }
+
+		           .legend-title {
+		               font-size: 0.9rem;
+		               color: var(--color-accent);
+		               margin-bottom: 10px;
+		               text-transform: uppercase;
+		               letter-spacing: 1px;
+		           }
+
+		           .legend-item {
+		               display: flex;
+		               align-items: center;
+		               margin-bottom: 8px;
+		               font-size: 0.85rem;
+		               color: var(--color-light-grey);
+		           }
+
+		           .legend-line {
+		               width: 30px;
+		               height: 2px;
+		               margin-right: 10px;
+		           }
+
+		           .legend-line.strong {
+		               background: var(--color-accent);
+		               box-shadow: 0 0 5px var(--color-accent);
+		           }
+
+		           .legend-line.moderate {
+		               background: var(--color-light-grey);
+		           }
+
+		           .legend-line.enhances {
+		               background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent) 45%, transparent 50%, transparent 55%, var(--color-accent) 60%, var(--color-accent) 100%);
+		           }
+
+		           /* --- TOOLTIP --- */
+		           .synergy-tooltip {
+		               position: absolute;
+		               background: var(--color-black);
+		               border: 1px solid var(--color-accent);
+		               padding: 10px 15px;
+		               border-radius: 8px;
+		               font-size: 0.85rem;
+		               color: var(--color-white);
+		               pointer-events: none;
+		               opacity: 0;
+		               transform: translateY(-10px);
+		               transition: all 0.2s ease;
+		               z-index: 20;
+		               max-width: 250px;
+		           }
+
+		           .synergy-tooltip.active {
+		               opacity: 1;
+		               transform: translateY(0);
+		           }
+
+		           /* --- NEUROTRANSMITTER LEGEND --- */
+		           .neurotransmitter-legend {
+		               position: absolute;
+		               top: 20px;
+		               left: 20px;
+		               background: rgba(26, 26, 26, 0.9);
+		               padding: 15px 20px;
+		               border-radius: 10px;
+		               border: 1px solid var(--color-mid-grey);
+		               backdrop-filter: blur(10px);
+		               max-width: 200px;
+		           }
+
+		           .neurotransmitter-legend h4 {
+		               font-size: 0.9rem;
+		               color: var(--color-accent);
+		               margin-bottom: 10px;
+		               text-transform: uppercase;
+		               letter-spacing: 1px;
+		           }
+
+		           .neuro-item {
+		               display: flex;
+		               align-items: center;
+		               margin-bottom: 6px;
+		               font-size: 0.8rem;
+		               color: var(--color-light-grey);
+		           }
+
+		           .neuro-dot {
+		               width: 10px;
+		               height: 10px;
+		               border-radius: 50%;
+		               margin-right: 8px;
+		               box-shadow: 0 0 5px currentColor;
+		           }
+		           @media (max-width: 768px) {
+		               .synergy-canvas-wrapper {
+		                   height: 500px;
+		               }
+
+		               .ingredient-info-panel {
+		                   position: static;
+		                   width: 100%;
+		                   margin-top: 20px;
+		                   transform: none;
+		                   opacity: 1;
+		               }
+
+		               .map-legend {
+		                   position: static;
+		                   margin-top: 20px;
+		                   width: 100%;
+		               }
+
+		               .map-controls {
+		                   flex-wrap: wrap;
+		               }
+		           }
+
+		           /* --- ANIMATIONS --- */
+		           @keyframes pulse {
+		               0%, 100% { transform: scale(1); opacity: 0.8; }
+		               50% { transform: scale(1.1); opacity: 1; }
+		           }
+
+		           @keyframes flowEnergy {
+		               0% { stroke-dashoffset: 0; }
+		               100% { stroke-dashoffset: -40; }
+		           }
+
+		           .energy-flow {
+		               animation: flowEnergy 2s linear infinite;
+		           }
+		       </style>
+		   </head>
+		   <body>
+
+		       <section class="synergy-section">
+		           <div class="container">
+		               <div class="section-header">
+		                   <h2>THE <span class="highlight">SYNERGY NETWORK</span></h2>
+		                   <p>Explore how each ingredient amplifies the others. Click and drag to discover the intricate relationships that make APEX more than the sum of its parts.</p>
+		               </div>
+
+		               <div class="synergy-map-container">
+		                   <div class="synergy-canvas-wrapper">
+		                       <canvas id="synergyCanvas"></canvas>
+                    
+		                       <!-- Brain Overlay -->
+		                       <div class="brain-overlay" id="brainOverlay">
+		                           <svg class="brain-svg" viewBox="0 0 100 100">
+		                               <path d="M50 20 C30 20, 20 35, 20 50 C20 65, 30 80, 50 80 C70 80, 80 65, 80 50 C80 35, 70 20, 50 20" 
+		                                     fill="none" stroke="#00ff9d" stroke-width="1" opacity="0.5"/>
+		                               <path d="M35 35 Q50 25, 65 35 Q75 50, 65 65 Q50 75, 35 65 Q25 50, 35 35" 
+		                                     fill="rgba(0, 255, 157, 0.1)" stroke="#00ff9d" stroke-width="0.5" opacity="0.7"/>
+		                           </svg>
+		                       </div>
+
+		                       <!-- Ingredient Info Panel -->
+		                       <div class="ingredient-info-panel" id="infoPanel">
+		                           <div class="panel-header">
+		                               <div class="ingredient-icon" id="ingredientIcon">Ca</div>
+		                               <h3 id="ingredientName">Caffeine</h3>
+		                               <button class="close-btn" id="closePanel">&times;</button>
+		                           </div>
+		                           <div class="dose-badge" id="ingredientDose">100mg</div>
+		                           <p class="panel-description" id="ingredientDescription"></p>
+		                           <div class="synergy-list">
+		                               <h4>Key Synergies</h4>
+		                               <div id="synergyConnections"></div>
+		                           </div>
+		                           <div class="brain-effects">
+		                               <h4>Primary Brain Effects</h4>
+		                               <p id="brainEffects"></p>
+		                           </div>
+		                       </div>
+
+		                       <!-- Neurotransmitter Legend -->
+		                       <div class="neurotransmitter-legend">
+		                           <h4>Neurotransmitters</h4>
+		                           <div class="neuro-item">
+		                               <div class="neuro-dot" style="background-color: #FFD700;"></div>
+		                               <span>Dopamine (Motivation)</span>
+		                           </div>
+		                           <div class="neuro-item">
+		                               <div class="neuro-dot" style="background-color: #00ff9d;"></div>
+		                               <span>Acetylcholine (Focus)</span>
+		                           </div>
+		                           <div class="neuro-item">
+		                               <div class="neuro-dot" style="background-color: #9370DB;"></div>
+		                               <span>GABA (Calm)</span>
+		                           </div>
+		                           <div class="neuro-item">
+		                               <div class="neuro-dot" style="background-color: #87CEEB;"></div>
+		                               <span>Serotonin (Mood)</span>
+		                           </div>
+		                           <div class="neuro-item">
+		                               <div class="neuro-dot" style="background-color: #FF6347;"></div>
+		                               <span>Glutamate (Learning)</span>
+		                           </div>
+		                           <div class="neuro-item">
+		                               <div class="neuro-dot" style="background-color: #FFA500;"></div>
+		                               <span>Norepinephrine (Alert)</span>
+		                           </div>
+		                       </div>
+
+		                       <!-- Legend -->
+		                       <div class="map-legend">
+		                           <div class="legend-title">Connection Strength</div>
+		                           <div class="legend-item">
+		                               <div class="legend-line strong"></div>
+		                               <span>Primary Synergy</span>
+		                           </div>
+		                           <div class="legend-item">
+		                               <div class="legend-line moderate"></div>
+		                               <span>Supporting Effect</span>
+		                           </div>
+		                           <div class="legend-item">
+		                               <div class="legend-line enhances"></div>
+		                               <span>Enhancement Flow</span>
+		                           </div>
+		                       </div>
+
+		                       <!-- Tooltip -->
+		                       <div class="synergy-tooltip" id="tooltip"></div>
+		                   </div>
+
+		                   <div class="map-controls">
+		                       <button class="control-btn active" data-view="all">All Connections</button>
+		                       <button class="control-btn" data-view="focus">Focus System</button>
+		                       <button class="control-btn" data-view="energy">Energy System</button>
+		                       <button class="control-btn" data-view="protection">Protection System</button>
+		                       <button class="control-btn" data-view="reset">Reset View</button>
+		                   </div>
+		               </div>
+		           </div>
+		       </section>
+
+		       <script>
+		           // Neurotransmitter System
+		           class NeurotransmitterSystem {
+		               constructor() {
+		                   this.transmitters = [];
+		                   this.pathways = [];
+		                   this.cascadeEffects = [];
+		                   this.cascadeMap = {
+		                       'caffeine': {
+		                           primary: ['dopamine', 'norepinephrine'],
+		                           secondary: ['acetylcholine', 'glutamate'],
+		                           delay: 30
+		                       },
+		                       'ltheanine': {
+		                           primary: ['gaba', 'serotonin'],
+		                           secondary: ['dopamine'],
+		                           delay: 45
+		                       },
+		                       'alphagpc': {
+		                           primary: ['acetylcholine'],
+		                           secondary: ['dopamine', 'norepinephrine'],
+		                           delay: 60
+		                       },
+		                       'mct': {
+		                           primary: ['glutamate'],
+		                           secondary: ['dopamine'],
+		                           delay: 90
+		                       },
+		                       'taurine': {
+		                           primary: ['gaba'],
+		                           secondary: ['serotonin'],
+		                           delay: 40
+		                       }
+		                   };
+		               }
+
+		               createTransmitter(type, startPos, endPos, color, size = null, speed = null) {
+		                   return {
+		                       type: type,
+		                       position: { ...startPos },
+		                       start: { ...startPos },
+		                       end: { ...endPos },
+		                       progress: 0,
+		                       speed: speed || (0.02 + Math.random() * 0.01),
+		                       size: size || (3 + Math.random() * 2),
+		                       color: color,
+		                       trail: []
+		                   };
+		               }
+
+		               addPathway(ingredient1, ingredient2, type) {
+		                   const colors = {
+		                       dopamine: '#FFD700',
+		                       serotonin: '#87CEEB',
+		                       acetylcholine: '#00ff9d',
+		                       gaba: '#9370DB',
+		                       glutamate: '#FF6347',
+		                       norepinephrine: '#FFA500'
+		                   };
+
+		                   this.pathways.push({
+		                       from: ingredient1,
+		                       to: ingredient2,
+		                       type: type,
+		                       color: colors[type] || '#00ff9d',
+		                       active: false,
+		                       transmitterTimer: 0
+		                   });
+		               }
+
+		               activatePathway(ingredient) {
+		                   // Clear previous cascades
+		                   this.cascadeEffects = [];
+                
+		                   // Activate direct pathways
+		                   this.pathways.forEach(pathway => {
+		                       if (pathway.from === ingredient || pathway.to === ingredient) {
+		                           pathway.active = true;
+		                           pathway.transmitterTimer = 120;
+		                       }
+		                   });
+
+		                   // Create cascade effects if this ingredient has them
+		                   const cascade = this.cascadeMap[ingredient.id];
+		                   if (cascade) {
+		                       // Primary neurotransmitters fire immediately
+		                       cascade.primary.forEach(nt => {
+		                           this.cascadeEffects.push({
+		                               ingredient: ingredient,
+		                               neurotransmitter: nt,
+		                               delay: 0,
+		                               duration: 180,
+		                               timer: 0,
+		                               intensity: 1.0
+		                           });
+		                       });
+
+		                       // Secondary neurotransmitters fire with delay
+		                       cascade.secondary.forEach(nt => {
+		                           this.cascadeEffects.push({
+		                               ingredient: ingredient,
+		                               neurotransmitter: nt,
+		                               delay: cascade.delay,
+		                               duration: 150,
+		                               timer: 0,
+		                               intensity: 0.7
+		                           });
+		                       });
+		                   }
+		               }
+
+		               update() {
+		                   // Update existing transmitters
+		                   this.transmitters = this.transmitters.filter(t => {
+		                       t.progress += t.speed;
+                    
+		                       // Update position along bezier curve
+		                       const dx = t.end.x - t.start.x;
+		                       const dy = t.end.y - t.start.y;
+		                       const cx = t.start.x + dx / 2 + dy * 0.1;
+		                       const cy = t.start.y + dy / 2 - dx * 0.1;
+                    
+		                       const t1 = 1 - t.progress;
+		                       const t2 = t.progress;
+                    
+		                       t.position.x = t1 * t1 * t.start.x + 2 * t1 * t2 * cx + t2 * t2 * t.end.x;
+		                       t.position.y = t1 * t1 * t.start.y + 2 * t1 * t2 * cy + t2 * t2 * t.end.y;
+                    
+		                       // Add to trail
+		                       t.trail.push({ x: t.position.x, y: t.position.y });
+		                       if (t.trail.length > 10) t.trail.shift();
+                    
+		                       return t.progress < 1;
+		                   });
+
+		                   // Update pathways and create new transmitters
+		                   this.pathways.forEach(pathway => {
+		                       if (pathway.active && pathway.transmitterTimer > 0) {
+		                           pathway.transmitterTimer--;
+                        
+		                           // Create new transmitter every few frames
+		                           if (pathway.transmitterTimer % 15 === 0) {
+		                               this.transmitters.push(
+		                                   this.createTransmitter(
+		                                       pathway.type,
+		                                       pathway.from.position,
+		                                       pathway.to.position,
+		                                       pathway.color
+		                                   )
+		                               );
+		                           }
+                        
+		                           if (pathway.transmitterTimer === 0) {
+		                               pathway.active = false;
+		                           }
+		                       }
+		                   });
+
+		                   // Update cascade effects
+		                   this.cascadeEffects = this.cascadeEffects.filter(effect => {
+		                       effect.timer++;
+                    
+		                       // Check if it's time to start this cascade
+		                       if (effect.timer > effect.delay && effect.timer < effect.delay + effect.duration) {
+		                           // Create cascade transmitters
+		                           if ((effect.timer - effect.delay) % 20 === 0) {
+		                               const angle = Math.random() * Math.PI * 2;
+		                               const distance = 50 + Math.random() * 100;
+		                               const endPos = {
+		                                   x: effect.ingredient.position.x + Math.cos(angle) * distance,
+		                                   y: effect.ingredient.position.y + Math.sin(angle) * distance
+		                               };
+                            
+		                               const colors = {
+		                                   dopamine: '#FFD700',
+		                                   serotonin: '#87CEEB',
+		                                   acetylcholine: '#00ff9d',
+		                                   gaba: '#9370DB',
+		                                   glutamate: '#FF6347',
+		                                   norepinephrine: '#FFA500'
+		                               };
+                            
+		                               this.transmitters.push(
+		                                   this.createTransmitter(
+		                                       effect.neurotransmitter,
+		                                       effect.ingredient.position,
+		                                       endPos,
+		                                       colors[effect.neurotransmitter],
+		                                       4 * effect.intensity,
+		                                       0.015 * effect.intensity
+		                                   )
+		                               );
+		                           }
+		                       }
+                    
+		                       return effect.timer < effect.delay + effect.duration;
+		                   });
+		               }
+
+		               draw(ctx) {
+		                   this.transmitters.forEach(t => {
+		                       // Draw trail
+		                       ctx.save();
+		                       ctx.globalAlpha = 0.3;
+		                       ctx.strokeStyle = t.color;
+		                       ctx.lineWidth = t.size * 0.5;
+		                       ctx.lineCap = 'round';
+                    
+		                       ctx.beginPath();
+		                       t.trail.forEach((point, i) => {
+		                           if (i === 0) {
+		                               ctx.moveTo(point.x, point.y);
+		                           } else {
+		                               ctx.lineTo(point.x, point.y);
+		                           }
+		                       });
+		                       ctx.stroke();
+                    
+		                       // Draw transmitter
+		                       ctx.globalAlpha = 0.8;
+		                       ctx.fillStyle = t.color;
+		                       ctx.shadowBlur = 15;
+		                       ctx.shadowColor = t.color;
+                    
+		                       ctx.beginPath();
+		                       ctx.arc(t.position.x, t.position.y, t.size, 0, Math.PI * 2);
+		                       ctx.fill();
+                    
+		                       // Inner glow
+		                       ctx.globalAlpha = 1;
+		                       ctx.fillStyle = '#ffffff';
+		                       ctx.beginPath();
+		                       ctx.arc(t.position.x, t.position.y, t.size * 0.3, 0, Math.PI * 2);
+		                       ctx.fill();
+                    
+		                       ctx.restore();
+		                   });
+		               }
+		           }
+
+		           // Synergy Map Implementation
+		           class SynergyMap {
+		               constructor() {
+		                   this.canvas = document.getElementById('synergyCanvas');
+		                   this.ctx = this.canvas.getContext('2d');
+		                   this.ingredients = [];
+		                   this.connections = [];
+		                   this.particles = [];
+		                   this.selectedIngredient = null;
+		                   this.hoveredIngredient = null;
+		                   this.draggedIngredient = null;
+		                   this.mousePos = { x: 0, y: 0 };
+		                   this.currentView = 'all';
+		                   this.animationFrame = 0;
+                
+		                   // Touch handling
+		                   this.touchStartTime = 0;
+		                   this.touchStartPos = { x: 0, y: 0 };
+		                   this.lastTouchPos = { x: 0, y: 0 };
+		                   this.potentialDragIngredient = null;
+		                   this.longPressTimer = null;
+                
+		                   // Mobile detection
+		                   this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                
+		                   // Initialize systems
+		                   this.neurotransmitterSystem = new NeurotransmitterSystem();
+                
+		                   this.setupCanvas();
+		                   this.createIngredients();
+		                   this.createConnections();
+		                   this.setupNeurotransmitterPathways();
+		                   this.setupEventListeners();
+		                   this.setupMobileFeatures();
+		                   this.animate();
+		               }
+
+		               setupMobileFeatures() {
+		                   if (this.isMobile) {
+		                       // Add swipe to close for info panel
+		                       const panel = document.getElementById('infoPanel');
+		                       let startY = 0;
+                    
+		                       panel.addEventListener('touchstart', (e) => {
+		                           startY = e.touches[0].clientY;
+		                       });
+                    
+		                       panel.addEventListener('touchmove', (e) => {
+		                           const currentY = e.touches[0].clientY;
+		                           const deltaY = currentY - startY;
+                        
+		                           // Swipe down to close
+		                           if (deltaY > 0) {
+		                               panel.style.transform = `translateY(${deltaY}px)`;
+		                           }
+		                       });
+                    
+		                       panel.addEventListener('touchend', (e) => {
+		                           const currentY = e.changedTouches[0].clientY;
+		                           const deltaY = currentY - startY;
+                        
+		                           if (deltaY > 100) {
+		                               this.hideInfoPanel();
+		                           }
+		                           panel.style.transform = '';
+		                       });
+                    
+		                       // Adjust canvas size for mobile
+		                       this.adjustCanvasForMobile();
+		                   }
+		               }
+
+		               adjustCanvasForMobile() {
+		                   if (this.isMobile) {
+		                       // Make ingredients slightly larger for easier touch
+		                       this.ingredients.forEach(ing => {
+		                           ing.radius = 40; // Increased from 35
+		                       });
+                    
+		                       // Adjust positions to ensure all ingredients are visible
+		                       const padding = 50;
+		                       const centerX = this.width / 2;
+		                       const centerY = this.height / 2;
+		                       const maxRadius = Math.min(this.width - padding * 2, this.height - padding * 2) / 2;
+                    
+		                       this.ingredients.forEach((ing, i) => {
+		                           const angle = (Math.PI * 2 / this.ingredients.length) * i - Math.PI / 2;
+		                           ing.position = {
+		                               x: centerX + Math.cos(angle) * maxRadius * 0.8,
+		                               y: centerY + Math.sin(angle) * maxRadius * 0.8
+		                           };
+		                       });
+		                   }
+		               }
+
+		               setupCanvas() {
+		                   const rect = this.canvas.getBoundingClientRect();
+		                   this.canvas.width = rect.width * window.devicePixelRatio;
+		                   this.canvas.height = rect.height * window.devicePixelRatio;
+		                   this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+		                   this.width = rect.width;
+		                   this.height = rect.height;
+		               }
+
+		               createIngredients() {
+		                   const centerX = this.width / 2;
+		                   const centerY = this.height / 2;
+		                   const radius = Math.min(this.width, this.height) * 0.3;
+                
+		                   const ingredientData = [
+		                       {
+		                           id: 'caffeine',
+		                           name: 'Caffeine',
+		                           shortName: 'Ca',
+		                           dose: '100mg',
+		                           color: '#00ff9d',
+		                           description: 'The engine of APEX. Blocks adenosine receptors for clean energy and alertness.',
+		                           category: ['energy', 'focus'],
+		                           brainEffects: 'Directly impacts: Dopamine, Norepinephrine, Acetylcholine, Glutamate.'
+		                       },
+		                       {
+		                           id: 'ltheanine',
+		                           name: 'L-Theanine',
+		                           shortName: 'Th',
+		                           dose: '200mg',
+		                           color: '#00ff9d',
+		                           description: 'The precision steering system. Promotes alpha brain waves for calm focus.',
+		                           category: ['focus', 'protection'],
+		                           brainEffects: 'Directly impacts: GABA, Serotonin, Dopamine.'
+		                       },
+		                       {
+		                           id: 'alphagpc',
+		                           name: 'Alpha-GPC',
+		                           shortName: 'GPC',
+		                           dose: '200mg',
+		                           color: '#00ccff',
+		                           description: 'The focus fuel supply. Rapidly converts to acetylcholine for enhanced cognition.',
+		                           category: ['focus'],
+		                           brainEffects: 'Directly impacts: Acetylcholine, Dopamine, Norepinephrine.'
+		                       },
+		                       {
+		                           id: 'mct',
+		                           name: 'MCT Powder',
+		                           shortName: 'MCT',
+		                           dose: '5000mg',
+		                           color: '#ffcc00',
+		                           description: 'The metabolic fuel system. Converts to ketones for sustained brain energy.',
+		                           category: ['energy'],
+		                           brainEffects: 'Directly impacts: Glutamate, Dopamine.'
+		                       },
+		                       {
+		                           id: 'lionsmane',
+		                           name: "Lion's Mane",
+		                           shortName: 'LM',
+		                           dose: '500mg',
+		                           color: '#ff9966',
+		                           description: 'The long-term architect. Stimulates NGF for neuroplasticity and brain health.',
+		                           category: ['protection'],
+		                           brainEffects: 'Primarily supports overall neural health and neurogenesis through NGF stimulation.'
+		                       },
+		                       {
+		                           id: 'taurine',
+		                           name: 'Taurine',
+		                           shortName: 'Tau',
+		                           dose: '250mg',
+		                           color: '#9966ff',
+		                           description: 'The system safety regulator. Calms the CNS and protects cardiovascular health.',
+		                           category: ['protection', 'energy'],
+		                           brainEffects: 'Directly impacts: GABA, Serotonin.'
+		                       },
+		                       {
+		                           id: 'cacao',
+		                           name: 'Cacao',
+		                           shortName: 'Cac',
+		                           dose: '750mg',
+		                           color: '#cc6666',
+		                           description: 'Flavor fortification with benefits. Provides theobromine and enhances blood flow.',
+		                           category: ['energy', 'focus'],
+		                           brainEffects: 'Primarily supports overall system health and metabolic function.'
+		                       },
+		                       {
+		                           id: 'cinnamon',
+		                           name: 'Cinnamon',
+		                           shortName: 'Cin',
+		                           dose: '300mg',
+		                           color: '#ff6b6b',
+		                           description: 'The metabolic stabilizer. Regulates blood sugar to prevent energy crashes.',
+		                           category: ['energy', 'protection'],
+		                           brainEffects: 'Primarily supports overall system health and metabolic function.'
+		                       }
+		                   ];
+
+		                   this.ingredients = ingredientData.map((data, i) => {
+		                       const angle = (Math.PI * 2 / ingredientData.length) * i - Math.PI / 2;
+		                       return {
+		                           ...data,
+		                           position: {
+		                               x: centerX + Math.cos(angle) * radius,
+		                               y: centerY + Math.sin(angle) * radius
+		                           },
+		                           radius: 35,
+		                           pulsePhase: Math.random() * Math.PI * 2,
+		                           velocity: { x: 0, y: 0 }
+		                       };
+		                   });
+		               }
+
+		               createConnections() {
+		                   this.connections = [
+		                       // Primary synergies
+		                       { from: 'caffeine', to: 'ltheanine', strength: 'primary', 
+		                         description: 'The legendary 1:2 ratio for calm focus without jitters',
+		                         neurotransmitter: 'dopamine' },
+		                       { from: 'caffeine', to: 'alphagpc', strength: 'primary',
+		                         description: 'Demand & Supply: Caffeine increases acetylcholine demand, Alpha-GPC supplies it',
+		                         neurotransmitter: 'acetylcholine' },
+		                       { from: 'mct', to: 'cinnamon', strength: 'primary',
+		                         description: 'The crash-prevention duo: stable glucose + sustained ketones',
+		                         neurotransmitter: 'glutamate' },
+                    
+		                       // Supporting connections
+		                       { from: 'ltheanine', to: 'taurine', strength: 'moderate',
+		                         description: 'Double-layer anxiety protection through GABA pathways',
+		                         neurotransmitter: 'gaba' },
+		                       { from: 'caffeine', to: 'cacao', strength: 'moderate',
+		                         description: 'Complementary stimulation: caffeine + theobromine',
+		                         neurotransmitter: 'norepinephrine' },
+		                       { from: 'alphagpc', to: 'lionsmane', strength: 'moderate',
+		                         description: 'Supporting the neurons that Lion\'s Mane protects',
+		                         neurotransmitter: 'acetylcholine' },
+		                       { from: 'mct', to: 'caffeine', strength: 'moderate',
+		                         description: 'Dual-fuel system: immediate + sustained energy',
+		                         neurotransmitter: 'dopamine' },
+		                       { from: 'cacao', to: 'ltheanine', strength: 'moderate',
+		                         description: 'Enhanced blood flow improves ingredient delivery',
+		                         neurotransmitter: 'serotonin' },
+		                       { from: 'taurine', to: 'caffeine', strength: 'moderate',
+		                         description: 'Protects against overstimulation and side effects',
+		                         neurotransmitter: 'gaba' },
+		                       { from: 'cinnamon', to: 'mct', strength: 'moderate',
+		                         description: 'Stabilizes energy delivery throughout the day',
+		                         neurotransmitter: 'glutamate' }
+		                   ];
+		               }
+
+		               setupNeurotransmitterPathways() {
+		                   this.connections.forEach(conn => {
+		                       const from = this.ingredients.find(ing => ing.id === conn.from);
+		                       const to = this.ingredients.find(ing => ing.id === conn.to);
+		                       if (from && to && conn.neurotransmitter) {
+		                           this.neurotransmitterSystem.addPathway(from, to, conn.neurotransmitter);
+		                       }
+		                   });
+		               }
+
+		               setupEventListeners() {
+		                   // Mouse events
+		                   this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+		                   this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+		                   this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+		                   this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
+		                   this.canvas.addEventListener('click', (e) => this.handleClick(e));
+
+		                   // Touch events
+		                   this.canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e));
+		                   this.canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+		                   this.canvas.addEventListener('touchend', () => this.handleTouchEnd());
+
+		                   // Control buttons
+		                   document.querySelectorAll('.control-btn').forEach(btn => {
+		                       btn.addEventListener('click', (e) => this.handleControlClick(e));
+		                   });
+
+		                   // Close button
+		                   const closeBtn = document.getElementById('closePanel');
+		                   if (closeBtn) {
+		                       closeBtn.addEventListener('click', () => this.hideInfoPanel());
+		                   }
+
+		                   // Window resize
+		                   window.addEventListener('resize', () => this.handleResize());
+		               }
+
+		               handleMouseMove(e) {
+		                   const rect = this.canvas.getBoundingClientRect();
+		                   this.mousePos = {
+		                       x: e.clientX - rect.left,
+		                       y: e.clientY - rect.top
+		                   };
+
+		                   // Check hover state
+		                   const prevHovered = this.hoveredIngredient;
+		                   this.hoveredIngredient = this.getIngredientAtPos(this.mousePos);
+                
+		                   if (this.hoveredIngredient !== prevHovered) {
+		                       this.canvas.style.cursor = this.hoveredIngredient ? 'pointer' : 'grab';
+		                       if (this.hoveredIngredient) {
+		                           this.showTooltip(this.hoveredIngredient);
+		                       } else {
+		                           this.hideTooltip();
+		                       }
+		                   }
+
+		                   // Handle dragging
+		                   if (this.draggedIngredient) {
+		                       this.draggedIngredient.position = { ...this.mousePos };
+		                       this.canvas.style.cursor = 'grabbing';
+		                   }
+		               }
+
+		               handleMouseDown(e) {
+		                   const ingredient = this.getIngredientAtPos(this.mousePos);
+		                   if (ingredient) {
+		                       this.draggedIngredient = ingredient;
+		                       this.canvas.classList.add('grabbing');
+		                   }
+		               }
+
+		               handleMouseUp() {
+		                   this.draggedIngredient = null;
+		                   this.canvas.classList.remove('grabbing');
+		               }
+
+		               handleMouseLeave() {
+		                   this.hoveredIngredient = null;
+		                   this.draggedIngredient = null;
+		                   this.hideTooltip();
+		                   this.canvas.style.cursor = 'grab';
+		               }
+
+		               handleClick(e) {
+		                   const ingredient = this.getIngredientAtPos(this.mousePos);
+		                   if (ingredient && !this.draggedIngredient) {
+		                       this.selectIngredient(ingredient);
+		                   }
+		               }
+
+		               handleTouchStart(e) {
+		                   const touch = e.touches[0];
+		                   const rect = this.canvas.getBoundingClientRect();
+		                   const pos = {
+		                       x: touch.clientX - rect.left,
+		                       y: touch.clientY - rect.top
+		                   };
+                
+		                   this.touchStartTime = Date.now();
+		                   this.touchStartPos = pos;
+		                   this.lastTouchPos = pos;
+                
+		                   const ingredient = this.getIngredientAtPos(pos);
+		                   if (ingredient) {
+		                       this.potentialDragIngredient = ingredient;
+		                       // Add visual feedback
+		                       this.hoveredIngredient = ingredient;
+                    
+		                       // Set a timer for long press
+		                       this.longPressTimer = setTimeout(() => {
+		                           if (this.potentialDragIngredient === ingredient) {
+		                               this.draggedIngredient = ingredient;
+		                               // Haptic feedback if available
+		                               if (navigator.vibrate) {
+		                                   navigator.vibrate(50);
+		                               }
+		                           }
+		                       }, 500);
+		                   }
+		               }
+
+		               handleTouchMove(e) {
+		                   const touch = e.touches[0];
+		                   const rect = this.canvas.getBoundingClientRect();
+		                   const currentPos = {
+		                       x: touch.clientX - rect.left,
+		                       y: touch.clientY - rect.top
+		                   };
+                
+		                   // Calculate movement distance
+		                   const dx = currentPos.x - this.touchStartPos.x;
+		                   const dy = currentPos.y - this.touchStartPos.y;
+		                   const distance = Math.sqrt(dx * dx + dy * dy);
+                
+		                   // If moved significantly, it's a drag
+		                   if (distance > 10) {
+		                       clearTimeout(this.longPressTimer);
+                    
+		                       if (this.draggedIngredient) {
+		                           e.preventDefault();
+		                           this.draggedIngredient.position = currentPos;
+		                       } else if (this.potentialDragIngredient && Date.now() - this.touchStartTime > 150) {
+		                           // Start dragging after a short delay
+		                           this.draggedIngredient = this.potentialDragIngredient;
+		                       }
+		                   }
+                
+		                   this.lastTouchPos = currentPos;
+		               }
+
+		               handleTouchEnd() {
+		                   clearTimeout(this.longPressTimer);
+                
+		                   const touchDuration = Date.now() - this.touchStartTime;
+		                   const dx = this.lastTouchPos.x - this.touchStartPos.x;
+		                   const dy = this.lastTouchPos.y - this.touchStartPos.y;
+		                   const distance = Math.sqrt(dx * dx + dy * dy);
+                
+		                   // If it was a tap (short duration and small movement)
+		                   if (touchDuration < 500 && distance < 10 && this.potentialDragIngredient) {
+		                       this.selectIngredient(this.potentialDragIngredient);
+		                       // Haptic feedback for selection
+		                       if (navigator.vibrate) {
+		                           navigator.vibrate(30);
+		                       }
+		                   }
+                
+		                   this.draggedIngredient = null;
+		                   this.potentialDragIngredient = null;
+		                   this.hoveredIngredient = null;
+		               }
+
+		               handleControlClick(e) {
+		                   const btn = e.target;
+		                   const view = btn.dataset.view;
+                
+		                   document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+		                   btn.classList.add('active');
+
+		                   if (view === 'reset') {
+		                       this.resetPositions();
+		                   } else {
+		                       this.currentView = view;
+		                       this.filterView(view);
+		                   }
+		               }
+
+		               handleResize() {
+		                   this.setupCanvas();
+		                   this.resetPositions();
+		               }
+
+		               getIngredientAtPos(pos) {
+		                   return this.ingredients.find(ing => {
+		                       if (ing.visible === false) return false;
+		                       const dx = pos.x - ing.position.x;
+		                       const dy = pos.y - ing.position.y;
+		                       return Math.sqrt(dx * dx + dy * dy) < ing.radius;
+		                   });
+		               }
+
+		               selectIngredient(ingredient) {
+		                   this.selectedIngredient = ingredient;
+		                   this.showInfoPanel(ingredient);
+		                   this.createParticles(ingredient);
+                
+		                   // Activate neurotransmitter pathways
+		                   this.neurotransmitterSystem.activatePathway(ingredient);
+                
+		                   // Show brain overlay for focus ingredients
+		                   const brainOverlay = document.getElementById('brainOverlay');
+		                   if (ingredient.category.includes('focus')) {
+		                       brainOverlay.classList.add('active');
+		                   } else {
+		                       brainOverlay.classList.remove('active');
+		                   }
+		               }
+
+		               showInfoPanel(ingredient) {
+		                   const panel = document.getElementById('infoPanel');
+		                   const icon = document.getElementById('ingredientIcon');
+		                   const name = document.getElementById('ingredientName');
+		                   const dose = document.getElementById('ingredientDose');
+		                   const description = document.getElementById('ingredientDescription');
+		                   const connections = document.getElementById('synergyConnections');
+		                   const brainEffects = document.getElementById('brainEffects');
+
+		                   icon.textContent = ingredient.shortName;
+		                   icon.style.background = ingredient.color;
+		                   name.textContent = ingredient.name;
+		                   dose.textContent = ingredient.dose;
+		                   description.textContent = ingredient.description;
+		                   brainEffects.textContent = ingredient.brainEffects;
+
+		                   // Show synergies
+		                   connections.innerHTML = '';
+		                   const relatedConnections = this.connections.filter(
+		                       conn => conn.from === ingredient.id || conn.to === ingredient.id
+		                   );
+
+		                   relatedConnections.forEach(conn => {
+		                       const partnerId = conn.from === ingredient.id ? conn.to : conn.from;
+		                       const partner = this.ingredients.find(ing => ing.id === partnerId);
+                    
+		                       const item = document.createElement('div');
+		                       item.className = 'synergy-item';
+		                       item.innerHTML = `
+		                           <strong>${partner.name}</strong>
+		                           ${conn.description}
+		                       `;
+		                       connections.appendChild(item);
+		                   });
+
+		                   panel.classList.add('active');
+		               }
+
+		               hideInfoPanel() {
+		                   const panel = document.getElementById('infoPanel');
+		                   panel.classList.remove('active');
+		                   this.selectedIngredient = null;
+                
+		                   // Hide brain overlay
+		                   const brainOverlay = document.getElementById('brainOverlay');
+		                   brainOverlay.classList.remove('active');
+		               }
+
+		               showTooltip(ingredient) {
+		                   const tooltip = document.getElementById('tooltip');
+		                   tooltip.textContent = `${ingredient.name} - ${ingredient.dose}`;
+		                   tooltip.style.left = `${ingredient.position.x}px`;
+		                   tooltip.style.top = `${ingredient.position.y - ingredient.radius - 20}px`;
+		                   tooltip.classList.add('active');
+		               }
+
+		               hideTooltip() {
+		                   document.getElementById('tooltip').classList.remove('active');
+		               }
+
+		               createParticles(ingredient) {
+		                   // Create energy particles flowing from selected ingredient
+		                   for (let i = 0; i < 20; i++) {
+		                       const angle = (Math.PI * 2 / 20) * i;
+		                       this.particles.push({
+		                           x: ingredient.position.x,
+		                           y: ingredient.position.y,
+		                           vx: Math.cos(angle) * 2,
+		                           vy: Math.sin(angle) * 2,
+		                           life: 100,
+		                           color: ingredient.color,
+		                           size: 3
+		                       });
+		                   }
+		               }
+
+		               filterView(view) {
+		                   if (view === 'all') {
+		                       this.ingredients.forEach(ing => ing.visible = true);
+		                       this.connections.forEach(conn => conn.visible = true);
+		                   } else {
+		                       this.ingredients.forEach(ing => {
+		                           ing.visible = ing.category.includes(view);
+		                       });
+                    
+		                       this.connections.forEach(conn => {
+		                           const fromIng = this.ingredients.find(ing => ing.id === conn.from);
+		                           const toIng = this.ingredients.find(ing => ing.id === conn.to);
+		                           conn.visible = fromIng.visible && toIng.visible;
+		                       });
+		                   }
+		               }
+
+		               resetPositions() {
+		                   const centerX = this.width / 2;
+		                   const centerY = this.height / 2;
+		                   const radius = Math.min(this.width, this.height) * 0.3;
+                
+		                   this.ingredients.forEach((ing, i) => {
+		                       const angle = (Math.PI * 2 / this.ingredients.length) * i - Math.PI / 2;
+		                       ing.position = {
+		                           x: centerX + Math.cos(angle) * radius,
+		                           y: centerY + Math.sin(angle) * radius
+		                       };
+		                   });
+		               }
+
+		               animate() {
+		                   this.animationFrame++;
+		                   this.ctx.clearRect(0, 0, this.width, this.height);
+
+		                   // Update systems
+		                   this.neurotransmitterSystem.update();
+                
+		                   // Update particles
+		                   this.particles = this.particles.filter(p => {
+		                       p.x += p.vx;
+		                       p.y += p.vy;
+		                       p.life--;
+		                       p.size *= 0.98;
+		                       return p.life > 0;
+		                   });
+
+		                   // Draw connections
+		                   this.drawConnections();
+
+		                   // Draw neurotransmitters
+		                   this.neurotransmitterSystem.draw(this.ctx);
+
+		                   // Draw ingredients
+		                   this.drawIngredients();
+
+		                   // Draw particles
+		                   this.drawParticles();
+
+		                   requestAnimationFrame(() => this.animate());
+		               }
+
+		               drawConnections() {
+		                   this.connections.forEach(conn => {
+		                       if (conn.visible === false) return;
+
+		                       const from = this.ingredients.find(ing => ing.id === conn.from);
+		                       const to = this.ingredients.find(ing => ing.id === conn.to);
+                    
+		                       if (!from || !to || from.visible === false || to.visible === false) return;
+
+		                       const isHighlighted = this.selectedIngredient && 
+		                           (this.selectedIngredient.id === conn.from || this.selectedIngredient.id === conn.to);
+                    
+		                       this.ctx.save();
+                    
+		                       // Connection line
+		                       this.ctx.beginPath();
+		                       this.ctx.moveTo(from.position.x, from.position.y);
+                    
+		                       // Create curved path
+		                       const dx = to.position.x - from.position.x;
+		                       const dy = to.position.y - from.position.y;
+		                       const cx = from.position.x + dx / 2 + dy * 0.1;
+		                       const cy = from.position.y + dy / 2 - dx * 0.1;
+                    
+		                       this.ctx.quadraticCurveTo(cx, cy, to.position.x, to.position.y);
+                    
+		                       // Style based on strength and highlight
+		                       if (conn.strength === 'primary') {
+		                           this.ctx.strokeStyle = isHighlighted ? '#00ff9d' : 'rgba(0, 255, 157, 0.3)';
+		                           this.ctx.lineWidth = isHighlighted ? 4 : 2;
+		                           this.ctx.shadowBlur = isHighlighted ? 20 : 5;
+		                           this.ctx.shadowColor = '#00ff9d';
+		                       } else {
+		                           this.ctx.strokeStyle = isHighlighted ? '#888888' : 'rgba(136, 136, 136, 0.3)';
+		                           this.ctx.lineWidth = isHighlighted ? 2 : 1;
+		                       }
+                    
+		                       // Animated dash for highlighted connections
+		                       if (isHighlighted) {
+		                           this.ctx.setLineDash([10, 5]);
+		                           this.ctx.lineDashOffset = -this.animationFrame * 0.5;
+		                       }
+                    
+		                       this.ctx.stroke();
+		                       this.ctx.restore();
+		                   });
+		               }
+
+		               drawIngredients() {
+		                   this.ingredients.forEach(ing => {
+		                       if (ing.visible === false) {
+		                           // Draw a faded placeholder for hidden ingredients
+		                           this.ctx.save();
+		                           this.ctx.globalAlpha = 0.1;
+		                           this.ctx.beginPath();
+		                           this.ctx.arc(ing.position.x, ing.position.y, ing.radius * 0.5, 0, Math.PI * 2);
+		                           this.ctx.fillStyle = '#2e2e2e';
+		                           this.ctx.fill();
+		                           this.ctx.restore();
+		                           return;
+		                       }
+
+		                       const isSelected = this.selectedIngredient === ing;
+		                       const isHovered = this.hoveredIngredient === ing;
+		                       const isDragged = this.draggedIngredient === ing;
+                    
+		                       this.ctx.save();
+                    
+		                       // Outer glow for selected/hovered
+		                       if (isSelected || isHovered) {
+		                           const glowRadius = ing.radius + 15;
+		                           const gradient = this.ctx.createRadialGradient(
+		                               ing.position.x, ing.position.y, ing.radius,
+		                               ing.position.x, ing.position.y, glowRadius
+		                           );
+		                           gradient.addColorStop(0, 'transparent');
+		                           gradient.addColorStop(1, isSelected ? 'rgba(0, 255, 157, 0.3)' : 'rgba(255, 255, 255, 0.1)');
+                        
+		                           this.ctx.fillStyle = gradient;
+		                           this.ctx.beginPath();
+		                           this.ctx.arc(ing.position.x, ing.position.y, glowRadius, 0, Math.PI * 2);
+		                           this.ctx.fill();
+		                       }
+                    
+		                       // Pulsing effect
+		                       const pulseScale = 1 + Math.sin(this.animationFrame * 0.02 + ing.pulsePhase) * 0.05;
+		                       const radius = ing.radius * (isDragged ? 1.1 : pulseScale);
+                    
+		                       // Main circle
+		                       this.ctx.beginPath();
+		                       this.ctx.arc(ing.position.x, ing.position.y, radius, 0, Math.PI * 2);
+                    
+		                       // Gradient fill
+		                       const gradient = this.ctx.createRadialGradient(
+		                           ing.position.x - radius * 0.3, ing.position.y - radius * 0.3, 0,
+		                           ing.position.x, ing.position.y, radius
+		                       );
+		                       gradient.addColorStop(0, ing.color);
+		                       gradient.addColorStop(1, this.adjustColor(ing.color, -50));
+                    
+		                       this.ctx.fillStyle = gradient;
+		                       this.ctx.fill();
+                    
+		                       // Border
+		                       this.ctx.strokeStyle = isSelected ? '#ffffff' : ing.color;
+		                       this.ctx.lineWidth = isSelected ? 3 : 2;
+		                       this.ctx.stroke();
+                    
+		                       // Text - adjust size for mobile
+		                       const fontSize = this.isMobile ? '18px' : '16px';
+		                       this.ctx.fillStyle = '#000000';
+		                       this.ctx.font = `bold ${fontSize} Roboto Condensed`;
+		                       this.ctx.textAlign = 'center';
+		                       this.ctx.textBaseline = 'middle';
+		                       this.ctx.fillText(ing.shortName, ing.position.x, ing.position.y);
+                    
+		                       this.ctx.restore();
+		                   });
+		               }
+
+		               drawParticles() {
+		                   this.particles.forEach(p => {
+		                       this.ctx.save();
+		                       this.ctx.globalAlpha = p.life / 100;
+		                       this.ctx.fillStyle = p.color;
+		                       this.ctx.shadowBlur = 10;
+		                       this.ctx.shadowColor = p.color;
+                    
+		                       this.ctx.beginPath();
+		                       this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+		                       this.ctx.fill();
+                    
+		                       this.ctx.restore();
+		                   });
+		               }
+
+		               adjustColor(color, amount) {
+		                   const num = parseInt(color.replace('#', ''), 16);
+		                   const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+		                   const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+		                   const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+		                   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+		               }
+		           }
+
+		           // Initialize on load
+		           window.addEventListener('load', () => {
+		               new SynergyMap();
+		           });
+		       </script>
+
+    <!-- ECOSYSTEM SECTION -->
+    <section id="ecosystem" class="ecosystem-section">
+        <div class="container">
+            <h2 class="fade-in">THE APEX ECOSYSTEM: <br>YOUR PROTOCOL, <span class="highlight">ANYWHERE.</span></h2>
+            <p class="fade-in">Performance is not confined to your desk. Your protocol shouldn't be either. The APEX Ecosystem is designed for seamless integration into every facet of your high-stakes life.</p>
+            <div class="ecosystem-grid">
+                <div class="ecosystem-item fade-in">
+                    <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                    <h3>THE SYSTEM CORE</h3>
+                    <p>The anchor of your daily ritual. The System Core is your at-home supply depot, precision-engineered for the perfect, consistent dose to initiate your day's mission.</p>
+                </div>
+                <div class="ecosystem-item fade-in" style="transition-delay:100ms;">
+                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit Dispenser">
+                    <h3>THE FIELD KIT</h3>
+                    <p>Tactical readiness in a dispenser. The Field Kit ensures your protocol is never interrupted, whether you're at the office, the gym, or crossing time zones. Elite performance, deployed anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- RECAP BLUEPRINT TABLE SECTION -->
+    <section id="blueprint" class="recap-section">
+        <div class="container">
+            <h2 class="fade-in">APEX BLUEPRINT: <span class="highlight">FULL DECONSTRUCTION</span></h2>
+            <p class="fade-in">Every component is mission-critical. This is the complete system breakdown for those who demand full transparency.</p>
+            <div class="table-container fade-in">
+                <table class="blueprint-table">
+                    <thead>
+                        <tr>
+                            <th>Ingredient</th>
+                            <th>Dosage</th>
+                            <th>Primary Role</th>
+                            <th>Synergistic Effects</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Caffeine</td>
+                            <td>100mg total</td>
+                            <td><strong>The Engine:</strong> Provides raw energy, motivation, and alertness by blocking adenosine.</td>
+                            <td>• With L-Theanine: Forms the core 1:2 ratio for "calm-focus."<br>• With Alpha-GPC: Creates the "Demand & Supply" system.</td>
+                        </tr>
+                        <tr>
+                            <td>L-Theanine</td>
+                            <td>200mg</td>
+                            <td><strong>Precision Steering:</strong> Modulates caffeine, eliminates jitters, and promotes alpha brain waves for "wakeful relaxation."</td>
+                            <td>• With Caffeine: The most crucial synergy for smooth, not scattered, energy.<br>• With Taurine: Provides a two-pronged anti-anxiety effect.</td>
+                        </tr>
+                        <tr>
+                            <td>Alpha-GPC</td>
+                            <td>200mg</td>
+                            <td><strong>'Focus Fuel' Supply:</strong> Provides the direct precursor to acetylcholine to meet the heightened demand from caffeine.</td>
+                            <td>• With Caffeine: Prevents brain fog from acetylcholine depletion.<br>• With Lion's Mane: Supports the neurons Lion's Mane aims to protect.</td>
+                        </tr>
+                        <tr>
+                            <td>MCT Powder (C8/C10)</td>
+                            <td>5000mg</td>
+                            <td><strong>Metabolic Fuel:</strong> Creates the "Dual-Fuel" system by providing clean, rapid ketone energy for the brain.</td>
+                            <td>• With Caffeine: Creates a longer, more stable energy curve.<br>• With Cinnamon: Forms the ultimate "crash-proof" foundation.</td>
+                        </tr>
+                        <tr>
+                            <td>Lion's Mane (8:1)</td>
+                            <td>500mg</td>
+                            <td><strong>The Long-Term Architect:</strong> Supports brain health by stimulating Nerve Growth Factor (NGF).</td>
+                            <td>• With the Entire Stack: Improves the physical "hardware" that the other ingredients use for immediate "software" performance.</td>
+                        </tr>
+                        <tr>
+                            <td>Taurine</td>
+                            <td>250mg</td>
+                            <td><strong>System Safety Regulator:</strong> A neuro-protectant that calms the CNS (via GABA) and supports cardiovascular health.</td>
+                            <td>• With L-Theanine: Creates a comprehensive anti-anxiety shield.<br>• With Caffeine: Directly mitigates potential side effects.</td>
+                        </tr>
+                        <tr>
+                            <td>Alkalized Cacao</td>
+                            <td>750mg</td>
+                            <td><strong>Flavor Fortification & Mood Support:</strong> Provides Theobromine for mild stimulation and flavonoids for blood flow.</td>
+                            <td>• With Caffeine: Theobromine smooths the energy curve.<br>• With the Stack: Enhanced blood flow improves nutrient delivery.</td>
+                        </tr>
+                        <tr>
+                            <td>Ceylon Cinnamon</td>
+                            <td>300mg</td>
+                            <td><strong>Metabolic Stabilizer:</strong> Helps regulate blood sugar to prevent the energy crashes that kill focus.</td>
+                            <td>• With MCT Powder: The ultimate crash-prevention duo.<br>• With the Stack: Makes the entire experience more stable and durable.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENHANCED ENERGY CURVE VISUALIZATION -->
+    <section class="energy-curve-section">
+        <div class="container">
+            <h2 class="fade-in">THE APEX <span class="highlight">ADVANTAGE</span></h2>
+            <p class="fade-in">A spike vs. a plateau. A crash vs. a controlled landing. The difference is by design.</p>
+            
+            <div class="curve-container fade-in">
+                <div class="curve-controls">
+                    <div class="curve-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot apex"></div>
+                            <span>APEX Protocol</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot coffee"></div>
+                            <span>Regular Coffee</span>
+                        </div>
+                    </div>
+                    <button class="workday-toggle" id="workdayToggle">Show Workday</button>
+                </div>
+
+                <div class="chart-wrapper">
+                    <canvas class="energy-chart" id="energyChart"></canvas>
+                    <div class="workday-overlay" id="workdayOverlay">
+                        <div class="workday-marker" style="left: 0%;">
+                            <div class="workday-label">7 AM - Start</div>
+                        </div>
+                        <div class="workday-marker" style="left: 20%;">
+                            <div class="workday-label">9 AM - Deep Work</div>
+                        </div>
+                        <div class="workday-marker" style="left: 40%;">
+                            <div class="workday-label">12 PM - Lunch</div>
+                        </div>
+                        <div class="workday-marker" style="left: 55%;">
+                            <div class="workday-label">2 PM - Meetings</div>
+                        </div>
+                        <div class="workday-marker" style="left: 75%;">
+                            <div class="workday-label">4 PM - Wrap Up</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-scrubber" id="timeScrubber">
+                    <div class="time-display" id="timeDisplay">7:00 AM</div>
+                    <div class="scrubber-track">
+                        <div class="scrubber-progress" id="scrubberProgress"></div>
+                    </div>
+                    <div class="scrubber-handle" id="scrubberHandle"></div>
+                </div>
+
+			                <div class="effect-popup" id="effectPopup">
+			                    <h4 id="popupTitle"></h4>
+			                    <p id="popupDescription"></p>
+			                </div>
+			            </div>
+			        </div>
+			    </section>
+
+			    <!-- ADVANTAGE SECTION -->
+			    <section id="advantage" class="advantage-section">
+			        <div class="container">
+			            <h2 class="fade-in">THE DIRECT <span class="highlight">COMPARISON</span></h2>
+			            <p class="fade-in">See how the APEX protocol stacks up against a standard cup of coffee, hour by hour. The difference isn't just felt; it's engineered.</p>
+			            <div class="comparison-table fade-in">
+			                <div class="coffee-column">
+			                    <h3>REGULAR COFFEE</h3>
+			                    <ul>
+			                        <li><strong>0-45 MINS: The Jolt</strong><p>A rapid, sometimes jarring rush of energy. Can be accompanied by restlessness or anxiety.</p></li>
+			                        <li><strong>1-2 HOURS: Scattered Peak</strong><p>High alertness, but focus can be chaotic and undirected. The system is over-stimulated.</p></li>
+			                        <li><strong>2-4 HOURS: The Crash</strong><p>The caffeine effect plummets. Adenosine rushes back, causing fatigue. Brain fog sets in.</p></li>
+			                        <li><strong>4+ HOURS: The Aftermath</strong><p>Lingering fatigue and irritability. The positive effects are gone but the system remains disrupted.</p></li>
+			                    </ul>
+			                </div>
+			                <div class="apex-column">
+			                    <h3>PRIMACY: APEX</h3>
+			                    <ul>
+			                        <li><strong>0-45 MINS: Smooth Ascent</strong><p>A calm, controlled "coming online" feeling. Energy builds without the jarring rush.</p></li>
+			                        <li><strong>1-4 HOURS: Performance Plateau</strong><p>Sustained, high-level focus. Ketone and caffeine energy work in tandem for deep work.</p></li>
+			                        <li><strong>4-6 HOURS: Controlled Off-Ramp</strong><p>A gradual return to baseline. Metabolic stabilizers prevent the crash. Focus remains intact.</p></li>
+			                        <li><strong>6+ HOURS: Clean Return</strong><p>You feel normal and productive, not depleted. Ready for the next task without residual effects.</p></li>
+			                    </ul>
+			                </div>
+			            </div>
+			        </div>
+			    </section>
+                
+    
+    <!-- PERSONA SECTION -->
+    <section id="personas" class="persona-section">
+        <div class="container">
+            <h2 class="fade-in">BUILT FOR THE <span class="highlight">RELENTLESS.</span></h2>
+            <p class="fade-in">APEX is the operating system for those who refuse to settle. Whether you're building an empire, mastering a craft, or dominating a leaderboard, this is your fuel.</p>
+            <div class="persona-grid-wrapper">
+                 <div class="persona-grid">
+                    <div class="persona-card fade-in">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm3 7h-2v2h-2v-2H9v-2h2V9h2v2h2v2z"/><circle cx="12" cy="12" r="1.5"/><path d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.66-5.66l-1.42 1.42M7.76 16.24l-1.42 1.42m12.32 0l-1.42-1.42M7.76 7.76L6.34 6.34"/></svg>
+                        <h3>THE BIOHACKER</h3>
+                        <p>Optimize your protocol with a scientifically formulated stack that delivers sustained clarity without the crash. Data is king.</p>
+                    </div>
+                    <div class="persona-card fade-in" style="transition-delay: 100ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.19 0 2.34-.21 3.41-.6.3-.11.49-.4.49-.72 0-.43-.35-.78-.78-.78-.17 0-.33.06-.46.11-.98.4-2.05.61-3.16.61-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8c0 .57-.06 1.13-.18 1.66-.02.1-.03.2-.03.3 0 .43.35.78.78.78.34 0 .64-.23.74-.56.16-.55.24-1.13.24-1.73 0-5.52-4.48-10-10-10z"/><path d="M16.5 6c-.28 0-.5.22-.5.5v6.5c0 .55-.45 1-1 1s-1-.45-1-1V9.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V13c0 1.1.9 2 2 2s2-.9 2-2V6.5c0-.28-.22-.5-.5-.5z"/><path d="M10.5 9.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5S8.17 11 9 11s1.5-.67 1.5-1.5zm1 2c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z"/><circle cx="9" cy="13.5" r="1"/><path d="M14 17.5c0 .55.45 1 1 1s1-.45 1-1-.45-1-1-1-1 .45-1 1z"/></svg>
+                        <h3>THE CREATIVE</h3>
+                        <p>Sustain your creative flow. Tap into consistent energy and cognitive enhancement that fuels deep work sessions and shatters creative blocks.</p>
+                    </div>
+                    <div class="persona-card fade-in" style="transition-delay: 200ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-4v2h4v-2zm0 4h-4v2h4v-2z"/></svg>
+                        <h3>THE PROFESSIONAL</h3>
+                        <p>Command your day. A reliable, premium solution that delivers the sustained focus required for high-stakes decisions and marathon workdays.</p>
+                    </div>
+                     <div class="persona-card fade-in" style="transition-delay: 300ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
+                        <h3>THE ATHLETE</h3>
+                        <p>Fuel peak performance. A clean pre-workout boost that supports intense training and recovery with sustained energy release, not a post-session crash.</p>
+                    </div>
+                     <div class="persona-card fade-in" style="transition-delay: 400ms;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H3V8h18v8z"/><path d="M15 10.5c0-.83-.67-1.5-1.5-1.5h-3C9.67 9 9 9.67 9 10.5s.67 1.5 1.5 1.5h3c.83 0 1.5-.67 1.5-1.5z"/><circle cx="7.5" cy="11.5" r="1.5"/><circle cx="16.5" cy="11.5" r="1.5"/><path d="M17.5 13.5h-11c-.28 0-.5.22-.5.5s.22.5.5.5h11c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/></svg>
+                        <h3>THE GAMER</h3>
+                        <p>Dominate your session. The cognitive boost for sustained concentration and faster reflexes during marathon ranked matches, without the sugar crash.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <!-- PRICING SECTION -->
+   <section id="pricing" class="pricing-section">
+       <div class="container">
+           <h2 class="fade-in">ACTIVATE <span class="highlight">APEX.</span></h2>
+           <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                   <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                   <h3>THE SYSTEM CORE</h3>
+                   <div class="price">$69 <span>/month</span></div>
+                   <p>The at-home subscription. 30 servings of your daily protocol.</p>
+                   <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe</a>
+               </div>
+               <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
+                   <span class="save-badge">BEST VALUE & PERFORMANCE</span>
+                   <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit" style="max-width:120px;">
+                   <h3>COMPLETE PROTOCOL</h3>
+                   <div class="price">$89 <span>/month</span></div>
+                   <p>The ultimate setup: A 30-serving System Core tub AND a 15-serving Field Kit each month.</p>
+                   <a href="#" class="cta-button">Engage Full System</a>
+               </div>
+                <div class="pricing-card fade-in" style="transition-delay:200ms;">
+                   <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit">
+                   <h3>THE FIELD KIT</h3>
+                   <div class="price">$39</div>
+                    <p>One-time purchase of a 15-serving Field Kit for travel or trial.</p>
+                   <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
+               </div>
+           </div>
+       </div>
+   </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <h2 class="fade-in">SYSTEM <span class="highlight">DIAGNOSTICS.</span></h2>
+            <div class="faq-container fade-in">
+                <div class="faq-item">
+                    <div class="faq-question">Is APEX tested for banned substances?</div>
+                    <div class="faq-answer"><p><strong>Engineered for Elite Compliance.</strong> APEX contains zero banned substances or grey-market stimulants and is fully compliant with WADA standards, making it safe for professional athletes, military personnel, and anyone subject to rigorous testing. Our third-party lab tests verify purity, potency, and the absence of contaminants.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Should I cycle APEX? Can I take it every day?</div>
+                    <div class="faq-answer"><p><strong>Protocol Over Habit.</strong> We designed APEX for daily mission-critical use. However, to maintain maximum sensitivity, we recommend a simple cycling protocol: <strong>5 days on, 2 days off</strong> (e.g., weekdays on, weekends off). This ensures the system remains highly responsive.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I take APEX with other supplements or medication?</div>
+                    <div class="faq-answer"><p>APEX is a comprehensive system. If you are taking prescription medication, particularly for cardiovascular health, ADHD, or psychiatric conditions, you must provide the <strong>APEX Blueprint</strong> to your qualified healthcare provider before use. Your health protocol is your responsibility.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How is APEX different from MUD/WTR or Ryze?</div>
+                    <div class="faq-answer"><p><strong>Performance vs. Wellness.</strong> We are playing a different game. Brands like MUD/WTR are "coffee alternatives" for gentle wellness. APEX is a <strong>coffee-based performance protocol</strong> for cognitive enhancement. We use full, clinical dosages and a dual-fuel system for measurable outcomes. They are for unwinding; we are for winning.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Will APEX break my fast?</div>
+                    <div class="faq-answer"><p><strong>Strictly speaking, yes. Functionally, it enhances it.</strong> APEX contains ~40 calories from MCT powder. For a strict zero-calorie fast, this will break it. However, for metabolic health, APEX is a powerful accelerator, deepening the ketogenic state that fasting aims to achieve.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I take more than one serving of APEX per day?</div>
+                    <div class="faq-answer"><p><strong>Protocol adherence is key.</strong> One serving is a precisely calibrated dose. We do not recommend exceeding one serving per day. The 4-6 hour duration of APEX is designed to carry you through the core of your workday without the need for a "top-up," which could disrupt your sleep architecture.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How long does it take to "feel" APEX?</div>
+                    <div class="faq-answer"><p>The initial effects are rapid. You will feel the smooth energy and focus from the Caffeine/L-Theanine synergy within <strong>15-30 minutes</strong>. The enhanced mental clarity from MCT-driven ketone production typically becomes more noticeable around the <strong>45-60 minute mark</strong>. The long-term benefits of Lion's Mane are cumulative.</p></div>
+                </div>
+                 <div class="faq-item">
+                    <div class="faq-question">Can I mix APEX with something other than hot water?</div>
+                    <div class="faq-answer"><p>Yes. APEX is designed for versatility. It works exceptionally well mixed into a cold protein shake for a pre-workout boost or blended with ice and unsweetened almond milk for a cold brew-style functional beverage. The core protocol remains effective regardless of the delivery system.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Primacy Industries. All Rights Reserved. Upgrade Your OS.</p>
+    </footer>
+
+    <script>
+        // --- MOBILE NAVIGATION SCRIPT ---
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const navLinksA = document.querySelectorAll('.nav-links a');
+        const body = document.body;
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            body.classList.toggle('no-scroll');
+        });
+
+        // Close menu when a link is clicked
+        navLinksA.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    body.classList.remove('no-scroll');
+                }
+            });
+        });
+
+        // --- EXISTING SCRIPTS ---
+
+        // FAQ Functionality
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.faq-item.active');
+                if (currentlyActive && currentlyActive !== item) {
+                    currentlyActive.classList.remove('active');
+                    currentlyActive.querySelector('.faq-answer').style.maxHeight = 0;
+                }
+                item.classList.toggle('active');
+                const answer = item.querySelector('.faq-answer');
+                if (item.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                } else {
+                    answer.style.maxHeight = 0;
+                }
+            });
+        });
+
+        // Fade-in observer
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+        faders.forEach(fader => { appearOnScroll.observe(fader); });
+
+        // Ingredient Explorer
+        const ingredientTabs = document.querySelectorAll('.ingredient-tab');
+        const ingredientDetails = document.querySelectorAll('.ingredient-detail');
+
+        ingredientTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetIngredient = tab.dataset.ingredient;
+                
+                // Update active tab
+                ingredientTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                ingredientDetails.forEach(detail => {
+                    detail.classList.remove('active');
+                    if (detail.id === targetIngredient) {
+                        detail.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Energy Curve Visualization
+        const canvas = document.getElementById('energyChart');
+        if (canvas) { // Check if canvas exists to prevent errors on other pages
+            const ctx = canvas.getContext('2d');
+            const scrubber = document.getElementById('timeScrubber');
+            const scrubberHandle = document.getElementById('scrubberHandle');
+            const scrubberProgress = document.getElementById('scrubberProgress');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const workdayToggle = document.getElementById('workdayToggle');
+            const workdayOverlay = document.getElementById('workdayOverlay');
+            const effectPopup = document.getElementById('effectPopup');
+            const popupTitle = document.getElementById('popupTitle');
+            const popupDescription = document.getElementById('popupDescription');
+
+            // Set canvas size
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * window.devicePixelRatio;
+                canvas.height = rect.height * window.devicePixelRatio;
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                drawChart();
+            }
+
+            // Energy curve data (0-8 hours)
+            const timePoints = [];
+            const coffeeData = [];
+            const apexData = [];
+            
+            for (let i = 0; i <= 480; i += 5) { // 5-minute intervals
+                const hours = i / 60;
+                timePoints.push(hours);
+                
+                // Coffee curve - sharp spike and crash
+                let coffeeLevel;
+                if (hours < 0.5) {
+                    coffeeLevel = Math.sin((hours / 0.5) * Math.PI / 2) * 95;
+                } else if (hours < 2) {
+                    coffeeLevel = 95 - (hours - 0.5) * 10;
+                } else if (hours < 3) {
+                    coffeeLevel = 80 - (hours - 2) * 50;
+                } else {
+                    coffeeLevel = Math.max(30 - (hours - 3) * 5, 15);
+                }
+                coffeeData.push(coffeeLevel);
+                
+                // APEX curve - smooth rise and sustained plateau
+                let apexLevel;
+                if (hours < 1) {
+                    apexLevel = (1 - Math.cos((hours / 1) * Math.PI)) * 40;
+                } else if (hours < 4) {
+                    apexLevel = 80 + Math.sin((hours - 1) * 0.5) * 5;
+                } else if (hours < 6) {
+                    apexLevel = 85 - (hours - 4) * 15;
+                } else {
+                    apexLevel = Math.max(55 - (hours - 6) * 10, 40);
+                }
+                apexData.push(apexLevel);
+            }
+
+            // Draw the energy curves
+            let currentTimeIndex = null;
+            function drawChart() {
+                const width = canvas.width / window.devicePixelRatio;
+                const height = canvas.height / window.devicePixelRatio;
+                const padding = 40;
+                const chartWidth = width - padding * 2;
+                const chartHeight = height - padding * 2;
+
+                // Clear canvas
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw grid
+                ctx.strokeStyle = 'rgba(136, 136, 136, 0.2)';
+                ctx.lineWidth = 1;
+                
+                // Horizontal grid lines
+                for (let i = 0; i <= 4; i++) {
+                    const y = padding + (chartHeight / 4) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(width - padding, y);
+                    ctx.stroke();
+                }
+
+                // Vertical grid lines (hourly)
+                for (let i = 0; i <= 8; i++) {
+                    const x = padding + (chartWidth / 8) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, height - padding);
+                    ctx.stroke();
+                }
+
+                // Draw axes
+                ctx.strokeStyle = '#888';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, height - padding);
+                ctx.lineTo(width - padding, height - padding);
+                ctx.stroke();
+
+                // Y-axis labels
+                ctx.fillStyle = '#888';
+                ctx.font = '12px Roboto';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                
+                const yLabels = ['100%', '75%', '50%', '25%', '0%'];
+                yLabels.forEach((label, i) => {
+                    const y = padding + (chartHeight / 4) * i;
+                    ctx.fillText(label, padding - 10, y);
+                });
+
+                // X-axis labels
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                for (let i = 0; i <= 8; i++) {
+                    const x = padding + (chartWidth / 8) * i;
+                    ctx.fillText(i + 'h', x, height - padding + 10);
+                }
+
+                // Draw curves
+                function drawCurve(data, color, lineWidth = 3) {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = lineWidth;
+                    ctx.beginPath();
+                    
+                    data.forEach((value, index) => {
+                        const x = padding + (index / (data.length - 1)) * chartWidth;
+                        const y = padding + chartHeight - (value / 100) * chartHeight;
+                        
+                        if (index === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    });
+                    
+                    ctx.stroke();
+                }
+
+                // Draw coffee curve
+                drawCurve(coffeeData, '#ff6b6b');
+                
+                // Draw APEX curve
+                drawCurve(apexData, '#00ff9d');
+
+                // Draw current time indicator
+                if (currentTimeIndex !== null) {
+                    const x = padding + (currentTimeIndex / (timePoints.length - 1)) * chartWidth;
+                    
+                    // Vertical line
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, height - padding);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    
+                    // Points on curves
+                    const coffeeY = padding + chartHeight - (coffeeData[currentTimeIndex] / 100) * chartHeight;
+                    const apexY = padding + chartHeight - (apexData[currentTimeIndex] / 100) * chartHeight;
+                    
+                    // Coffee point
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.beginPath();
+                    ctx.arc(x, coffeeY, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // APEX point
+                    ctx.fillStyle = '#00ff9d';
+                    ctx.beginPath();
+                    ctx.arc(x, apexY, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // Scrubber functionality
+            let isDragging = false;
+
+            function updateScrubber(clientX) {
+                const rect = scrubber.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const percentage = Math.max(0, Math.min(1, x / rect.width));
+                
+                currentTimeIndex = Math.floor(percentage * (timePoints.length - 1));
+                const hours = timePoints[currentTimeIndex];
+                
+                // Update scrubber position
+                scrubberProgress.style.width = (percentage * 100) + '%';
+                scrubberHandle.style.left = (30 + percentage * (rect.width - 60)) + 'px';
+                
+                // Update time display
+                const totalMinutes = hours * 60;
+                const displayHours = Math.floor(totalMinutes / 60) + 7; // Start at 7 AM
+                const displayMinutes = Math.floor(totalMinutes % 60);
+                const ampm = displayHours >= 12 ? 'PM' : 'AM';
+                const displayHour = displayHours > 12 ? displayHours - 12 : (displayHours === 0 ? 12 : displayHours);
+                timeDisplay.textContent = `${displayHour}:${displayMinutes.toString().padStart(2, '0')} ${ampm}`;
+                timeDisplay.classList.add('active');
+                
+                // Update chart
+                drawChart();
+                
+                // Show effect popup
+                updateEffectPopup(hours, percentage);
+            }
+
+            function updateEffectPopup(hours, percentage) {
+                let title, apexDesc, coffeeDesc;
+
+                if (hours < 0.75) {
+                    title = "Initial Response";
+                    apexDesc = "A calm, controlled 'coming online' feeling.";
+                    coffeeDesc = "A rapid, sometimes jarring rush of energy.";
+                } else if (hours < 2) {
+                    title = "Peak Performance";
+                    apexDesc = "Sustained, high-level focus. Dual-fuel system active.";
+                    coffeeDesc = "High alertness, but focus can be scattered.";
+                } else if (hours < 4) {
+                    title = "Mid-Session";
+                    apexDesc = "Performance plateau continues with stable energy.";
+                    coffeeDesc = "Energy crash beginning, brain fog sets in.";
+                } else if (hours < 6) {
+                    title = "Controlled Off-Ramp";
+                    apexDesc = "Gradual return to baseline, focus remains intact.";
+                    coffeeDesc = "Lingering fatigue and system disruption.";
+                } else {
+                    title = "Clean Return";
+                    apexDesc = "You feel normal and productive, not depleted.";
+                    coffeeDesc = "The positive effects are gone, system disrupted.";
+                }
+                
+                // Position popup near scrubber
+                const scrubberRect = scrubber.getBoundingClientRect();
+                const containerRect = scrubber.closest('.curve-container').getBoundingClientRect();
+                const popupRect = effectPopup.getBoundingClientRect();
+                const handlePos = 30 + percentage * (scrubberRect.width - 60);
+                
+                // Determine if popup should appear on left or right side
+                // Switch to left side just after halfway point (50% of timeline)
+                const switchPoint = 0.5;
+                
+                if (percentage > switchPoint) {
+                    // Position on the left side
+                    effectPopup.style.left = 'auto';
+                    effectPopup.style.right = (containerRect.right - scrubberRect.left - handlePos + popupRect.width/2) + 'px';
+                } else {
+                    // Position on the right side - moved further right to avoid covering graph
+                    effectPopup.style.right = 'auto';
+                    effectPopup.style.left = (handlePos + popupRect.width/2 + 20) + 'px';
+                }
+
+                popupTitle.innerHTML = `<span style="color: var(--color-accent);">APEX:</span> ${apexDesc} <br><br> <span style="color: var(--color-coffee);">Coffee:</span> ${coffeeDesc}`;
+                effectPopup.style.bottom = '80px';
+                effectPopup.classList.add('active');
+            }
+
+            scrubber.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                scrubberHandle.style.cursor = 'grabbing';
+                updateScrubber(e.clientX);
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    updateScrubber(e.clientX);
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if(isDragging) {
+                    isDragging = false;
+                    scrubberHandle.style.cursor = 'grab';
+                    timeDisplay.classList.remove('active');
+                    effectPopup.classList.remove('active');
+                    currentTimeIndex = null;
+                    drawChart();
+                }
+            });
+
+            // Touch events for mobile
+            scrubber.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                updateScrubber(e.touches[0].clientX);
+            }, {passive: true});
+
+            document.addEventListener('touchmove', (e) => {
+                if (isDragging) {
+                    updateScrubber(e.touches[0].clientX);
+                }
+            }, {passive: true});
+
+            document.addEventListener('touchend', () => {
+                if(isDragging) {
+                    isDragging = false;
+                    timeDisplay.classList.remove('active');
+                    effectPopup.classList.remove('active');
+                    currentTimeIndex = null;
+                    drawChart();
+                }
+            });
+
+            // Workday toggle
+            workdayToggle.addEventListener('click', () => {
+                workdayToggle.classList.toggle('active');
+                workdayOverlay.classList.toggle('active');
+            });
+
+            // Initialize
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+        }
+    </script>
+</body>
+</html>
