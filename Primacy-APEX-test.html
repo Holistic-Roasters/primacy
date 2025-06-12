@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMACY: APEX - Upgrade Your OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL STYLES & RESET --- */
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-accent: #00ff9d; /* APEX Green */
+            --color-reset-accent: #00c6ff; /* RESET Blue */
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h2 .highlight {
+            color: var(--color-accent);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--color-light-grey);
+            max-width: 650px;
+            margin: 0 auto 1.5rem auto;
+            text-align: center;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HEADER & HERO --- */
+        .header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(8, 8, 8, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-mid-grey);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links a {
+            color: var(--color-light-grey);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .hero {
+            background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--color-white);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: var(--color-black);
+            padding: 15px 40px;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            border: 2px solid var(--color-accent);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--color-accent);
+        }
+
+        /* --- SHARED STYLES --- */
+        .problem-section, .recap-section, .pricing-section, .faq-section, .persona-section, .system-section {
+            background-color: var(--color-dark-grey);
+        }
+        .formula-section, .ecosystem-section, .advantage-section, .experience-section {
+            background-color: var(--color-black);
+        }
+        
+        /* --- ECOSYSTEM SECTION --- */
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 4rem;
+        }
+        .ecosystem-item {
+            text-align: center;
+        }
+        .ecosystem-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .ecosystem-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .ecosystem-item p {
+            max-width: 450px;
+        }
+        
+        /* --- RECAP BLUEPRINT TABLE SECTION --- */
+        .table-container {
+             margin-top: 4rem;
+        }
+        .blueprint-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        .blueprint-table th, .blueprint-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-mid-grey);
+        }
+        .blueprint-table th {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            color: var(--color-accent);
+        }
+        .blueprint-table td {
+            vertical-align: top;
+            font-size: 0.95rem;
+            color: var(--color-light-grey);
+        }
+        .blueprint-table td:first-child {
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
+        /* --- ADVANTAGE SECTION --- */
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background-color: var(--color-mid-grey);
+            border: 1px solid var(--color-mid-grey);
+            margin-top: 4rem;
+        }
+        .comparison-table > div {
+            background-color: var(--color-dark-grey);
+            padding: 2rem;
+        }
+        .comparison-table h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .comparison-table .apex-column h3 {
+            color: var(--color-accent);
+        }
+        .comparison-table ul { list-style: none; }
+        .comparison-table li { 
+            margin-bottom: 1.5rem;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1rem;
+        }
+        .comparison-table li::before {
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            line-height: 1;
+            font-weight: bold;
+        }
+        .apex-column li::before {
+            content: '✓';
+            color: var(--color-accent);
+        }
+        .coffee-column li::before {
+            content: '×';
+            color: #ff4d4d;
+        }
+        .comparison-table strong { 
+            display: block; 
+            color: var(--color-white);
+            margin-bottom: 0.5rem; 
+            font-size: 1.1rem;
+        }
+        .comparison-table p {
+            font-size: 1rem;
+            text-align: left;
+            max-width: 100%;
+            margin: 0;
+        }
+        
+        /* --- SYSTEM SECTION --- */
+        .system-section {
+            background-color: var(--color-black);
+        }
+        .system-grid {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 4rem;
+        }
+        .system-card {
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid var(--color-mid-grey);
+            background: var(--color-dark-grey);
+        }
+        .system-logo {
+            max-width: 100px;
+            height: auto;
+            margin: 0 auto 1.5rem auto;
+        }
+        .system-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .system-card .apex { color: var(--color-accent); }
+        .system-card .reset { color: var(--color-reset-accent); }
+        .plus-icon { font-size: 3rem; color: var(--color-white); text-align: center; font-weight: bold; }
+
+
+        /* --- PRICING SECTION --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: stretch;
+        }
+        .pricing-card {
+            background-color: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            padding: 2.5rem;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .pricing-card.highlight-card {
+            border-color: var(--color-accent);
+        }
+        .pricing-card img {
+            max-width: 150px;
+            height: auto;
+            margin: 0 auto 1.5rem auto;
+        }
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .price {
+            font-size: 3rem;
+            font-family: var(--font-display);
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+        .price span {
+            font-size: 1rem;
+            color: var(--color-light-grey);
+        }
+        .pricing-card .cta-button {
+            margin-top: auto;
+        }
+        .save-badge {
+            background-color: var(--color-accent);
+            color: var(--color-black);
+            font-family: var(--font-display);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        /* --- FAQ SECTION --- */
+        .faq-container { margin: 2rem auto 0 auto; max-width: 750px; }
+        .faq-item {
+            background-color: var(--color-dark-grey);
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--color-mid-grey);
+        }
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--color-accent); transition: transform 0.3s; }
+        .faq-item.active .faq-question::after { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px; }
+        .faq-answer p { padding-bottom: 20px; text-align: left; max-width: 100%; }
+        
+        /* --- FOOTER --- */
+        .footer { background-color: var(--color-dark-grey); padding: 40px 0; text-align: center; }
+        .footer p { font-size: 0.9rem; color: var(--color-light-grey); margin: 0; }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 991px) {
+            .blueprint-table { min-width: 100%; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .hero { min-height: 70vh; }
+            .ecosystem-grid, .comparison-table, .system-grid { grid-template-columns: 1fr; }
+            .plus-icon { transform: rotate(90deg); margin: 1rem 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="#ecosystem">Ecosystem</a>
+                <a href="#blueprint">Blueprint</a>
+                <a href="#advantage">Advantage</a>
+                <a href="#pricing">Get Apex</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content fade-in">
+            <h1>UPGRADE YOUR OS.</h1>
+            <p>This isn't just coffee. This is a comprehensive cognitive toolkit engineered for flawless execution. Clean energy, unshakeable focus, and zero crash. Welcome to your new benchmark.</p>
+            <a href="#pricing" class="cta-button">Activate APEX</a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section id="problem" class="problem-section">
+        <div class="container">
+            <h2 class="fade-in">STOP <span class="highlight">HACKING</span> YOUR MORNING.</h2>
+            <p class="fade-in">You're juggling basic coffee for the jolt, a handful of pills for focus, and an energy drink for the desperate 2 PM push. Your ambition runs at 100%. Your fuel doesn't. Jitters are a bug. The crash is mission failure. You don't have an energy problem—you have a system problem.</p>
+        </div>
+    </section>
+    
+    <!-- ECOSYSTEM SECTION -->
+    <section id="ecosystem" class="ecosystem-section">
+        <div class="container">
+            <h2 class="fade-in">THE APEX ECOSYSTEM: <br>YOUR PROTOCOL, <span class="highlight">ANYWHERE.</span></h2>
+            <p class="fade-in">Performance is not confined to your desk. Your protocol shouldn't be either. The APEX Ecosystem is designed for seamless integration into every facet of your high-stakes life.</p>
+            <div class="ecosystem-grid">
+                <div class="ecosystem-item fade-in">
+                    <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                    <h3>THE SYSTEM CORE</h3>
+                    <p>The anchor of your daily ritual. The System Core is your at-home supply depot, precision-engineered for the perfect, consistent dose to initiate your day's mission.</p>
+                </div>
+                <div class="ecosystem-item fade-in" style="transition-delay:100ms;">
+                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit Dispenser">
+                    <h3>THE FIELD KIT</h3>
+                    <p>Tactical readiness in a dispenser. The Field Kit ensures your protocol is never interrupted, whether you're at the office, the gym, or crossing time zones. Elite performance, deployed anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- RECAP BLUEPRINT TABLE SECTION -->
+    <section id="blueprint" class="recap-section">
+        <div class="container">
+            <h2 class="fade-in">APEX BLUEPRINT: <span class="highlight">FULL DECONSTRUCTION</span></h2>
+            <p class="fade-in">Every component is mission-critical. This is the complete system breakdown for those who demand full transparency.</p>
+            <div class="table-container fade-in">
+                <table class="blueprint-table">
+                    <thead>
+                        <tr>
+                            <th>Ingredient</th>
+                            <th>Dosage</th>
+                            <th>Primary Role</th>
+                            <th>Synergistic Effects</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Caffeine</td><td>100mg total</td><td><strong>The Engine:</strong> Provides raw energy and motivation.</td><td>• With L-Theanine: Forms the 1:2 ratio for "calm-focus."<br>• With Alpha-GPC: Creates the "Demand & Supply" system.</td></tr>
+                        <tr><td>L-Theanine</td><td>200mg</td><td><strong>Precision Steering:</strong> Modulates caffeine, eliminates jitters.</td><td>• With Caffeine: Ensures smooth, not scattered, energy.<br>• With Taurine: Provides a two-pronged anti-anxiety effect.</td></tr>
+                        <tr><td>Alpha-GPC</td><td>200mg</td><td><strong>'Focus Fuel' Supply:</strong> The precursor to acetylcholine.</td><td>• With Caffeine: Prevents brain fog from depletion.<br>• With Lion's Mane: Supports the neurons Lion's Mane aims to protect.</td></tr>
+                        <tr><td>MCT Powder</td><td>5000mg</td><td><strong>Metabolic Fuel:</strong> Creates clean ketone energy.</td><td>• With Caffeine: Creates a longer, more stable energy curve.<br>• With Cinnamon: Forms the ultimate "crash-proof" foundation.</td></tr>
+                        <tr><td>Lion's Mane (8:1)</td><td>500mg</td><td><strong>The Long-Term Architect:</strong> Supports brain health via NGF.</td><td>• Improves the "hardware" for the other ingredients.</td></tr>
+                        <tr><td>Taurine</td><td>250mg</td><td><strong>System Safety Regulator:</strong> A neuro-protectant that calms the CNS.</td><td>• With L-Theanine: Creates a comprehensive anti-anxiety shield.<br>• With Caffeine: Directly mitigates potential side effects.</td></tr>
+                        <tr><td>Alkalized Cacao</td><td>750mg</td><td><strong>Flavor Fortification & Mood Support:</strong> Provides Theobromine.</td><td>• With Caffeine: Theobromine smooths the energy curve.<br>• With the Stack: Enhanced blood flow improves nutrient delivery.</td></tr>
+                        <tr><td>Ceylon Cinnamon</td><td>300mg</td><td><strong>Metabolic Stabilizer:</strong> Helps regulate blood sugar.</td><td>• With MCT Powder: The ultimate crash-prevention duo.<br>• With the Stack: Makes the entire experience more stable.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADVANTAGE SECTION -->
+    <section id="advantage" class="advantage-section">
+        <div class="container">
+            <h2 class="fade-in">THE APEX <span class="highlight">ADVANTAGE</span></h2>
+            <p class="fade-in">A spike vs. a plateau. A crash vs. a controlled landing. The difference is by design.</p>
+            <div class="comparison-table fade-in">
+                <div class="coffee-column">
+                    <h3>REGULAR COFFEE</h3>
+                    <ul><li><strong>0-45 MINS: The Jolt</strong><p>A rapid, sometimes jarring rush of energy. Can be accompanied by restlessness or anxiety.</p></li><li><strong>1-2 HOURS: Scattered Peak</strong><p>High alertness, but focus can be chaotic and undirected. The system is over-stimulated.</p></li><li><strong>2-4 HOURS: The Crash</strong><p>The caffeine effect plummets. Adenosine rushes back, causing fatigue. Brain fog sets in.</p></li><li><strong>4+ HOURS: The Aftermath</strong><p>Lingering fatigue and irritability. The positive effects are gone but the system remains disrupted.</p></li></ul>
+                </div>
+                <div class="apex-column">
+                    <h3>PRIMACY: APEX</h3>
+                    <ul><li><strong>0-45 MINS: Smooth Ascent</strong><p>A calm, controlled "coming online" feeling. Energy builds without the jarring rush.</p></li><li><strong>1-4 HOURS: Performance Plateau</strong><p>Sustained, high-level focus. Ketone and caffeine energy work in tandem for deep work.</p></li><li><strong>4-6 HOURS: Controlled Off-Ramp</strong><p>A gradual return to baseline. Metabolic stabilizers prevent the crash. Focus remains intact.</p></li><li><strong>6+ HOURS: Clean Return</strong><p>You feel normal and productive, not depleted. Ready for the next task without residual effects.</p></li></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SYSTEM SECTION -->
+    <section id="system" class="system-section">
+        <div class="container">
+            <h2 class="fade-in">THE 24-HOUR <span class="highlight">PROTOCOL</span></h2>
+            <p class="fade-in">Performance requires recovery. Recovery fuels performance. The PRIMACY system is a continuous loop designed for complete biological mastery.</p>
+            <div class="system-grid fade-in">
+                <div class="system-card">
+                    <img src="https://primacy.io/primacy-logo-APEX.png" alt="APEX Activated Logo" class="system-logo">
+                    <h3 class="apex">APEX</h3>
+                    <p>The daytime protocol for clean energy, unshakeable focus, and zero crash.</p>
+                </div>
+                <div class="plus-icon">+</div>
+                <div class="system-card">
+                    <img src="https://primacy.io/primacy-logo-RESET.png" alt="RESET Activated Logo" class="system-logo">
+                    <h3 class="reset">RESET</h3>
+                    <p>The nighttime protocol for cortisol control, physical recovery, and a full system reboot.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <h2 class="fade-in">INITIATE YOUR <span class="highlight">PROTOCOL.</span></h2>
+            <div class="pricing-grid">
+                 <div class="pricing-card fade-in">
+                    <img src="https://primacy.io/APEX_A.png" alt="APEX System Core Tub">
+                    <h3>APEX SYSTEM CORE 40</h3>
+                    <div class="price">$79 <span>/2 months</span></div>
+                    <p>The 2-month at-home supply (40 servings). Your daily protocol anchor, delivered bi-monthly.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe to APEX</a>
+                </div>
+                <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
+                    <span class="save-badge">BEST VALUE & PERFORMANCE</span>
+                    <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="system-logo">
+                    <h3>THE COMPLETE PROTOCOL</h3>
+                    <div class="price">$169 <span>/2 months</span></div>
+                    <p>The ultimate system. A 40-serving APEX tub and a 60-serving RESET tub delivered every 2 months.</p>
+                    <a href="#" class="cta-button">Engage Full System</a>
+                </div>
+                 <div class="pricing-card fade-in" style="transition-delay:200ms;">
+                    <img src="https://primacy.io/APEX-FK.png" alt="APEX Field Kit">
+                    <h3>APEX FIELD KIT 10</h3>
+                    <div class="price">$29</div>
+                     <p>One-time purchase of a 10-serving Field Kit. Perfect for travel or trial.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <h2 class="fade-in">SYSTEM <span class="highlight">DIAGNOSTICS.</span></h2>
+            <div class="faq-container fade-in">
+                <div class="faq-item">
+                    <div class="faq-question">Is APEX tested for banned substances?</div>
+                    <div class="faq-answer"><p><strong>Engineered for Elite Compliance.</strong> APEX contains zero banned substances and is fully compliant with WADA standards, making it safe for professional athletes, military personnel, and anyone subject to rigorous testing.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Should I cycle APEX?</div>
+                    <div class="faq-answer"><p><strong>Protocol Over Habit.</strong> Yes. To maintain maximum sensitivity, we recommend a simple cycling protocol: <strong>5 days on, 2 days off</strong>. This is why our System Core tub contains 40 servings—a perfect 2-month supply.</p></div>
+                </div>
+                 <div class="faq-item">
+                    <div class="faq-question">How is APEX different from other functional coffees?</div>
+                    <div class="faq-answer"><p><strong>Performance vs. Wellness.</strong> We are playing a different game. Most brands are "coffee alternatives" for gentle wellness. APEX is a <strong>coffee-based performance protocol</strong>. We use full, clinical dosages and a dual-fuel system for measurable outcomes. They are for unwinding; we are for winning.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Will APEX break my fast?</div>
+                    <div class="faq-answer"><p><strong>Strictly speaking, yes. Functionally, it enhances it.</strong> APEX contains ~40 calories from MCT powder. For a strict zero-calorie fast, this will break it. However, for metabolic health, APEX is a powerful accelerator, deepening the ketogenic state that fasting aims to achieve.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Primacy Industries. All Rights Reserved. Upgrade Your OS.</p>
+    </footer>
+
+    <script>
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.faq-item.active');
+                if (currentlyActive && currentlyActive !== item) {
+                    currentlyActive.classList.remove('active');
+                    currentlyActive.querySelector('.faq-answer').style.maxHeight = 0;
+                }
+                item.classList.toggle('active');
+                const answer = item.querySelector('.faq-answer');
+                if (item.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                } else {
+                    answer.style.maxHeight = 0;
+                }
+            });
+        });
+
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+        faders.forEach(fader => { appearOnScroll.observe(fader); });
+    </script>
+</body>
+</html>

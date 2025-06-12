@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primacy: RESET - The Recovery Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL STYLES & RESET --- */
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-accent: #00c6ff; /* Calming Blue for RESET */
+            --color-apex-accent: #00ff9d; /* Green for APEX */
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 0;
+            position: relative; /* Needed for pseudo-elements */
+            z-index: 1;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h2 .highlight {
+            color: var(--color-accent);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--color-light-grey);
+            max-width: 650px;
+            margin: 0 auto 1.5rem auto;
+            text-align: center;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HEADER & HERO --- */
+        .header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(8, 8, 8, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-mid-grey);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links a {
+            color: var(--color-light-grey);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .hero {
+            background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/RESET_Tub.png');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--color-white);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: var(--color-black);
+            padding: 15px 40px;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            border: 2px solid var(--color-accent);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--color-accent);
+        }
+
+        /* --- SHARED SECTIONS --- */
+        .problem-section, .recap-section, .pricing-section, .faq-section, .system-section {
+            background-color: var(--color-dark-grey);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .formula-section, .ecosystem-section, .experience-section {
+            background-color: var(--color-black);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* --- RECAP BLUEPRINT TABLE SECTION --- */
+        .recap-section .container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            max-width: 800px;
+            height: 100%;
+            background-image: url('https://primacy.io/primacy-logo-RESET.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.03;
+            z-index: -1;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 4rem;
+        }
+        .blueprint-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        .blueprint-table th, .blueprint-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-mid-grey);
+        }
+        .blueprint-table th {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-accent);
+        }
+        .blueprint-table td {
+            vertical-align: top;
+            font-size: 0.95rem;
+            color: var(--color-light-grey);
+        }
+        .blueprint-table td:first-child {
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
+        /* --- OTHER SECTIONS --- */
+		/* ... all other styles from the RESET page remain here ... */
+		
+        .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 4rem; }
+        .formula-card { background-color: var(--color-dark-grey); padding: 2rem; border: 1px solid var(--color-mid-grey); border-radius: 8px; }
+        .formula-card h3 { color: var(--color-accent); margin-bottom: 1rem; }
+        .formula-card p { text-align: left; font-size: 1rem; }
+        .ecosystem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 4rem; }
+        .ecosystem-item { text-align: center; }
+        .ecosystem-item img { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 1.5rem; }
+        .ecosystem-item h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .ecosystem-item p { max-width: 450px; }
+        .timeline { margin-top: 4rem; position: relative; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background-color: var(--color-mid-grey); transform: translateX(-50%); }
+        .timeline-item { position: relative; margin-bottom: 4rem; }
+        .timeline-content { position: relative; width: 45%; background-color: var(--color-dark-grey); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--color-mid-grey); }
+        .timeline-item:nth-child(odd) .timeline-content { left: 55%; }
+        .timeline-item:nth-child(even) .timeline-content { left: 0; text-align: right; }
+        .timeline-content h3 { color: var(--color-accent); }
+        .timeline-content p { text-align: inherit; font-size: 1rem; max-width: 100%; }
+        .timeline-dot { position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; background-color: var(--color-accent); border-radius: 50%; transform: translate(-50%, -50%); border: 4px solid var(--color-black); }
+        .system-grid { display: grid; grid-template-columns: 1fr 100px 1fr; align-items: center; gap: 1rem; margin-top: 4rem; }
+        .system-card { padding: 2rem; text-align: center; border-radius: 8px; border: 1px solid var(--color-mid-grey); background: var(--color-dark-grey); }
+        .system-logo { max-width: 100px; height: auto; margin: 0 auto 1.5rem auto; }
+        .system-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .system-card .apex { color: var(--color-apex-accent); }
+        .system-card .reset { color: var(--color-accent); }
+        .plus-icon { font-size: 3rem; color: var(--color-white); text-align: center; font-weight: bold; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: stretch; }
+        .pricing-card { background-color: var(--color-black); border: 2px solid var(--color-mid-grey); padding: 2.5rem; border-radius: 10px; text-align: center; display: flex; flex-direction: column; }
+        .pricing-card.highlight-card { border-color: var(--color-accent); }
+        .pricing-card img { max-width: 150px; height: auto; margin: 0 auto 1.5rem auto; }
+        .pricing-card h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .price { font-size: 3rem; font-family: var(--font-display); color: var(--color-accent); margin-bottom: 1rem; }
+        .price span { font-size: 1rem; color: var(--color-light-grey); }
+        .pricing-card .cta-button { margin-top: auto; }
+        .save-badge { background-color: var(--color-accent); color: var(--color-black); font-family: var(--font-display); padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 1rem; }
+        .faq-container { max-width: 750px; margin: 2rem auto 0 auto; }
+        .faq-item { background-color: var(--color-dark-grey); margin-bottom: 10px; border-radius: 5px; border: 1px solid var(--color-mid-grey); }
+        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 1.1rem; }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--color-accent); transition: transform 0.3s; }
+        .faq-item.active .faq-question::after { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px; }
+        .faq-answer p { padding-bottom: 20px; text-align: left; max-width: 100%; }
+        .footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--color-mid-grey); background-color: var(--color-dark-grey); }
+        .footer p { font-size: 0.9rem; color: var(--color-light-grey); margin: 0; }
+        @media (max-width: 991px) { .blueprint-table { min-width: 100%; } }
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; } h2 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .hero { min-height: 70vh; }
+            .timeline::before { left: 10px; }
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content { width: calc(100% - 40px); left: 40px; text-align: left; }
+            .timeline-dot { left: 10px; }
+            .system-grid, .ecosystem-grid { grid-template-columns: 1fr; }
+            .plus-icon { transform: rotate(90deg); margin: -1rem 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="#formula">Formula</a>
+                <a href="#ecosystem">Ecosystem</a>
+                <a href="#blueprint">Blueprint</a>
+                <a href="#system">The System</a>
+                <a href="#pricing">Get Reset</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content fade-in">
+            <h1>INITIATE RECOVERY PROTOCOL.</h1>
+            <p>Recovery isn't passive. It's a mission-critical task. RESET is a precision-engineered formula designed to initiate a complete system shutdown, optimizing physical recovery and cognitive recalibration while you sleep.</p>
+            <a href="#pricing" class="cta-button">Engage RESET</a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section class="problem-section">
+        <div class="container">
+            <h2 class="fade-in">YOU CAN'T DOMINATE THE DAY <br>IF YOU <span class="highlight">LOSE THE NIGHT.</span></h2>
+            <p class="fade-in">Peak performance is metabolically expensive. High cortisol, a racing mind, and physical inflammation are the enemies of recovery. Waking up groggy isn't just a bad morning—it's starting your mission from a tactical disadvantage. It's time to stop leaving recovery to chance.</p>
+        </div>
+    </section>
+
+    <!-- FORMULA HIGHLIGHTS -->
+    <section id="formula" class="formula-section">
+        <div class="container">
+            <h2 class="fade-in">DECONSTRUCT THE <span class="highlight">PROTOCOL.</span></h2>
+            <p class="fade-in">RESET is not a sedative sledgehammer. It is a synergistic system designed to dismantle the four primary barriers to high-quality recovery.</p>
+            <div class="formula-grid">
+                <div class="formula-card fade-in">
+                    <h3>THE SHUTDOWN SIGNAL</h3>
+                    <p>Works to quiet mental chatter and ease the transition into sleep without sedation.</p>
+                </div>
+                <div class="formula-card fade-in" style="transition-delay: 100ms;">
+                    <h3>CORTISOL CONTROL</h3>
+                    <p>Dismantles the hormonal barrier that keeps you feeling "wired and tired."</p>
+                </div>
+                <div class="formula-card fade-in" style="transition-delay: 200ms;">
+                    <h3>PHYSICAL RECOVERY</h3>
+                    <p>Reduces inflammation and supports muscle repair while your mind powers down.</p>
+                </div>
+                 <div class="formula-card fade-in" style="transition-delay: 300ms;">
+                    <h3>NEURO-RECALIBRATION</h3>
+                    <p>Supports your brain's nightly maintenance to stop repetitive thoughts for a full cognitive reset.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ECOSYSTEM SECTION -->
+    <section id="ecosystem" class="ecosystem-section">
+        <div class="container">
+            <h2 class="fade-in">THE RESET ECOSYSTEM: <br>YOUR PROTOCOL, <span class="highlight">ANYWHERE.</span></h2>
+            <p class="fade-in">Optimal recovery isn't confined to your bed. Your protocol shouldn't be either. The RESET Ecosystem is designed for seamless integration, whether you are at home or on the move.</p>
+            <div class="ecosystem-grid">
+                <div class="ecosystem-item fade-in">
+                    <img src="https://primacy.io/RESET_Tub.png" alt="RESET System Core Tub">
+                    <h3>THE SYSTEM CORE</h3>
+                    <p>The anchor of your nightly ritual. The System Core is your at-home supply depot, precision-engineered for the perfect, consistent dose to initiate your recovery protocol.</p>
+                </div>
+                <div class="ecosystem-item fade-in" style="transition-delay:100ms;">
+                    <img src="https://primacy.io/RESET_Field-kit.png" alt="RESET Field Kit Dispenser">
+                    <h3>THE FIELD KIT</h3>
+                    <p>Tactical readiness in a dispenser. The Field Kit ensures your protocol is never interrupted, perfect for travel to maintain peak performance across time zones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- RECAP BLUEPRINT TABLE SECTION -->
+    <section id="blueprint" class="recap-section">
+        <div class="container">
+            <h2 class="fade-in">RESET BLUEPRINT: <span class="highlight">FULL DECONSTRUCTION</span></h2>
+            <p class="fade-in">Every component is mission-critical. This is the complete system breakdown for those who demand full transparency.</p>
+            <div class="table-container fade-in">
+                <table class="blueprint-table">
+                    <!-- Table content remains the same -->
+                    <thead><tr><th>Ingredient</th><th>Dosage</th><th>Primary Role</th><th>Synergistic Effects</th></tr></thead><tbody><tr><td>Magnesium Bisglycinate</td><td>200mg</td><td><strong>The Master Switch:</strong> The core mineral for nervous system downregulation.</td><td>• With Ashwagandha: A potent one-two punch against stress.<br>• With Glycine (from the bond): Enhances calming.</td></tr><tr><td>L-Theanine</td><td>200mg</td><td><strong>Mind Quieting Agent:</strong> Promotes alpha brain waves to quiet mental chatter.</td><td>• With Apigenin & GABA: A multi-pathway system for relaxation.</td></tr><tr><td>Ashwagandha (KSM-66®)</td><td>300mg</td><td><strong>The Cortisol Override:</strong> An adaptogen to reduce evening cortisol.</td><td>• With Magnesium: Creates a powerful anti-stress foundation.</td></tr><tr><td>Taurine</td><td>500mg</td><td><strong>System-Wide Calming:</strong> Provides GABAergic effect and supports hydration.</td><td>• With Tart Cherry: Supports systemic recovery and inflammation.</td></tr><tr><td>Tart Cherry Extract</td><td>500mg</td><td><strong>Physical Recovery Matrix:</strong> Reduces inflammation and muscle soreness.</td><td>• With Taurine: Forms the core of the physical repair system.</td></tr><tr><td>Myo-Inositol</td><td>1000mg</td><td><strong>Neurotransmitter Signal Support:</strong> Supports serotonin for deep sleep.</td><td>• With L-Theanine: Helps break the cycle of a racing mind.</td></tr><tr><td>Apigenin</td><td>50mg</td><td><strong>Sleep Quality Enhancer:</strong> Induces relaxation and may increase deep sleep.</td><td>• With Theanine & GABA: Part of the "Shutdown Signal."</td></tr><tr><td>PharmaGABA®</td><td>100mg</td><td><strong>Direct "Brake Pedal" Signal:</strong> Systemic calming via the gut-brain axis.</td><td>• With the stack: Complements the central calming effects.</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE TIMELINE -->
+    <section class="experience-section">
+        <div class="container">
+            <h2 class="fade-in">THE CONTROLLED <span class="highlight">DOWNSHIFT</span></h2>
+            <p class="fade-in">RESET isn't a knockout pill. It's a precision-guided protocol that creates the ideal conditions for high-quality, restorative sleep.</p>
+            <div class="timeline fade-in">
+                 <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h3>T-60 MINS: INITIATE</h3><p>You mix RESET. The "Midnight Cherry" flavor is a satisfying ritual. You don't feel sleepy—you feel the day's noise begin to fade.</p></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h3>T-30 MINS: DOWNSHIFT</h3><p>Your mind's RPM decreases. The racing to-do list becomes quiet. Your body feels calmer and heavier. You are primed for recovery.</p></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h3>LIGHTS OUT: EFFICIENCY</h3><p>The transition to sleep is smooth and efficient. You don't force it; you simply arrive there without resistance.</p></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h3>THE MORNING: REBOOT</h3><p>You wake up without grogginess. The system has been fully serviced. You feel calibrated and ready for a new mission.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SYSTEM SECTION -->
+    <section id="system" class="system-section">
+        <div class="container">
+            <h2 class="fade-in">THE 24-HOUR <span class="highlight">PROTOCOL</span></h2>
+            <p class="fade-in">Performance requires recovery. Recovery fuels performance. The PRIMACY system is a continuous loop designed for complete biological mastery.</p>
+            <div class="system-grid fade-in">
+                <div class="system-card">
+                    <img src="https://primacy.io/primacy-logo-APEX.png" alt="APEX Activated Logo" class="system-logo">
+                    <h3 class="apex">APEX</h3>
+                    <p>The daytime protocol for clean energy, unshakeable focus, and zero crash.</p>
+                </div>
+                <div class="plus-icon">+</div>
+                <div class="system-card">
+                    <img src="https://primacy.io/primacy-logo-RESET.png" alt="RESET Activated Logo" class="system-logo">
+                    <h3 class="reset">RESET</h3>
+                    <p>The nighttime protocol for cortisol control, physical recovery, and a full system reboot.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <h2 class="fade-in">ENGAGE THE <span class="highlight">PROTOCOL.</span></h2>
+            <div class="pricing-grid">
+                 <div class="pricing-card fade-in">
+                    <img src="https://primacy.io/RESET_Tub.png" alt="RESET System Core Tub">
+                    <h3>RESET SYSTEM CORE 60</h3>
+                    <div class="price">$99 <span>/2 months</span></div>
+                    <p>The 2-month at-home supply (60 servings). Your nightly protocol anchor, delivered bi-monthly.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe to RESET</a>
+                </div>
+                <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
+                    <span class="save-badge">BEST VALUE & PERFORMANCE</span>
+                    <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="system-logo">
+                    <h3>THE COMPLETE PROTOCOL</h3>
+                    <div class="price">$169 <span>/2 months</span></div>
+                    <p>The ultimate system. A 40-serving APEX tub and a 60-serving RESET tub delivered every 2 months.</p>
+                    <a href="#" class="cta-button">Engage Full System</a>
+                </div>
+                 <div class="pricing-card fade-in" style="transition-delay:200ms;">
+                    <img src="https://primacy.io/RESET_Field-kit.png" alt="RESET Field Kit">
+                    <h3>RESET FIELD KIT 15</h3>
+                    <div class="price">$44</div>
+                     <p>One-time purchase of a 15-serving Field Kit. Perfect for travel or trial.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <h2 class="fade-in">SYSTEM <span class="highlight">DIAGNOSTICS.</span></h2>
+            <div class="faq-container fade-in">
+                <!-- FAQ content remains the same -->
+                <div class="faq-item"><div class="faq-question">Will RESET make me groggy the next day?</div><div class="faq-answer"><p><strong>No. This is by design.</strong> RESET is specifically formulated to avoid next-day grogginess. We intentionally rejected ingredients like high-dose melatonin and valerian root, which are known to cause a "sleep hangover." Our protocol is engineered for a clean reboot, not a fuzzy one.</p></div></div><div class="faq-item"><div class="faq-question">Why no Melatonin?</div><div class="faq-answer"><p><strong>We don't believe in using a brute-force hormone when intelligent signals work better.</strong> High-dose melatonin can disrupt your body's own natural production and lead to dependency. RESET is designed to provide the precursors that help your brain produce its *own* melatonin at the correct time.</p></div></div><div class="faq-item"><div class="faq-question">Is it safe to take RESET every night?</div><div class="faq-answer"><p>Yes. RESET contains no sedatives or dependency-forming ingredients. It is a formula of adaptogens, minerals, and amino acids designed to support your body's natural recovery processes. It is safe and recommended for consistent, nightly use.</p></div></div><div class="faq-item"><div class="faq-question">What does RESET taste like?</div><div class="faq-answer"><p>We call the flavor profile "Midnight Cherry." It is built on a base of functional Tart Cherry extract, then layered with notes of black cherry and vanilla for a rich, sophisticated flavor. It is balanced with zero-sugar monk fruit, making it a satisfying ritual to end your day.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Primacy Industries. All Rights Reserved. Upgrade Your OS.</p>
+    </footer>
+
+
+    <script>
+        // --- FAQ ACCORDION SCRIPT ---
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.faq-item.active');
+                if (currentlyActive && currentlyActive !== item) {
+                    currentlyActive.classList.remove('active');
+                    currentlyActive.querySelector('.faq-answer').style.maxHeight = 0;
+                }
+
+                item.classList.toggle('active');
+                const answer = item.querySelector('.faq-answer');
+                if (item.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                } else {
+                    answer.style.maxHeight = 0;
+                }
+            });
+        });
+
+        // --- FADE-IN ON SCROLL SCRIPT ---
+        const faders = document.querySelectorAll('.fade-in');
+        
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(
+            entries,
+            appearOnScroll
+        ) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+
+    </script>
+</body>
+</html>
