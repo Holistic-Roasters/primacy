@@ -128,7 +128,8 @@
         }
 
         .hero {
-            background-image: linear-gradient(rgba(8, 8, 8, 0.8), rgba(8, 8, 8, 1)), url('https://images.unsplash.com/photo-1531353826977-0941b4779a1C?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            /* UPDATED HERO BACKGROUND IMAGE FOR RESET */
+            background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/RESET_Tub.png');
             background-size: cover;
             background-position: center;
             text-align: center;
@@ -175,18 +176,18 @@
         }
 
         /* --- SHARED SECTIONS --- */
-        .problem-section, .recap-section, .experience-section, .pricing-section, .faq-section {
+        .problem-section, .recap-section, .pricing-section, .faq-section, .system-section {
             background-color: var(--color-dark-grey);
         }
         
-        .formula-section, .advantage-section, .persona-section, .system-section {
+        .formula-section, .ecosystem-section, .experience-section {
             background-color: var(--color-black);
         }
         
         /* --- FORMULA SECTION --- */
         .formula-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 4rem;
         }
@@ -201,7 +202,6 @@
         .formula-card h3 {
             color: var(--color-accent);
             margin-bottom: 1rem;
-            font-size: 1.5rem;
         }
 
         .formula-card p {
@@ -209,25 +209,31 @@
             font-size: 1rem;
         }
         
-        .formula-card ul {
-            list-style: none;
-            margin-top: 1rem;
+        /* --- ECOSYSTEM SECTION --- */
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 4rem;
         }
-        
-        .formula-card li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        .ecosystem-item {
+            text-align: center;
         }
-        
-        .formula-card li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--color-accent);
+        .ecosystem-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
-        
+        .ecosystem-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .ecosystem-item p {
+            max-width: 450px;
+        }
+
         /* --- RECAP BLUEPRINT TABLE SECTION --- */
         .table-container {
             overflow-x: auto;
@@ -292,21 +298,10 @@
             border-radius: 8px;
             border: 1px solid var(--color-mid-grey);
         }
-        .timeline-item:nth-child(odd) .timeline-content {
-            left: 55%;
-        }
-        .timeline-item:nth-child(even) .timeline-content {
-            left: 0;
-            text-align: right;
-        }
-        .timeline-content h3 {
-            color: var(--color-accent);
-        }
-        .timeline-content p {
-            text-align: inherit;
-            font-size: 1rem;
-            max-width: 100%;
-        }
+        .timeline-item:nth-child(odd) .timeline-content { left: 55%; }
+        .timeline-item:nth-child(even) .timeline-content { left: 0; text-align: right; }
+        .timeline-content h3 { color: var(--color-accent); }
+        .timeline-content p { text-align: inherit; font-size: 1rem; max-width: 100%; }
         .timeline-dot {
             position: absolute;
             top: 50%;
@@ -333,31 +328,19 @@
             border-radius: 8px;
             border: 1px solid;
         }
-        .apex-card {
-            border-color: var(--color-apex-accent);
-        }
-        .reset-card {
-            border-color: var(--color-accent);
-        }
-        .system-card h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
+        .apex-card { border-color: var(--color-apex-accent); }
+        .reset-card { border-color: var(--color-accent); }
+        .system-card h3 { font-size: 2rem; margin-bottom: 1rem; }
         .apex-card h3 { color: var(--color-apex-accent); }
         .reset-card h3 { color: var(--color-accent); }
-        .plus-icon {
-            font-size: 3rem;
-            color: var(--color-white);
-            text-align: center;
-            font-weight: bold;
-        }
+        .plus-icon { font-size: 3rem; color: var(--color-white); text-align: center; font-weight: bold; }
 
         /* --- PRICING SECTION --- */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            align-items: flex-start;
+            align-items: stretch;
         }
         .pricing-card {
             background-color: var(--color-black);
@@ -365,47 +348,15 @@
             padding: 2.5rem;
             border-radius: 10px;
             text-align: center;
-            transition: border-color 0.3s;
-            height: 100%;
             display: flex;
             flex-direction: column;
         }
-        .pricing-card.highlight-card {
-            border-color: var(--color-accent);
-        }
-        .pricing-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        .price {
-            font-size: 3rem;
-            font-family: var(--font-display);
-            color: var(--color-accent);
-            margin-bottom: 1rem;
-        }
-        .price span {
-            font-size: 1rem;
-            color: var(--color-light-grey);
-        }
-        .pricing-card ul {
-            list-style: none;
-            margin: 2rem 0;
-            text-align: left;
-            display: inline-block;
-            flex-grow: 1;
-        }
-        .pricing-card li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 30px;
-        }
-        .pricing-card li::before {
-            content: '✓';
-            color: var(--color-accent);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
+        .pricing-card.highlight-card { border-color: var(--color-accent); }
+        .pricing-card img { max-width: 150px; height: auto; margin: 0 auto 1.5rem auto; }
+        .pricing-card h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .price { font-size: 3rem; font-family: var(--font-display); color: var(--color-accent); margin-bottom: 1rem; }
+        .price span { font-size: 1rem; color: var(--color-light-grey); }
+        .pricing-card .cta-button { margin-top: auto; }
         .save-badge {
             background-color: var(--color-accent);
             color: var(--color-black);
@@ -418,57 +369,22 @@
         }
         
         /* --- FAQ SECTION --- */
-        .faq-container {
-            max-width: 750px;
-            margin: 2rem auto 0 auto;
-        }
-        .faq-item {
-            background-color: var(--color-dark-grey);
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid var(--color-mid-grey);
-        }
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        .faq-question::after {
-            content: '+';
-            font-size: 1.5rem;
-            color: var(--color-accent);
-            transition: transform 0.3s;
-        }
+        .faq-container { max-width: 750px; margin: 2rem auto 0 auto; }
+        .faq-item { background-color: var(--color-dark-grey); margin-bottom: 10px; border-radius: 5px; border: 1px solid var(--color-mid-grey); }
+        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 1.1rem; }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--color-accent); transition: transform 0.3s; }
         .faq-item.active .faq-question::after { transform: rotate(45deg); }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            padding: 0 20px;
-        }
-        .faq-answer p {
-            padding-bottom: 20px;
-            text-align: left;
-            max-width: 100%;
-        }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px; }
+        .faq-answer p { padding-bottom: 20px; text-align: left; max-width: 100%; }
         
         /* --- FOOTER --- */
-        .footer {
-            padding: 40px 0;
-            text-align: center;
-            border-top: 1px solid var(--color-mid-grey);
-        }
-        .footer p {
-            font-size: 0.9rem;
-            color: var(--color-light-grey);
-            margin: 0;
-        }
+        .footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--color-mid-grey); background-color: var(--color-dark-grey); }
+        .footer p { font-size: 0.9rem; color: var(--color-light-grey); margin: 0; }
 
         /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 991px) {
+            .blueprint-table { min-width: 100%; }
+        }
         @media (max-width: 768px) {
             h1 { font-size: 3rem; }
             h2 { font-size: 2rem; }
@@ -476,13 +392,9 @@
             .hero { min-height: 70vh; }
             .timeline::before { left: 10px; }
             .timeline-item:nth-child(odd) .timeline-content,
-            .timeline-item:nth-child(even) .timeline-content {
-                width: calc(100% - 40px);
-                left: 40px;
-                text-align: left;
-            }
+            .timeline-item:nth-child(even) .timeline-content { width: calc(100% - 40px); left: 40px; text-align: left; }
             .timeline-dot { left: 10px; }
-            .system-grid { grid-template-columns: 1fr; }
+            .system-grid, .ecosystem-grid { grid-template-columns: 1fr; }
             .plus-icon { transform: rotate(90deg); margin: -1rem 0; }
         }
     </style>
@@ -495,6 +407,7 @@
             <a href="#" class="logo">PRIMACY<span class="highlight">:RESET</span></a>
             <div class="nav-links">
                 <a href="#formula">Formula</a>
+                <a href="#ecosystem">Ecosystem</a>
                 <a href="#blueprint">Blueprint</a>
                 <a href="#system">The System</a>
                 <a href="#pricing">Get Reset</a>
@@ -527,35 +440,19 @@
             <div class="formula-grid">
                 <div class="formula-card fade-in">
                     <h3>THE SHUTDOWN SIGNAL</h3>
-                    <p>This trio works in concert to quiet mental chatter and ease the transition into sleep without sedation. It sets the stage, applies the brake, and delivers the direct "calm" signal.</p>
-                    <ul>
-                        <li>L-Theanine</li>
-                        <li>Apigenin</li>
-                        <li>PharmaGABA®</li>
-                    </ul>
+                    <p>This trio works in concert to quiet mental chatter and ease the transition into sleep without sedation.</p>
                 </div>
                 <div class="formula-card fade-in" style="transition-delay: 100ms;">
-                    <h3>CORTISOL CONTROL SYSTEM</h3>
-                    <p>This system dismantles the primary hormonal barrier that keeps you feeling "wired and tired." It actively lowers the stress hormone cortisol while making your nervous system less sensitive to stress signals.</p>
-                    <ul>
-                        <li>Ashwagandha (KSM-66®)</li>
-                        <li>Magnesium Bisglycinate</li>
-                    </ul>
+                    <h3>CORTISOL CONTROL</h3>
+                    <p>This system dismantles the primary hormonal barrier that keeps you feeling "wired and tired."</p>
                 </div>
                 <div class="formula-card fade-in" style="transition-delay: 200ms;">
-                    <h3>PHYSICAL RECOVERY MATRIX</h3>
-                    <p>While your mind powers down, this combination goes to work on the body, actively reducing exercise-induced inflammation, supporting muscle repair, and ensuring cellular hydration overnight.</p>
-                    <ul>
-                        <li>Tart Cherry Extract</li>
-                        <li>Taurine</li>
-                    </ul>
+                    <h3>PHYSICAL RECOVERY</h3>
+                    <p>While your mind powers down, this combination goes to work on the body, reducing inflammation and supporting muscle repair.</p>
                 </div>
                  <div class="formula-card fade-in" style="transition-delay: 300ms;">
                     <h3>NEURO-RECALIBRATION</h3>
-                    <p>This provides crucial support for your brain's nightly maintenance routines, supporting serotonin pathways and helping to stop the cycle of repetitive thoughts for a full cognitive reset.</p>
-                     <ul>
-                        <li>Myo-Inositol</li>
-                    </ul>
+                    <p>Supports your brain's nightly maintenance, supporting serotonin pathways to stop repetitive thoughts for a full cognitive reset.</p>
                 </div>
             </div>
         </div>
@@ -563,9 +460,8 @@
 	
 	
 	
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
+	
+	
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    <title>RESET - Interactive Synergy Network</title>
@@ -2147,13 +2043,33 @@
 	    </script>
 
 	</body>
+
 	
 	
 	
 	
 	
 	
-	
+    
+    <!-- ECOSYSTEM SECTION -->
+    <section id="ecosystem" class="ecosystem-section">
+        <div class="container">
+            <h2 class="fade-in">THE RESET ECOSYSTEM: <br>YOUR PROTOCOL, <span class="highlight">ANYWHERE.</span></h2>
+            <p class="fade-in">Optimal recovery isn't confined to your bed. Your protocol shouldn't be either. The RESET Ecosystem is designed for seamless integration, whether you are at home or on the move.</p>
+            <div class="ecosystem-grid">
+                <div class="ecosystem-item fade-in">
+                    <img src="https://primacy.io/RESET_Tub.png" alt="RESET System Core Tub">
+                    <h3>THE SYSTEM CORE</h3>
+                    <p>The anchor of your nightly ritual. The System Core is your at-home supply depot, precision-engineered for the perfect, consistent dose to initiate your recovery protocol.</p>
+                </div>
+                <div class="ecosystem-item fade-in" style="transition-delay:100ms;">
+                    <img src="https://primacy.io/RESET_Field-kit.png" alt="RESET Field Kit Dispenser">
+                    <h3>THE FIELD KIT</h3>
+                    <p>Tactical readiness in a dispenser. The Field Kit ensures your protocol is never interrupted, perfect for travel to maintain peak performance across time zones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- RECAP BLUEPRINT TABLE SECTION -->
     <section id="blueprint" class="recap-section">
@@ -2288,36 +2204,25 @@
             <h2 class="fade-in">ENGAGE THE <span class="highlight">PROTOCOL.</span></h2>
             <div class="pricing-grid">
                  <div class="pricing-card fade-in">
-                    <h3>RESET PROTOCOL</h3>
-                    <div class="price">$59 <span>/month</span></div>
-                     <ul>
-                        <li>30 Servings of Primacy: RESET</li>
-                        <li>Subscribe & Save 15%</li>
-                        <li>Cancel or modify anytime</li>
-                    </ul>
-                    <a href="#" class="cta-button" style="margin-top:auto;">Subscribe to RESET</a>
+                    <img src="https://primacy.io/RESET_Tub.png" alt="RESET System Core Tub">
+                    <h3>SYSTEM CORE 40</h3>
+                    <div class="price">$69 <span>/2 months</span></div>
+                    <p>The at-home subscription. 40 servings of your nightly protocol.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Subscribe</a>
                 </div>
                 <div class="pricing-card highlight-card fade-in" style="transition-delay:100ms;">
                     <span class="save-badge">BEST VALUE & PERFORMANCE</span>
                     <h3>APEX + RESET SYSTEM</h3>
                     <div class="price">$119 <span>/month</span></div>
-                    <ul>
-                        <li>30 Servings of APEX</li>
-                        <li>30 Servings of RESET</li>
-                        <li>The Complete 24-Hour Protocol</li>
-                        <li>Maximum Savings & Results</li>
-                    </ul>
-                    <a href="#" class="cta-button" style="margin-top:auto;">Engage The Full System</a>
+                    <p>The Complete 24-Hour Protocol. Monthly delivery of a 30-serving tub of APEX and a 30-serving tub of RESET.</p>
+                    <a href="#" class="cta-button">Engage Full System</a>
                 </div>
                  <div class="pricing-card fade-in" style="transition-delay:200ms;">
-                    <h3>ONE-TIME SUPPLY</h3>
-                    <div class="price">$69</div>
-                     <ul>
-                        <li>30 Servings of Primacy: RESET</li>
-                        <li>One-time purchase</li>
-                        <li>Perfect for trial runs</li>
-                    </ul>
-                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent); margin-top:auto;">Initiate Purchase</a>
+                    <img src="https://primacy.io/RESET_Field-kit.png" alt="RESET Field Kit">
+                    <h3>FIELD KIT 10</h3>
+                    <div class="price">$29</div>
+                     <p>One-time purchase of a 10-serving Field Kit for travel or trial.</p>
+                    <a href="#" class="cta-button" style="background:transparent; color: var(--color-accent);">Initiate Purchase</a>
                 </div>
             </div>
         </div>
