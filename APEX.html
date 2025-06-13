@@ -599,6 +599,7 @@
         }
 		
 		
+		
         /* --- SYSTEM SECTION --- */
         .system-section {
             background-color: var(--color-black);
@@ -616,6 +617,11 @@
             border-radius: 8px;
             border: 1px solid var(--color-mid-grey);
             background: var(--color-dark-grey);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .system-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-accent);
         }
         .system-logo {
             max-width: 100px;
@@ -628,6 +634,9 @@
         .plus-icon { font-size: 3rem; color: var(--color-white); text-align: center; font-weight: bold; }
 		
 		
+
+		
+	
         
         /* --- ECOSYSTEM SECTION --- */
         .ecosystem-grid {
@@ -2797,26 +2806,26 @@
 	
 	
 	
-    <!-- SYSTEM SECTION -->
-    <section id="system" class="system-section">
-        <div class="container">
-            <h2 class="fade-in">THE 24-HOUR <span class="highlight">PROTOCOL</span></h2>
-            <p class="fade-in">Performance requires recovery. Recovery fuels performance. The PRIMACY system is a continuous loop designed for complete biological mastery.</p>
-            <div class="system-grid fade-in">
-                <div class="system-card">
-                    <img src="https://primacy.io/primacy-logo-APEX.png" alt="APEX Activated Logo" class="system-logo">
-                    <h3 class="apex">APEX</h3>
-                    <p>The daytime protocol for clean energy, unshakeable focus, and zero crash.</p>
-                </div>
-                <div class="plus-icon">+</div>
-                <div class="system-card">
-                    <img src="https://primacy.io/primacy-logo-RESET.png" alt="RESET Activated Logo" class="system-logo">
-                    <h3 class="reset">RESET</h3>
-                    <p>The nighttime protocol for cortisol control, physical recovery, and a full system reboot.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- THE SYSTEM -->
+   <section id="system" class="system-section">
+       <div class="container">
+           <h2 class="fade-in">THE 24-HOUR <span class="highlight">PROTOCOL</span></h2>
+           <p class="fade-in">Performance requires recovery. Recovery fuels performance. The PRIMACY system is a continuous loop designed for complete biological mastery.</p>
+           <div class="system-grid fade-in">
+               <div class="system-card">
+                   <img src="https://primacy.io/primacy-logo-APEX.png" alt="APEX Logo" class="system-logo">
+                   <h3 class="apex">APEX</h3>
+                   <p>The daytime protocol for clean energy, unshakeable focus, and zero crash.</p>
+               </div>
+               <div class="plus-icon">+</div>
+               <div class="system-card">
+                   <img src="https://primacy.io/primacy-logo-RESET.png" alt="RESET Logo" class="system-logo">
+                   <h3 class="reset">RESET</h3>
+                   <p>The nighttime protocol for cortisol control, physical recovery, and system reboot.</p>
+               </div>
+           </div>
+       </div>
+   </section>
 	
 	
 	
