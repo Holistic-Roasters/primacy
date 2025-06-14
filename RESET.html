@@ -108,10 +108,41 @@
             color: var(--color-white);
             text-decoration: none;
         }
+		
+		
 
         .logo .highlight {
             color: var(--color-accent);
         }
+		
+		/* === LOGO ALIGNMENT FIX === */
+		.logo {
+		    display: flex;
+		    align-items: center;
+		    font-family: var(--font-display);
+		    font-size: 1.8rem;
+		    color: var(--color-white);
+		    text-decoration: none;
+		    white-space: nowrap;
+		}
+
+		.logo-img {
+		    height: 53px; /* Adjust for visual balance */
+		    width: auto;
+		    margin-right: 10px;
+		    display: inline-block;
+		    vertical-align: middle;
+		}
+
+		.logo-text {
+		    line-height: 1;
+		    display: flex;
+		    align-items: center;
+		}
+
+		.logo .highlight {
+		    color: var(--color-accent); /* uses RESET's blue */
+		}
 
         .nav-links a {
             color: var(--color-light-grey);
@@ -445,14 +476,16 @@
     <!-- HEADER -->
     <header class="header">
         <nav class="navbar">
-            <a href="#" class="logo">PRIMACY<span class="highlight">:RESET</span></a>
-            <div class="nav-links">
+			<a href="#" class="logo">
+			    <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="logo-img">
+			    <span class="logo-text">PRIMACY<span class="highlight">:RESET</span></span>
+			</a>            <div class="nav-links">
 				  <a href="https://primacy.io/APEX.html">APEX</a>
                 <a href="#formula">Formula</a>
                 <a href="#ecosystem">Ecosystem</a>
                 <a href="#blueprint">Blueprint</a>
                 <a href="#system">The System</a>
-		<a href="https://primacy.io/Primacy-Dashboard.html">Dashboard</a>
+				<a href="https://primacy.io/Primacy-Dashboard.html">Dashboard</a>
                 <a href="#pricing">Get Reset</a>
             </div>
         </nav>
@@ -1093,9 +1126,6 @@
 	            50% { opacity: 0.6; }
 	        }
 	    </style>
-	</head>
-	<body>
-
 	    <section class="synergy-section">
 	        <div class="container">
 	            <div class="section-header">
