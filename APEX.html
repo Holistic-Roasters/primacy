@@ -88,114 +88,134 @@
             transform: translateY(0);
         }
 
-        /* --- HEADER & HERO --- */
-        .header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(8, 8, 8, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--color-mid-grey);
-        }
+		/* --- HEADER & HERO --- */
+		.header {
+		    position: sticky;
+		    top: 0;
+		    width: 100%;
+		    z-index: 1000;
+		    background: rgba(8, 8, 8, 0.85);
+		    backdrop-filter: blur(10px);
+		    border-bottom: 1px solid var(--color-mid-grey);
+		}
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-        }
+		.navbar {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    padding: 15px 5%;
+		}
 
-        .logo {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            color: var(--color-white);
-            text-decoration: none;
-            z-index: 1001;
-        }
+		/* === LOGO FIX === */
+		.logo {
+		    display: flex;
+		    align-items: center;
+		    font-family: var(--font-display);
+		    font-size: 1.8rem;
+		    color: var(--color-white);
+		    text-decoration: none;
+		    z-index: 1001;
+		    white-space: nowrap; /* Prevents wrapping */
+		}
 
-        .logo .highlight {
-            color: var(--color-accent);
-        }
+		.logo-img {
+		    height: 40px;           /* Adjust to balance with text */
+		    width: auto;
+		    margin-right: 10px;
+		    display: inline-block;  /* Prevents forcing new line */
+		    vertical-align: middle;
+		}
 
-        .nav-links a {
-            color: var(--color-light-grey);
-            text-decoration: none;
-            margin: 0 15px;f
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
+		.logo-text {
+		    line-height: 1;
+		    display: flex;
+		    align-items: center;
+		}
 
-        .nav-links a:hover {
-            color: var(--color-accent);
-        }
-        
-        /* --- MOBILE NAVIGATION --- */
-        .hamburger-menu {
-            display: none;
-            cursor: pointer;
-            z-index: 1001;
-        }
+		.logo .highlight {
+		    color: var(--color-accent);
+		}
 
-        .hamburger-menu .bar {
-            display: block;
-            width: 25px;
-            height: 3px;
-            margin: 5px auto;
-            background-color: var(--color-white);
-            transition: all 0.3s ease-in-out;
-        }
+		/* === END LOGO FIX === */
 
+		.nav-links a {
+		    color: var(--color-light-grey);
+		    text-decoration: none;
+		    margin: 0 15px;
+		    font-size: 0.9rem;
+		    text-transform: uppercase;
+		    letter-spacing: 1px;
+		    transition: color 0.3s;
+		}
 
-        .hero {
-            background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+		.nav-links a:hover {
+		    color: var(--color-accent);
+		}
 
-        .hero-content {
-            max-width: 800px;
-        }
-        
-        .hero-content h1 {
-            font-size: 4rem;
-            color: var(--color-white);
-            margin-bottom: 1rem;
-        }
+		/* --- MOBILE NAVIGATION --- */
+		.hamburger-menu {
+		    display: none;
+		    cursor: pointer;
+		    z-index: 1001;
+		}
 
-        .hero-content p {
-            font-size: 1.2rem;
-            color: var(--color-white);
-            margin-bottom: 2rem;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background-color: var(--color-accent);
-            color: var(--color-black);
-            padding: 15px 40px;
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            border: 2px solid var(--color-accent);
-            transition: all 0.3s ease;
-        }
+		.hamburger-menu .bar {
+		    display: block;
+		    width: 25px;
+		    height: 3px;
+		    margin: 5px auto;
+		    background-color: var(--color-white);
+		    transition: all 0.3s ease-in-out;
+		}
 
-        .cta-button:hover {
-            background-color: transparent;
-            color: var(--color-accent);
-        }
+		/* --- HERO SECTION --- */
+		.hero {
+		    background-image: linear-gradient(rgba(8, 8, 8, 0.7), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
+		    background-size: cover;
+		    background-position: center;
+		    text-align: center;
+		    min-height: 90vh;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		}
 
+		.hero-content {
+		    max-width: 800px;
+		}
+
+		.hero-content h1 {
+		    font-size: 4rem;
+		    color: var(--color-white);
+		    margin-bottom: 1rem;
+		}
+
+		.hero-content p {
+		    font-size: 1.2rem;
+		    color: var(--color-white);
+		    margin-bottom: 2rem;
+		}
+
+		.cta-button {
+		    display: inline-block;
+		    background-color: var(--color-accent);
+		    color: var(--color-black);
+		    padding: 15px 40px;
+		    font-family: var(--font-display);
+		    text-transform: uppercase;
+		    letter-spacing: 2px;
+		    text-decoration: none;
+		    font-size: 1.1rem;
+		    border-radius: 5px;
+		    border: 2px solid var(--color-accent);
+		    transition: all 0.3s ease;
+		}
+
+		.cta-button:hover {
+		    background-color: transparent;
+		    color: var(--color-accent);
+		}
+       
         /* --- SHARED STYLES --- */
         .problem-section, .recap-section, .pricing-section, .faq-section, .persona-section {
             background-color: var(--color-dark-grey);
@@ -959,25 +979,31 @@
 <body>
 
     <!-- HEADER -->
-    <header class="header">
-        <nav class="navbar">
-            <a href="#" class="logo">PRIMACY<span class="highlight">:APEX</span></a>
-            <div class="nav-links">
-				 <a href="https://primacy.io/RESET.html">RESET</a>
+	
+	
+	<header class="header">
+	    <nav class="navbar">
+	        <a href="#" class="logo">
+	            <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="logo-img">
+	            <span class="logo-text">PRIMACY<span class="highlight">:APEX</span></span>
+	        </a>
+	        <div class="nav-links">
                 <a href="#ecosystem">Ecosystem</a>
                 <a href="#blueprint">Blueprint</a>
                 <a href="#advantage">Advantage</a>
                 <a href="#pricing">Get Apex</a>
 		<a href="https://primacy.io/Primacy-Dashboard.html">Dashboard</a>
                 <a href="#faq">FAQ</a>
-            </div>
-            <div class="hamburger-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </nav>
-    </header>
+	        </div>
+	        <div class="hamburger-menu">
+	            <span class="bar"></span>
+	            <span class="bar"></span>
+	            <span class="bar"></span>
+	        </div>
+	    </nav>
+	</header>
+	
+	
 
     <!-- HERO SECTION -->
     <section class="hero">
