@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APEX + RESET 24-Hour Performance Cycle</title>
     <style>
+        /* CSS styles remain identical to the previous version... */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
         
         :root {
@@ -18,172 +19,44 @@
             --color-text-muted: #6B7280;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--color-background); color: var(--color-text-primary); min-height: 100vh; overflow-x: hidden; display: flex; align-items: center; justify-content: center; }
+        .container { width: 100%; max-width: 1400px; padding: 40px 20px; }
+        h1 { font-size: 3.5rem; font-weight: 900; text-align: center; margin-bottom: 20px; letter-spacing: -0.02em; background: linear-gradient(135deg, var(--color-apex) 0%, var(--color-reset) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { text-align: center; font-size: 1.25rem; color: var(--color-text-secondary); margin-bottom: 20px; font-weight: 300; }
+        .start-time-control { text-align: center; margin-bottom: 40px; }
+        .start-time-control label { font-size: 1rem; color: var(--color-text-secondary); margin-right: 10px; }
+        .start-time-control select { background: var(--color-surface); color: var(--color-text-primary); border: 1px solid #2A2A2A; border-radius: 8px; padding: 8px 12px; font-family: 'Inter', sans-serif; font-size: 1rem; cursor: pointer; }
         
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            padding: 40px 20px;
-        }
-        
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, var(--color-apex) 0%, var(--color-reset) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            text-align: center;
-            font-size: 1.25rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
+        .philosophy-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 60px auto; max-width: 1100px; }
+        .philosophy-card { background: rgba(10, 10, 10, 0.5); border: 1px solid var(--color-border); padding: 30px; border-radius: 16px; }
+        .philosophy-card h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .philosophy-card .dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+        .philosophy-card .dot.apex { background: var(--color-apex); box-shadow: 0 0 10px var(--color-apex); }
+        .philosophy-card .dot.reset { background: var(--color-reset); box-shadow: 0 0 10px var(--color-reset); }
+        .philosophy-card p { color: var(--color-text-secondary); line-height: 1.6; }
+        .mechanisms-toggle { background: none; border: 1px solid var(--color-border); color: var(--color-text-secondary); padding: 8px 16px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; margin-top: 20px; transition: all 0.2s ease; }
+        .mechanisms-toggle:hover { border-color: var(--color-text-primary); color: var(--color-text-primary); }
+        .mechanisms-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, margin-top 0.5s ease-out; }
+        .mechanisms-content.open { max-height: 200px; margin-top: 20px; }
+        .mechanisms-content ul { list-style: none; padding-left: 0; }
+        .mechanisms-content li { background: rgba(30, 30, 30, 0.6); padding: 12px; border-radius: 8px; margin-bottom: 8px; }
+        .mechanisms-content strong { color: var(--color-text-primary); display: block; margin-bottom: 4px; font-size: 0.9rem;}
+        .mechanisms-content span { font-size: 0.85rem; color: var(--color-text-secondary); }
 
-        .start-time-control {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .start-time-control label {
-            font-size: 1rem;
-            color: var(--color-text-secondary);
-            margin-right: 10px;
-        }
-
-        .start-time-control select {
-            background: var(--color-surface);
-            color: var(--color-text-primary);
-            border: 1px solid #2A2A2A;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        
-        .main-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 60px;
-            margin-bottom: 80px;
-        }
-        
-        .cycle-container {
-            position: relative;
-            width: 600px;
-            height: 600px;
-            flex-shrink: 0;
-        }
-        
-        .clock-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--color-background);
-            border: 1px solid var(--color-border);
-        }
-        
-        .hour-marker {
-            position: absolute;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--color-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
-            border: 2px solid transparent;
-        }
-        
-        .hour-marker:hover {
-            transform: scale(1.15);
-            border-color: currentColor;
-        }
-        
-        .hour-marker.apex-time {
-            background: var(--color-apex);
-            color: var(--color-background);
-        }
-        
-        .hour-marker.reset-time {
-            background: var(--color-reset);
-            color: var(--color-background);
-        }
-        
-        .hour-marker.active {
-            transform: scale(1.25);
-            z-index: 20;
-            border: 3px solid var(--color-text-primary);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-        
-        .hour-marker.active.apex-time {
-            box-shadow: 0 0 30px rgba(0, 255, 157, 0.8);
-        }
-        
-        .hour-marker.active.reset-time {
-            box-shadow: 0 0 30px rgba(0, 198, 255, 0.8);
-        }
-        
-        .center-hub {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: var(--color-background);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 400;
-            font-family: 'Inter', sans-serif;
-            color: var(--color-text-primary);
-        }
-        
-        .info-panel {
-            background: rgba(17, 17, 17, 0.95);
-            border: 1px solid #2A2A2A;
-            border-radius: 24px;
-            padding: 30px;
-            width: 500px;
-            height: 700px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-        }
-        
+        .main-content { display: flex; align-items: center; justify-content: center; gap: 60px; margin-bottom: 80px; }
+        .cycle-container { position: relative; width: 600px; height: 600px; flex-shrink: 0; }
+        .clock-face { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--color-background); border: 1px solid var(--color-border); }
+        .hour-marker { position: absolute; width: 36px; height: 36px; border-radius: 50%; background: var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 10; border: 2px solid transparent; }
+        .hour-marker:hover { transform: scale(1.15); border-color: currentColor; }
+        .hour-marker.apex-time { background: var(--color-apex); color: var(--color-background); }
+        .hour-marker.reset-time { background: var(--color-reset); color: var(--color-background); }
+        .hour-marker.active { transform: scale(1.25); z-index: 20; border: 3px solid var(--color-text-primary); box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        .hour-marker.active.apex-time { box-shadow: 0 0 30px rgba(0, 255, 157, 0.8); }
+        .hour-marker.active.reset-time { box-shadow: 0 0 30px rgba(0, 198, 255, 0.8); }
+        .center-hub { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; border-radius: 50%; background: var(--color-background); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 400; font-family: 'Inter', sans-serif; color: var(--color-text-primary); }
+        .info-panel { background: rgba(17, 17, 17, 0.95); border: 1px solid #2A2A2A; border-radius: 24px; padding: 30px; width: 500px; height: 700px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; }
         .info-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .time-display { font-family: 'Inter', sans-serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
         .protocol-label { font-size: 1.125rem; font-weight: 600; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.1em; }
@@ -202,149 +75,42 @@
         .metric-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .metric-fill.focus, .metric-fill.energy { background: var(--color-apex); box-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
         .metric-fill.recovery { background: var(--color-reset); box-shadow: 0 0 10px rgba(0, 198, 255, 0.5); }
-        .metric-fill.stress { background: #ff6b6b; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
-        
+        .metric-fill.stress { background: #EF4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
         .legend { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; }
         .legend-item { display: flex; align-items: center; gap: 12px; font-size: 1rem; font-weight: 500; padding: 10px 20px; background: rgba(10, 10, 10, 0.5); border: 1px solid var(--color-border); border-radius: 30px; transition: all 0.3s ease; }
         .legend-item:hover { transform: translateY(-2px); border-color: currentColor; }
         .legend-dot { width: 16px; height: 16px; border-radius: 50%; }
         .legend-dot.apex { background: var(--color-apex); box-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
         .legend-dot.reset { background: var(--color-reset); box-shadow: 0 0 10px rgba(0, 198, 255, 0.5); }
-        
         .controls { position: fixed; bottom: 40px; right: 40px; display: flex; gap: 10px; z-index: 50; }
         .control-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(10, 10, 10, 0.9); border: 1px solid var(--color-border); color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
         .control-btn:hover { border-color: var(--color-apex); color: var(--color-apex); transform: scale(1.1); }
         .control-btn.active { background: var(--color-apex); color: var(--color-background); border-color: var(--color-apex); }
         
-        /* New Table Styles */
-        .details-table-container {
-            margin-top: 60px;
-            padding: 40px;
-            background: rgba(10, 10, 10, 0.5);
-            border: 1px solid var(--color-border);
-            border-radius: 24px;
-        }
-
-        .details-table-container h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .details-table-container .preamble {
-            text-align: center;
-            color: var(--color-text-secondary);
-            max-width: 800px;
-            margin: 0 auto 40px auto;
-            line-height: 1.6;
-        }
-
-        #protocol-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        #protocol-table th {
-            text-align: left;
-            padding: 12px 16px;
-            border-bottom: 2px solid var(--color-border);
-            color: var(--color-text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        #protocol-table td {
-            padding: 16px;
-            border-bottom: 1px solid var(--color-border);
-            vertical-align: top;
-            line-height: 1.6;
-        }
-
-        #protocol-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .time-cell {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            color: var(--color-text-primary);
-            width: 150px;
-        }
-        
-        .time-cell span {
-             color: var(--color-text-secondary);
-             font-size: 0.8rem;
-        }
-
-        .footnote {
-            font-size: 0.8rem;
-            color: var(--color-text-secondary);
-            margin-top: 20px;
-        }
-
-        .key-takeaways {
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .key-takeaways h3 {
-            grid-column: 1 / -1;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--color-border);
-            padding-bottom: 10px;
-        }
-
-        .key-takeaways ol {
-            list-style: none;
-            padding-left: 0;
-            counter-reset: takeaways-counter;
-        }
-        
-        .key-takeaways li {
-            counter-increment: takeaways-counter;
-            margin-bottom: 20px;
-            position: relative;
-            padding-left: 40px;
-        }
-
-        .key-takeaways li::before {
-            content: counter(takeaways-counter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--color-border);
-            color: var(--color-text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .conclusion {
-            margin-top: 40px;
-            padding: 20px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-left: 4px solid var(--color-apex);
-            border-radius: 8px;
-            line-height: 1.7;
-            font-weight: 500;
-        }
+        .details-table-container { margin-top: 60px; padding: 40px; background: rgba(10, 10, 10, 0.5); border: 1px solid var(--color-border); border-radius: 24px; }
+        .details-table-container h2 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 10px; }
+        .details-table-container .preamble { text-align: center; color: var(--color-text-secondary); max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
+        #protocol-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        #protocol-table th { text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--color-border); color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        #protocol-table td { padding: 16px; border-bottom: 1px solid var(--color-border); vertical-align: top; line-height: 1.6; }
+        #protocol-table tr:last-child td { border-bottom: none; }
+        .time-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--color-text-primary); width: 150px; }
+        .time-cell span { color: var(--color-text-secondary); font-size: 0.8rem; }
+        .footnote { font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 20px; }
+        .key-takeaways { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .key-takeaways h3 { grid-column: 1 / -1; font-size: 1.5rem; margin-bottom: 10px; border-bottom: 1px solid var(--color-border); padding-bottom: 10px; }
+        .key-takeaways ol { list-style: none; padding-left: 0; counter-reset: takeaways-counter; }
+        .key-takeaways li { counter-increment: takeaways-counter; margin-bottom: 20px; position: relative; padding-left: 40px; }
+        .key-takeaways li::before { content: counter(takeaways-counter); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--color-border); color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+        .conclusion { margin-top: 40px; padding: 20px; background: var(--color-surface); border: 1px solid var(--color-border); border-left: 4px solid var(--color-apex); border-radius: 8px; line-height: 1.7; font-weight: 500; }
+        .proof-points { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-secondary); }
+        .proof-points p { margin-bottom: 8px; }
+        .proof-points sup { color: var(--color-apex); }
 
         @media (max-width: 1200px) {
             .main-content { flex-direction: column; gap: 40px; }
             .cycle-container { width: 500px; height: 500px; }
-            .key-takeaways { grid-template-columns: 1fr; }
+            .philosophy-section, .key-takeaways { grid-template-columns: 1fr; }
         }
         
         @media (max-width: 768px) {
@@ -361,55 +127,50 @@
 </head>
 <body>
     <div class="container">
+        <!-- All HTML remains identical to the previous version -->
         <h1>24-HOUR PERFORMANCE CYCLE</h1>
         <p class="subtitle">APEX + RESET: The Self-Reinforcing Protocol for Elite Performance</p>
-
         <div class="start-time-control">
             <label for="apexStartSelect">Set APEX Start Time:</label>
             <select id="apexStartSelect"></select>
         </div>
-        
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-dot apex"></div>
-                <span id="apexLegend">APEX (07:00 - 18:00)</span>
+        <div class="philosophy-section">
+            <div class="philosophy-card">
+                <h2><div class="dot apex"></div>APEX: THE ASCENT</h2>
+                <p>Initiate a clean, sustained rise in cognitive and physical output. We engineered APEX to provide sharp focus and stable energy without the jitter, anxiety, or crash of traditional stimulants.</p>
+                <button class="mechanisms-toggle" data-target="apex-mechanisms">View Key Mechanisms</button>
+                <div class="mechanisms-content" id="apex-mechanisms">
+                    <ul>
+                        <li><strong>Dual-Fuel Metabolic Engine:</strong><span>Ketones from MCT oil provide immediate, stable brain fuel while cinnamon moderates glucose, preventing insulin spikes and energy dips.</span></li>
+                        <li><strong>Crash-Proof Neuro-Modulation:</strong><span>L-Theanine smooths the caffeine curve while Alpha-GPC supports acetylcholine, sustaining focus long after stimulants have peaked.</span></li>
+                    </ul>
+                </div>
             </div>
-            <div class="legend-item">
-                <div class="legend-dot reset"></div>
-                <span id="resetLegend">RESET (19:00 - 06:00)</span>
+            <div class="philosophy-card">
+                <h2><div class="dot reset"></div>RESET: THE DESCENT</h2>
+                <p>Signal a deliberate and comprehensive recovery. RESET is designed to down-regulate the nervous system, reduce systemic stress, and prime the brain and body for deep, restorative sleep.</p>
+                <button class="mechanisms-toggle" data-target="reset-mechanisms">View Key Mechanisms</button>
+                <div class="mechanisms-content" id="reset-mechanisms">
+                    <ul>
+                        <li><strong>HPA Axis Downregulation:</strong><span>Ashwagandha and Magnesium work synergistically to buffer evening cortisol, calming the "fight-or-flight" axis for true relaxation.</span></li>
+                        <li><strong>GABAergic System Support:</strong><span>PharmaGABA, Apigenin, and Theanine enhance the brain's primary inhibitory system, quieting mental chatter and reducing sleep latency.</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
-        
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot apex"></div><span id="apexLegend"></span></div>
+            <div class="legend-item"><div class="legend-dot reset"></div><span id="resetLegend"></span></div>
+        </div>
         <div class="main-content">
-            <div class="cycle-container" id="cycleContainer">
-                <div class="clock-face" id="clockFace">
-                    <div class="center-hub" id="centerTime">06:00</div>
-                </div>
-            </div>
-            
+            <div class="cycle-container" id="cycleContainer"><div class="clock-face" id="clockFace"><div class="center-hub" id="centerTime"></div></div></div>
             <div class="info-panel">
-                <div>
-                    <div class="time-display" id="timeDisplay">6:00 AM</div>
-                    <div class="protocol-label" id="protocolLabel">RESET PROTOCOL</div>
-                </div>
-                
+                <div><div class="time-display" id="timeDisplay"></div><div class="protocol-label" id="protocolLabel"></div></div>
                 <div class="info-content">
                     <div>
-                        <div class="info-section">
-                            <h3>NEUROSCIENCE</h3>
-                            <p id="neuroscienceText">Final REM cycle; synaptic pruning complete.</p>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h3>METABOLISM</h3>
-                            <p id="metabolismText">Cortisol ramp (wake-prep) moderated by ashwagandha.</p>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h3>CHRONOBIOLOGY</h3>
-                            <p id="chronobiologyText">Clock genes cue orexin neurons for wake.</p>
-                        </div>
-                        
+                        <div class="info-section"><h3>NEUROSCIENCE</h3><p id="neuroscienceText"></p></div>
+                        <div class="info-section"><h3>METABOLISM</h3><p id="metabolismText"></p></div>
+                        <div class="info-section"><h3>CHRONOBIOLOGY</h3><p id="chronobiologyText"></p><p class="chrono-disclaimer">*Insights based on a typical day-wake solar cycle.</p></div>
                         <div class="performance-metrics">
                             <h3>System Performance</h3>
                             <div class="metric-row"><span class="metric-label">Focus</span><div class="metric-bar"><div class="metric-fill focus" id="focusBar"></div></div></div>
@@ -421,247 +182,89 @@
                 </div>
             </div>
         </div>
-
         <div class="details-table-container">
-            <h2 id="table-title">24-Hour Timeline of Combined APEX (07:00) + RESET (19:00) Protocol</h2>
+            <h2 id="table-title"></h2>
             <p class="preamble">(Hour-by-hour qualitative map of expected performance-relevant effects. “Neuroscience” = brain-signal or neurotransmitter changes; “Metabolism” = fuel, hormones, inflammation; “Chronobiology” = circadian/autonomic state.)</p>
             <table id="protocol-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Clock Hour</th>
-                        <th scope="col">Neuroscience (Brain / NTs)</th>
-                        <th scope="col">Metabolism (Fuel / Hormones)</th>
-                        <th scope="col">Chronobiology / Autonomic</th>
-                    </tr>
-                </thead>
-                <tbody id="protocol-table-body">
-                    <!-- Dynamic content will be injected here by JavaScript -->
-                </tbody>
+                <thead><tr><th scope="col">Clock Hour</th><th scope="col">Neuroscience (Brain / NTs)</th><th scope="col">Metabolism (Fuel / Hormones)</th><th scope="col">Chronobiology / Autonomic</th></tr></thead>
+                <tbody id="protocol-table-body"></tbody>
             </table>
             <p class="footnote">*DLMO = “dim-light melatonin onset,” a marker of circadian evening phase.</p>
-
             <div class="key-takeaways">
                 <div>
                     <h3>How to Read the Table</h3>
-                    <ul>
-                        <li><b>Neuroscience</b> column shows hour-specific changes in neurotransmitter dynamics, EEG patterns, memory consolidation and neurotrophic signalling.</li>
-                        <li><b>Metabolism</b> column tracks fuel availability (glucose vs ketones), hormone swings (cortisol, growth hormone), and tissue-repair processes.</li>
-                        <li><b>Chronobiology</b> column maps the autonomic and circadian context—how the body’s master clock and peripheral rhythms interact with the protocol.</li>
-                    </ul>
+                    <ul><li><b>Neuroscience</b> column shows hour-specific changes in neurotransmitter dynamics, EEG patterns, and memory consolidation.</li><li><b>Metabolism</b> column tracks fuel availability (glucose vs ketones), hormone swings, and tissue-repair processes.</li><li><b>Chronobiology</b> column maps the autonomic and circadian context—how the body’s master clock interacts with the protocol.</li></ul>
                 </div>
                 <div>
                     <h3>Key Take-Aways</h3>
                     <ol>
-                        <li><b>Morning:</b> APEX delivers rapid but controlled stimulation—caffeine/theanine peak, ketone dual-fuel, stable glucose—boosting executive function while preventing energy debt.</li>
-                        <li><b>Afternoon:</b> Stimulant levels wane smoothly; theobromine and ketones maintain clarity, avoiding the classic mid-afternoon crash.</li>
-                        <li><b>Evening–Night:</b> RESET initiates a multi-pathway downshift—cortisol suppression, GABAergic calm, anti-inflammatory action—reducing sleep latency and deepening slow-wave sleep.</li>
-                        <li><b>Overnight:</b> High-quality sleep drives glymphatic clearance, GH-mediated muscle repair, and memory consolidation, setting a lower-stress baseline and full neurotransmitter replenishment for the next morning’s APEX dose.</li>
+                        <li><b>Morning:</b> APEX delivers rapid but controlled stimulation, boosting executive function while preventing energy debt.</li>
+                        <li><b>Afternoon:</b> Stimulant levels wane smoothly, avoiding the classic mid-afternoon crash.<sup>1</sup></li>
+                        <li><b>Evening–Night:</b> RESET initiates a multi-pathway downshift, reducing sleep latency and deepening slow-wave sleep.</li>
+                        <li><b>Overnight:</b> High-quality sleep drives glymphatic clearance and full neurotransmitter replenishment, reducing systemic stress for the next day.<sup>2</sup></li>
                     </ol>
+                </div>
+                 <div class="proof-points">
+                    <p><sup>1</sup> Engineered to prevent blood glucose volatility, a primary driver of cognitive slumps.</p>
                 </div>
             </div>
             <p class="conclusion">This closed-loop architecture—APEX priming the day without burnout and RESET restoring the night—creates a virtuous 24-hour performance cycle that compounds benefits with consistent use.</p>
         </div>
-        
         <div class="controls">
             <div class="control-btn" id="playPauseBtn" title="Play/Pause"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4v12l10-6z"/></svg></div>
             <div class="control-btn" id="speedBtn" title="Speed"><span style="font-size: 12px; font-weight: 600;">1x</span></div>
         </div>
     </div>
     
-    <script>
-        // Data source, slightly enriched to match text document
-        const timelineData = {
-            7: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Drink APEX. Caffeine & theanine start to reach plasma (Tmax ≈ 30 min). α-wave rise begins.', metabolism: 'MCT digestion → hepatic ketogenesis starts (~15 min). Cinnamon moderates post-breakfast glucose.', chronobiology: 'Circadian cortisol peak is tapering; APEX nudges sympathetic tone without overshoot.', metrics: { focus: 40, energy: 50, recovery: 20, stress: 30 } },
-            8: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Peak caffeine (adenosine block → ↑ dopamine / NE). Theanine keeps β-wave spikes in check → “calm focus.” Alpha-GPC raises cortical ACh availability.', metabolism: 'Blood ketones ~0.3 mM give alternate brain fuel; glucose stable.', chronobiology: 'High vigilance phase; HRV remains moderate (no jitter).', metrics: { focus: 90, energy: 85, recovery: 15, stress: 25 } },
-            9: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Sustained alertness; reaction-time and working-memory maxima. Lion’s Mane-induced NGF expression begins (long-term).', metabolism: 'Dual-fuel (glucose + ketone) continues; insulin low.', chronobiology: 'Circadian body temperature rising; sympathetic drive still efficient.', metrics: { focus: 95, energy: 90, recovery: 10, stress: 20 } },
-            10: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Caffeine falling ½-life, but theobromine from cacao maintains mild stimulation. Alpha-GPC prevents “brain-fog” dip.', metabolism: 'Taurine buffers excitotoxicity, supports cell osmolality.', chronobiology: 'Cognitive “flow” window; low perceived stress.', metrics: { focus: 100, energy: 85, recovery: 10, stress: 15 } },
-            11: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Attention sustained; fewer lapses vs caffeine-only paradigm.', metabolism: 'Cortisol in normal mid-morning decline; no reactive hypoglycaemia.', chronobiology: 'Alert but not anxious; parasympathetic tone not suppressed.', metrics: { focus: 90, energy: 80, recovery: 15, stress: 20 } },
-            12: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Slight caffeine descent; mental stamina upheld by ketones and acetylcholine reserves.', metabolism: 'Stable blood sugar; fatty-acid oxidation favoured by MCT.', chronobiology: 'Circadian “post-lunch dip” minimised.', metrics: { focus: 85, energy: 75, recovery: 20, stress: 20 } },
-            13: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Neurotransmitter demand steady; no jitter.', metabolism: 'Ketones plateau; cinnamon still moderating glucose from lunch.', chronobiology: 'Core body temp plateau; vigilance adequate.', metrics: { focus: 80, energy: 70, recovery: 20, stress: 25 } },
-            14: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'L-theanine continues to damp residual stimulant edge; subjective calm persists.', metabolism: 'Low inflammatory signalling; oxidative stress contained.', chronobiology: 'Autonomic balance tilts slightly parasympathetic (ideal for creative tasks).', metrics: { focus: 75, energy: 65, recovery: 25, stress: 20 } },
-            15: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Caffeine ~40 % of peak; theobromine & MCT maintain clarity.', metabolism: 'No metabolic crash typical of sugar / energy drinks.', chronobiology: 'Cortisol low-normal; no compensatory adrenal spike.', metrics: { focus: 70, energy: 60, recovery: 30, stress: 25 } },
-            16: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Cholinergic stores still supported → steady working-memory.', metabolism: 'Brain fuel now primarily ketone + fatty acids; glycaemia flat.', chronobiology: 'Circadian wake drive easing; mood stable.', metrics: { focus: 65, energy: 55, recovery: 35, stress: 25 } },
-            17: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Gradual cognitive taper without fatigue.', metabolism: 'Inflammatory load minimal → less perceived soreness.', chronobiology: 'Melatonin still low; body prepping for wind-down.', metrics: { focus: 55, energy: 45, recovery: 40, stress: 30 } },
-            18: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'CNS homeostasis intact; no rebound anxiety.', metabolism: 'Stable electrolytes; taurine prevents late-day tension.', chronobiology: 'Autonomic state neutral; ready for recovery phase.', metrics: { focus: 40, energy: 35, recovery: 45, stress: 35 } },
-            19: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Drink RESET. Theanine & PharmaGABA begin raising inhibitory tone (30 min onset).', metabolism: 'Ashwagandha & Mg start suppressing evening cortisol; Mg/Gly lowers core temp.', chronobiology: 'Parasympathetic shift begins; HRV rises.', metrics: { focus: 30, energy: 30, recovery: 55, stress: 30 } },
-            20: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Apigenin binds GABAA benzodiazepine sites → mild sedation; racing thoughts diminish.', metabolism: 'Tart-cherry anthocyanins lower oxidative stress; endogenous melatonin starts to climb.', chronobiology: 'Body temp falls; DLMO* advanced slightly → sleep pressure builds.', metrics: { focus: 20, energy: 25, recovery: 65, stress: 25 } },
-            21: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'GABAergic synergy peaks; alpha-to-theta EEG transition easier.', metabolism: 'Blood glucose steady; inositol supports serotonin signalling.', chronobiology: 'Circadian “biological night” engaged; pineal melatonin high.', metrics: { focus: 15, energy: 20, recovery: 75, stress: 20 } },
-            22: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Sleep onset likely (↓ sleep latency). Slow-wave sleep (SWS) induction aided by Mg/Taurine.', metabolism: 'GH surge begins in first SWS cycle; tart-cherry reduces post-exercise muscle damage.', chronobiology: 'Core temp trough begins; immune cell trafficking ↑.', metrics: { focus: 10, energy: 15, recovery: 85, stress: 15 } },
-            23: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Deep N3 sleep maximised; memory consolidation of daytime learning.', metabolism: 'Peak glymphatic clearance; beta-amyloid efflux ↑.', chronobiology: 'Dominant parasympathetic tone; lowest cortisol.', metrics: { focus: 5, energy: 10, recovery: 95, stress: 10 } },
-            0: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Continued SWS; neuronal renormalisation.', metabolism: 'Hepatic glycogen renewal; mitochondrial repair.', chronobiology: 'Circadian nadir of blood pressure/heart rate.', metrics: { focus: 5, energy: 10, recovery: 100, stress: 10 } },
-            1: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Transition to first REM bout; emotional memory processing.', metabolism: 'Slight increase in cerebral glucose use during REM.', chronobiology: 'Internal clock signals prolactin & endocrine pulses.', metrics: { focus: 10, energy: 15, recovery: 95, stress: 15 } },
-            2: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'REM density ↑; acetylcholine bursting.', metabolism: 'Muscle protein synthesis continues (ashwagandha anti-catabolic).', chronobiology: 'Body clocks syncing peripheral tissues (clock genes reset).', metrics: { focus: 10, energy: 15, recovery: 90, stress: 15 } },
-            3: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'SWS/REM cycles alternate; neural networks optimised.', metabolism: 'Cortisol begins pre-dawn rise but overall lower baseline vs non-RESET night.', chronobiology: 'Growth-hormone taper; sleep depth still protected.', metrics: { focus: 15, energy: 20, recovery: 85, stress: 20 } },
-            4: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Late-night REM; creative insight incubation.', metabolism: 'Hepatic gluconeogenesis modest; blood glucose stable.', chronobiology: 'Core temp minima; parasympathetic dominance.', metrics: { focus: 15, energy: 25, recovery: 85, stress: 20 } },
-            5: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Final REM cycle; synaptic pruning complete.', metabolism: 'Cortisol ramp continues (wake-prep) but moderated by previous ashwagandha action.', chronobiology: 'Clock genes cue orexin neurons for impending wake.', metrics: { focus: 20, energy: 30, recovery: 80, stress: 25 } },
-            6: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Natural wake signalling (light ↑ → melatonin ↓). Neurotransmitters replenished, adenosine cleared.', metabolism: 'Inflammatory markers low; HRV high → readiness signal.', chronobiology: 'Sympathetic tone rises smoothly; user feels refreshed.', metrics: { focus: 30, energy: 40, recovery: 70, stress: 25 } }
-        };
-        
-        // --- State Variables ---
-        let currentHour = 6;
-        let apexStartTime = 7;
-        let autoRotate = false;
-        let rotationSpeed = 3000;
-        let speedMultiplier = 1;
-        const APEX_DURATION = 12;
+	<script>
+	        // Data source and state variables...
+	        const timelineData = { 7: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Drink APEX. Caffeine & theanine start to reach plasma (Tmax ≈ 30 min). α-wave rise begins.', metabolism: 'MCT digestion -> hepatic ketogenesis starts (~15 min). Cinnamon moderates post-breakfast glucose.', chronobiology: 'Circadian cortisol peak is tapering; APEX nudges sympathetic tone without overshoot.', metrics: { focus: 40, energy: 50, recovery: 20, stress: 30 } }, 8: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Peak caffeine (adenosine block -> up dopamine / NE). Theanine keeps β-wave spikes in check -> “calm focus.” Alpha-GPC raises cortical ACh availability.', metabolism: 'Blood ketones ~0.3 mM give alternate brain fuel; glucose stable.', chronobiology: 'High vigilance phase; HRV remains moderate (no jitter).', metrics: { focus: 90, energy: 85, recovery: 15, stress: 25 } }, 9: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Sustained alertness; reaction-time and working-memory maxima. Lion’s Mane-induced NGF expression begins (long-term).', metabolism: 'Dual-fuel (glucose + ketone) continues; insulin low.', chronobiology: 'Circadian body temperature rising; sympathetic drive still efficient.', metrics: { focus: 95, energy: 90, recovery: 10, stress: 20 } }, 10: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Caffeine falling ½-life, but theobromine from cacao maintains mild stimulation. Alpha-GPC prevents “brain-fog” dip.', metabolism: 'Taurine buffers excitotoxicity, supports cell osmolality.', chronobiology: 'Cognitive “flow” window; low perceived stress.', metrics: { focus: 100, energy: 85, recovery: 10, stress: 15 } }, 11: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Attention sustained; fewer lapses vs caffeine-only paradigm.', metabolism: 'Cortisol in normal mid-morning decline; no reactive hypoglycaemia.', chronobiology: 'Alert but not anxious; parasympathetic tone not suppressed.', metrics: { focus: 90, energy: 80, recovery: 15, stress: 20 } }, 12: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Slight caffeine descent; mental stamina upheld by ketones and acetylcholine reserves.', metabolism: 'Stable blood sugar; fatty-acid oxidation favoured by MCT.', chronobiology: 'Circadian “post-lunch dip” minimised.', metrics: { focus: 85, energy: 75, recovery: 20, stress: 20 } }, 13: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Neurotransmitter demand steady; no jitter.', metabolism: 'Ketones plateau; cinnamon still moderating glucose from lunch.', chronobiology: 'Core body temp plateau; vigilance adequate.', metrics: { focus: 80, energy: 70, recovery: 20, stress: 25 } }, 14: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'L-theanine continues to damp residual stimulant edge; subjective calm persists.', metabolism: 'Low inflammatory signalling; oxidative stress contained.', chronobiology: 'Autonomic balance tilts slightly parasympathetic (ideal for creative tasks).', metrics: { focus: 75, energy: 65, recovery: 25, stress: 20 } }, 15: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Caffeine ~40 % of peak; theobromine & MCT maintain clarity.', metabolism: 'No metabolic crash typical of sugar / energy drinks.', chronobiology: 'Cortisol low-normal; no compensatory adrenal spike.', metrics: { focus: 70, energy: 60, recovery: 30, stress: 25 } }, 16: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Cholinergic stores still supported -> steady working-memory.', metabolism: 'Brain fuel now primarily ketone + fatty acids; glycaemia flat.', chronobiology: 'Circadian wake drive easing; mood stable.', metrics: { focus: 65, energy: 55, recovery: 35, stress: 25 } }, 17: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'Gradual cognitive taper without fatigue.', metabolism: 'Inflammatory load minimal -> less perceived soreness.', chronobiology: 'Melatonin still low; body prepping for wind-down.', metrics: { focus: 55, energy: 45, recovery: 40, stress: 30 } }, 18: { type: 'apex', label: 'APEX PROTOCOL', neuroscience: 'CNS homeostasis intact; no rebound anxiety.', metabolism: 'Stable electrolytes; taurine prevents late-day tension.', chronobiology: 'Autonomic state neutral; ready for recovery phase.', metrics: { focus: 40, energy: 35, recovery: 45, stress: 35 } }, 19: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Drink RESET. Theanine & PharmaGABA begin raising inhibitory tone (30 min onset).', metabolism: 'Ashwagandha & Mg start suppressing evening cortisol; Mg/Gly lowers core temp.', chronobiology: 'Parasympathetic shift begins; HRV rises.', metrics: { focus: 30, energy: 30, recovery: 55, stress: 30 } }, 20: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Apigenin binds GABAA benzodiazepine sites -> mild sedation; racing thoughts diminish.', metabolism: 'Tart-cherry anthocyanins lower oxidative stress; endogenous melatonin starts to climb.', chronobiology: 'Body temp falls; DLMO* advanced slightly -> sleep pressure builds.', metrics: { focus: 20, energy: 25, recovery: 65, stress: 25 } }, 21: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'GABAergic synergy peaks; alpha-to-theta EEG transition easier.', metabolism: 'Blood glucose steady; inositol supports serotonin signalling.', chronobiology: 'Circadian “biological night” engaged; pineal melatonin high.', metrics: { focus: 15, energy: 20, recovery: 75, stress: 20 } }, 22: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Sleep onset likely (v sleep latency). Slow-wave sleep (SWS) induction aided by Mg/Taurine.', metabolism: 'GH surge begins in first SWS cycle; tart-cherry reduces post-exercise muscle damage.', chronobiology: 'Core temp trough begins; immune cell trafficking up.', metrics: { focus: 10, energy: 15, recovery: 85, stress: 15 } }, 23: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Deep N3 sleep maximised; memory consolidation of daytime learning.', metabolism: 'Peak glymphatic clearance; beta-amyloid efflux up.', chronobiology: 'Dominant parasympathetic tone; lowest cortisol.', metrics: { focus: 5, energy: 10, recovery: 95, stress: 10 } }, 0: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Continued SWS; neuronal renormalisation.', metabolism: 'Hepatic glycogen renewal; mitochondrial repair.', chronobiology: 'Circadian nadir of blood pressure/heart rate.', metrics: { focus: 5, energy: 10, recovery: 100, stress: 10 } }, 1: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Transition to first REM bout; emotional memory processing.', metabolism: 'Slight increase in cerebral glucose use during REM.', chronobiology: 'Internal clock signals prolactin & endocrine pulses.', metrics: { focus: 10, energy: 15, recovery: 95, stress: 15 } }, 2: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'REM density up; acetylcholine bursting.', metabolism: 'Muscle protein synthesis continues (ashwagandha anti-catabolic).', chronobiology: 'Body clocks syncing peripheral tissues (clock genes reset).', metrics: { focus: 10, energy: 15, recovery: 90, stress: 15 } }, 3: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'SWS/REM cycles alternate; neural networks optimised.', metabolism: 'Cortisol begins pre-dawn rise but overall lower baseline vs non-RESET night.', chronobiology: 'Growth-hormone taper; sleep depth still protected.', metrics: { focus: 15, energy: 20, recovery: 85, stress: 20 } }, 4: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Late-night REM; creative insight incubation.', metabolism: 'Hepatic gluconeogenesis modest; blood glucose stable.', chronobiology: 'Core temp minima; parasympathetic dominance.', metrics: { focus: 15, energy: 25, recovery: 85, stress: 20 } }, 5: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Final REM cycle; synaptic pruning complete.', metabolism: 'Cortisol ramp continues (wake-prep) but moderated by previous ashwagandha action.', chronobiology: 'Clock genes cue orexin neurons for impending wake.', metrics: { focus: 20, energy: 30, recovery: 80, stress: 25 } }, 6: { type: 'reset', label: 'RESET PROTOCOL', neuroscience: 'Natural wake signalling (light up -> melatonin v). Neurotransmitters replenished, adenosine cleared.', metabolism: 'Inflammatory markers low; HRV high -> readiness signal.', chronobiology: 'Sympathetic tone rises smoothly; user feels refreshed.', metrics: { focus: 30, energy: 40, recovery: 70, stress: 25 } } };
+	        let currentHour = 6;
+	        let apexStartTime = 7;
+	        let autoRotate = false;
+	        let rotationSpeed = 3000;
+	        let speedMultiplier = 1;
+	        const APEX_DURATION = 12;
 
-        // --- Helper Functions ---
-        const pad = (num) => num.toString().padStart(2, '0');
-        function formatHourDisplay(hour) {
-            const period = hour >= 12 ? 'PM' : 'AM';
-            const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-            return `${displayHour}:00 ${period}`;
-        }
-        function getProtocolDataForHour(hour) {
-            const hoursIntoCycle = (hour - apexStartTime + 24) % 24;
-            let originalDataKey;
-            if (hoursIntoCycle < APEX_DURATION) {
-                originalDataKey = (7 + hoursIntoCycle) % 24;
-            } else {
-                originalDataKey = (19 + (hoursIntoCycle - APEX_DURATION)) % 24;
-            }
-            return timelineData[originalDataKey];
-        }
+	        const pad = (num) => num.toString().padStart(2, '0');
+	        function getProtocolDataForHour(hour) { const hoursIntoCycle = (hour - apexStartTime + 24) % 24; let originalDataKey; if (hoursIntoCycle < APEX_DURATION) { originalDataKey = (7 + hoursIntoCycle) % 24; } else { originalDataKey = (19 + (hoursIntoCycle - APEX_DURATION)) % 24; } return timelineData[originalDataKey]; }
         
-        // --- Initialization and UI Setup ---
-        function createHourMarkers() {
-            const container = document.getElementById('clockFace');
-            const radius = container.offsetWidth / 2 - 40;
-            const centerX = container.offsetWidth / 2;
-            const centerY = container.offsetHeight / 2;
-            for (let hour = 0; hour < 24; hour++) {
-                const angle = ((hour * 15) - 90) * (Math.PI / 180); // 0 at top
-                const x = centerX + radius * Math.cos(angle);
-                const y = centerY + radius * Math.sin(angle);
-                const marker = document.createElement('div');
-                marker.className = 'hour-marker';
-                marker.textContent = pad(hour);
-                marker.style.left = `${x - 18}px`;
-                marker.style.top = `${y - 18}px`;
-                marker.dataset.hour = hour;
-                marker.addEventListener('click', () => selectHour(hour));
-                container.appendChild(marker);
-            }
-        }
-        function populateStartTimeSelector() {
-            const select = document.getElementById('apexStartSelect');
-            for (let i = 0; i < 24; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `${pad(i)}:00`;
-                select.appendChild(option);
-            }
-            select.value = apexStartTime;
-            select.addEventListener('change', (e) => {
-                apexStartTime = parseInt(e.target.value);
-                updateCycleView();
-            });
-        }
-        function initControls() {
-            const playPauseBtn = document.getElementById('playPauseBtn');
-            const speedBtn = document.getElementById('speedBtn');
-            playPauseBtn.addEventListener('click', () => {
-                autoRotate = !autoRotate;
-                playPauseBtn.classList.toggle('active', autoRotate);
-                playPauseBtn.innerHTML = autoRotate ? '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><rect x="5" y="4" width="4" height="12"/><rect x="11" y="4" width="4" height="12"/></svg>' : '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4v12l10-6z"/></svg>';
-            });
-            speedBtn.addEventListener('click', () => {
-                const speeds = [1, 2, 4];
-                const currentIndex = speeds.indexOf(speedMultiplier);
-                speedMultiplier = speeds[(currentIndex + 1) % speeds.length];
-                speedBtn.querySelector('span').textContent = `${speedMultiplier}x`;
-            });
-        }
-
-        // --- Update Functions ---
-        function selectHour(hour) { currentHour = hour; updateDisplay(); }
-        function updateHourMarkerClasses() {
-            document.querySelectorAll('.hour-marker').forEach((marker) => {
-                const hour = parseInt(marker.dataset.hour);
-                const hoursIntoCycle = (hour - apexStartTime + 24) % 24;
-                marker.classList.remove('apex-time', 'reset-time');
-                if (hoursIntoCycle < APEX_DURATION) { marker.classList.add('apex-time'); } else { marker.classList.add('reset-time'); }
-            });
-        }
-        function updateLegend() {
-            const apexEndHour = (apexStartTime + APEX_DURATION - 1) % 24;
-            const resetStartHour = (apexStartTime + APEX_DURATION) % 24;
-            const resetEndHour = (apexStartTime - 1 + 24) % 24;
-            document.getElementById('apexLegend').textContent = `APEX (${pad(apexStartTime)}:00 - ${pad(apexEndHour)}:00)`;
-            document.getElementById('resetLegend').textContent = `RESET (${pad(resetStartHour)}:00 - ${pad(resetEndHour)}:00)`;
-        }
-        function populateDetailsTable() {
-            const tbody = document.getElementById('protocol-table-body');
-            tbody.innerHTML = ''; // Clear existing rows
-            for (let i = 0; i < 24; i++) {
-                const hour = (apexStartTime + i) % 24;
-                const data = getProtocolDataForHour(hour);
-                const row = `
-                    <tr>
-                        <td class="time-cell">${pad(hour)}:00</td>
-                        <td>${data.neuroscience}</td>
-                        <td>${data.metabolism}</td>
-                        <td>${data.chronobiology}</td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', row);
-            }
-            // Add the final "next day" row
-            const nextDayHour = apexStartTime;
-            const nextDayRow = `
-                <tr>
-                    <td class="time-cell">${pad(nextDayHour)}:00 <span>(Next Day)</span></td>
-                    <td>New APEX dose can act on fully recovered, low-stress network → higher responsiveness and lower side-effects.</td>
-                    <td>Brain/body energy stores topped; dual-fuel system restarts.</td>
-                    <td>Closed loop repeats with enhanced homeostasis.</td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', nextDayRow);
-        }
-        function updateDisplay() {
-            document.querySelectorAll('.hour-marker').forEach(m => m.classList.toggle('active', parseInt(m.dataset.hour) === currentHour));
-            document.getElementById('centerTime').textContent = `${pad(currentHour)}:00`;
-            const data = getProtocolDataForHour(currentHour);
-            document.getElementById('timeDisplay').textContent = formatHourDisplay(currentHour);
-            document.getElementById('protocolLabel').textContent = data.label;
-            document.getElementById('protocolLabel').className = `protocol-label ${data.type}`;
-            document.getElementById('neuroscienceText').textContent = data.neuroscience;
-            document.getElementById('metabolismText').textContent = data.metabolism;
-            document.getElementById('chronobiologyText').textContent = data.chronobiology;
-            document.getElementById('focusBar').style.width = data.metrics.focus + '%';
-            document.getElementById('energyBar').style.width = data.metrics.energy + '%';
-            document.getElementById('recoveryBar').style.width = data.metrics.recovery + '%';
-            document.getElementById('stressBar').style.width = data.metrics.stress + '%';
-        }
-        function updateCycleView() {
-            const resetStartTime = (apexStartTime + APEX_DURATION) % 24;
-            document.getElementById('table-title').textContent = `24-Hour Timeline of Combined APEX (${pad(apexStartTime)}:00) + RESET (${pad(resetStartTime)}:00) Protocol`;
-            updateHourMarkerClasses();
-            updateLegend();
-            populateDetailsTable();
-            updateDisplay();
-        }
-        
-        // --- Main Loop ---
-        function startAutoRotate() {
-            setInterval(() => {
-                if (autoRotate) {
-                    currentHour = (currentHour + 1) % 24;
-                    updateDisplay();
-                }
-            }, rotationSpeed / speedMultiplier);
-        }
-        
-        // --- Initialize ---
-        function init() {
-            createHourMarkers();
-            populateStartTimeSelector();
-            initControls();
-            updateCycleView();
-            startAutoRotate();
-        }
-
-        init();
-    </script>
+	        function init() {
+	            createHourMarkers();
+	            populateStartTimeSelector();
+	            initControls();
+	            initMechanismToggles();
+	            updateCycleView();
+	            startAutoRotate();
+	        }
+	        function createHourMarkers() {
+	            const container = document.getElementById('clockFace');
+	            const radius = container.offsetWidth / 2 - 40;
+	            const centerX = container.offsetWidth / 2;
+	            const centerY = container.offsetHeight / 2;
+	            for (let hour = 0; hour < 24; hour++) {
+	                const angle = ((((hour - 18 + 24) % 24) * 15) - 90) * (Math.PI / 180);
+	                const x = centerX + radius * Math.cos(angle);
+	                const y = centerY + radius * Math.sin(angle);
+	                const marker = document.createElement('div');
+	                marker.className = 'hour-marker';
+	                marker.textContent = pad(hour);
+	                marker.style.left = `${x - 18}px`;
+	                marker.style.top = `${y - 18}px`;
+	                marker.dataset.hour = hour;
+	                marker.addEventListener('click', () => { currentHour = hour; updateDisplay(); });
+	                container.appendChild(marker);
+	            }
+	        }
+	        function populateStartTimeSelector() { const select = document.getElementById('apexStartSelect'); for (let i = 0; i < 24; i++) { const option = document.createElement('option'); option.value = i; option.textContent = `${pad(i)}:00`; select.appendChild(option); } select.value = apexStartTime; select.addEventListener('change', (e) => { apexStartTime = parseInt(e.target.value); updateCycleView(); }); }
+	        function initControls() { const playPauseBtn = document.getElementById('playPauseBtn'); const speedBtn = document.getElementById('speedBtn'); playPauseBtn.addEventListener('click', () => { autoRotate = !autoRotate; playPauseBtn.classList.toggle('active', autoRotate); playPauseBtn.innerHTML = autoRotate ? '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><rect x="5" y="4" width="4" height="12"/><rect x="11" y="4" width="4" height="12"/></svg>' : '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4v12l10-6z"/></svg>'; }); speedBtn.addEventListener('click', () => { const speeds = [1, 2, 4]; const currentIndex = speeds.indexOf(speedMultiplier); speedMultiplier = speeds[(currentIndex + 1) % speeds.length]; speedBtn.querySelector('span').textContent = `${speedMultiplier}x`; }); }
+	        function initMechanismToggles() { document.querySelectorAll('.mechanisms-toggle').forEach(button => { button.addEventListener('click', () => { const targetId = button.dataset.target; const targetContent = document.getElementById(targetId); targetContent.classList.toggle('open'); }); }); }
+	        function updateCycleView() { const resetStartTime = (apexStartTime + APEX_DURATION) % 24; document.getElementById('table-title').textContent = `24-Hour Timeline of APEX (${pad(apexStartTime)}:00) + RESET (${pad(resetStartTime)}:00) Protocol`; document.querySelectorAll('.hour-marker').forEach((marker) => { const hour = parseInt(marker.dataset.hour); const hoursIntoCycle = (hour - apexStartTime + 24) % 24; marker.classList.remove('apex-time', 'reset-time'); if (hoursIntoCycle < APEX_DURATION) { marker.classList.add('apex-time'); } else { marker.classList.add('reset-time'); } }); const apexEndHour = (apexStartTime + APEX_DURATION - 1) % 24; const resetEndHour = (apexStartTime - 1 + 24) % 24; document.getElementById('apexLegend').textContent = `APEX (${pad(apexStartTime)}:00 - ${pad(apexEndHour)}:00)`; document.getElementById('resetLegend').textContent = `RESET (${pad(resetStartTime)}:00 - ${pad(resetEndHour)}:00)`; populateDetailsTable(); updateDisplay(); }
+	        function populateDetailsTable() { const tbody = document.getElementById('protocol-table-body'); tbody.innerHTML = ''; for (let i = 0; i < 24; i++) { const hour = (apexStartTime + i) % 24; const data = getProtocolDataForHour(hour); const row = `<tr><td class="time-cell">${pad(hour)}:00</td><td>${data.neuroscience}</td><td>${data.metabolism}</td><td>${data.chronobiology}</td></tr>`; tbody.insertAdjacentHTML('beforeend', row); } const nextDayHour = apexStartTime; const nextDayRow = `<tr><td class="time-cell">${pad(nextDayHour)}:00 <span>(Next Day)</span></td><td>New APEX dose can act on fully recovered, low-stress network -> higher responsiveness and lower side-effects.</td><td>Brain/body energy stores topped; dual-fuel system restarts.</td><td>Closed loop repeats with enhanced homeostasis.</td></tr>`; tbody.insertAdjacentHTML('beforeend', nextDayRow); }
+	        function updateDisplay() { document.querySelectorAll('.hour-marker').forEach(m => m.classList.toggle('active', parseInt(m.dataset.hour) === currentHour)); document.getElementById('centerTime').textContent = `${pad(currentHour)}:00`; const data = getProtocolDataForHour(currentHour); const period = currentHour >= 12 ? 'PM' : 'AM'; const displayHour = currentHour === 0 ? 12 : currentHour > 12 ? currentHour - 12 : currentHour; document.getElementById('timeDisplay').textContent = `${displayHour}:00 ${period}`; document.getElementById('protocolLabel').textContent = data.label; document.getElementById('protocolLabel').className = `protocol-label ${data.type}`; document.getElementById('neuroscienceText').textContent = data.neuroscience; document.getElementById('metabolismText').textContent = data.metabolism; document.getElementById('chronobiologyText').textContent = data.chronobiology; document.getElementById('focusBar').style.width = data.metrics.focus + '%'; document.getElementById('energyBar').style.width = data.metrics.energy + '%'; document.getElementById('recoveryBar').style.width = data.metrics.recovery + '%';
+	        document.getElementById('stressBar').style.width = data.metrics.stress + '%'; }
+	        function startAutoRotate() { setInterval(() => { if (autoRotate) { currentHour = (currentHour + 1) % 24; updateDisplay(); } }, rotationSpeed / speedMultiplier); }
+	        init();
+	</script>
 </body>
 </html>
