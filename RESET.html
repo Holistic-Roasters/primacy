@@ -2215,6 +2215,667 @@
             </div>
         </div>
     </section>
+	
+	
+	
+	
+	
+	
+	
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>RESET vs Sedatives - Sleep Quality Comparison</title>
+	    <style>
+	        :root {
+	            --color-black: #080808;
+	            --color-dark-grey: #1a1a1a;
+	            --color-mid-grey: #2e2e2e;
+	            --color-light-grey: #888888;
+	            --color-white: #f5f5f5;
+	            --color-reset: #00c6ff; /* Blue for RESET */
+	            --color-sedative: #ef4444; /* Red for Sedatives */
+	            
+	        }
+
+	        * {
+	            margin: 0;
+	            padding: 0;
+	            box-sizing: border-box;
+	        }
+
+	        body {
+	            background-color: var(--color-black);
+	            font-family: var(--font-primary);
+	            color: var(--color-white);
+	            line-height: 1.6;
+	            padding: 20px;
+	        }
+
+	        .container {
+	            max-width: 1400px;
+	            margin: 0 auto;
+	        }
+
+	        h2 {
+	            font-family: var(--font-display);
+	            font-size: 2.5rem;
+	            margin-bottom: 1rem;
+	            text-align: center;
+	            text-transform: uppercase;
+	            letter-spacing: 1.5px;
+	        }
+
+	        h2 .highlight {
+	            color: var(--color-reset);
+	        }
+
+	        .subtitle {
+	            text-align: center;
+	            color: var(--color-light-grey);
+	            margin-bottom: 3rem;
+	            font-size: 1.1rem;
+	        }
+
+	        .curve-container {
+	            background: var(--color-dark-grey);
+	            border-radius: 15px;
+	            padding: 3rem;
+	            position: relative;
+	            overflow: hidden;
+	        }
+
+	        .curve-controls {
+	            display: flex;
+	            justify-content: space-between;
+	            align-items: center;
+	            margin-bottom: 2rem;
+	            flex-wrap: wrap;
+	            gap: 1rem;
+	        }
+
+	        .curve-legend {
+	            display: flex;
+	            gap: 2rem;
+	        }
+
+	        .legend-item {
+	            display: flex;
+	            align-items: center;
+	            gap: 10px;
+	        }
+
+	        .legend-dot {
+	            width: 20px;
+	            height: 20px;
+	            border-radius: 50%;
+	        }
+
+	        .legend-dot.reset { background: var(--color-reset); }
+	        .legend-dot.sedative { background: var(--color-sedative); }
+
+	        .sleep-phase-toggle {
+	            background: var(--color-black);
+	            border: 2px solid var(--color-mid-grey);
+	            color: var(--color-white);
+	            padding: 10px 20px;
+	            border-radius: 25px;
+	            cursor: pointer;
+	            transition: all 0.3s ease;
+	            text-transform: uppercase;
+	            letter-spacing: 1px;
+	            font-size: 0.9rem;
+	        }
+
+	        .sleep-phase-toggle:hover {
+	            border-color: var(--color-reset);
+	        }
+
+	        .sleep-phase-toggle.active {
+	            background: var(--color-reset);
+	            color: var(--color-white);
+	            border-color: var(--color-reset);
+	        }
+
+	        .chart-wrapper {
+	            position: relative;
+	            height: 400px;
+	            margin-bottom: 2rem;
+	        }
+
+	        .sleep-chart {
+	            width: 100%;
+	            height: 100%;
+	        }
+
+	        .time-scrubber {
+	            position: relative;
+	            height: 60px;
+	            background: var(--color-black);
+	            border-radius: 30px;
+	            cursor: pointer;
+	            overflow: hidden;
+	        }
+
+	        .scrubber-track {
+	            position: absolute;
+	            top: 50%;
+	            left: 30px;
+	            right: 30px;
+	            height: 4px;
+	            background: var(--color-mid-grey);
+	            transform: translateY(-50%);
+	        }
+
+	        .scrubber-progress {
+	            position: absolute;
+	            top: 0;
+	            left: 0;
+	            height: 100%;
+	            background: var(--color-reset);
+	            width: 0%;
+	            transition: width 0.1s ease;
+	        }
+
+	        .scrubber-handle {
+	            position: absolute;
+	            top: 50%;
+	            left: 30px;
+	            width: 30px;
+	            height: 30px;
+	            background: var(--color-reset);
+	            border-radius: 50%;
+	            transform: translate(-50%, -50%);
+	            cursor: grab;
+	            box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+	            transition: transform 0.1s ease;
+	        }
+
+	        .scrubber-handle:active {
+	            cursor: grabbing;
+	            transform: translate(-50%, -50%) scale(1.2);
+	        }
+
+	        .time-display {
+	            position: absolute;
+	            top: -40px;
+	            left: 50%;
+	            transform: translateX(-50%);
+	            background: var(--color-reset);
+	            color: var(--color-white);
+	            padding: 5px 15px;
+	            border-radius: 20px;
+	            font-weight: bold;
+	            font-size: 0.9rem;
+	            opacity: 0;
+	            transition: opacity 0.3s ease;
+	        }
+
+	        .time-display.active {
+	            opacity: 1;
+	        }
+
+	        .sleep-phase-overlay {
+	            position: absolute;
+	            top: 0;
+	            left: 0;
+	            right: 0;
+	            bottom: 0;
+	            pointer-events: none;
+	            opacity: 0;
+	            transition: opacity 0.3s ease;
+	        }
+
+	        .sleep-phase-overlay.active {
+	            opacity: 1;
+	        }
+
+	        .phase-marker {
+	            position: absolute;
+	            top: 10%;
+	            height: 80%;
+	            border-left: 2px dashed var(--color-light-grey);
+	            opacity: 0.5;
+	        }
+
+	        .phase-label {
+	            position: absolute;
+	            top: -25px;
+	            left: 50%;
+	            transform: translateX(-50%);
+	            font-size: 0.8rem;
+	            color: var(--color-light-grey);
+	            white-space: nowrap;
+	        }
+
+	        .effect-popup {
+	            position: absolute;
+	            background: var(--color-black);
+	            border: 2px solid var(--color-reset);
+	            padding: 15px;
+	            border-radius: 10px;
+	            max-width: 300px;
+	            opacity: 0;
+	            pointer-events: none;
+	            transition: opacity 0.3s ease;
+	            z-index: 100;
+	        }
+
+	        .effect-popup.active {
+	            opacity: 1;
+	        }
+
+	        .effect-popup h4 {
+	            color: var(--color-reset);
+	            margin-bottom: 8px;
+	        }
+
+	        .effect-popup p {
+	            font-size: 0.9rem;
+	            margin: 0;
+	            text-align: left;
+	            line-height: 1.4;
+	        }
+
+	        @media (max-width: 767px) {
+	            h2 { font-size: 2rem; }
+	            .curve-container { padding: 1.5rem; }
+	            .chart-wrapper { height: 300px; }
+	        }
+	    </style>
+	</head>
+	<body>
+	    <div class="container">
+	        <h2>THE RESET <span class="highlight">ADVANTAGE</span></h2>
+	        <p class="subtitle">Natural sleep architecture vs. forced sedation. The difference is in the morning.</p>
+        
+	        <div class="curve-container">
+	            <div class="curve-controls">
+	                <div class="curve-legend">
+	                    <div class="legend-item">
+	                        <div class="legend-dot reset"></div>
+	                        <span>RESET Protocol</span>
+	                    </div>
+	                    <div class="legend-item">
+	                        <div class="legend-dot sedative"></div>
+	                        <span>Traditional Sedatives</span>
+	                    </div>
+	                </div>
+	                <button class="sleep-phase-toggle" id="phaseToggle">Show Sleep Phases</button>
+	            </div>
+
+	            <div class="chart-wrapper">
+	                <canvas class="sleep-chart" id="sleepChart"></canvas>
+	                <div class="sleep-phase-overlay" id="phaseOverlay">
+	                    <div class="phase-marker" style="left: 0%;">
+	                        <div class="phase-label">10 PM - Bedtime</div>
+	                    </div>
+	                    <div class="phase-marker" style="left: 12.5%;">
+	                        <div class="phase-label">11 PM - Light Sleep</div>
+	                    </div>
+	                    <div class="phase-marker" style="left: 25%;">
+	                        <div class="phase-label">12 AM - Deep Sleep</div>
+	                    </div>
+	                    <div class="phase-marker" style="left: 50%;">
+	                        <div class="phase-label">2 AM - REM Sleep</div>
+	                    </div>
+	                    <div class="phase-marker" style="left: 75%;">
+	                        <div class="phase-label">4 AM - Light Sleep</div>
+	                    </div>
+	                    <div class="phase-marker" style="left: 87.5%;">
+	                        <div class="phase-label">5 AM - Wake Prep</div>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="time-scrubber" id="timeScrubber">
+	                <div class="time-display" id="timeDisplay">10:00 PM</div>
+	                <div class="scrubber-track">
+	                    <div class="scrubber-progress" id="scrubberProgress"></div>
+	                </div>
+	                <div class="scrubber-handle" id="scrubberHandle"></div>
+	            </div>
+
+	            <div class="effect-popup" id="effectPopup">
+	                <h4 id="popupTitle"></h4>
+	                <p id="popupDescription"></p>
+	            </div>
+	        </div>
+	    </div>
+
+	    <script>
+	        // Canvas setup
+	        const canvas = document.getElementById('sleepChart');
+	        const ctx = canvas.getContext('2d');
+	        const scrubber = document.getElementById('timeScrubber');
+	        const scrubberHandle = document.getElementById('scrubberHandle');
+	        const scrubberProgress = document.getElementById('scrubberProgress');
+	        const timeDisplay = document.getElementById('timeDisplay');
+	        const phaseToggle = document.getElementById('phaseToggle');
+	        const phaseOverlay = document.getElementById('phaseOverlay');
+	        const effectPopup = document.getElementById('effectPopup');
+	        const popupTitle = document.getElementById('popupTitle');
+	        const popupDescription = document.getElementById('popupDescription');
+
+	        // Set canvas size
+	        function resizeCanvas() {
+	            const rect = canvas.getBoundingClientRect();
+	            canvas.width = rect.width * window.devicePixelRatio;
+	            canvas.height = rect.height * window.devicePixelRatio;
+	            canvas.style.width = rect.width + 'px';
+	            canvas.style.height = rect.height + 'px';
+	            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+	            drawChart();
+	        }
+
+	        // Sleep quality data (0-8 hours, 10 PM to 6 AM)
+	        const timePoints = [];
+	        const sedativeData = [];
+	        const resetData = [];
+        
+	        for (let i = 0; i <= 480; i += 5) { // 5-minute intervals
+	            const hours = i / 60;
+	            timePoints.push(hours);
+            
+	            // Sedative curve - rapid onset, unnatural deep sedation, poor morning recovery
+	            let sedativeLevel;
+	            if (hours < 0.5) {
+	                // Rapid, unnatural onset
+	                sedativeLevel = 100 - (hours / 0.5) * 95;
+	            } else if (hours < 1) {
+	                // Heavy sedation phase
+	                sedativeLevel = 5 + Math.sin((hours - 0.5) * Math.PI) * 3;
+	            } else if (hours < 6) {
+	                // Sustained heavy sedation with minimal natural cycles
+	                sedativeLevel = 8 + Math.sin((hours - 1) * 0.5) * 5;
+	            } else if (hours < 7) {
+	                // Difficult wake phase
+	                sedativeLevel = 10 + (hours - 6) * 30;
+	            } else {
+	                // Groggy morning with slow recovery
+	                sedativeLevel = 40 + (hours - 7) * 20;
+	            }
+	            sedativeData.push(sedativeLevel);
+            
+	            // RESET curve - natural sleep architecture
+	            let resetLevel;
+	            if (hours < 1) {
+	                // Gentle, natural sleep onset
+	                resetLevel = 100 - (hours / 1) * 70;
+	            } else if (hours < 2) {
+	                // Transition to deep sleep
+	                resetLevel = 30 - (hours - 1) * 15;
+	            } else if (hours < 3) {
+	                // Deep sleep phase
+	                resetLevel = 15 + Math.sin((hours - 2) * Math.PI * 2) * 5;
+	            } else if (hours < 4) {
+	                // First REM cycle
+	                resetLevel = 20 + Math.sin((hours - 3) * Math.PI) * 15;
+	            } else if (hours < 5.5) {
+	                // Second deep sleep and REM cycle
+	                resetLevel = 25 + Math.sin((hours - 4) * Math.PI * 1.5) * 15;
+	            } else if (hours < 6.5) {
+	                // Natural wake preparation
+	                resetLevel = 35 + (hours - 5.5) * 40;
+	            } else {
+	                // Refreshed morning state
+	                resetLevel = 75 + (hours - 6.5) * 10;
+	            }
+	            resetData.push(resetLevel);
+	        }
+
+	        // Draw the sleep curves
+	        let currentTimeIndex = null;
+	        function drawChart() {
+	            const width = canvas.width / window.devicePixelRatio;
+	            const height = canvas.height / window.devicePixelRatio;
+	            const padding = 40;
+	            const chartWidth = width - padding * 2;
+	            const chartHeight = height - padding * 2;
+
+	            // Clear canvas
+	            ctx.clearRect(0, 0, width, height);
+
+	            // Draw grid
+	            ctx.strokeStyle = 'rgba(136, 136, 136, 0.2)';
+	            ctx.lineWidth = 1;
+            
+	            // Horizontal grid lines
+	            for (let i = 0; i <= 4; i++) {
+	                const y = padding + (chartHeight / 4) * i;
+	                ctx.beginPath();
+	                ctx.moveTo(padding, y);
+	                ctx.lineTo(width - padding, y);
+	                ctx.stroke();
+	            }
+
+	            // Vertical grid lines (hourly)
+	            for (let i = 0; i <= 8; i++) {
+	                const x = padding + (chartWidth / 8) * i;
+	                ctx.beginPath();
+	                ctx.moveTo(x, padding);
+	                ctx.lineTo(x, height - padding);
+	                ctx.stroke();
+	            }
+
+	            // Draw axes
+	            ctx.strokeStyle = '#888';
+	            ctx.lineWidth = 2;
+	            ctx.beginPath();
+	            ctx.moveTo(padding, padding);
+	            ctx.lineTo(padding, height - padding);
+	            ctx.lineTo(width - padding, height - padding);
+	            ctx.stroke();
+
+	            // Y-axis labels (inverted - 0% at top for better sleep)
+	            ctx.fillStyle = '#888';
+	            ctx.font = '12px Arial';
+	            ctx.textAlign = 'right';
+	            ctx.textBaseline = 'middle';
+            
+	            const yLabels = ['Deep Sleep', '↓', 'Light Sleep', '↓', 'Awake'];
+	            yLabels.forEach((label, i) => {
+	                const y = padding + (chartHeight / 4) * i;
+	                ctx.fillText(label, padding - 10, y);
+	            });
+
+	            // X-axis labels
+	            ctx.textAlign = 'center';
+	            ctx.textBaseline = 'top';
+	            const times = ['10PM', '11PM', '12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM'];
+	            for (let i = 0; i <= 8; i++) {
+	                const x = padding + (chartWidth / 8) * i;
+	                ctx.fillText(times[i], x, height - padding + 10);
+	            }
+
+	            // Draw curves
+	            function drawCurve(data, color, lineWidth = 3) {
+	                ctx.strokeStyle = color;
+	                ctx.lineWidth = lineWidth;
+	                ctx.beginPath();
+                
+	                data.forEach((value, index) => {
+	                    const x = padding + (index / (data.length - 1)) * chartWidth;
+	                    const y = padding + (value / 100) * chartHeight;
+                    
+	                    if (index === 0) {
+	                        ctx.moveTo(x, y);
+	                    } else {
+	                        ctx.lineTo(x, y);
+	                    }
+	                });
+                
+	                ctx.stroke();
+	            }
+
+	            // Draw sedative curve
+	            drawCurve(sedativeData, '#ef4444');
+            
+	            // Draw RESET curve
+	            drawCurve(resetData, '#00c6ff');
+
+	            // Draw current time indicator
+	            if (currentTimeIndex !== null) {
+	                const x = padding + (currentTimeIndex / (timePoints.length - 1)) * chartWidth;
+                
+	                // Vertical line
+	                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+	                ctx.lineWidth = 2;
+	                ctx.setLineDash([5, 5]);
+	                ctx.beginPath();
+	                ctx.moveTo(x, padding);
+	                ctx.lineTo(x, height - padding);
+	                ctx.stroke();
+	                ctx.setLineDash([]);
+                
+	                // Points on curves
+	                const sedativeY = padding + (sedativeData[currentTimeIndex] / 100) * chartHeight;
+	                const resetY = padding + (resetData[currentTimeIndex] / 100) * chartHeight;
+                
+	                // Sedative point
+	                ctx.fillStyle = '#ef4444';
+	                ctx.beginPath();
+	                ctx.arc(x, sedativeY, 6, 0, Math.PI * 2);
+	                ctx.fill();
+                
+	                // RESET point
+	                ctx.fillStyle = '#00c6ff';
+	                ctx.beginPath();
+	                ctx.arc(x, resetY, 6, 0, Math.PI * 2);
+	                ctx.fill();
+	            }
+	        }
+
+	        // Scrubber functionality
+	        let isDragging = false;
+
+	        function updateScrubber(clientX) {
+	            const rect = scrubber.getBoundingClientRect();
+	            const x = clientX - rect.left;
+	            const percentage = Math.max(0, Math.min(1, x / rect.width));
+            
+	            currentTimeIndex = Math.floor(percentage * (timePoints.length - 1));
+	            const hours = timePoints[currentTimeIndex];
+            
+	            // Update scrubber position
+	            scrubberProgress.style.width = (percentage * 100) + '%';
+	            scrubberHandle.style.left = (30 + percentage * (rect.width - 60)) + 'px';
+            
+	            // Update time display (10 PM start time)
+	            const totalMinutes = hours * 60;
+	            const displayHours = Math.floor(totalMinutes / 60) + 22; // Start at 10 PM
+	            const displayMinutes = Math.floor(totalMinutes % 60);
+	            let displayHour = displayHours % 24;
+	            const ampm = displayHour >= 12 ? 'PM' : 'AM';
+	            if (displayHour === 0) displayHour = 12;
+	            if (displayHour > 12) displayHour -= 12;
+	            timeDisplay.textContent = `${displayHour}:${displayMinutes.toString().padStart(2, '0')} ${ampm}`;
+	            timeDisplay.classList.add('active');
+            
+	            // Update chart
+	            drawChart();
+            
+	            // Show effect popup
+	            updateEffectPopup(hours, percentage);
+	        }
+
+	        function updateEffectPopup(hours, percentage) {
+	            let resetDesc, sedativeDesc;
+
+	            if (hours < 1) {
+	                resetDesc = "Gentle onset with natural melatonin support. No forced sedation.";
+	                sedativeDesc = "Rapid, unnatural sedation. Brain forced into unconsciousness.";
+	            } else if (hours < 3) {
+	                resetDesc = "Natural deep sleep cycles. Growth hormone release optimized.";
+	                sedativeDesc = "Heavy sedation blocks natural sleep architecture. No restorative cycles.";
+	            } else if (hours < 5) {
+	                resetDesc = "Healthy REM cycles for memory consolidation and emotional processing.";
+	                sedativeDesc = "REM sleep suppressed. Poor memory formation and mood regulation.";
+	            } else if (hours < 6.5) {
+	                resetDesc = "Natural cortisol rise. Body prepares for refreshed awakening.";
+	                sedativeDesc = "Difficult wake phase. Fighting through sedative hangover.";
+	            } else {
+	                resetDesc = "Alert and refreshed. Clear-headed with sustained energy.";
+	                sedativeDesc = "Groggy and disoriented. Brain fog persists for hours.";
+	            }
+            
+	            // Position popup
+	            const scrubberRect = scrubber.getBoundingClientRect();
+	            const containerRect = scrubber.closest('.curve-container').getBoundingClientRect();
+	            const popupRect = effectPopup.getBoundingClientRect();
+	            const handlePos = 30 + percentage * (scrubberRect.width - 60);
+            
+	            // Switch sides at 50%
+	            if (percentage > 0.5) {
+	                effectPopup.style.left = 'auto';
+	                effectPopup.style.right = (containerRect.right - scrubberRect.left - handlePos + popupRect.width/2) + 'px';
+	            } else {
+	                effectPopup.style.right = 'auto';
+	                effectPopup.style.left = (handlePos + popupRect.width/2 + 20) + 'px';
+	            }
+
+	            popupTitle.innerHTML = `<span style="color: #00c6ff;">RESET:</span> ${resetDesc} <br><br> <span style="color: #ef4444;">Sedatives:</span> ${sedativeDesc}`;
+	            effectPopup.style.bottom = '80px';
+	            effectPopup.classList.add('active');
+	        }
+
+	        scrubber.addEventListener('mousedown', (e) => {
+	            isDragging = true;
+	            scrubberHandle.style.cursor = 'grabbing';
+	            updateScrubber(e.clientX);
+	        });
+
+	        document.addEventListener('mousemove', (e) => {
+	            if (isDragging) {
+	                updateScrubber(e.clientX);
+	            }
+	        });
+
+	        document.addEventListener('mouseup', () => {
+	            if(isDragging) {
+	                isDragging = false;
+	                scrubberHandle.style.cursor = 'grab';
+	                timeDisplay.classList.remove('active');
+	                effectPopup.classList.remove('active');
+	                currentTimeIndex = null;
+	                drawChart();
+	            }
+	        });
+
+	        // Touch events for mobile
+	        scrubber.addEventListener('touchstart', (e) => {
+	            isDragging = true;
+	            updateScrubber(e.touches[0].clientX);
+	        }, {passive: true});
+
+	        document.addEventListener('touchmove', (e) => {
+	            if (isDragging) {
+	                updateScrubber(e.touches[0].clientX);
+	            }
+	        }, {passive: true});
+
+	        document.addEventListener('touchend', () => {
+	            if(isDragging) {
+	                isDragging = false;
+	                timeDisplay.classList.remove('active');
+	                effectPopup.classList.remove('active');
+	                currentTimeIndex = null;
+	                drawChart();
+	            }
+	        });
+
+	        // Sleep phase toggle
+	        phaseToggle.addEventListener('click', () => {
+	            phaseToggle.classList.toggle('active');
+	            phaseOverlay.classList.toggle('active');
+	        });
+
+	        // Initialize
+	        window.addEventListener('resize', resizeCanvas);
+	        resizeCanvas();
+	    </script>
+	
+	
+	
 
     <!-- EXPERIENCE TIMELINE -->
     <section class="experience-section">
