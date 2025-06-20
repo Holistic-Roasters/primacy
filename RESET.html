@@ -2221,7 +2221,6 @@
 	
 	
 	
-	
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    <title>RESET vs Sedatives - Sleep Quality Comparison</title>
@@ -2234,7 +2233,6 @@
 	            --color-white: #f5f5f5;
 	            --color-reset: #00c6ff; /* Blue for RESET */
 	            --color-sedative: #ef4444; /* Red for Sedatives */
-	            
 	        }
 
 	        * {
@@ -2252,7 +2250,7 @@
 	        }
 
 	        .container {
-	            max-width: 1400px;
+	            max-width: 1350px;
 	            margin: 0 auto;
 	        }
 
@@ -2474,6 +2472,7 @@
 	            margin: 0;
 	            text-align: left;
 	            line-height: 1.4;
+	            color: var(--color-white);
 	        }
 
 	        @media (max-width: 767px) {
@@ -2506,7 +2505,7 @@
 	            <div class="chart-wrapper">
 	                <canvas class="sleep-chart" id="sleepChart"></canvas>
 	                <div class="sleep-phase-overlay" id="phaseOverlay">
-	                    <div class="phase-marker" style="left: 0%;">
+	                    <div class="phase-marker" style="left: 2%;">
 	                        <div class="phase-label">10 PM - Bedtime</div>
 	                    </div>
 	                    <div class="phase-marker" style="left: 12.5%;">
@@ -2813,7 +2812,7 @@
 	                effectPopup.style.left = (handlePos + popupRect.width/2 + 20) + 'px';
 	            }
 
-	            popupTitle.innerHTML = `<span style="color: #00c6ff;">RESET:</span> ${resetDesc} <br><br> <span style="color: #ef4444;">Sedatives:</span> ${sedativeDesc}`;
+	            popupTitle.innerHTML = `<span style="color: #00c6ff;">RESET:</span> <span style="color: #f5f5f5;">${resetDesc}</span> <br><br> <span style="color: #ef4444;">Sedatives:</span> <span style="color: #f5f5f5;">${sedativeDesc}</span>`;
 	            effectPopup.style.bottom = '80px';
 	            effectPopup.classList.add('active');
 	        }
@@ -2873,7 +2872,9 @@
 	        window.addEventListener('resize', resizeCanvas);
 	        resizeCanvas();
 	    </script>
-	
+	    
+		
+		
 	
 	
 
