@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMACY: Upgrade Your OS.</title>
+    <link rel="icon" href="https://primacy.io/primacy_logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-apex-accent: #00ff9d;
+            --color-reset-accent: #00c6ff;
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(8, 8, 8, 0.95), rgba(8, 8, 8, 1)), url('https://primacy.io/APEX_A.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(16, 16, 16, 0.7);
+            border: 1px solid var(--color-mid-grey);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, var(--color-apex-accent) 0%, var(--color-reset-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--color-light-grey);
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+            font-weight: 300;
+        }
+
+        .protocol-overview {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .protocol-card {
+            background: var(--color-dark-grey);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--color-mid-grey);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .protocol-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+        }
+
+        .protocol-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        #apex-card h3 { color: var(--color-apex-accent); }
+        #reset-card h3 { color: var(--color-reset-accent); }
+        
+        .protocol-card p {
+            font-size: 1rem;
+            color: var(--color-light-grey);
+            text-align: left;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .form-header {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .email-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid var(--color-mid-grey);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .email-input {
+            flex-grow: 1;
+            padding: 18px 20px;
+            border: none;
+            background: var(--color-dark-grey);
+            color: var(--color-white);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+        }
+
+        .email-input:focus {
+            outline: none;
+            background: #2a2a2a;
+        }
+
+        .submit-button {
+            padding: 0 30px;
+            border: none;
+            background: var(--color-apex-accent);
+            color: var(--color-black);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--color-white);
+        }
+        
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .protocol-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            .protocol-card p {
+                text-align: center;
+            }
+            .email-form {
+                flex-direction: column;
+                border: none;
+                background: none;
+                box-shadow: none;
+            }
+            .email-input {
+                border-radius: 12px;
+                border: 1px solid var(--color-mid-grey);
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            .submit-button {
+                padding: 18px 30px;
+                border-radius: 12px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Logo" class="logo-img">
+        
+        <h1>THE SYSTEM IS <span class="highlight">COMING.</span></h1>
+        
+        <p class="subtitle">
+            Performance requires recovery. Recovery fuels performance. PRIMACY is a complete, 24-hour protocol engineered to master the entire cycle. Welcome to the new benchmark.
+        </p>
+
+        <div class="protocol-overview">
+            <div id="apex-card" class="protocol-card">
+                <img src="https://primacy.io/primacy-logo-APEX.png" alt="APEX Logo" class="protocol-icon">
+                <div>
+                    <h3>APEX: THE DAY PROTOCOL</h3>
+                    <p>A nootropic-infused system engineered for 4-6 hours of sustained, crash-free focus and clean energy to fuel your ascent to peak performance.</p>
+                </div>
+            </div>
+            <div id="reset-card" class="protocol-card">
+                 <img src="https://primacy.io/primacy-logo-RESET.png" alt="RESET Logo" class="protocol-icon">
+                <div>
+                    <h3>RESET: THE NIGHT PROTOCOL</h3>
+                    <p>A recovery formula designed for strategic system shutdown. It manages cortisol, quiets the mind, and enhances cellular repair so you wake up fully recalibrated.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="form-header">
+            The Genesis Protocol is launching soon with limited supply. <br>Enter your email for prioritized access.
+        </p>
+        
+<div class="klaviyo-form-V4fhQJ"></div>
+
+    <script>
+        const form = document.getElementById('waitlist-form');
+        const message = document.getElementById('form-message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real application, you would send this data to your backend/email service provider.
+            // For this demo, we'll just show a success message.
+            
+            form.innerHTML = `<p style="font-size: 1.2rem; font-weight: 500; color: var(--color-apex-accent);">Access Request Received. Welcome to the mission, Operator.</p>`;
+            message.textContent = "Your place on the priority access list is secured.";
+        });
+    </script>
+
+</body>
+</html>
