@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMACY - Visual Style Guide v1.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Condensed:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Primary Palette */
+            --black: #080808;
+            --dark-grey: #1a1a1a;
+            --mid-grey: #2e2e2e;
+            --light-grey: #888888;
+            --white: #f5f5f5;
+            
+            /* Accent Palette */
+            --apex-green: #00ff9d;
+            --reset-blue: #00c6ff;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-xxl: 4rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: var(--space-lg);
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+        }
+
+        p {
+            font-size: 1rem;
+            font-weight: 300;
+            margin-bottom: var(--space-sm);
+            color: var(--white);
+        }
+
+        .text-secondary {
+            color: var(--light-grey);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-xxl) 0;
+            border-bottom: 1px solid var(--mid-grey);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark-grey);
+            padding: var(--space-lg) 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--mid-grey);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--light-grey);
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: var(--space-xxl) 0;
+            background: linear-gradient(180deg, var(--dark-grey) 0%, var(--black) 100%);
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: var(--light-grey);
+            margin-top: var(--space-sm);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        /* Logo Section */
+        .logo-showcase {
+            background-color: var(--dark-grey);
+            padding: var(--space-xl);
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .logo-showcase img {
+            max-width: 200px;
+            height: auto;
+            margin: var(--space-md);
+        }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        /* Color Swatches */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .color-swatch {
+            background-color: var(--dark-grey);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: translateY(-2px);
+        }
+
+        .color-preview {
+            height: 120px;
+            position: relative;
+        }
+
+        .color-info {
+            padding: var(--space-sm);
+        }
+
+        .color-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .color-hex {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--light-grey);
+        }
+
+        .copied-tooltip {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--black);
+            color: var(--white);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .copied-tooltip.show {
+            opacity: 1;
+        }
+
+        /* Typography Specimens */
+        .type-specimen {
+            background-color: var(--dark-grey);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .type-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .type-meta {
+            font-size: 0.875rem;
+            color: var(--light-grey);
+        }
+
+        /* Components */
+        .component-card {
+            background-color: var(--dark-grey);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .component-preview {
+            background-color: var(--black);
+            padding: var(--space-lg);
+            border-radius: 4px;
+            margin: var(--space-md) 0;
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--apex-green);
+            color: var(--black);
+        }
+
+        .btn-primary:hover {
+            background-color: #00cc7d;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--reset-blue);
+            color: var(--black);
+        }
+
+        .btn-secondary:hover {
+            background-color: #009ed1;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--mid-grey);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--white);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--light-grey);
+            padding: 0.5rem 1rem;
+        }
+
+        .btn-ghost:hover {
+            color: var(--white);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--black);
+            border: 2px solid var(--mid-grey);
+            color: var(--white);
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--apex-green);
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--dark-grey);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: var(--space-md);
+            background-color: var(--mid-grey);
+        }
+
+        .card-body {
+            padding: var(--space-md);
+        }
+
+        .card-footer {
+            padding: var(--space-md);
+            border-top: 1px solid var(--mid-grey);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 4px;
+        }
+
+        .badge-apex {
+            background-color: var(--apex-green);
+            color: var(--black);
+        }
+
+        .badge-reset {
+            background-color: var(--reset-blue);
+            color: var(--black);
+        }
+
+        .badge-neutral {
+            background-color: var(--mid-grey);
+            color: var(--white);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-md);
+        }
+
+        th, td {
+            padding: var(--space-sm);
+            text-align: left;
+            border-bottom: 1px solid var(--mid-grey);
+        }
+
+        th {
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            color: var(--light-grey);
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            gap: var(--space-xs);
+            border-bottom: 2px solid var(--mid-grey);
+            margin-bottom: var(--space-lg);
+        }
+
+        .tab {
+            padding: var(--space-sm) var(--space-md);
+            background: none;
+            border: none;
+            color: var(--light-grey);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: var(--white);
+        }
+
+        .tab.active {
+            color: var(--apex-green);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--apex-green);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: var(--space-md);
+            border-radius: 4px;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .alert-apex {
+            background-color: rgba(0, 255, 157, 0.1);
+            border: 1px solid var(--apex-green);
+            color: var(--apex-green);
+        }
+
+        .alert-reset {
+            background-color: rgba(0, 198, 255, 0.1);
+            border: 1px solid var(--reset-blue);
+            color: var(--reset-blue);
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+
+        /* Progress Bars */
+        .progress {
+            height: 8px;
+            background-color: var(--mid-grey);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: var(--space-sm) 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-bar-apex {
+            background-color: var(--apex-green);
+        }
+
+        .progress-bar-reset {
+            background-color: var(--reset-blue);
+        }
+
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--mid-grey);
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--white);
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background-color: var(--apex-green);
+        }
+
+        .toggle input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Code Block */
+        .code-block {
+            background-color: var(--black);
+            border: 1px solid var(--mid-grey);
+            border-radius: 4px;
+            padding: var(--space-md);
+            margin: var(--space-md) 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--apex-green);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--space-sm);
+            }
+
+            .section {
+                padding: var(--space-xl) 0;
+            }
+
+            nav ul {
+                gap: var(--space-sm);
+            }
+
+            .component-preview {
+                padding: var(--space-md);
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Utility Classes */
+        .text-apex { color: var(--apex-green); }
+        .text-reset { color: var(--reset-blue); }
+        .bg-apex { background-color: var(--apex-green); }
+        .bg-reset { background-color: var(--reset-blue); }
+        .mt-1 { margin-top: var(--space-sm); }
+        .mt-2 { margin-top: var(--space-md); }
+        .mt-3 { margin-top: var(--space-lg); }
+        .mb-1 { margin-bottom: var(--space-sm); }
+        .mb-2 { margin-bottom: var(--space-md); }
+        .mb-3 { margin-bottom: var(--space-lg); }
+
+        /* Iconography Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: var(--space-md);
+            margin: var(--space-lg) 0;
+        }
+
+        .icon-item {
+            text-align: center;
+            padding: var(--space-md);
+            background-color: var(--black);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .icon-item:hover {
+            background-color: var(--mid-grey);
+            transform: translateY(-2px);
+        }
+
+        .icon-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 48px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .icon-preview svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--light-grey);
+            transition: stroke 0.2s;
+        }
+
+        .icon-item:hover svg {
+            stroke: var(--white);
+        }
+
+        .icon-item.icon-apex svg {
+            stroke: var(--apex-green);
+        }
+
+        .icon-item.icon-reset svg {
+            stroke: var(--reset-blue);
+        }
+
+        .icon-label {
+            font-size: 0.75rem;
+            color: var(--light-grey);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Email Templates */
+        .email-signature {
+            margin: var(--space-lg) 0;
+        }
+
+        .email-template {
+            background-color: var(--black);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            margin: var(--space-lg) 0;
+        }
+
+        .email-preview {
+            background-color: var(--dark-grey);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .email-header {
+            background-color: var(--mid-grey);
+            padding: var(--space-lg);
+            text-align: center;
+        }
+
+        .email-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .email-body {
+            padding: var(--space-lg);
+        }
+
+        .email-section {
+            margin: var(--space-lg) 0;
+            padding: var(--space-md);
+            background-color: var(--black);
+            border-radius: 4px;
+        }
+
+        .email-footer {
+            background-color: var(--mid-grey);
+            padding: var(--space-md);
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .notification-examples {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .email-notification {
+            padding: var(--space-md);
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+
+        .apex-notification {
+            background-color: rgba(0, 255, 157, 0.05);
+            border-color: var(--apex-green);
+        }
+
+        .reset-notification {
+            background-color: rgba(0, 198, 255, 0.05);
+            border-color: var(--reset-blue);
+        }
+
+        .system-notification {
+            background-color: var(--dark-grey);
+            border-color: var(--mid-grey);
+        }
+
+        /* Marketing Collateral */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .social-template {
+            text-align: center;
+        }
+
+        .social-preview {
+            background-color: var(--black);
+            border: 2px solid var(--mid-grey);
+            border-radius: 8px;
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 200px;
+        }
+
+        .instagram-post {
+            aspect-ratio: 1;
+        }
+
+        .twitter-post {
+            min-height: 120px;
+        }
+
+        .story-template {
+            aspect-ratio: 9/16;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .social-tag {
+            color: var(--apex-green);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Business Card */
+        .business-card-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .business-card {
+            background-color: var(--black);
+            border: 2px solid var(--mid-grey);
+            border-radius: 8px;
+            padding: var(--space-lg);
+            aspect-ratio: 3.5/2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bc-logo {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .bc-tagline {
+            font-size: 0.75rem;
+            color: var(--light-grey);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .bc-contact p {
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+        }
+
+        /* Presentation Slide */
+        .slide-preview {
+            background-color: var(--black);
+            border: 2px solid var(--mid-grey);
+            border-radius: 8px;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            max-width: 800px;
+            margin: var(--space-lg) auto;
+        }
+
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background-color: var(--dark-grey);
+            font-size: 0.875rem;
+            color: var(--light-grey);
+        }
+
+        .slide-content {
+            padding: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: calc(100% - 60px);
+        }
+
+        .slide-subtitle {
+            color: var(--apex-green);
+            font-size: 1.25rem;
+            margin: var(--space-sm) 0 var(--space-lg) 0;
+        }
+
+        .slide-points {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .slide-point {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .point-number {
+            color: var(--apex-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        /* Banner Specifications */
+        .banner-grid {
+            display: grid;
+            gap: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .banner-preview {
+            background-color: var(--black);
+            border: 2px solid var(--mid-grey);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .banner-desktop {
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--space-lg);
+        }
+
+        .banner-mobile {
+            height: 50px;
+            font-size: 0.875rem;
+        }
+
+        .banner-square {
+            aspect-ratio: 1;
+            max-width: 250px;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Merchandise */
+        .merch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .merch-preview {
+            background-color: var(--black);
+            border: 2px solid var(--mid-grey);
+            border-radius: 8px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-sm);
+        }
+
+        .tshirt {
+            position: relative;
+        }
+
+        .merch-design {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+        }
+
+        .bottle-design {
+            width: 60px;
+            height: 120px;
+            background-color: var(--dark-grey);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bottle-logo {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: var(--apex-green);
+        }
+
+        .notebook-design {
+            background-color: var(--dark-grey);
+            padding: var(--space-lg);
+            text-align: center;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#brand" class="active">Brand</a></li>
+                    <li><a href="#logos">Logos</a></li>
+                    <li><a href="#colors">Colors</a></li>
+                    <li><a href="#typography">Typography</a></li>
+                    <li><a href="#components">Components</a></li>
+                    <li><a href="#forms">Forms</a></li>
+                    <li><a href="#patterns">Patterns</a></li>
+                    <li><a href="#iconography">Icons</a></li>
+                    <li><a href="#email">Email</a></li>
+                    <li><a href="#marketing">Marketing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>PRIMACY</h1>
+            <p class="tagline">Visual Style Guide v1.0</p>
+        </div>
+    </section>
+
+    <!-- Brand Overview -->
+    <section id="brand" class="section">
+        <div class="container">
+            <h2>Brand Overview</h2>
+            <div class="grid grid-2">
+                <div>
+                    <h3>Mission</h3>
+                    <p>PRIMACY is not a supplement company; we are a human performance company. Our mission is to engineer the world's most intelligent, integrated, and effective systems for mastering the 24-hour performance-recovery cycle.</p>
+                </div>
+                <div>
+                    <h3>Philosophy</h3>
+                    <p>Peak daytime output is a direct result of optimized nightly recovery. Performance and recovery are not separate events; they are two sides of the same coin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logo Section -->
+    <section id="logos" class="section">
+        <div class="container">
+            <h2>Logo System</h2>
+            <p class="text-secondary mb-3">The "Chrono-Compass" Insignia - A symbol of guidance, precision, and mastery over the 24-hour cycle.</p>
+            
+            <div class="logo-grid">
+                <div class="logo-showcase">
+                    <h4>Primary Master Logo</h4>
+                    <img src="https://primacy.io/primacy_logo.png" alt="PRIMACY Master Logo">
+                    <p class="text-secondary">White on Black - Corporate branding</p>
+                </div>
+                <div class="logo-showcase">
+                    <h4>APEX Activation State</h4>
+                    <img src="https://primacy.io/primacy-logo-APEX.png" alt="PRIMACY APEX Logo">
+                    <p class="text-secondary">Star illuminated in APEX Green</p>
+                </div>
+                <div class="logo-showcase">
+                    <h4>RESET Activation State</h4>
+                    <img src="https://primacy.io/primacy-logo-RESET.png" alt="PRIMACY RESET Logo">
+                    <p class="text-secondary">Moon illuminated in RESET Blue</p>
+                </div>
+            </div>
+
+            <div class="component-card mt-3">
+                <h4>Logo Usage Guidelines</h4>
+                <ul>
+                    <li>Maintain clear space equal to the height of the central "eye" of the star</li>
+                    <li>Never stretch, distort, rotate, or change proportions</li>
+                    <li>Always place on clean, minimalist backgrounds (primarily black or dark grey)</li>
+                    <li>The 8-pointed star represents the 8 functional ingredients</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Palette -->
+    <section id="colors" class="section">
+        <div class="container">
+            <h2>Color Palette</h2>
+            <p class="text-secondary mb-3">Our palette is intentional, technical, and minimalist. Click any color to copy its hex value.</p>
+            
+            <h3>Primary Palette</h3>
+            <div class="color-grid mb-3">
+                <div class="color-swatch" onclick="copyColor('#080808')">
+                    <div class="color-preview" style="background-color: #080808;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">Black</div>
+                        <div class="color-hex">#080808</div>
+                    </div>
+                </div>
+                <div class="color-swatch" onclick="copyColor('#1a1a1a')">
+                    <div class="color-preview" style="background-color: #1a1a1a;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">Dark Grey</div>
+                        <div class="color-hex">#1a1a1a</div>
+                    </div>
+                </div>
+                <div class="color-swatch" onclick="copyColor('#2e2e2e')">
+                    <div class="color-preview" style="background-color: #2e2e2e;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">Mid Grey</div>
+                        <div class="color-hex">#2e2e2e</div>
+                    </div>
+                </div>
+                <div class="color-swatch" onclick="copyColor('#888888')">
+                    <div class="color-preview" style="background-color: #888888;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">Light Grey</div>
+                        <div class="color-hex">#888888</div>
+                    </div>
+                </div>
+                <div class="color-swatch" onclick="copyColor('#f5f5f5')">
+                    <div class="color-preview" style="background-color: #f5f5f5;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">White</div>
+                        <div class="color-hex">#f5f5f5</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Accent Palette - The "Activation Glows"</h3>
+            <div class="color-grid">
+                <div class="color-swatch" onclick="copyColor('#00ff9d')">
+                    <div class="color-preview" style="background-color: #00ff9d;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">APEX Green</div>
+                        <div class="color-hex">#00ff9d</div>
+                    </div>
+                </div>
+                <div class="color-swatch" onclick="copyColor('#00c6ff')">
+                    <div class="color-preview" style="background-color: #00c6ff;">
+                        <span class="copied-tooltip">Copied!</span>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">RESET Blue</div>
+                        <div class="color-hex">#00c6ff</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Typography -->
+    <section id="typography" class="section">
+        <div class="container">
+            <h2>Typography</h2>
+            <p class="text-secondary mb-3">A blend of technical precision and modern clarity.</p>
+
+            <div class="type-specimen">
+                <div class="type-info">
+                    <h3>Roboto Condensed</h3>
+                    <span class="type-meta">Display Font • Headlines</span>
+                </div>
+                <h1 style="font-size: 4rem;">UPGRADE YOUR OS</h1>
+                <h2 style="font-size: 3rem;">PEAK PERFORMANCE</h2>
+                <h3 style="font-size: 2rem;">SYSTEM DIAGNOSTICS</h3>
+            </div>
+
+            <div class="type-specimen">
+                <div class="type-info">
+                    <h3>Roboto</h3>
+                    <span class="type-meta">Body Font • Text</span>
+                </div>
+                <p style="font-weight: 300;">Light 300: Optimized for extended reading and detailed descriptions.</p>
+                <p style="font-weight: 400;">Regular 400: Standard body text for optimal legibility.</p>
+                <p style="font-weight: 500;">Medium 500: Emphasis and UI elements.</p>
+                <p style="font-weight: 700;">Bold 700: Strong emphasis and subheadings.</p>
+            </div>
+
+            <div class="component-card">
+                <h4>Type Scale</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Font</th>
+                            <th>Size</th>
+                            <th>Weight</th>
+                            <th>Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>H1</td>
+                            <td>Roboto Condensed</td>
+                            <td>4rem</td>
+                            <td>900</td>
+                            <td>Page titles</td>
+                        </tr>
+                        <tr>
+                            <td>H2</td>
+                            <td>Roboto Condensed</td>
+                            <td>3rem</td>
+                            <td>900</td>
+                            <td>Section headers</td>
+                        </tr>
+                        <tr>
+                            <td>H3</td>
+                            <td>Roboto Condensed</td>
+                            <td>2rem</td>
+                            <td>700</td>
+                            <td>Subsection headers</td>
+                        </tr>
+                        <tr>
+                            <td>Body</td>
+                            <td>Roboto</td>
+                            <td>1rem</td>
+                            <td>300/400</td>
+                            <td>General text</td>
+                        </tr>
+                        <tr>
+                            <td>Small</td>
+                            <td>Roboto</td>
+                            <td>0.875rem</td>
+                            <td>400</td>
+                            <td>Metadata, labels</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Components -->
+    <section id="components" class="section">
+        <div class="container">
+            <h2>UI Components</h2>
+            
+            <!-- Buttons -->
+            <div class="component-card">
+                <h3>Buttons</h3>
+                <div class="component-preview">
+                    <button class="btn btn-primary">APEX Protocol</button>
+                    <button class="btn btn-secondary">RESET Protocol</button>
+                    <button class="btn btn-outline">Learn More</button>
+                    <button class="btn btn-ghost">Cancel</button>
+                </div>
+                <div class="code-block">
+                    <code>
+&lt;button class="btn btn-primary"&gt;APEX Protocol&lt;/button&gt;<br>
+&lt;button class="btn btn-secondary"&gt;RESET Protocol&lt;/button&gt;<br>
+&lt;button class="btn btn-outline"&gt;Learn More&lt;/button&gt;<br>
+&lt;button class="btn btn-ghost"&gt;Cancel&lt;/button&gt;
+                    </code>
+                </div>
+            </div>
+
+            <!-- Badges -->
+            <div class="component-card">
+                <h3>Badges</h3>
+                <div class="component-preview">
+                    <span class="badge badge-apex">ACTIVE</span>
+                    <span class="badge badge-reset">RECOVERY</span>
+                    <span class="badge badge-neutral">STANDBY</span>
+                </div>
+            </div>
+
+            <!-- Alerts -->
+            <div class="component-card">
+                <h3>Alerts</h3>
+                <div class="alert alert-apex">
+                    <strong>APEX Protocol Initiated:</strong> System performance optimization in progress.
+                </div>
+                <div class="alert alert-reset">
+                    <strong>RESET Protocol Active:</strong> Recovery phase engaged.
+                </div>
+                <div class="alert alert-warning">
+                    <strong>System Notice:</strong> Protocol adjustment recommended.
+                </div>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="component-card">
+                <h3>Progress Indicators</h3>
+                <p class="text-secondary mb-2">Daily Performance Metrics</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-apex" style="width: 75%"></div>
+                </div>
+                <p class="text-secondary mb-2 mt-2">Recovery Status</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-reset" style="width: 60%"></div>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="component-card">
+                <h3>Cards</h3>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>APEX Protocol</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Engineered for peak daytime performance and cognitive enhancement.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary">Activate</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>RESET Protocol</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Optimized nighttime recovery and cellular repair system.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-secondary">Activate</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>System Status</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Monitor your 24-hour performance-recovery cycle.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-outline">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="component-card">
+                <h3>Navigation Tabs</h3>
+                <div class="tabs">
+                    <button class="tab active">Overview</button>
+                    <button class="tab">Protocols</button>
+                    <button class="tab">Analytics</button>
+                    <button class="tab">Settings</button>
+                </div>
+            </div>
+
+            <!-- Toggle Switch -->
+            <div class="component-card">
+                <h3>Toggle Controls</h3>
+                <div class="component-preview" style="align-items: center;">
+                    <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Protocol Active</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forms -->
+    <section id="forms" class="section">
+        <div class="container">
+            <h2>Form Elements</h2>
+            
+            <div class="component-card">
+                <div class="grid grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="operator@primacy.io">
+                        </div>
+                        <div class="form-group">
+                            <label for="protocol">Select Protocol</label>
+                            <select id="protocol">
+                                <option>APEX - Day Protocol</option>
+                                <option>RESET - Night Protocol</option>
+                                <option>Custom Protocol</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="message">Protocol Notes</label>
+                            <textarea id="message" rows="5" placeholder="Enter your optimization goals..."></textarea>
+                        </div>
+                        <button class="btn btn-primary">Initialize Protocol</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Patterns -->
+    <section id="patterns" class="section">
+        <div class="container">
+            <h2>Design Patterns</h2>
+            
+            <div class="component-card">
+                <h3>Voice & Tone Examples</h3>
+                <div class="grid grid-2">
+                    <div>
+                        <h4 class="text-apex">Do</h4>
+                        <ul>
+                            <li><strong>Confident:</strong> "Upgrade Your OS."</li>
+                            <li><strong>Technical:</strong> "RESET systematically downregulates the CNS."</li>
+                            <li><strong>Direct:</strong> "The crash is not a feature."</li>
+                            <li><strong>Aspirational:</strong> "Master your 24-hour cycle."</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-reset">Don't</h4>
+                        <ul>
+                            <li><strong>Arrogant:</strong> "You're doing it wrong."</li>
+                            <li><strong>Complicated:</strong> "Utilizing proprietary methodologies..."</li>
+                            <li><strong>Casual:</strong> "Hey there, buddy!"</li>
+                            <li><strong>Aggressive:</strong> "Destroy your competition."</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Responsive Behavior</h3>
+                <p>All components are designed to be fully responsive. The grid system adapts from 4 columns on desktop to single column on mobile. Typography scales using clamp() for optimal readability across devices.</p>
+                <div class="alert alert-apex mt-2">
+                    <strong>Design Principle:</strong> Mobile-first approach with progressive enhancement for larger screens.
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Iconography Style</h3>
+                <p>Icons follow a minimalist, single-weight line-art style. They should be functional, not decorative, rendered in Light Grey or White for neutral states, and adopt accent colors (APEX Green or RESET Blue) for active states.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Iconography Library -->
+    <section id="iconography" class="section">
+        <div class="container">
+            <h2>Iconography Library</h2>
+            <p class="text-secondary mb-3">Minimalist line-art icons designed for functional clarity. All icons use 2px stroke weight at 24x24px base size.</p>
+            
+            <div class="component-card">
+                <h3>System Icons</h3>
+                <div class="icon-grid">
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Clock</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="5"/>
+                                <line x1="12" y1="1" x2="12" y2="3"/>
+                                <line x1="12" y1="21" x2="12" y2="23"/>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                                <line x1="1" y1="12" x2="3" y2="12"/>
+                                <line x1="21" y1="12" x2="23" y2="12"/>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Day/APEX</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Night/RESET</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Performance</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">System</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Shield</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                <polyline points="17 6 23 6 23 12"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Trending</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Star</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Action Icons</h3>
+                <div class="icon-grid">
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Add</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Check</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Close</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Chevron Down</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Chevron Right</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Settings</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Search</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Menu</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Protocol Icons</h3>
+                <div class="icon-grid">
+                    <div class="icon-item icon-apex">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 14 8 20 8 15 12 17 18 12 14 7 18 9 12 4 8 10 8"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">APEX Active</span>
+                    </div>
+                    <div class="icon-item icon-reset">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2v10l5 5"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">RESET Active</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="10" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Locked</span>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-preview">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Monitor</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <code>
+/* Icon Usage */
+.icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--light-grey);
+    stroke-width: 2;
+    fill: none;
+    transition: stroke 0.2s;
+}
+
+.icon:hover {
+    stroke: var(--white);
+}
+
+.icon-apex {
+    stroke: var(--apex-green);
+}
+
+.icon-reset {
+    stroke: var(--reset-blue);
+}
+                </code>
+            </div>
+        </div>
+    </section>
+
+    <!-- Email/Communication Templates -->
+    <section id="email" class="section">
+        <div class="container">
+            <h2>Email & Communication Templates</h2>
+            <p class="text-secondary mb-3">Consistent communication design that reinforces the PRIMACY brand across all touchpoints.</p>
+            
+            <div class="component-card">
+                <h3>Email Signature</h3>
+                <div class="email-signature">
+                    <div style="font-family: 'Roboto', Arial, sans-serif; color: #f5f5f5; background-color: #1a1a1a; padding: 24px; border-radius: 8px; max-width: 500px;">
+                        <div style="border-left: 3px solid #00ff9d; padding-left: 16px;">
+                            <h4 style="margin: 0; font-size: 18px; font-weight: 700;">JOHN OPERATOR</h4>
+                            <p style="margin: 4px 0; font-size: 14px; color: #888888;">Performance Systems Engineer</p>
+                            <p style="margin: 8px 0 0 0; font-size: 14px;">
+                                <span style="color: #00ff9d;">PRIMACY</span> | Upgrade Your OS.<br>
+                                <span style="color: #888888;">john@primacy.io | +1 555 0123</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <code>
+&lt;!-- HTML Email Signature --&gt;
+&lt;div style="font-family: Arial, sans-serif; color: #f5f5f5;"&gt;
+    &lt;div style="border-left: 3px solid #00ff9d; padding-left: 16px;"&gt;
+        &lt;h4 style="margin: 0; font-size: 18px;"&gt;[NAME]&lt;/h4&gt;
+        &lt;p style="margin: 4px 0; font-size: 14px; color: #888;"&gt;[TITLE]&lt;/p&gt;
+        &lt;p style="margin: 8px 0 0 0; font-size: 14px;"&gt;
+            &lt;span style="color: #00ff9d;"&gt;PRIMACY&lt;/span&gt; | Upgrade Your OS.&lt;br&gt;
+            &lt;span style="color: #888;"&gt;[EMAIL] | [PHONE]&lt;/span&gt;
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+                    </code>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Newsletter Template</h3>
+                <div class="email-template">
+                    <div class="email-preview">
+                        <div class="email-header">
+                            <h3>PROTOCOL UPDATE: WEEK 47</h3>
+                            <p class="text-secondary">System Performance Analysis</p>
+                        </div>
+                        <div class="email-body">
+                            <h4>THIS WEEK'S OPTIMIZATION</h4>
+                            <p>Your weekly performance metrics indicate a 15% improvement in recovery efficiency. The RESET protocol is adapting to your circadian rhythm.</p>
+                            
+                            <div class="email-section">
+                                <h5 class="text-apex">APEX INSIGHTS</h5>
+                                <ul>
+                                    <li>Peak cognitive performance: 10AM - 2PM</li>
+                                    <li>Optimal dosing window identified</li>
+                                    <li>Cortisol modulation on target</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="email-section">
+                                <h5 class="text-reset">RESET ANALYSIS</h5>
+                                <ul>
+                                    <li>Sleep latency reduced by 23%</li>
+                                    <li>REM cycles optimized</li>
+                                    <li>CNS recovery metrics improved</li>
+                                </ul>
+                            </div>
+                            
+                            <a href="#" class="btn btn-primary" style="display: inline-block; margin-top: 24px;">VIEW FULL REPORT</a>
+                        </div>
+                        <div class="email-footer">
+                            <p class="text-secondary">PRIMACY | Human Performance Company<br>
+                            Unsubscribe | Update Preferences</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Notification Messages</h3>
+                <div class="notification-examples">
+                    <div class="email-notification apex-notification">
+                        <h5>APEX PROTOCOL INITIATED</h5>
+                        <p>Your morning optimization sequence has begun. System diagnostics running.</p>
+                    </div>
+                    <div class="email-notification reset-notification">
+                        <h5>RESET PROTOCOL REMINDER</h5>
+                        <p>Optimal recovery window approaching in 30 minutes. Prepare for system downregulation.</p>
+                    </div>
+                    <div class="email-notification system-notification">
+                        <h5>WEEKLY PERFORMANCE REPORT READY</h5>
+                        <p>Your 7-day analysis is complete. Key insights and protocol adjustments available.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketing Collateral -->
+    <section id="marketing" class="section">
+        <div class="container">
+            <h2>Marketing Collateral</h2>
+            <p class="text-secondary mb-3">Standardized templates for maintaining brand consistency across all marketing channels.</p>
+            
+            <div class="component-card">
+                <h3>Social Media Templates</h3>
+                <div class="social-grid">
+                    <div class="social-template">
+                        <div class="social-preview instagram-post">
+                            <div class="social-content">
+                                <h4>UPGRADE YOUR OS.</h4>
+                                <p>The weekend is not an off-switch.<br>It's a recalibration period.</p>
+                                <span class="social-tag">#PRIMACY #UpgradeYourOS</span>
+                            </div>
+                        </div>
+                        <p class="text-secondary mt-2">Instagram Post (1080x1080)</p>
+                    </div>
+                    <div class="social-template">
+                        <div class="social-preview twitter-post">
+                            <p>Your morning coffee is a loan against your afternoon. APEX is an investment in your entire day.</p>
+                            <p class="social-tag">#Biohacking #Performance</p>
+                        </div>
+                        <p class="text-secondary mt-2">Twitter/X Post</p>
+                    </div>
+                    <div class="social-template">
+                        <div class="social-preview story-template">
+                            <div class="story-content">
+                                <span class="badge badge-apex">PROTOCOL ACTIVE</span>
+                                <h3>SYSTEM<br>OPTIMIZED</h3>
+                            </div>
+                        </div>
+                        <p class="text-secondary mt-2">Stories (1080x1920)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Business Card Design</h3>
+                <div class="business-card-preview">
+                    <div class="business-card front">
+                        <div class="bc-logo">PRIMACY</div>
+                        <p class="bc-tagline">Upgrade Your OS.</p>
+                    </div>
+                    <div class="business-card back">
+                        <h5>JOHN OPERATOR</h5>
+                        <p>Performance Systems Engineer</p>
+                        <div class="bc-contact">
+                            <p>john@primacy.io</p>
+                            <p>+1 555 0123</p>
+                            <p>primacy.io</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-secondary mt-2">3.5" × 2" | Matte black with spot UV on logo | APEX Green edge painting</p>
+            </div>
+
+            <div class="component-card">
+                <h3>Presentation Slide Template</h3>
+                <div class="slide-preview">
+                    <div class="slide-header">
+                        <span>PRIMACY</span>
+                        <span>01</span>
+                    </div>
+                    <div class="slide-content">
+                        <h2>THE CLOSED-LOOP SYSTEM</h2>
+                        <p class="slide-subtitle">Peak daytime output through optimized nightly recovery</p>
+                        <div class="slide-points">
+                            <div class="slide-point">
+                                <span class="point-number">01</span>
+                                <p>24-hour performance cycle optimization</p>
+                            </div>
+                            <div class="slide-point">
+                                <span class="point-number">02</span>
+                                <p>Integrated APEX/RESET protocol</p>
+                            </div>
+                            <div class="slide-point">
+                                <span class="point-number">03</span>
+                                <p>Sustainable baseline elevation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Ad Banner Specifications</h3>
+                <div class="banner-grid">
+                    <div class="banner-spec">
+                        <div class="banner-preview banner-desktop">
+                            <h4>UPGRADE YOUR OS</h4>
+                            <button class="btn btn-primary btn-sm">LEARN MORE</button>
+                        </div>
+                        <p class="text-secondary">Desktop: 728×90</p>
+                    </div>
+                    <div class="banner-spec">
+                        <div class="banner-preview banner-mobile">
+                            <h5>UPGRADE<br>YOUR OS</h5>
+                            <span class="badge badge-apex">APEX</span>
+                        </div>
+                        <p class="text-secondary">Mobile: 320×50</p>
+                    </div>
+                    <div class="banner-spec">
+                        <div class="banner-preview banner-square">
+                            <div class="banner-square-content">
+                                <h4>PRIMACY</h4>
+                                <p>Human Performance Company</p>
+                                <button class="btn btn-outline btn-sm">SHOP NOW</button>
+                            </div>
+                        </div>
+                        <p class="text-secondary">Square: 250×250</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="component-card">
+                <h3>Merchandise Guidelines</h3>
+                <div class="merch-grid">
+                    <div class="merch-item">
+                        <div class="merch-preview tshirt">
+                            <div class="merch-design">PRIMACY</div>
+                        </div>
+                        <p><strong>Apparel</strong></p>
+                        <p class="text-secondary">Black base, minimal branding, chest placement only</p>
+                    </div>
+                    <div class="merch-item">
+                        <div class="merch-preview bottle">
+                            <div class="bottle-design">
+                                <span class="bottle-logo">P</span>
+                            </div>
+                        </div>
+                        <p><strong>Water Bottle</strong></p>
+                        <p class="text-secondary">Matte black steel, laser etched logo</p>
+                    </div>
+                    <div class="merch-item">
+                        <div class="merch-preview notebook">
+                            <div class="notebook-design">
+                                <span>PROTOCOL LOG</span>
+                            </div>
+                        </div>
+                        <p><strong>Notebook</strong></p>
+                        <p class="text-secondary">Black cover, grid pages, debossed logo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Copy color to clipboard
+        function copyColor(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                const tooltip = event.currentTarget.querySelector('.copied-tooltip');
+                tooltip.classList.add('show');
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 1000);
+            });
+        }
+
+        // Smooth scroll navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Update active state
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const headerOffset = 100;
+                    const elementPosition = targetSection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Form interaction feedback
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.style.borderColor = 'var(--apex-green)';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.style.borderColor = 'var(--mid-grey)';
+            });
+        });
+    </script>
+</body>
+</html>
