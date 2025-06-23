@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMACY - Upgrade Your OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Condensed:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* PRIMACY Color System */
+            --black: #080808;
+            --dark-grey: #1a1a1a;
+            --mid-grey: #2e2e2e;
+            --light-grey: #888888;
+            --white: #f5f5f5;
+            --apex-green: #00ff9d;
+            --reset-blue: #00c6ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(8, 8, 8, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--mid-grey);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light-grey);
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--apex-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, var(--dark-grey) 0%, var(--black) 100%);
+            position: relative;
+            padding: 2rem;
+        }
+
+        /* Background Animation */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 157, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 198, 255, 0.1) 0%, transparent 50%);
+            animation: pulse 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--light-grey);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        /* Main Rotating Text */
+        .rotating-headline {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: clamp(1.8rem, 8vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .static-part {
+            display: block;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .rotating-container {
+            position: relative;
+            height: 1.2em;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .rotating-word {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            display: none;
+        }
+
+        .rotating-word.active {
+            display: block;
+        }
+
+        .rotating-word span {
+            display: inline-block;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+        }
+
+        .rotating-word span.visible {
+            opacity: 1;
+        }
+
+        /* Cursor effect */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background-color: currentColor;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+            position: relative;
+            top: 0.1em;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Color coding for different concepts */
+        .rotating-word[data-protocol="apex"] {
+            color: var(--apex-green);
+        }
+
+        .rotating-word[data-protocol="reset"] {
+            color: var(--reset-blue);
+        }
+
+        .rotating-word[data-protocol="system"] {
+            background: linear-gradient(90deg, var(--apex-green) 0%, var(--reset-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Ensure spans inherit gradient properly */
+        .rotating-word[data-protocol="system"] span {
+            background: inherit;
+            -webkit-background-clip: inherit;
+            -webkit-text-fill-color: inherit;
+            background-clip: inherit;
+        }
+
+        /* Description */
+        .hero-description {
+            font-size: 1.25rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--light-grey);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        /* CTA Buttons */
+        .cta-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-apex {
+            background-color: var(--apex-green);
+            color: var(--black);
+        }
+
+        .btn-apex:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .btn-reset {
+            background-color: transparent;
+            color: var(--reset-blue);
+            border: 2px solid var(--reset-blue);
+        }
+
+        .btn-reset:hover {
+            background-color: var(--reset-blue);
+            color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 198, 255, 0.3);
+        }
+
+        /* Protocol Indicators */
+        .protocol-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .indicator {
+            width: 40px;
+            height: 3px;
+            background-color: var(--mid-grey);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator.active {
+            background-color: var(--white);
+            transform: scaleX(1.5);
+        }
+
+        .indicator[data-protocol="apex"].active {
+            background-color: var(--apex-green);
+        }
+
+        .indicator[data-protocol="reset"].active {
+            background-color: var(--reset-blue);
+        }
+
+        .indicator[data-protocol="system"].active {
+            background: linear-gradient(90deg, var(--apex-green) 0%, var(--reset-blue) 100%);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            background-color: var(--dark-grey);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--apex-green);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .feature:nth-child(2) svg {
+            stroke: var(--reset-blue);
+        }
+
+        .feature:nth-child(3) svg {
+            stroke: url(#gradient);
+        }
+
+        .feature h3 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .feature p {
+            color: var(--light-grey);
+            line-height: 1.6;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .rotating-headline {
+                font-size: clamp(2rem, 10vw, 3rem);
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .cta-container {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">PRIMACY</div>
+            <ul class="nav-links">
+                <li><a href="#apex">APEX</a></li>
+                <li><a href="#reset">RESET</a></li>
+                <li><a href="#science">Science</a></li>
+                <li><a href="#shop">Shop</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="tagline">Human Performance Company</p>
+            
+            <h1 class="rotating-headline">
+                <span class="static-part">Upgrade Your</span>
+                <span class="rotating-container">
+                    <span class="rotating-word" data-protocol="apex" data-text="Peak Performance"></span>
+                    <span class="rotating-word" data-protocol="reset" data-text="Recovery Protocol"></span>
+                    <span class="rotating-word" data-protocol="apex" data-text="Day Protocol"></span>
+                    <span class="rotating-word" data-protocol="reset" data-text="Night System"></span>
+                    <span class="rotating-word" data-protocol="system" data-text="24-Hour Cycle"></span>
+                    <span class="cursor"></span>
+                </span>
+            </h1>
+            
+            <p class="hero-description">
+                Master the closed-loop system. Peak daytime output through optimized nightly recovery. 
+                Two protocols. One system. Sustainable excellence.
+            </p>
+            
+            <div class="cta-container">
+                <a href="#apex" class="btn btn-apex">Explore APEX</a>
+                <a href="#reset" class="btn btn-reset">Discover RESET</a>
+            </div>
+        </div>
+        
+        <div class="protocol-indicators">
+            <span class="indicator active" data-protocol="system"></span>
+            <span class="indicator" data-protocol="apex"></span>
+            <span class="indicator" data-protocol="reset"></span>
+            <span class="indicator" data-protocol="apex"></span>
+            <span class="indicator" data-protocol="reset"></span>
+            <span class="indicator" data-protocol="system"></span>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-container">
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                </div>
+                <h3>APEX Protocol</h3>
+                <p>Engineered for peak cognitive performance and sustained energy without the crash.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </div>
+                <h3>RESET Protocol</h3>
+                <p>Systematic CNS downregulation and cellular repair for true biological recovery.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24">
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00ff9d;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00c6ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                </div>
+                <h3>Closed-Loop System</h3>
+                <p>Two sides of the same coin. Performance and recovery in perfect synchronization.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Typewriter effect for rotating text
+        const words = document.querySelectorAll('.rotating-word');
+        const indicators = document.querySelectorAll('.indicator');
+        const cursor = document.querySelector('.cursor');
+        const rotatingContainer = document.querySelector('.rotating-container');
+        let currentIndex = 0;
+        let isAnimating = false;
+        let interval;
+
+        // Split text into spans for each word
+        function initializeWords() {
+            words.forEach(word => {
+                const text = word.getAttribute('data-text');
+                word.innerHTML = '';
+                
+                text.split('').forEach(char => {
+                    const span = document.createElement('span');
+                    span.textContent = char === ' ' ? '\u00A0' : char;
+                    word.appendChild(span);
+                });
+            });
+        }
+
+        // Update cursor position to follow typing
+        function updateCursorPosition(word, letterIndex) {
+            const spans = word.querySelectorAll('span');
+            if (letterIndex === 0) {
+                word.insertBefore(cursor, spans[0]);
+            } else if (letterIndex <= spans.length) {
+                spans[letterIndex - 1].after(cursor);
+            }
+        }
+
+        // Type out a word letter by letter
+        function typeWord(index) {
+            return new Promise(resolve => {
+                const word = words[index];
+                const spans = word.querySelectorAll('span');
+                
+                word.classList.add('active');
+                
+                let letterIndex = 0;
+                
+                const typeInterval = setInterval(() => {
+                    if (letterIndex < spans.length) {
+                        spans[letterIndex].classList.add('visible');
+                        letterIndex++;
+                        updateCursorPosition(word, letterIndex);
+                    } else {
+                        clearInterval(typeInterval);
+                        resolve();
+                    }
+                }, 130);
+            });
+        }
+
+        // Delete a word letter by letter from right to left
+        function deleteWord(index) {
+            return new Promise(resolve => {
+                const word = words[index];
+                const spans = word.querySelectorAll('span');
+                
+                let letterIndex = spans.length - 1;
+                
+                const deleteInterval = setInterval(() => {
+                    if (letterIndex >= 0) {
+                        spans[letterIndex].classList.remove('visible');
+                        updateCursorPosition(word, letterIndex);
+                        letterIndex--;
+                    } else {
+                        clearInterval(deleteInterval);
+                        word.classList.remove('active');
+                        resolve();
+                    }
+                }, 130);
+            });
+        }
+
+        // Main rotation function
+        async function rotateWords() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Update indicators
+            indicators[currentIndex].classList.remove('active');
+            
+            // Delete current word
+            await deleteWord(currentIndex);
+            
+            // Move to next word
+            currentIndex = (currentIndex + 1) % words.length;
+            indicators[currentIndex].classList.add('active');
+            
+            // Small pause before typing next word
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Type next word
+            await typeWord(currentIndex);
+            
+            isAnimating = false;
+        }
+
+        // Initialize
+        initializeWords();
+
+        // Start the animation
+        async function start() {
+            indicators[0].classList.add('active');
+            await typeWord(0);
+            
+            // Start rotation after initial word
+            interval = setInterval(rotateWords, 3000);
+        }
+
+        // Start after a short delay
+        setTimeout(start, 500);
+
+        // Pause on hover
+        rotatingContainer.addEventListener('mouseenter', () => {
+            clearInterval(interval);
+            cursor.style.animationPlayState = 'paused';
+        });
+        
+        rotatingContainer.addEventListener('mouseleave', () => {
+            cursor.style.animationPlayState = 'running';
+            if (!isAnimating) {
+                interval = setInterval(rotateWords, 3000);
+            }
+        });
+
+        // Click indicators to jump to specific word
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', async () => {
+                if (isAnimating || index === currentIndex) return;
+                
+                clearInterval(interval);
+                isAnimating = true;
+                
+                // Update indicators
+                indicators[currentIndex].classList.remove('active');
+                
+                // Delete current word
+                await deleteWord(currentIndex);
+                
+                // Update index and indicators
+                currentIndex = index;
+                indicators[currentIndex].classList.add('active');
+                
+                // Small pause
+                await new Promise(resolve => setTimeout(resolve, 200));
+                
+                // Type selected word
+                await typeWord(currentIndex);
+                
+                isAnimating = false;
+                
+                // Restart interval
+                interval = setInterval(rotateWords, 3000);
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
