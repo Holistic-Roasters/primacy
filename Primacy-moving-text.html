@@ -202,14 +202,6 @@
             background-clip: text;
         }
 
-        /* Ensure spans inherit gradient properly */
-        .rotating-word[data-protocol="system"] span {
-            background: inherit;
-            -webkit-background-clip: inherit;
-            -webkit-text-fill-color: inherit;
-            background-clip: inherit;
-        }
-
         /* Description */
         .hero-description {
             font-size: 1.25rem;
@@ -511,12 +503,27 @@
             });
         }
 
-        // Update cursor position to follow typing
+        // --- CORRECTED CURSOR POSITION LOGIC ---
+        // This version is more explicit about positioning the cursor relative to the letter spans.
         function updateCursorPosition(word, letterIndex) {
             const spans = word.querySelectorAll('span');
-            if (letterIndex === 0) {
-                word.insertBefore(cursor, spans[0]);
-            } else if (letterIndex <= spans.length) {
+
+            // If the word is finished, place the cursor after the very last letter.
+            if (letterIndex >= spans.length) {
+                const lastSpan = spans[spans.length - 1];
+                if (lastSpan) {
+                    lastSpan.after(cursor);
+                } else {
+                    // Fallback for an empty word, place cursor inside the container.
+                    word.appendChild(cursor);
+                }
+            } 
+            // If we are at the beginning, place the cursor before the first letter.
+            else if (letterIndex <= 0) {
+                 word.insertBefore(cursor, spans[0]);
+            }
+            // Otherwise, place it after the previous letter.
+            else {
                 spans[letterIndex - 1].after(cursor);
             }
         }
@@ -550,13 +557,13 @@
                 const word = words[index];
                 const spans = word.querySelectorAll('span');
                 
-                let letterIndex = spans.length - 1;
+                let letterIndex = spans.length;
                 
                 const deleteInterval = setInterval(() => {
-                    if (letterIndex >= 0) {
+                    if (letterIndex > 0) {
+                        letterIndex--;
                         spans[letterIndex].classList.remove('visible');
                         updateCursorPosition(word, letterIndex);
-                        letterIndex--;
                     } else {
                         clearInterval(deleteInterval);
                         word.classList.remove('active');
@@ -596,6 +603,12 @@
         // Start the animation
         async function start() {
             indicators[0].classList.add('active');
+            
+            // Set initial cursor position before typing starts
+            const firstWord = words[0];
+            firstWord.classList.add('active');
+            updateCursorPosition(firstWord, 0);
+
             await typeWord(0);
             
             // Start rotation after initial word
