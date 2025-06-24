@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMACY - Pricing Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-apex-accent: #00ff9d;
+            --color-reset-accent: #00c6ff;
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+		
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+        }
+
+        .pricing-section {
+            background-color: var(--color-dark-grey);
+            padding: 80px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .section-header .highlight {
+            color: var(--color-apex-accent);
+        }
+        
+        .tier-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-light-grey);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--color-mid-grey);
+            padding-bottom: 1rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .pricing-card {
+            background: linear-gradient(145deg, #1f1f1f 0%, #161616 100%);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            /* center children horizontally */
+            align-items: center;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .pricing-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-white);
+        }
+        
+        .serving-count {
+            color: var(--color-light-grey);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        
+        .price .unit {
+            font-size: 1rem;
+            color: var(--color-light-grey);
+            font-weight: 400;
+        }
+        
+        .card-description {
+            color: var(--color-light-grey);
+            font-size: 1rem;
+            flex-grow: 1;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px;
+            width: auto;
+            margin: 0 auto;
+            border: 2px solid;
+            border-radius: 12px;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            align-self: center;
+        }
+
+        /* Highlighting */
+        .highlight-card {
+            border: 2px solid;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight-badge {
+            position: absolute;
+            top: 20px;
+            right: -40px;
+            background-color: var(--color-apex-accent);
+            color: var(--color-black);
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Specific Colors */
+        .apex-card h3, .apex-card .price { color: var(--color-apex-accent); }
+        .reset-card h3, .reset-card .price { color: var(--color-reset-accent); }
+        .apex-card .cta-button { border-color: var(--color-apex-accent); color: var(--color-apex-accent); }
+        .reset-card .cta-button { border-color: var(--color-reset-accent); color: var(--color-reset-accent); }
+        .apex-card .cta-button:hover { background-color: var(--color-apex-accent); color: var(--color-black); }
+        .reset-card .cta-button:hover { background-color: var(--color-reset-accent); color: var(--color-black); }
+        
+        .bundle-card.highlight-card { border-color: var(--color-apex-accent); }
+        .bundle-card .cta-button { background-color: var(--color-apex-accent); color: var(--color-black); border-color: var(--color-apex-accent); }
+        .bundle-card .cta-button:hover { background-color: transparent; color: var(--color-apex-accent); }
+
+        /* Subscription Toggle */
+        .sub-toggle-wrapper { margin-bottom: 2rem; text-align: center; width: 100%; }
+        .sub-toggle { display: inline-flex; background-color: var(--color-black); border: 1px solid var(--color-mid-grey); border-radius: 20px; padding: 5px; }
+        .toggle-option { padding: 8px 15px; border-radius: 15px; cursor: pointer; font-size: 0.85rem; color: var(--color-light-grey); transition: all 0.3s ease; }
+        .toggle-option.active { background-color: var(--color-white); color: var(--color-black); font-weight: 700; }
+        .save-text { font-size: 0.8rem; color: var(--color-apex-accent); margin-top: 5px; }
+
+        @media (max-width: 992px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+		.section-header p {
+		    color: var(--color-light-grey);
+		    font-size: 1.1rem;
+		    margin-top: -0.5rem;
+		}
+
+    </style>
+</head>
+<body>
+
+<section class="pricing-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>INITIATE YOUR <span class="highlight">PROTOCOL</span></h2><br>
+			<p class="intro-text">
+			  Your journey to optimized performance begins here. Choose your entry point into the PRIMACY ecosystem.
+			</p>
+            
+        </div>
+
+        <h3 class="tier-title">The Trial Tier: Your First Protocol</h3>
+        <div class="pricing-grid">
+            <!-- APEX Field Kit -->
+            <div class="pricing-card apex-card">
+                <h3>APEX Field Kit</h3>
+                <p class="serving-count">10 Servings</p>
+                <div class="price">$39</div>
+                <p class="card-description">The perfect entry point to experience the daytime protocol. Provides the exact 10 doses needed for a 2-week, 5-on/2-off performance cycle.</p>
+                <a href="#" class="cta-button">Trial APEX</a>
+            </div>
+
+            <!-- RESET Field Kit -->
+            <div class="pricing-card reset-card">
+                <h3>RESET Field Kit</h3>
+                <p class="serving-count">14 Servings</p>
+                <div class="price">$39</div>
+                <p class="card-description">Experience true biological recovery. Provides the exact 14 doses needed for a 2-week, nightly protocol to recalibrate your system.</p>
+                <a href="#" class="cta-button">Trial RESET</a>
+            </div>
+            
+            <!-- Genesis Kit Bundle -->
+            <div class="pricing-card bundle-card highlight-card">
+                <div class="highlight-badge">Recommended</div>
+                <h3>The Genesis Kit</h3>
+                <p class="serving-count">10 APEX + 14 RESET Servings</p>
+                <div class="price" style="color: var(--color-white);">$69</div>
+                <p class="card-description">The definitive trial. A perfectly matched set for one complete 14-day performance and recovery cycle. The most logical entry point to the PRIMACY system.</p>
+                <a href="#" class="cta-button">Begin The Protocol</a>
+            </div>
+        </div>
+
+        <h3 class="tier-title">The Commitment Tier: Your Ongoing System</h3>
+        <div class="pricing-grid">
+            <!-- APEX System Core -->
+            <div class="pricing-card apex-card" data-product="apex-tub">
+                <h3>APEX System Core</h3>
+                <p class="serving-count">50 Servings</p>
+                <div class="sub-toggle-wrapper">
+                    <div class="sub-toggle">
+                        <div class="toggle-option active" data-price="$99">One-Time</div>
+                        <div class="toggle-option" data-price="$89">Subscribe</div>
+                    </div>
+                    <p class="save-text">Save 10% with a bi-monthly subscription</p>
+                </div>
+                <div class="price product-price">$99</div>
+                <p class="card-description">Your at-home supply depot. Contains 44 core doses for your 8-week cycle, plus a 6-dose strategic reserve for mission-critical demands.</p>
+                <a href="#" class="cta-button product-cta">Purchase Once</a>
+            </div>
+
+            <!-- RESET System Core -->
+            <div class="pricing-card reset-card" data-product="reset-tub">
+                <h3>RESET System Core</h3>
+                <p class="serving-count">60 Servings</p>
+                <div class="sub-toggle-wrapper">
+                    <div class="sub-toggle">
+                        <div class="toggle-option active" data-price="$99">One-Time</div>
+                        <div class="toggle-option" data-price="$89">Subscribe</div>
+                    </div>
+                    <p class="save-text" style="color:var(--color-reset-accent);">Save 10% with a bi-monthly subscription</p>
+                </div>
+                <div class="price product-price">$99</div>
+                <p class="card-description">The foundation of your recovery. A full 60-dose supply to ensure consistent, uninterrupted recovery every single night for 2 months.</p>
+                <a href="#" class="cta-button product-cta">Purchase Once</a>
+            </div>
+
+            <!-- Complete Protocol Bundle -->
+            <div class="pricing-card bundle-card highlight-card">
+                <div class="highlight-badge">Best Value</div>
+                <h3>The Complete Protocol</h3>
+                <p class="serving-count">50 APEX + 60 RESET Servings</p>
+                <div class="sub-toggle-wrapper">
+                    <div class="sub-toggle" style="visibility: hidden;"> <!-- Placeholder for alignment -->
+                         <div class="toggle-option"></div><div class="toggle-option active"></div>
+                    </div>
+                    <p class="save-text" style="color:var(--color-apex-accent);">Save an additional $19</p>
+                </div>
+                <div class="price" style="color: var(--color-white);">$159</div>
+                <p class="card-description">The ultimate system for complete biological mastery. A bi-monthly subscription delivering your entire 8-week protocol. This is the definitive PRIMACY experience.</p>
+                <a href="#" class="cta-button">Engage Full System</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const subscriptionToggles = document.querySelectorAll('.sub-toggle');
+
+        subscriptionToggles.forEach(toggle => {
+            const options = toggle.querySelectorAll('.toggle-option');
+            const card = toggle.closest('.pricing-card');
+            const priceEl = card.querySelector('.product-price');
+            const ctaButton = card.querySelector('.product-cta');
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Update active state
+                    options.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+
+                    // Update price
+                    const newPrice = option.dataset.price;
+                    priceEl.textContent = newPrice;
+
+                    // Update button text
+                    if (option.textContent.toLowerCase() === 'subscribe') {
+                        ctaButton.textContent = 'Subscribe Now';
+                    } else {
+                        ctaButton.textContent = 'Purchase Once';
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
