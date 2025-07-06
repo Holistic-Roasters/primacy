@@ -155,11 +155,25 @@
             opacity: 0;
             transform: scale(0);
             transition: all 0.1s ease;
+            cursor: pointer;
+            border: 3px solid rgba(255, 255, 255, 0.3);
         }
 
         .stimulus.active {
             opacity: 1;
             transform: scale(1);
+            animation: targetPulse 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes targetPulse {
+            from { 
+                box-shadow: 0 0 30px var(--color-accent);
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+            to { 
+                box-shadow: 0 0 40px var(--color-accent), 0 0 60px rgba(0, 255, 157, 0.3);
+                border-color: rgba(255, 255, 255, 0.6);
+            }
         }
 
         .stimulus.visual {
@@ -630,7 +644,7 @@
                 const instructions = {
                     simple: {
                         title: 'Simple Reaction Test',
-                        text: 'Click anywhere when the green circle appears. Be ready, but don\'t anticipate!'
+                        text: 'Click directly on the green circle when it appears. You must hit the target accurately!'
                     },
                     choice: {
                         title: 'Choice Reaction Test',
@@ -638,11 +652,11 @@
                     },
                     audio: {
                         title: 'Audio Reaction Test',
-                        text: 'Click when you hear the beep sound. Make sure your volume is on!'
+                        text: 'Click anywhere when you hear the beep sound. Make sure your volume is on!'
                     },
                     sequence: {
                         title: 'Sequence Test',
-                        text: 'Complete 10 rapid reactions as fast as possible. Click each target as it appears.'
+                        text: 'Click each target circle as quickly and accurately as possible. You must hit each target directly!'
                     }
                 };
 
