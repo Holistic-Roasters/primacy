@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESET - Interactive Synergy Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL STYLES & RESET --- */
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-accent: #00c6ff; /* Calming Blue for RESET */
+            --color-deep-blue: #0066cc;
+            --color-purple: #9370DB;
+            --color-cherry: #DC143C;
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- SYNERGY MAP SECTION --- */
+        .synergy-section {
+            min-height: 100vh;
+            padding: 80px 0;
+            background: var(--color-black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .synergy-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 198, 255, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .section-header .highlight {
+            color: var(--color-accent);
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--color-light-grey);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- SYNERGY MAP CONTAINER --- */
+        .synergy-map-container {
+            background: var(--color-dark-grey);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 198, 255, 0.1);
+        }
+
+        .synergy-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, rgba(0, 198, 255, 0.02) 0%, transparent 50%);
+        }
+
+        #synergyCanvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        #synergyCanvas.grabbing {
+            cursor: grabbing;
+        }
+
+        /* --- INGREDIENT INFO PANEL --- */
+        .ingredient-info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: calc(100% - 40px);
+            background: rgba(26, 26, 26, 0.95);
+            border: 2px solid var(--color-accent);
+            border-radius: 15px;
+            padding: 25px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .ingredient-info-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .ingredient-info-panel::-webkit-scrollbar-track {
+            background: var(--color-black);
+            border-radius: 4px;
+        }
+
+        .ingredient-info-panel::-webkit-scrollbar-thumb {
+            background: var(--color-accent);
+            border-radius: 4px;
+        }
+
+        .ingredient-info-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--color-white);
+        }
+
+        .ingredient-info-panel.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: transparent;
+            border: none;
+            color: var(--color-light-grey);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--color-white);
+        }
+
+        .ingredient-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--color-black);
+        }
+
+        .panel-header h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--color-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dose-badge {
+            background: var(--color-black);
+            border: 2px solid var(--color-accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            color: var(--color-accent);
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .panel-description {
+            color: var(--color-light-grey);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .synergy-list {
+            list-style: none;
+        }
+
+        .synergy-list h4 {
+            color: var(--color-accent);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .synergy-item {
+            background: var(--color-black);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--color-accent);
+            font-size: 0.9rem;
+            color: var(--color-light-grey);
+            transition: all 0.3s ease;
+        }
+
+        .synergy-item:hover {
+            transform: translateX(5px);
+            border-left-color: var(--color-white);
+        }
+
+        .synergy-item strong {
+            color: var(--color-white);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .sleep-effects {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-mid-grey);
+        }
+
+        .sleep-effects h4 {
+            color: var(--color-accent);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sleep-effects p {
+            color: var(--color-light-grey);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- CONTROLS --- */
+        .map-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 2rem;
+        }
+
+        .control-btn {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            color: var(--color-light-grey);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .control-btn.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+        }
+
+        /* --- SLEEP CYCLE VISUALIZATION --- */
+        .sleep-cycle-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .sleep-cycle-overlay.active {
+            opacity: 0.15;
+        }
+
+        .sleep-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- LEGEND --- */
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(26, 26, 26, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--color-mid-grey);
+            backdrop-filter: blur(10px);
+        }
+
+        .legend-title {
+            font-size: 0.9rem;
+            color: var(--color-accent);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: var(--color-light-grey);
+        }
+
+        .legend-line {
+            width: 30px;
+            height: 2px;
+            margin-right: 10px;
+        }
+
+        .legend-line.strong {
+            background: var(--color-accent);
+            box-shadow: 0 0 5px var(--color-accent);
+        }
+
+        .legend-line.moderate {
+            background: var(--color-light-grey);
+        }
+
+        .legend-line.enhances {
+            background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent) 45%, transparent 50%, transparent 55%, var(--color-accent) 60%, var(--color-accent) 100%);
+        }
+
+        /* --- PATHWAY LEGEND --- */
+        .pathway-legend {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(26, 26, 26, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--color-mid-grey);
+            backdrop-filter: blur(10px);
+            max-width: 200px;
+        }
+
+        .pathway-legend h4 {
+            font-size: 0.9rem;
+            color: var(--color-accent);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pathway-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+        }
+
+        .pathway-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 5px currentColor;
+        }
+
+        /* --- TOOLTIP --- */
+        .synergy-tooltip {
+            position: absolute;
+            background: var(--color-black);
+            border: 1px solid var(--color-accent);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--color-white);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 20;
+            max-width: 250px;
+        }
+
+        .synergy-tooltip.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+            .synergy-canvas-wrapper {
+                height: 500px;
+            }
+
+            .ingredient-info-panel {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-width: 100%;
+                max-height: 70vh;
+                border-radius: 20px 20px 0 0;
+                padding: 20px;
+                transform: translateY(100%);
+                transition: transform 0.3s ease-out;
+            }
+
+            .ingredient-info-panel.active {
+                transform: translateY(0);
+            }
+
+            .panel-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .map-legend {
+                position: fixed;
+                bottom: 60px;
+                left: 10px;
+                right: auto;
+                font-size: 0.75rem;
+                padding: 10px 15px;
+                max-width: 180px;
+            }
+
+            .map-controls {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(26, 26, 26, 0.95);
+                padding: 10px;
+                margin: 0;
+                display: flex;
+                gap: 5px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                backdrop-filter: blur(10px);
+                border-top: 1px solid var(--color-mid-grey);
+            }
+
+            .control-btn {
+                flex-shrink: 0;
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+
+            .pathway-legend {
+                display: none;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .section-header p {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+
+            .ingredient-info-panel::before {
+                content: '';
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 4px;
+                background: var(--color-light-grey);
+                border-radius: 2px;
+            }
+        }
+
+        @media (pointer: coarse) {
+            .control-btn {
+                min-height: 44px;
+            }
+
+            .close-btn {
+                min-width: 44px;
+                min-height: 44px;
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) and (orientation: landscape) {
+            .synergy-canvas-wrapper {
+                height: 400px;
+            }
+
+            .ingredient-info-panel {
+                max-height: 80vh;
+            }
+
+            .map-legend {
+                bottom: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .synergy-map-container {
+                padding: 1rem;
+            }
+
+            .ingredient-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .dose-badge {
+                font-size: 1rem;
+                padding: 6px 12px;
+            }
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes flowEnergy {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -40; }
+        }
+
+        .energy-flow {
+            animation: flowEnergy 2s linear infinite;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="synergy-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>THE <span class="highlight">RECOVERY NETWORK</span></h2>
+                <p>Explore how each ingredient orchestrates your descent into restorative sleep. Click and drag to discover the intricate pathways that transform stress into serenity.</p>
+            </div>
+
+            <div class="synergy-map-container">
+                <div class="synergy-canvas-wrapper">
+                    <canvas id="synergyCanvas"></canvas>
+                    
+                    <!-- Sleep Cycle Overlay -->
+                    <div class="sleep-cycle-overlay" id="sleepOverlay">
+                        <svg class="sleep-svg" viewBox="0 0 100 100">
+                            <defs>
+                                <radialGradient id="moonGradient">
+                                    <stop offset="0%" style="stop-color:#00c6ff;stop-opacity:0.3" />
+                                    <stop offset="100%" style="stop-color:#00c6ff;stop-opacity:0" />
+                                </radialGradient>
+                            </defs>
+                            <circle cx="30" cy="30" r="15" fill="#00c6ff" opacity="0.3">
+                                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="4s" repeatCount="indefinite" />
+                            </circle>
+                            <path d="M30 20 Q35 35, 20 40 Q15 30, 30 20" fill="rgba(0, 198, 255, 0.2)" />
+                        </svg>
+                    </div>
+
+                    <!-- Ingredient Info Panel -->
+                    <div class="ingredient-info-panel" id="infoPanel">
+                        <div class="panel-header">
+                            <div class="ingredient-icon" id="ingredientIcon">Mg</div>
+                            <h3 id="ingredientName">Magnesium</h3>
+                            <button class="close-btn" id="closePanel">&times;</button>
+                        </div>
+                        <div class="dose-badge" id="ingredientDose">200mg</div>
+                        <p class="panel-description" id="ingredientDescription"></p>
+                        <div class="synergy-list">
+                            <h4>Key Synergies</h4>
+                            <div id="synergyConnections"></div>
+                        </div>
+                        <div class="sleep-effects">
+                            <h4>Sleep Stage Effects</h4>
+                            <p id="sleepEffects"></p>
+                        </div>
+                    </div>
+
+                    <!-- Pathway Legend -->
+                    <div class="pathway-legend">
+                        <h4>Sleep Pathways</h4>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #9370DB;"></div>
+                            <span>GABA (Calming)</span>
+                        </div>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #87CEEB;"></div>
+                            <span>Serotonin (Mood)</span>
+                        </div>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #FF6347;"></div>
+                            <span>Cortisol (Stress)</span>
+                        </div>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #00c6ff;"></div>
+                            <span>Recovery (Physical)</span>
+                        </div>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #FFD700;"></div>
+                            <span>Melatonin (Sleep)</span>
+                        </div>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #4169e1;"></div>
+                            <span>Thermoregulation</span>
+                        </div>
+                        <div class="pathway-item">
+                            <div class="pathway-dot" style="background-color: #8B0000;"></div>
+                            <span>Circulation (NO)</span>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="map-legend">
+                        <div class="legend-title">Connection Strength</div>
+                        <div class="legend-item">
+                            <div class="legend-line strong"></div>
+                            <span>Primary Synergy</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-line moderate"></div>
+                            <span>Supporting Effect</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-line enhances"></div>
+                            <span>Enhancement Flow</span>
+                        </div>
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div class="synergy-tooltip" id="tooltip"></div>
+                </div>
+
+                <div class="map-controls">
+                    <button class="control-btn active" data-view="all">All Connections</button>
+                    <button class="control-btn" data-view="shutdown">Shutdown Signal</button>
+                    <button class="control-btn" data-view="cortisol">Cortisol Control</button>
+                    <button class="control-btn" data-view="recovery">Recovery System</button>
+                    <button class="control-btn" data-view="reset">Reset View</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Sleep Pathway System
+        class SleepPathwaySystem {
+            constructor() {
+                this.pathways = [];
+                this.waves = [];
+            }
+
+            createWave(type, startPos, endPos, color) {
+                return {
+                    type: type,
+                    position: { ...startPos },
+                    start: { ...startPos },
+                    end: { ...endPos },
+                    progress: 0,
+                    speed: 0.015 + Math.random() * 0.005,
+                    size: 4 + Math.random() * 2,
+                    color: color,
+                    trail: [],
+                    opacity: 0.8
+                };
+            }
+
+            addPathway(ingredient1, ingredient2, type) {
+                const colors = {
+                    gaba: '#9370DB',
+                    serotonin: '#87CEEB',
+                    cortisol: '#FF6347',
+                    recovery: '#00c6ff',
+                    melatonin: '#FFD700',
+                    thermoregulation: '#4169e1',
+                    circulation: '#8B0000'
+                };
+
+                this.pathways.push({
+                    from: ingredient1,
+                    to: ingredient2,
+                    type: type,
+                    color: colors[type] || '#00c6ff',
+                    active: false,
+                    waveTimer: 0
+                });
+            }
+
+            activatePathway(ingredient) {
+                this.pathways.forEach(pathway => {
+                    if (pathway.from === ingredient || pathway.to === ingredient) {
+                        pathway.active = true;
+                        pathway.waveTimer = 120;
+                    }
+                });
+            }
+
+            update() {
+                // Update existing waves
+                this.waves = this.waves.filter(w => {
+                    w.progress += w.speed;
+                    
+                    // Update position along bezier curve
+                    const dx = w.end.x - w.start.x;
+                    const dy = w.end.y - w.start.y;
+                    const cx = w.start.x + dx / 2 + dy * 0.1;
+                    const cy = w.start.y + dy / 2 - dx * 0.1;
+                    
+                    const t1 = 1 - w.progress;
+                    const t2 = w.progress;
+                    
+                    w.position.x = t1 * t1 * w.start.x + 2 * t1 * t2 * cx + t2 * t2 * w.end.x;
+                    w.position.y = t1 * t1 * w.start.y + 2 * t1 * t2 * cy + t2 * t2 * w.end.y;
+                    
+                    // Add to trail
+                    w.trail.push({ x: w.position.x, y: w.position.y });
+                    if (w.trail.length > 15) w.trail.shift();
+                    
+                    // Fade out at the end
+                    if (w.progress > 0.8) {
+                        w.opacity = 0.8 * (1 - (w.progress - 0.8) / 0.2);
+                    }
+                    
+                    return w.progress < 1;
+                });
+
+                // Update pathways and create new waves
+                this.pathways.forEach(pathway => {
+                    if (pathway.active && pathway.waveTimer > 0) {
+                        pathway.waveTimer--;
+                        
+                        // Create new wave every few frames
+                        if (pathway.waveTimer % 20 === 0) {
+                            this.waves.push(
+                                this.createWave(
+                                    pathway.type,
+                                    pathway.from.position,
+                                    pathway.to.position,
+                                    pathway.color
+                                )
+                            );
+                        }
+                        
+                        if (pathway.waveTimer === 0) {
+                            pathway.active = false;
+                        }
+                    }
+                });
+            }
+
+            draw(ctx) {
+                this.waves.forEach(w => {
+                    // Draw trail
+                    ctx.save();
+                    ctx.globalAlpha = w.opacity * 0.3;
+                    ctx.strokeStyle = w.color;
+                    ctx.lineWidth = w.size * 0.5;
+                    ctx.lineCap = 'round';
+                    
+                    ctx.beginPath();
+                    w.trail.forEach((point, i) => {
+                        if (i === 0) {
+                            ctx.moveTo(point.x, point.y);
+                        } else {
+                            ctx.lineTo(point.x, point.y);
+                        }
+                    });
+                    ctx.stroke();
+                    
+                    // Draw wave particle
+                    ctx.globalAlpha = w.opacity;
+                    
+                    // Outer glow
+                    const gradient = ctx.createRadialGradient(
+                        w.position.x, w.position.y, 0,
+                        w.position.x, w.position.y, w.size * 2
+                    );
+                    gradient.addColorStop(0, w.color);
+                    gradient.addColorStop(1, 'transparent');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(w.position.x, w.position.y, w.size * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Core
+                    ctx.fillStyle = w.color;
+                    ctx.beginPath();
+                    ctx.arc(w.position.x, w.position.y, w.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Inner bright spot
+                    ctx.globalAlpha = 1;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(w.position.x, w.position.y, w.size * 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.restore();
+                });
+            }
+        }
+
+        // RESET Synergy Map Implementation
+        class ResetSynergyMap {
+            constructor() {
+                this.canvas = document.getElementById('synergyCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.ingredients = [];
+                this.connections = [];
+                this.particles = [];
+                this.selectedIngredient = null;
+                this.hoveredIngredient = null;
+                this.draggedIngredient = null;
+                this.mousePos = { x: 0, y: 0 };
+                this.currentView = 'all';
+                this.animationFrame = 0;
+                
+                // Touch handling
+                this.touchStartTime = 0;
+                this.touchStartPos = { x: 0, y: 0 };
+                this.lastTouchPos = { x: 0, y: 0 };
+                this.potentialDragIngredient = null;
+                this.longPressTimer = null;
+                
+                // Mobile detection
+                this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                
+                // Initialize systems
+                this.sleepPathwaySystem = new SleepPathwaySystem();
+                
+                this.setupCanvas();
+                this.createIngredients();
+                this.createConnections();
+                this.setupSleepPathways();
+                this.setupEventListeners();
+                this.setupMobileFeatures();
+                this.animate();
+            }
+
+            setupCanvas() {
+                const rect = this.canvas.getBoundingClientRect();
+                this.canvas.width = rect.width * window.devicePixelRatio;
+                this.canvas.height = rect.height * window.devicePixelRatio;
+                this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                this.width = rect.width;
+                this.height = rect.height;
+            }
+
+            createIngredients() {
+                const centerX = this.width / 2;
+                const centerY = this.height / 2;
+                const radius = Math.min(this.width, this.height) * 0.3;
+                
+                const ingredientData = [
+                    {
+                        id: 'magnesium',
+                        name: 'Magnesium Bisglycinate',
+                        shortName: 'Mg',
+                        dose: '200mg',
+                        color: '#00c6ff',
+                        description: 'The master switch for nervous system downregulation and muscle relaxation.',
+                        category: ['shutdown', 'cortisol'],
+                        sleepEffects: 'Enhances deep sleep (Stage 3) by relaxing muscles and calming neural activity. Reduces time to fall asleep.'
+                    },
+                    {
+                        id: 'ltheanine',
+                        name: 'L-Theanine',
+                        shortName: 'Th',
+                        dose: '200mg',
+                        color: '#00c6ff',
+                        description: 'Mind quieting agent that promotes alpha brain waves for mental relaxation.',
+                        category: ['shutdown'],
+                        sleepEffects: 'Promotes the transition from wakefulness to sleep by inducing alpha waves. Reduces mental chatter.'
+                    },
+                    {
+                        id: 'ashwagandha',
+                        name: 'Ashwagandha (KSM-66®)',
+                        shortName: 'Ash',
+                        dose: '300mg',
+                        color: '#FF6347',
+                        description: 'Adaptogen that actively reduces evening cortisol levels.',
+                        category: ['cortisol'],
+                        sleepEffects: 'Lowers cortisol to prevent "wired but tired" syndrome. Improves overall sleep quality and morning recovery.'
+                    },
+                    {
+                        id: 'taurine',
+                        name: 'Taurine',
+                        shortName: 'Tau',
+                        dose: '500mg',
+                        color: '#9370DB',
+                        description: 'System-wide calming through GABAergic effects and cellular hydration.',
+                        category: ['shutdown', 'recovery'],
+                        sleepEffects: 'Activates GABA receptors for deeper sleep. Supports cellular recovery during sleep.'
+                    },
+                    {
+                        id: 'cherry',
+                        name: 'Tart Cherry Extract',
+                        shortName: 'TC',
+                        dose: '500mg',
+                        color: '#DC143C',
+                        description: 'Powerful antioxidant that reduces inflammation and muscle soreness.',
+                        category: ['recovery'],
+                        sleepEffects: 'Natural source of melatonin precursors. Reduces inflammation for better physical recovery during sleep.'
+                    },
+                    {
+                        id: 'inositol',
+                        name: 'Myo-Inositol',
+                        shortName: 'Ino',
+                        dose: '1000mg',
+                        color: '#87CEEB',
+                        description: 'Supports serotonin pathways and helps stop repetitive thoughts.',
+                        category: ['shutdown'],
+                        sleepEffects: 'Improves REM sleep quality by supporting serotonin. Helps break the cycle of racing thoughts.'
+                    },
+                    {
+                        id: 'apigenin',
+                        name: 'Apigenin',
+                        shortName: 'Api',
+                        dose: '50mg',
+                        color: '#FFD700',
+                        description: 'Bio-flavonoid that induces relaxation and enhances deep sleep.',
+                        category: ['shutdown'],
+                        sleepEffects: 'Increases time spent in deep, restorative sleep stages. May support natural melatonin production.'
+                    },
+                    {
+                        id: 'pharmagaba',
+                        name: 'PharmaGABA®',
+                        shortName: 'GABA',
+                        dose: '100mg',
+                        color: '#9370DB',
+                        description: 'Direct GABA supply through the gut-brain axis for systemic calming.',
+                        category: ['shutdown'],
+                        sleepEffects: 'Provides immediate calming signal. Reduces sleep latency and improves sleep maintenance.'
+                    },
+                    {
+                        id: 'glycine',
+                        name: 'Glycine',
+                        shortName: 'Gly',
+                        dose: '3000mg',
+                        color: '#4169e1',
+                        description: 'The thermoregulator. Lowers core body temperature to initiate sleep and enhances sleep quality.',
+                        category: ['shutdown', 'recovery'],
+                        sleepEffects: 'Lowers core body temperature for sleep initiation. Significantly improves subjective sleep quality and reduces daytime fatigue.'
+                    },
+                    {
+                        id: 'tryptophan',
+                        name: 'L-Tryptophan',
+                        shortName: 'Trp',
+                        dose: '500mg',
+                        color: '#FF69B4',
+                        description: 'The serotonin precursor. Naturally converts to serotonin and melatonin for mood and sleep support.',
+                        category: ['shutdown'],
+                        sleepEffects: 'Direct precursor to melatonin production. Improves sleep onset, duration, and morning mood.'
+                    },
+                    {
+                        id: 'chamomile',
+                        name: 'Chamomile Extract',
+                        shortName: 'Cham',
+                        dose: '150mg',
+                        color: '#F0E68C',
+                        description: 'The gentle sedative. Contains apigenin and other compounds for mild relaxation.',
+                        category: ['shutdown', 'cortisol'],
+                        sleepEffects: 'Provides mild sedation without morning grogginess. Reduces anxiety and promotes sleep readiness.'
+                    },
+                    {
+                        id: 'beetroot',
+                        name: 'Beetroot Powder',
+                        shortName: 'BR',
+                        dose: '250mg',
+                        color: '#8B0000',
+                        description: 'The recovery accelerator. Boosts nitric oxide for enhanced nutrient delivery and waste removal during sleep.',
+                        category: ['recovery'],
+                        sleepEffects: 'Optimizes blood flow during sleep for accelerated muscle recovery. Enhances nutrient delivery and metabolic waste removal overnight.'
+                    }
+                ];
+
+                this.ingredients = ingredientData.map((data, i) => {
+                    const angle = (Math.PI * 2 / ingredientData.length) * i - Math.PI / 2;
+                    return {
+                        ...data,
+                        position: {
+                            x: centerX + Math.cos(angle) * radius,
+                            y: centerY + Math.sin(angle) * radius
+                        },
+                        radius: this.isMobile ? 40 : 35,
+                        pulsePhase: Math.random() * Math.PI * 2,
+                        velocity: { x: 0, y: 0 }
+                    };
+                });
+            }
+
+            createConnections() {
+                this.connections = [
+                    // Primary synergies
+                    { from: 'magnesium', to: 'ashwagandha', strength: 'primary', 
+                      description: 'Potent one-two punch against stress and high cortisol',
+                      pathway: 'cortisol' },
+                    { from: 'ltheanine', to: 'pharmagaba', strength: 'primary',
+                      description: 'Multi-pathway system for mental relaxation without sedation',
+                      pathway: 'gaba' },
+                    { from: 'taurine', to: 'cherry', strength: 'primary',
+                      description: 'Core physical recovery system for overnight repair',
+                      pathway: 'recovery' },
+                    { from: 'glycine', to: 'magnesium', strength: 'primary',
+                      description: 'Temperature regulation meets muscle relaxation for perfect sleep initiation',
+                      pathway: 'thermoregulation' },
+                    { from: 'tryptophan', to: 'inositol', strength: 'primary',
+                      description: 'Serotonin superhighway: precursor + cofactor for mood and sleep',
+                      pathway: 'serotonin' },
+                    { from: 'beetroot', to: 'cherry', strength: 'primary',
+                      description: 'Enhanced recovery: NO-boosted blood flow + anti-inflammatory action',
+                      pathway: 'recovery' },
+                    
+                    // Supporting connections
+                    { from: 'magnesium', to: 'ltheanine', strength: 'moderate',
+                      description: 'Enhanced calming through complementary pathways',
+                      pathway: 'gaba' },
+                    { from: 'apigenin', to: 'ltheanine', strength: 'moderate',
+                      description: 'Part of the shutdown signal for sleep initiation',
+                      pathway: 'melatonin' },
+                    { from: 'inositol', to: 'ltheanine', strength: 'moderate',
+                      description: 'Breaks the cycle of racing thoughts before sleep',
+                      pathway: 'serotonin' },
+                    { from: 'taurine', to: 'pharmagaba', strength: 'moderate',
+                      description: 'Systemic GABA activation from multiple angles',
+                      pathway: 'gaba' },
+                    { from: 'ashwagandha', to: 'magnesium', strength: 'moderate',
+                      description: 'Cortisol reduction meets muscle relaxation',
+                      pathway: 'cortisol' },
+                    { from: 'cherry', to: 'apigenin', strength: 'moderate',
+                      description: 'Natural melatonin support for sleep quality',
+                      pathway: 'melatonin' },
+                    { from: 'inositol', to: 'pharmagaba', strength: 'moderate',
+                      description: 'Neurotransmitter balance for mental calm',
+                      pathway: 'serotonin' },
+                    { from: 'glycine', to: 'taurine', strength: 'moderate',
+                      description: 'Dual recovery: temperature regulation + cellular hydration',
+                      pathway: 'recovery' },
+                    { from: 'tryptophan', to: 'cherry', strength: 'moderate',
+                      description: 'Melatonin precursor meets natural melatonin source',
+                      pathway: 'melatonin' },
+                    { from: 'chamomile', to: 'apigenin', strength: 'moderate',
+                      description: 'Synergistic apigenin content for enhanced relaxation',
+                      pathway: 'gaba' },
+                    { from: 'chamomile', to: 'ashwagandha', strength: 'moderate',
+                      description: 'Gentle anxiolytic meets adaptogenic stress relief',
+                      pathway: 'cortisol' },
+                    { from: 'glycine', to: 'pharmagaba', strength: 'moderate',
+                      description: 'Inhibitory neurotransmitter synergy for deep relaxation',
+                      pathway: 'gaba' },
+                    { from: 'tryptophan', to: 'magnesium', strength: 'moderate',
+                      description: 'Enhanced conversion to serotonin with magnesium cofactor',
+                      pathway: 'serotonin' },
+                    { from: 'beetroot', to: 'taurine', strength: 'moderate',
+                      description: 'Optimized cellular recovery: blood flow + hydration',
+                      pathway: 'recovery' },
+                    { from: 'beetroot', to: 'glycine', strength: 'moderate',
+                      description: 'Enhanced nutrient delivery to muscles during deep sleep',
+                      pathway: 'recovery' },
+                    { from: 'beetroot', to: 'magnesium', strength: 'moderate',
+                      description: 'NO-enhanced magnesium delivery for superior muscle relaxation',
+                      pathway: 'circulation' }
+                ];
+            }
+
+            setupSleepPathways() {
+                this.connections.forEach(conn => {
+                    const from = this.ingredients.find(ing => ing.id === conn.from);
+                    const to = this.ingredients.find(ing => ing.id === conn.to);
+                    if (from && to && conn.pathway) {
+                        this.sleepPathwaySystem.addPathway(from, to, conn.pathway);
+                    }
+                });
+            }
+
+            setupEventListeners() {
+                // Mouse events
+                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+                this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+                this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+
+                // Touch events
+                this.canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e));
+                this.canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+                this.canvas.addEventListener('touchend', () => this.handleTouchEnd());
+
+                // Control buttons
+                document.querySelectorAll('.control-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.handleControlClick(e));
+                });
+
+                // Close button
+                const closeBtn = document.getElementById('closePanel');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => this.hideInfoPanel());
+                }
+
+                // Window resize
+                window.addEventListener('resize', () => this.handleResize());
+            }
+
+            setupMobileFeatures() {
+                if (this.isMobile) {
+                    // Add swipe to close for info panel
+                    const panel = document.getElementById('infoPanel');
+                    let startY = 0;
+                    
+                    panel.addEventListener('touchstart', (e) => {
+                        startY = e.touches[0].clientY;
+                    });
+                    
+                    panel.addEventListener('touchmove', (e) => {
+                        const currentY = e.touches[0].clientY;
+                        const deltaY = currentY - startY;
+                        
+                        if (deltaY > 0) {
+                            panel.style.transform = `translateY(${deltaY}px)`;
+                        }
+                    });
+                    
+                    panel.addEventListener('touchend', (e) => {
+                        const currentY = e.changedTouches[0].clientY;
+                        const deltaY = currentY - startY;
+                        
+                        if (deltaY > 100) {
+                            this.hideInfoPanel();
+                        }
+                        panel.style.transform = '';
+                    });
+                }
+            }
+
+            handleMouseMove(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                this.mousePos = {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+
+                const prevHovered = this.hoveredIngredient;
+                this.hoveredIngredient = this.getIngredientAtPos(this.mousePos);
+                
+                if (this.hoveredIngredient !== prevHovered) {
+                    this.canvas.style.cursor = this.hoveredIngredient ? 'pointer' : 'grab';
+                    if (this.hoveredIngredient) {
+                        this.showTooltip(this.hoveredIngredient);
+                    } else {
+                        this.hideTooltip();
+                    }
+                }
+
+                if (this.draggedIngredient) {
+                    this.draggedIngredient.position = { ...this.mousePos };
+                    this.canvas.style.cursor = 'grabbing';
+                }
+            }
+
+            handleMouseDown(e) {
+                const ingredient = this.getIngredientAtPos(this.mousePos);
+                if (ingredient) {
+                    this.draggedIngredient = ingredient;
+                    this.canvas.classList.add('grabbing');
+                }
+            }
+
+            handleMouseUp() {
+                this.draggedIngredient = null;
+                this.canvas.classList.remove('grabbing');
+            }
+
+            handleMouseLeave() {
+                this.hoveredIngredient = null;
+                this.draggedIngredient = null;
+                this.hideTooltip();
+                this.canvas.style.cursor = 'grab';
+            }
+
+            handleClick(e) {
+                const ingredient = this.getIngredientAtPos(this.mousePos);
+                if (ingredient && !this.draggedIngredient) {
+                    this.selectIngredient(ingredient);
+                }
+            }
+
+            handleTouchStart(e) {
+                const touch = e.touches[0];
+                const rect = this.canvas.getBoundingClientRect();
+                const pos = {
+                    x: touch.clientX - rect.left,
+                    y: touch.clientY - rect.top
+                };
+                
+                this.touchStartTime = Date.now();
+                this.touchStartPos = pos;
+                this.lastTouchPos = pos;
+                
+                const ingredient = this.getIngredientAtPos(pos);
+                if (ingredient) {
+                    this.potentialDragIngredient = ingredient;
+                    this.hoveredIngredient = ingredient;
+                    
+                    this.longPressTimer = setTimeout(() => {
+                        if (this.potentialDragIngredient === ingredient) {
+                            this.draggedIngredient = ingredient;
+                            if (navigator.vibrate) {
+                                navigator.vibrate(50);
+                            }
+                        }
+                    }, 500);
+                }
+            }
+
+            handleTouchMove(e) {
+                const touch = e.touches[0];
+                const rect = this.canvas.getBoundingClientRect();
+                const currentPos = {
+                    x: touch.clientX - rect.left,
+                    y: touch.clientY - rect.top
+                };
+                
+                const dx = currentPos.x - this.touchStartPos.x;
+                const dy = currentPos.y - this.touchStartPos.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance > 10) {
+                    clearTimeout(this.longPressTimer);
+                    
+                    if (this.draggedIngredient) {
+                        e.preventDefault();
+                        this.draggedIngredient.position = currentPos;
+                    } else if (this.potentialDragIngredient && Date.now() - this.touchStartTime > 150) {
+                        this.draggedIngredient = this.potentialDragIngredient;
+                    }
+                }
+                
+                this.lastTouchPos = currentPos;
+            }
+
+            handleTouchEnd() {
+                clearTimeout(this.longPressTimer);
+                
+                const touchDuration = Date.now() - this.touchStartTime;
+                const dx = this.lastTouchPos.x - this.touchStartPos.x;
+                const dy = this.lastTouchPos.y - this.touchStartPos.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (touchDuration < 500 && distance < 10 && this.potentialDragIngredient) {
+                    this.selectIngredient(this.potentialDragIngredient);
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
+                }
+                
+                this.draggedIngredient = null;
+                this.potentialDragIngredient = null;
+                this.hoveredIngredient = null;
+            }
+
+            handleControlClick(e) {
+                const btn = e.target;
+                const view = btn.dataset.view;
+                
+                document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (view === 'reset') {
+                    this.resetPositions();
+                } else {
+                    this.currentView = view;
+                    this.filterView(view);
+                }
+            }
+
+            handleResize() {
+                this.setupCanvas();
+                this.resetPositions();
+            }
+
+            getIngredientAtPos(pos) {
+                return this.ingredients.find(ing => {
+                    if (ing.visible === false) return false;
+                    const dx = pos.x - ing.position.x;
+                    const dy = pos.y - ing.position.y;
+                    return Math.sqrt(dx * dx + dy * dy) < ing.radius;
+                });
+            }
+
+            selectIngredient(ingredient) {
+                this.selectedIngredient = ingredient;
+                this.showInfoPanel(ingredient);
+                this.createParticles(ingredient);
+                
+                // Activate sleep pathways
+                this.sleepPathwaySystem.activatePathway(ingredient);
+                
+                // Show sleep overlay for shutdown ingredients
+                const sleepOverlay = document.getElementById('sleepOverlay');
+                if (ingredient.category.includes('shutdown')) {
+                    sleepOverlay.classList.add('active');
+                } else {
+                    sleepOverlay.classList.remove('active');
+                }
+            }
+
+            showInfoPanel(ingredient) {
+                const panel = document.getElementById('infoPanel');
+                const icon = document.getElementById('ingredientIcon');
+                const name = document.getElementById('ingredientName');
+                const dose = document.getElementById('ingredientDose');
+                const description = document.getElementById('ingredientDescription');
+                const connections = document.getElementById('synergyConnections');
+                const sleepEffects = document.getElementById('sleepEffects');
+
+                icon.textContent = ingredient.shortName;
+                icon.style.background = ingredient.color;
+                name.textContent = ingredient.name;
+                dose.textContent = ingredient.dose;
+                description.textContent = ingredient.description;
+                sleepEffects.textContent = ingredient.sleepEffects;
+
+                // Show synergies
+                connections.innerHTML = '';
+                const relatedConnections = this.connections.filter(
+                    conn => conn.from === ingredient.id || conn.to === ingredient.id
+                );
+
+                relatedConnections.forEach(conn => {
+                    const partnerId = conn.from === ingredient.id ? conn.to : conn.from;
+                    const partner = this.ingredients.find(ing => ing.id === partnerId);
+                    
+                    const item = document.createElement('div');
+                    item.className = 'synergy-item';
+                    item.innerHTML = `
+                        <strong>${partner.name}</strong>
+                        ${conn.description}
+                    `;
+                    connections.appendChild(item);
+                });
+
+                panel.classList.add('active');
+            }
+
+            hideInfoPanel() {
+                const panel = document.getElementById('infoPanel');
+                panel.classList.remove('active');
+                this.selectedIngredient = null;
+                
+                const sleepOverlay = document.getElementById('sleepOverlay');
+                sleepOverlay.classList.remove('active');
+            }
+
+            showTooltip(ingredient) {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.textContent = `${ingredient.name} - ${ingredient.dose}`;
+                tooltip.style.left = `${ingredient.position.x}px`;
+                tooltip.style.top = `${ingredient.position.y - ingredient.radius - 20}px`;
+                tooltip.classList.add('active');
+            }
+
+            hideTooltip() {
+                document.getElementById('tooltip').classList.remove('active');
+            }
+
+            createParticles(ingredient) {
+                for (let i = 0; i < 20; i++) {
+                    const angle = (Math.PI * 2 / 20) * i;
+                    this.particles.push({
+                        x: ingredient.position.x,
+                        y: ingredient.position.y,
+                        vx: Math.cos(angle) * 1.5,
+                        vy: Math.sin(angle) * 1.5,
+                        life: 120,
+                        color: ingredient.color,
+                        size: 4
+                    });
+                }
+            }
+
+            filterView(view) {
+                if (view === 'all') {
+                    this.ingredients.forEach(ing => ing.visible = true);
+                    this.connections.forEach(conn => conn.visible = true);
+                } else {
+                    this.ingredients.forEach(ing => {
+                        ing.visible = ing.category.includes(view);
+                    });
+                    
+                    this.connections.forEach(conn => {
+                        const fromIng = this.ingredients.find(ing => ing.id === conn.from);
+                        const toIng = this.ingredients.find(ing => ing.id === conn.to);
+                        conn.visible = fromIng.visible && toIng.visible;
+                    });
+                }
+            }
+
+            resetPositions() {
+                const centerX = this.width / 2;
+                const centerY = this.height / 2;
+                const radius = Math.min(this.width, this.height) * 0.3;
+                
+                this.ingredients.forEach((ing, i) => {
+                    const angle = (Math.PI * 2 / this.ingredients.length) * i - Math.PI / 2;
+                    ing.position = {
+                        x: centerX + Math.cos(angle) * radius,
+                        y: centerY + Math.sin(angle) * radius
+                    };
+                });
+            }
+
+            animate() {
+                this.animationFrame++;
+                this.ctx.clearRect(0, 0, this.width, this.height);
+
+                // Update systems
+                this.sleepPathwaySystem.update();
+                
+                // Update particles
+                this.particles = this.particles.filter(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life--;
+                    p.size *= 0.98;
+                    p.vx *= 0.99;
+                    p.vy *= 0.99;
+                    return p.life > 0;
+                });
+
+                // Draw connections
+                this.drawConnections();
+
+                // Draw sleep pathways
+                this.sleepPathwaySystem.draw(this.ctx);
+
+                // Draw ingredients
+                this.drawIngredients();
+
+                // Draw particles
+                this.drawParticles();
+
+                requestAnimationFrame(() => this.animate());
+            }
+
+            drawConnections() {
+                this.connections.forEach(conn => {
+                    if (conn.visible === false) return;
+
+                    const from = this.ingredients.find(ing => ing.id === conn.from);
+                    const to = this.ingredients.find(ing => ing.id === conn.to);
+                    
+                    if (!from || !to || from.visible === false || to.visible === false) return;
+
+                    const isHighlighted = this.selectedIngredient && 
+                        (this.selectedIngredient.id === conn.from || this.selectedIngredient.id === conn.to);
+                    
+                    this.ctx.save();
+                    
+                    // Connection line
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(from.position.x, from.position.y);
+                    
+                    // Create curved path
+                    const dx = to.position.x - from.position.x;
+                    const dy = to.position.y - from.position.y;
+                    const cx = from.position.x + dx / 2 + dy * 0.1;
+                    const cy = from.position.y + dy / 2 - dx * 0.1;
+                    
+                    this.ctx.quadraticCurveTo(cx, cy, to.position.x, to.position.y);
+                    
+                    // Style based on strength and highlight
+                    if (conn.strength === 'primary') {
+                        this.ctx.strokeStyle = isHighlighted ? '#00c6ff' : 'rgba(0, 198, 255, 0.3)';
+                        this.ctx.lineWidth = isHighlighted ? 4 : 2;
+                        this.ctx.shadowBlur = isHighlighted ? 20 : 5;
+                        this.ctx.shadowColor = '#00c6ff';
+                    } else {
+                        this.ctx.strokeStyle = isHighlighted ? '#888888' : 'rgba(136, 136, 136, 0.3)';
+                        this.ctx.lineWidth = isHighlighted ? 2 : 1;
+                    }
+                    
+                    // Animated dash for highlighted connections
+                    if (isHighlighted) {
+                        this.ctx.setLineDash([10, 5]);
+                        this.ctx.lineDashOffset = -this.animationFrame * 0.3;
+                    }
+                    
+                    this.ctx.stroke();
+                    this.ctx.restore();
+                });
+            }
+
+            drawIngredients() {
+                this.ingredients.forEach(ing => {
+                    if (ing.visible === false) {
+                        // Draw a faded placeholder
+                        this.ctx.save();
+                        this.ctx.globalAlpha = 0.1;
+                        this.ctx.beginPath();
+                        this.ctx.arc(ing.position.x, ing.position.y, ing.radius * 0.5, 0, Math.PI * 2);
+                        this.ctx.fillStyle = '#2e2e2e';
+                        this.ctx.fill();
+                        this.ctx.restore();
+                        return;
+                    }
+
+                    const isSelected = this.selectedIngredient === ing;
+                    const isHovered = this.hoveredIngredient === ing;
+                    const isDragged = this.draggedIngredient === ing;
+                    
+                    this.ctx.save();
+                    
+                    // Outer glow
+                    if (isSelected || isHovered) {
+                        const glowRadius = ing.radius + 15;
+                        const gradient = this.ctx.createRadialGradient(
+                            ing.position.x, ing.position.y, ing.radius,
+                            ing.position.x, ing.position.y, glowRadius
+                        );
+                        gradient.addColorStop(0, 'transparent');
+                        gradient.addColorStop(1, isSelected ? 'rgba(0, 198, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)');
+                        
+                        this.ctx.fillStyle = gradient;
+                        this.ctx.beginPath();
+                        this.ctx.arc(ing.position.x, ing.position.y, glowRadius, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+                    
+                    // Pulsing effect
+                    const pulseScale = 1 + Math.sin(this.animationFrame * 0.015 + ing.pulsePhase) * 0.05;
+                    const radius = ing.radius * (isDragged ? 1.1 : pulseScale);
+                    
+                    // Main circle
+                    this.ctx.beginPath();
+                    this.ctx.arc(ing.position.x, ing.position.y, radius, 0, Math.PI * 2);
+                    
+                    // Gradient fill
+                    const gradient = this.ctx.createRadialGradient(
+                        ing.position.x - radius * 0.3, ing.position.y - radius * 0.3, 0,
+                        ing.position.x, ing.position.y, radius
+                    );
+                    gradient.addColorStop(0, ing.color);
+                    gradient.addColorStop(1, this.adjustColor(ing.color, -50));
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.fill();
+                    
+                    // Border
+                    this.ctx.strokeStyle = isSelected ? '#ffffff' : ing.color;
+                    this.ctx.lineWidth = isSelected ? 3 : 2;
+                    this.ctx.stroke();
+                    
+                    // Text
+                    const fontSize = this.isMobile ? '18px' : '16px';
+                    this.ctx.fillStyle = '#000000';
+                    this.ctx.font = `bold ${fontSize} Roboto Condensed`;
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.fillText(ing.shortName, ing.position.x, ing.position.y);
+                    
+                    this.ctx.restore();
+                });
+            }
+
+            drawParticles() {
+                this.particles.forEach(p => {
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.life / 120;
+                    
+                    // Outer glow
+                    const gradient = this.ctx.createRadialGradient(
+                        p.x, p.y, 0,
+                        p.x, p.y, p.size * 2
+                    );
+                    gradient.addColorStop(0, p.color);
+                    gradient.addColorStop(1, 'transparent');
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    // Core
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    this.ctx.restore();
+                });
+            }
+
+            adjustColor(color, amount) {
+                const num = parseInt(color.replace('#', ''), 16);
+                const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+                const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+                const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+                return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            new ResetSynergyMap();
+        });
+    </script>
+
+</body>
+</html>
