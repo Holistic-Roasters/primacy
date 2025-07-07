@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX: Spatial Span Memory Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-accent: #00ff9d;
+            --color-warning: #ff6b6b;
+            --color-excellent: #00ff9d;
+            --color-good: #ffcc00;
+            --color-average: #ff9966;
+            --color-poor: #ff6b6b;
+            --color-correct: #00ff9d;
+            --color-incorrect: #ff6b6b;
+            --color-neutral: #4169e1;
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--color-accent), var(--color-white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--color-light-grey);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .test-container {
+            background: var(--color-dark-grey);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            color: var(--color-light-grey);
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .mode-btn.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+        }
+
+        .mode-description {
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 3px;
+            font-weight: normal;
+        }
+
+        .test-config {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .config-item {
+            text-align: center;
+        }
+
+        .config-label {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .config-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-white);
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 25px;
+            background: var(--color-black);
+            border-radius: 15px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .instructions h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .instructions p {
+            color: var(--color-light-grey);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .spatial-grid-container {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            margin: 0 auto 2rem;
+            background: var(--color-black);
+            border-radius: 15px;
+            border: 2px solid var(--color-mid-grey);
+            padding: 20px;
+        }
+
+        .sequence-info-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 1.5rem;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 2px solid var(--color-accent);
+        }
+
+        .spatial-grid {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            gap: 8px;
+            grid-template-columns: repeat(var(--grid-size, 4), 1fr);
+            grid-template-rows: repeat(var(--grid-size, 4), 1fr);
+        }
+
+        .grid-square {
+            background: var(--color-mid-grey);
+            border: 2px solid var(--color-light-grey);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .grid-square:hover {
+            background: var(--color-light-grey);
+            transform: scale(1.05);
+        }
+
+        .grid-square.highlighted {
+            background: var(--color-accent);
+            border-color: var(--color-white);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+            transform: scale(1.1);
+            animation: highlight-pulse 0.5s ease;
+        }
+
+        .grid-square.user-selected {
+            background: var(--color-neutral);
+            border-color: var(--color-white);
+            color: var(--color-white);
+            transform: scale(1.05);
+        }
+
+        .grid-square.correct {
+            background: var(--color-correct);
+            border-color: var(--color-white);
+            color: var(--color-black);
+            animation: correct-flash 0.5s ease;
+        }
+
+        .grid-square.incorrect {
+            background: var(--color-incorrect);
+            border-color: var(--color-white);
+            color: var(--color-white);
+            animation: incorrect-shake 0.5s ease;
+        }
+
+        @keyframes highlight-pulse {
+            0%, 100% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes correct-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes incorrect-shake {
+            0%, 100% { transform: translateX(0) scale(1.05); }
+            25% { transform: translateX(-5px) scale(1.05); }
+            75% { transform: translateX(5px) scale(1.05); }
+        }
+
+        .sequence-info {
+            text-align: center;
+        }
+
+        .sequence-label {
+            color: var(--color-light-grey);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .sequence-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-accent);
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 15px 20px;
+            background: var(--color-black);
+            border-radius: 15px;
+        }
+
+        .progress-info {
+            display: flex;
+            gap: 30px;
+        }
+
+        .progress-item {
+            text-align: center;
+        }
+
+        .progress-label {
+            color: var(--color-light-grey);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-value {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-accent);
+            margin-top: 3px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--color-mid-grey);
+            border-radius: 4px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-white));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .control-btn:hover {
+            background: var(--color-white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 157, 0.3);
+        }
+
+        .control-btn:disabled {
+            background: var(--color-mid-grey);
+            color: var(--color-light-grey);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .control-btn.restart {
+            background: var(--color-warning);
+        }
+
+        .message-display {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .message-display.waiting {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--color-warning);
+            border: 2px solid var(--color-warning);
+        }
+
+        .message-display.active {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+
+        .message-display.complete {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-white);
+            border: 2px solid var(--color-white);
+        }
+
+        .message-display.phase {
+            background: rgba(65, 105, 225, 0.1);
+            color: var(--color-neutral);
+            border: 2px solid var(--color-neutral);
+        }
+
+        .results-container {
+            background: var(--color-dark-grey);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-header h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--color-black);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid var(--color-mid-grey);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--color-light-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .performance-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .excellent { 
+            background: var(--color-excellent); 
+            color: var(--color-black); 
+        }
+        .good { 
+            background: var(--color-good); 
+            color: var(--color-black); 
+        }
+        .average { 
+            background: var(--color-average); 
+            color: var(--color-black); 
+        }
+        .poor { 
+            background: var(--color-poor); 
+            color: var(--color-white); 
+        }
+
+        .span-analysis {
+            background: var(--color-black);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-header {
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .span-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .span-level {
+            background: var(--color-mid-grey);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .span-level.passed {
+            border-color: var(--color-correct);
+        }
+
+        .span-level.failed {
+            border-color: var(--color-incorrect);
+        }
+
+        .span-level.current {
+            border-color: var(--color-accent);
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .span-number {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-white);
+            margin-bottom: 5px;
+        }
+
+        .span-status {
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trial-history {
+            background: var(--color-black);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .history-header {
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .trial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .trial-result {
+            background: var(--color-mid-grey);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .trial-result:hover {
+            transform: scale(1.05);
+        }
+
+        .trial-result.correct {
+            border-color: var(--color-correct);
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .trial-result.incorrect {
+            border-color: var(--color-incorrect);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .trial-span {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--color-white);
+            margin-bottom: 3px;
+        }
+
+        .trial-accuracy {
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .spatial-grid-container {
+                width: 350px;
+                height: 350px;
+                padding: 15px;
+            }
+
+            .grid-square {
+                font-size: 1rem;
+            }
+
+            .mode-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .mode-btn {
+                width: 250px;
+            }
+
+            .test-config {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .control-btn {
+                width: 200px;
+            }
+
+            .progress-info {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .sequence-info-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .countdown {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            color: var(--color-accent);
+            text-align: center;
+            text-shadow: 0 0 20px var(--color-accent);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>APEX SPATIAL SPAN</h1>
+            <p>Assess your visuospatial working memory capacity. Remember sequences of highlighted squares and reproduce them in the correct order.</p>
+        </div>
+
+        <div class="test-container">
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="forward">
+                    Forward Span
+                    <span class="mode-description">Same order</span>
+                </button>
+                <button class="mode-btn" data-mode="backward">
+                    Backward Span
+                    <span class="mode-description">Reverse order</span>
+                </button>
+                <button class="mode-btn" data-mode="adaptive">
+                    Adaptive Test
+                    <span class="mode-description">Auto-adjusting</span>
+                </button>
+                <button class="mode-btn" data-mode="practice">
+                    Practice
+                    <span class="mode-description">Learn the task</span>
+                </button>
+            </div>
+
+            <div class="test-config">
+                <div class="config-item">
+                    <div class="config-label">Mode</div>
+                    <div class="config-value" id="testMode">Forward</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-label">Grid Size</div>
+                    <div class="config-value" id="gridSize">4×4</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-label">Start Length</div>
+                    <div class="config-value" id="startLength">3</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-label">Max Span</div>
+                    <div class="config-value" id="maxSpan">9</div>
+                </div>
+            </div>
+
+            <div class="instructions" id="instructions">
+                <h3>Forward Spatial Span Test</h3>
+                <p>Watch carefully as squares light up in sequence. Then click the squares in the <strong>same order</strong> they were highlighted.</p>
+                <p>The test starts with short sequences and gets progressively longer. Your spatial span is the longest sequence you can remember correctly.</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-info">
+                    <div class="progress-item">
+                        <div class="progress-label">Current Span</div>
+                        <div class="progress-value" id="currentSpan">3</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">Trial</div>
+                        <div class="progress-value" id="currentTrial">0</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-info">
+                    <div class="progress-item">
+                        <div class="progress-label">Correct</div>
+                        <div class="progress-value" id="correctCount">0</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">Best Span</div>
+                        <div class="progress-value" id="bestSpan">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sequence-info-bar">
+                <div class="sequence-info">
+                    <div class="sequence-label">Sequence Length</div>
+                    <div class="sequence-value" id="sequenceLength">0</div>
+                </div>
+                <div class="sequence-info">
+                    <div class="sequence-label">Current Position</div>
+                    <div class="sequence-value" id="currentPosition">-</div>
+                </div>
+            </div>
+
+            <div class="spatial-grid-container">
+                <div class="spatial-grid" id="spatialGrid" style="--grid-size: 4;">
+                    <!-- Grid squares will be generated here -->
+                </div>
+            </div>
+
+            <div class="message-display waiting" id="messageDisplay">
+                Click START to begin your spatial memory assessment
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="startBtn">Start Test</button>
+                <button class="control-btn restart" id="restartBtn" disabled>Restart</button>
+                <button class="control-btn" id="resetBtn">Reset</button>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="results-header">
+                <h2>Spatial Memory Analysis</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="maxSpanAchieved">-</div>
+                    <div class="stat-label">Maximum Span</div>
+                    <div class="performance-indicator" id="spanPerformance">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalAccuracy">-</div>
+                    <div class="stat-label">Overall Accuracy</div>
+                    <div class="performance-indicator" id="accuracyPerformance">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="trialsCompleted">0</div>
+                    <div class="stat-label">Trials Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="memoryCapacity">-</div>
+                    <div class="stat-label">Memory Capacity</div>
+                    <div class="performance-indicator" id="capacityPerformance">-</div>
+                </div>
+            </div>
+
+            <div class="span-analysis">
+                <div class="analysis-header">Span Level Breakdown</div>
+                <div class="span-breakdown" id="spanBreakdown">
+                    <!-- Span levels will be populated here -->
+                </div>
+                <p style="color: var(--color-light-grey); font-size: 0.9rem;">
+                    Green indicates passed levels, red shows failed attempts. Your spatial span is typically the highest level passed consistently.
+                </p>
+            </div>
+
+            <div class="trial-history">
+                <div class="history-header">Trial Results</div>
+                <div class="trial-grid" id="trialHistoryGrid">
+                    <div style="color: var(--color-light-grey); font-style: italic; grid-column: 1 / -1; text-align: center; padding: 20px;">
+                        No trials completed yet
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SpatialSpanTest {
+            constructor() {
+                this.mode = 'forward';
+                this.isActive = false;
+                this.isPaused = false;
+                this.gridSize = 4;
+                this.currentSpanLength = 3;
+                this.maxSpanLength = 9;
+                this.trialsPerSpan = 2;
+                
+                this.currentTrial = 0;
+                this.currentSequence = [];
+                this.userSequence = [];
+                this.isShowingSequence = false;
+                this.isCollectingInput = false;
+                
+                this.spanResults = {}; // Track performance at each span length
+                this.trialHistory = [];
+                this.correctTrials = 0;
+                this.totalTrials = 0;
+                this.maxSpanAchieved = 0;
+                
+                this.highlightDuration = 600; // ms per square
+                this.interSquareDelay = 200; // ms between squares
+                this.sequenceDelay = 1000; // ms before user input
+                
+                this.initElements();
+                this.setupEventListeners();
+                this.updateDisplay();
+                this.updateInstructions();
+                this.generateGrid();
+            }
+
+            initElements() {
+                this.spatialGrid = document.getElementById('spatialGrid');
+                this.messageDisplay = document.getElementById('messageDisplay');
+                this.startBtn = document.getElementById('startBtn');
+                this.restartBtn = document.getElementById('restartBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                
+                this.currentSpanDisplay = document.getElementById('currentSpan');
+                this.currentTrialDisplay = document.getElementById('currentTrial');
+                this.correctCountDisplay = document.getElementById('correctCount');
+                this.bestSpanDisplay = document.getElementById('bestSpan');
+                this.progressFill = document.getElementById('progressFill');
+                this.sequenceLengthDisplay = document.getElementById('sequenceLength');
+                this.currentPositionDisplay = document.getElementById('currentPosition');
+                
+                this.instructions = document.getElementById('instructions');
+                this.testModeDisplay = document.getElementById('testMode');
+                this.gridSizeDisplay = document.getElementById('gridSize');
+                this.startLengthDisplay = document.getElementById('startLength');
+                this.maxSpanDisplay = document.getElementById('maxSpan');
+            }
+
+            setupEventListeners() {
+                // Mode selection
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (this.isActive) return;
+                        
+                        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        this.mode = e.target.dataset.mode;
+                        this.setupModeParameters();
+                        this.updateDisplay();
+                        this.updateInstructions();
+                        this.generateGrid();
+                    });
+                });
+
+                // Control buttons
+                this.startBtn.addEventListener('click', () => this.startTest());
+                this.restartBtn.addEventListener('click', () => this.restartTest());
+                this.resetBtn.addEventListener('click', () => this.resetTest());
+            }
+
+            setupModeParameters() {
+                switch (this.mode) {
+                    case 'forward':
+                        this.currentSpanLength = 3;
+                        this.maxSpanLength = 9;
+                        this.trialsPerSpan = 2;
+                        break;
+                    case 'backward':
+                        this.currentSpanLength = 2;
+                        this.maxSpanLength = 8;
+                        this.trialsPerSpan = 2;
+                        break;
+                    case 'adaptive':
+                        this.currentSpanLength = 4;
+                        this.maxSpanLength = 12;
+                        this.trialsPerSpan = 1;
+                        break;
+                    case 'practice':
+                        this.currentSpanLength = 2;
+                        this.maxSpanLength = 4;
+                        this.trialsPerSpan = 3;
+                        break;
+                }
+            }
+
+            updateDisplay() {
+                this.testModeDisplay.textContent = this.mode.charAt(0).toUpperCase() + this.mode.slice(1);
+                this.gridSizeDisplay.textContent = `${this.gridSize}×${this.gridSize}`;
+                this.startLengthDisplay.textContent = this.currentSpanLength;
+                this.maxSpanDisplay.textContent = this.maxSpanLength;
+            }
+
+            updateInstructions() {
+                const instructions = {
+                    forward: {
+                        title: 'Forward Spatial Span Test',
+                        text: 'Watch carefully as squares light up in sequence. Then click the squares in the <strong>same order</strong> they were highlighted.'
+                    },
+                    backward: {
+                        title: 'Backward Spatial Span Test',
+                        text: 'Watch the sequence, then click the squares in <strong>reverse order</strong> (last to first). This tests working memory manipulation.'
+                    },
+                    adaptive: {
+                        title: 'Adaptive Spatial Span Test',
+                        text: 'The test adapts to your performance. Sequences get longer when you succeed and shorter when you fail, finding your optimal span quickly.'
+                    },
+                    practice: {
+                        title: 'Practice Spatial Span',
+                        text: 'Learn the task with shorter sequences. Perfect for understanding how the test works before attempting longer spans.'
+                    }
+                };
+
+                const instruction = instructions[this.mode];
+                this.instructions.innerHTML = `
+                    <h3>${instruction.title}</h3>
+                    <p>${instruction.text}</p>
+                    <p>The test starts with short sequences and gets progressively longer. Your spatial span is the longest sequence you can remember correctly.</p>
+                `;
+            }
+
+            generateGrid() {
+                this.spatialGrid.innerHTML = '';
+                this.gridSquares = [];
+                
+                const totalSquares = this.gridSize * this.gridSize;
+                
+                for (let i = 0; i < totalSquares; i++) {
+                    const square = document.createElement('div');
+                    square.className = 'grid-square';
+                    square.dataset.index = i;
+                    square.addEventListener('click', () => this.handleSquareClick(i));
+                    
+                    this.spatialGrid.appendChild(square);
+                    this.gridSquares.push(square);
+                }
+                
+                this.spatialGrid.style.setProperty('--grid-size', this.gridSize);
+            }
+
+            async startTest() {
+                if (this.isActive) return;
+                
+                this.isActive = true;
+                this.isPaused = false;
+                this.currentTrial = 0;
+                this.currentSequence = [];
+                this.userSequence = [];
+                this.spanResults = {};
+                this.trialHistory = [];
+                this.correctTrials = 0;
+                this.totalTrials = 0;
+                this.maxSpanAchieved = 0;
+                
+                this.setupModeParameters();
+                
+                this.startBtn.disabled = true;
+                this.restartBtn.disabled = false;
+                this.messageDisplay.textContent = 'Get ready to watch the sequence...';
+                this.messageDisplay.className = 'message-display waiting';
+
+                // Countdown
+                await this.showCountdown();
+                
+                if (this.isActive) {
+                    this.runTrial();
+                }
+            }
+
+            async showCountdown() {
+                const countdown = document.createElement('div');
+                countdown.className = 'countdown';
+                this.messageDisplay.appendChild(countdown);
+                
+                for (let i = 3; i > 0; i--) {
+                    countdown.textContent = i;
+                    await this.delay(1000);
+                    if (!this.isActive) return;
+                }
+                
+                countdown.remove();
+            }
+
+            async runTrial() {
+                if (!this.isActive) return;
+                
+                this.currentTrial++;
+                this.totalTrials++;
+                this.updateProgress();
+                
+                // Generate sequence
+                this.generateSequence();
+                
+                // Show sequence
+                this.messageDisplay.textContent = 'Watch the sequence carefully...';
+                this.messageDisplay.className = 'message-display phase';
+                await this.showSequence();
+                
+                if (!this.isActive) return;
+                
+                // Collect user input
+                this.messageDisplay.textContent = this.getInputInstructions();
+                this.messageDisplay.className = 'message-display active';
+                this.startUserInput();
+            }
+
+            generateSequence() {
+                this.currentSequence = [];
+                const availableSquares = Array.from({length: this.gridSize * this.gridSize}, (_, i) => i);
+                
+                for (let i = 0; i < this.currentSpanLength; i++) {
+                    const randomIndex = Math.floor(Math.random() * availableSquares.length);
+                    const squareIndex = availableSquares.splice(randomIndex, 1)[0];
+                    this.currentSequence.push(squareIndex);
+                }
+            }
+
+            getInputInstructions() {
+                switch (this.mode) {
+                    case 'forward':
+                    case 'adaptive':
+                    case 'practice':
+                        return 'Click the squares in the SAME order';
+                    case 'backward':
+                        return 'Click the squares in REVERSE order (last to first)';
+                }
+            }
+
+            async showSequence() {
+                this.isShowingSequence = true;
+                this.clearGridState();
+                
+                for (let i = 0; i < this.currentSequence.length; i++) {
+                    if (!this.isActive) return;
+                    
+                    const squareIndex = this.currentSequence[i];
+                    const square = this.gridSquares[squareIndex];
+                    
+                    // Update current position display
+                    this.currentPositionDisplay.textContent = `${i + 1}/${this.currentSequence.length}`;
+                    
+                    // Highlight square
+                    square.classList.add('highlighted');
+                    square.textContent = i + 1; // Show sequence number
+                    
+                    await this.delay(this.highlightDuration);
+                    
+                    // Remove highlight
+                    square.classList.remove('highlighted');
+                    square.textContent = '';
+                    
+                    if (i < this.currentSequence.length - 1) {
+                        await this.delay(this.interSquareDelay);
+                    }
+                }
+                
+                // Reset current position display
+                this.currentPositionDisplay.textContent = '-';
+                
+                // Delay before user input
+                await this.delay(this.sequenceDelay);
+                this.isShowingSequence = false;
+            }
+
+            startUserInput() {
+                this.isCollectingInput = true;
+                this.userSequence = [];
+                this.clearGridState();
+                this.sequenceLengthDisplay.textContent = this.currentSpanLength;
+            }
+
+            handleSquareClick(squareIndex) {
+                if (!this.isCollectingInput || this.isShowingSequence) return;
+                
+                this.userSequence.push(squareIndex);
+                
+                // Visual feedback
+                const square = this.gridSquares[squareIndex];
+                square.classList.add('user-selected');
+                square.textContent = this.userSequence.length;
+                
+                // Update current position display during input
+                this.currentPositionDisplay.textContent = `${this.userSequence.length}/${this.currentSpanLength}`;
+                
+                // Check if sequence is complete
+                if (this.userSequence.length >= this.currentSpanLength) {
+                    this.isCollectingInput = false;
+                    this.currentPositionDisplay.textContent = '-';
+                    this.evaluateResponse();
+                }
+            }
+
+            evaluateResponse() {
+                const expectedSequence = this.mode === 'backward' ? 
+                    [...this.currentSequence].reverse() : 
+                    this.currentSequence;
+                
+                const isCorrect = this.arraysEqual(this.userSequence, expectedSequence);
+                
+                if (isCorrect) {
+                    this.correctTrials++;
+                    this.showCorrectFeedback();
+                } else {
+                    this.showIncorrectFeedback(expectedSequence);
+                }
+                
+                // Record trial
+                this.trialHistory.push({
+                    spanLength: this.currentSpanLength,
+                    correct: isCorrect,
+                    userSequence: [...this.userSequence],
+                    expectedSequence: [...expectedSequence]
+                });
+                
+                // Update span results
+                if (!this.spanResults[this.currentSpanLength]) {
+                    this.spanResults[this.currentSpanLength] = { correct: 0, total: 0 };
+                }
+                this.spanResults[this.currentSpanLength].total++;
+                if (isCorrect) {
+                    this.spanResults[this.currentSpanLength].correct++;
+                    this.maxSpanAchieved = Math.max(this.maxSpanAchieved, this.currentSpanLength);
+                }
+                
+                this.updateTrialHistory();
+                
+                // Determine next action
+                setTimeout(() => {
+                    this.decideNextStep(isCorrect);
+                }, 2000);
+            }
+
+            showCorrectFeedback() {
+                this.messageDisplay.textContent = 'Correct! Well done!';
+                this.messageDisplay.className = 'message-display active';
+                
+                // Highlight correct sequence
+                this.userSequence.forEach((squareIndex, i) => {
+                    const square = this.gridSquares[squareIndex];
+                    square.classList.remove('user-selected');
+                    square.classList.add('correct');
+                });
+            }
+
+            showIncorrectFeedback(expectedSequence) {
+                this.messageDisplay.textContent = 'Incorrect. The correct sequence is highlighted.';
+                this.messageDisplay.className = 'message-display waiting';
+                
+                // Show user sequence as incorrect
+                this.userSequence.forEach(squareIndex => {
+                    const square = this.gridSquares[squareIndex];
+                    square.classList.remove('user-selected');
+                    square.classList.add('incorrect');
+                });
+                
+                // Show correct sequence after a delay
+                setTimeout(() => {
+                    this.clearGridState();
+                    expectedSequence.forEach((squareIndex, i) => {
+                        const square = this.gridSquares[squareIndex];
+                        square.classList.add('correct');
+                        square.textContent = i + 1;
+                    });
+                }, 1000);
+            }
+
+            decideNextStep(wasCorrect) {
+                if (this.mode === 'adaptive') {
+                    this.handleAdaptiveProgression(wasCorrect);
+                } else {
+                    this.handleStandardProgression();
+                }
+            }
+
+            handleAdaptiveProgression(wasCorrect) {
+                if (wasCorrect) {
+                    this.currentSpanLength++;
+                    if (this.currentSpanLength > this.maxSpanLength) {
+                        this.endTest();
+                        return;
+                    }
+                } else {
+                    this.currentSpanLength = Math.max(2, this.currentSpanLength - 1);
+                }
+                
+                // Continue with adaptive testing
+                if (this.totalTrials >= 20) { // Stop after 20 trials
+                    this.endTest();
+                } else {
+                    this.runTrial();
+                }
+            }
+
+            handleStandardProgression() {
+                const spanResult = this.spanResults[this.currentSpanLength];
+                const passThreshold = this.mode === 'practice' ? 2 : 1; // Need 2/3 for practice, 1/2 for others
+                
+                if (spanResult.correct >= passThreshold) {
+                    // Passed this span level, move to next
+                    this.currentSpanLength++;
+                    if (this.currentSpanLength > this.maxSpanLength) {
+                        this.endTest();
+                        return;
+                    }
+                    this.runTrial();
+                } else if (spanResult.total >= this.trialsPerSpan) {
+                    // Failed this span level, test ends
+                    this.endTest();
+                } else {
+                    // Need more trials at this span level
+                    this.runTrial();
+                }
+            }
+
+            arraysEqual(a, b) {
+                return a.length === b.length && a.every((val, i) => val === b[i]);
+            }
+
+            clearGridState() {
+                this.gridSquares.forEach(square => {
+                    square.classList.remove('highlighted', 'user-selected', 'correct', 'incorrect');
+                    square.textContent = '';
+                });
+            }
+
+            updateProgress() {
+                this.currentSpanDisplay.textContent = this.currentSpanLength;
+                this.currentTrialDisplay.textContent = this.currentTrial;
+                this.correctCountDisplay.textContent = this.correctTrials;
+                this.bestSpanDisplay.textContent = this.maxSpanAchieved || '-';
+                
+                // Progress based on current span vs max span
+                const progress = ((this.currentSpanLength - 2) / (this.maxSpanLength - 2)) * 100;
+                this.progressFill.style.width = `${Math.min(progress, 100)}%`;
+            }
+
+            updateTrialHistory() {
+                const trialGrid = document.getElementById('trialHistoryGrid');
+                
+                // Clear if this is the first result
+                if (this.trialHistory.length === 1) {
+                    trialGrid.innerHTML = '';
+                }
+
+                const result = this.trialHistory[this.trialHistory.length - 1];
+                const trial = document.createElement('div');
+                trial.className = 'trial-result';
+                
+                if (result.correct) {
+                    trial.classList.add('correct');
+                } else {
+                    trial.classList.add('incorrect');
+                }
+                
+                trial.innerHTML = `
+                    <div class="trial-span">Span ${result.spanLength}</div>
+                    <div class="trial-accuracy">${result.correct ? 'Correct' : 'Incorrect'}</div>
+                `;
+                
+                trial.title = `Span ${result.spanLength}: ${result.correct ? 'Correct' : 'Incorrect'}`;
+                
+                trialGrid.appendChild(trial);
+            }
+
+            restartTest() {
+                this.endTest();
+                this.resetTest();
+                setTimeout(() => this.startTest(), 100);
+            }
+
+            resetTest() {
+                this.endTest();
+                
+                this.currentTrial = 0;
+                this.currentSequence = [];
+                this.userSequence = [];
+                this.spanResults = {};
+                this.trialHistory = [];
+                this.correctTrials = 0;
+                this.totalTrials = 0;
+                this.maxSpanAchieved = 0;
+                this.isShowingSequence = false;
+                this.isCollectingInput = false;
+                
+                this.setupModeParameters();
+                
+                this.startBtn.disabled = false;
+                this.restartBtn.disabled = true;
+                
+                this.messageDisplay.textContent = 'Click START to begin your spatial memory assessment';
+                this.messageDisplay.className = 'message-display waiting';
+                
+                this.clearGridState();
+                this.sequenceLengthDisplay.textContent = '0';
+                this.currentPositionDisplay.textContent = '-';
+                
+                this.updateProgress();
+                this.updateResults();
+                this.updateSpanBreakdown();
+            }
+
+            endTest() {
+                this.isActive = false;
+                this.isPaused = false;
+                this.isShowingSequence = false;
+                this.isCollectingInput = false;
+                
+                this.startBtn.disabled = false;
+                this.restartBtn.disabled = true;
+                
+                this.messageDisplay.textContent = 'Test Complete! Check your spatial memory analysis below.';
+                this.messageDisplay.className = 'message-display complete';
+                
+                this.clearGridState();
+                
+                this.updateResults();
+                this.updateSpanBreakdown();
+            }
+
+            updateResults() {
+                if (this.trialHistory.length === 0) {
+                    // Reset display
+                    document.getElementById('maxSpanAchieved').textContent = '-';
+                    document.getElementById('totalAccuracy').textContent = '-';
+                    document.getElementById('trialsCompleted').textContent = '0';
+                    document.getElementById('memoryCapacity').textContent = '-';
+                    return;
+                }
+
+                const accuracy = Math.round((this.correctTrials / this.totalTrials) * 100);
+                const memoryCapacity = this.calculateMemoryCapacity();
+
+                document.getElementById('maxSpanAchieved').textContent = this.maxSpanAchieved;
+                document.getElementById('totalAccuracy').textContent = `${accuracy}%`;
+                document.getElementById('trialsCompleted').textContent = this.totalTrials;
+                document.getElementById('memoryCapacity').textContent = memoryCapacity;
+
+                // Performance indicators
+                this.updatePerformanceIndicator('spanPerformance', this.maxSpanAchieved, this.getSpanBenchmarks());
+                this.updatePerformanceIndicator('accuracyPerformance', accuracy, [80, 70, 60]);
+                this.updatePerformanceIndicator('capacityPerformance', parseFloat(memoryCapacity), [6, 5, 4]);
+            }
+
+            getSpanBenchmarks() {
+                switch (this.mode) {
+                    case 'forward':
+                    case 'practice':
+                        return [7, 6, 5]; // Excellent, Good, Average
+                    case 'backward':
+                        return [6, 5, 4];
+                    case 'adaptive':
+                        return [8, 7, 6];
+                    default:
+                        return [7, 6, 5];
+                }
+            }
+
+            calculateMemoryCapacity() {
+                // Calculate weighted average based on performance at each span level
+                let totalWeight = 0;
+                let weightedSum = 0;
+                
+                Object.entries(this.spanResults).forEach(([span, result]) => {
+                    const spanNum = parseInt(span);
+                    const accuracy = result.correct / result.total;
+                    totalWeight += result.total;
+                    weightedSum += spanNum * accuracy * result.total;
+                });
+                
+                return totalWeight > 0 ? (weightedSum / totalWeight).toFixed(1) : '-';
+            }
+
+            updateSpanBreakdown() {
+                const spanBreakdown = document.getElementById('spanBreakdown');
+                spanBreakdown.innerHTML = '';
+                
+                const startSpan = this.mode === 'backward' ? 2 : 3;
+                const endSpan = Math.max(startSpan, this.currentSpanLength);
+                
+                for (let span = startSpan; span <= endSpan; span++) {
+                    const spanDiv = document.createElement('div');
+                    spanDiv.className = 'span-level';
+                    
+                    const result = this.spanResults[span];
+                    let status = 'Not tested';
+                    let className = '';
+                    
+                    if (result) {
+                        const passThreshold = this.mode === 'practice' ? 2 : 1;
+                        if (result.correct >= passThreshold) {
+                            status = 'Passed';
+                            className = 'passed';
+                        } else if (result.total >= this.trialsPerSpan) {
+                            status = 'Failed';
+                            className = 'failed';
+                        } else {
+                            status = 'In progress';
+                            className = 'current';
+                        }
+                    } else if (span === this.currentSpanLength && this.isActive) {
+                        status = 'Current';
+                        className = 'current';
+                    }
+                    
+                    spanDiv.classList.add(className);
+                    spanDiv.innerHTML = `
+                        <div class="span-number">${span}</div>
+                        <div class="span-status">${status}</div>
+                    `;
+                    
+                    spanBreakdown.appendChild(spanDiv);
+                }
+            }
+
+            updatePerformanceIndicator(elementId, value, thresholds, reverse = false) {
+                const element = document.getElementById(elementId);
+                let performance, className;
+
+                if (reverse) {
+                    // Lower is better
+                    if (value < thresholds[0]) {
+                        performance = 'Excellent';
+                        className = 'excellent';
+                    } else if (value < thresholds[1]) {
+                        performance = 'Good';
+                        className = 'good';
+                    } else if (value < thresholds[2]) {
+                        performance = 'Average';
+                        className = 'average';
+                    } else {
+                        performance = 'Poor';
+                        className = 'poor';
+                    }
+                } else {
+                    // Higher is better
+                    if (value >= thresholds[0]) {
+                        performance = 'Excellent';
+                        className = 'excellent';
+                    } else if (value >= thresholds[1]) {
+                        performance = 'Good';
+                        className = 'good';
+                    } else if (value >= thresholds[2]) {
+                        performance = 'Average';
+                        className = 'average';
+                    } else {
+                        performance = 'Poor';
+                        className = 'poor';
+                    }
+                }
+
+                element.textContent = performance;
+                element.className = `performance-indicator ${className}`;
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize the test when the page loads
+        window.addEventListener('load', () => {
+            new SpatialSpanTest();
+        });
+    </script>
+</body>
+</html>

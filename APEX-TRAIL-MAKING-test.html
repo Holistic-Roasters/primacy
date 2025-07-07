@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX: Trail Making Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-black: #080808;
+            --color-dark-grey: #1a1a1a;
+            --color-mid-grey: #2e2e2e;
+            --color-light-grey: #888888;
+            --color-white: #f5f5f5;
+            --color-accent: #00ff9d;
+            --color-warning: #ff6b6b;
+            --color-excellent: #00ff9d;
+            --color-good: #ffcc00;
+            --color-average: #ff9966;
+            --color-poor: #ff6b6b;
+            --color-completed: #4169e1;
+            --color-current: #ffffff;
+            --color-trail: #666666;
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Roboto Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-black);
+            font-family: var(--font-primary);
+            color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--color-accent), var(--color-white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--color-light-grey);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .test-container {
+            background: var(--color-dark-grey);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: var(--color-black);
+            border: 2px solid var(--color-mid-grey);
+            color: var(--color-light-grey);
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .mode-btn.active {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-accent);
+        }
+
+        .mode-description {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+
+        .test-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            padding: 20px;
+            background: var(--color-black);
+            border-radius: 15px;
+            border: 2px solid var(--color-mid-grey);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            color: var(--color-light-grey);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-accent);
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 25px;
+            background: var(--color-black);
+            border-radius: 15px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .instructions h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .instructions p {
+            color: var(--color-light-grey);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .sequence-example {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-white);
+            background: var(--color-mid-grey);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        .trail-canvas-container {
+            position: relative;
+            background: var(--color-black);
+            border-radius: 15px;
+            border: 2px solid var(--color-mid-grey);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .trail-canvas {
+            width: 100%;
+            height: 600px;
+            cursor: crosshair;
+            display: block;
+        }
+
+        .trail-canvas.disabled {
+            cursor: not-allowed;
+        }
+
+        .circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid;
+            user-select: none;
+        }
+
+        .circle.pending {
+            background: var(--color-mid-grey);
+            color: var(--color-light-grey);
+            border-color: var(--color-light-grey);
+        }
+
+        .circle.current {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border-color: var(--color-white);
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 20px var(--color-accent);
+            transform: scale(1.1);
+        }
+
+        .circle.completed {
+            background: var(--color-completed);
+            color: var(--color-white);
+            border-color: var(--color-completed);
+            transform: scale(0.9);
+        }
+
+        .circle.error {
+            background: var(--color-warning);
+            color: var(--color-white);
+            border-color: var(--color-white);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px var(--color-accent);
+            }
+            50% { 
+                box-shadow: 0 0 30px var(--color-accent), 0 0 40px rgba(0, 255, 157, 0.5);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) scale(1.1); }
+            25% { transform: translateX(-5px) scale(1.1); }
+            75% { transform: translateX(5px) scale(1.1); }
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 15px 20px;
+            background: var(--color-black);
+            border-radius: 15px;
+        }
+
+        .progress-info {
+            display: flex;
+            gap: 30px;
+        }
+
+        .progress-item {
+            text-align: center;
+        }
+
+        .progress-label {
+            color: var(--color-light-grey);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            margin-top: 3px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--color-mid-grey);
+            border-radius: 4px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-white));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--color-accent);
+            color: var(--color-black);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .control-btn:hover {
+            background: var(--color-white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 157, 0.3);
+        }
+
+        .control-btn:disabled {
+            background: var(--color-mid-grey);
+            color: var(--color-light-grey);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .control-btn.restart {
+            background: var(--color-warning);
+        }
+
+        .message-display {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .message-display.waiting {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--color-warning);
+            border: 2px solid var(--color-warning);
+        }
+
+        .message-display.active {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+
+        .message-display.complete {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-white);
+            border: 2px solid var(--color-white);
+        }
+
+        .message-display.error {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--color-warning);
+            border: 2px solid var(--color-warning);
+        }
+
+        .results-container {
+            background: var(--color-dark-grey);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-header h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--color-black);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid var(--color-mid-grey);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--color-light-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .performance-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .excellent { 
+            background: var(--color-excellent); 
+            color: var(--color-black); 
+        }
+        .good { 
+            background: var(--color-good); 
+            color: var(--color-black); 
+        }
+        .average { 
+            background: var(--color-average); 
+            color: var(--color-black); 
+        }
+        .poor { 
+            background: var(--color-poor); 
+            color: var(--color-white); 
+        }
+
+        .trail-analysis {
+            background: var(--color-black);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-header {
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .comparison-card {
+            background: var(--color-mid-grey);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .comparison-title {
+            color: var(--color-accent);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .comparison-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-white);
+            margin-bottom: 5px;
+        }
+
+        .comparison-label {
+            font-size: 0.8rem;
+            color: var(--color-light-grey);
+        }
+
+        .error-log {
+            background: var(--color-black);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .error-header {
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .error-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .error-item {
+            background: var(--color-mid-grey);
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 3px solid var(--color-warning);
+            font-size: 0.9rem;
+            color: var(--color-light-grey);
+        }
+
+        .timer-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            text-shadow: 0 0 10px var(--color-accent);
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .trail-canvas {
+                height: 500px;
+            }
+
+            .circle {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+
+            .mode-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .mode-btn {
+                width: 280px;
+            }
+
+            .test-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .control-btn {
+                width: 200px;
+            }
+
+            .progress-info {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .timer-display {
+                position: static;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .countdown {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            color: var(--color-accent);
+            text-align: center;
+            text-shadow: 0 0 20px var(--color-accent);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>APEX TRAIL MAKING</h1>
+            <p>Assess your processing speed, visual attention, and mental flexibility. Connect the dots as quickly and accurately as possible.</p>
+        </div>
+
+        <div class="test-container">
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="tmt-a">
+                    TMT-A
+                    <span class="mode-description">Numbers Only (1-2-3...)</span>
+                </button>
+                <button class="mode-btn" data-mode="tmt-b">
+                    TMT-B
+                    <span class="mode-description">Alternating (1-A-2-B...)</span>
+                </button>
+                <button class="mode-btn" data-mode="practice">
+                    Practice
+                    <span class="mode-description">Short version to learn</span>
+                </button>
+            </div>
+
+            <div class="test-info">
+                <div class="info-item">
+                    <div class="info-label">Test Type</div>
+                    <div class="info-value" id="testType">TMT-A</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Targets</div>
+                    <div class="info-value" id="targetCount">25</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Sequence</div>
+                    <div class="info-value" id="sequenceType">Numbers</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Difficulty</div>
+                    <div class="info-value" id="difficulty">Standard</div>
+                </div>
+            </div>
+
+            <div class="instructions" id="instructions">
+                <h3>Trail Making Test A</h3>
+                <p>Connect the numbered circles in ascending order as quickly as possible.</p>
+                <div class="sequence-example">1 → 2 → 3 → 4 → 5 → ...</div>
+                <p>Click on each circle in the correct sequence. If you make an error, you'll be guided back to the correct path.</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-info">
+                    <div class="progress-item">
+                        <div class="progress-label">Next Target</div>
+                        <div class="progress-value" id="currentTarget">?</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">Errors</div>
+                        <div class="progress-value" id="errorCount">0</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-info">
+                    <div class="progress-item">
+                        <div class="progress-label">Time</div>
+                        <div class="progress-value" id="currentTime">0s</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">Completed</div>
+                        <div class="progress-value" id="completedCount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trail-canvas-container">
+                <div class="timer-display" id="timerDisplay">0.00s</div>
+                <canvas class="trail-canvas disabled" id="trailCanvas"></canvas>
+            </div>
+
+            <div class="message-display waiting" id="messageDisplay">
+                Click START to begin your trail making assessment
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="startBtn">Start Test</button>
+                <button class="control-btn restart" id="restartBtn" disabled>Restart</button>
+                <button class="control-btn" id="resetBtn">Reset</button>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="results-header">
+                <h2>Trail Making Performance</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="completionTime">-</div>
+                    <div class="stat-label">Completion Time (s)</div>
+                    <div class="performance-indicator" id="timePerformance">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalErrors">0</div>
+                    <div class="stat-label">Total Errors</div>
+                    <div class="performance-indicator" id="errorPerformance">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="processingSpeed">-</div>
+                    <div class="stat-label">Processing Speed</div>
+                    <div class="performance-indicator" id="speedPerformance">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="executiveScore">-</div>
+                    <div class="stat-label">Executive Score</div>
+                    <div class="performance-indicator" id="execPerformance">-</div>
+                </div>
+            </div>
+
+            <div class="trail-analysis">
+                <div class="analysis-header">Performance Analysis</div>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-title">Time per Target</div>
+                        <div class="comparison-value" id="timePerTarget">-</div>
+                        <div class="comparison-label">Average seconds</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-title">Error Rate</div>
+                        <div class="comparison-value" id="errorRate">-</div>
+                        <div class="comparison-label">Percentage</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-title">Mental Flexibility</div>
+                        <div class="comparison-value" id="flexibilityScore">-</div>
+                        <div class="comparison-label">Cognitive agility</div>
+                    </div>
+                </div>
+                <p style="color: var(--color-light-grey); font-size: 0.9rem;">
+                    TMT-A measures processing speed and visual attention. TMT-B adds mental flexibility and task-switching ability.
+                </p>
+            </div>
+
+            <div class="error-log">
+                <div class="error-header">Error Log</div>
+                <div class="error-list" id="errorList">
+                    <div style="color: var(--color-light-grey); font-style: italic; text-align: center; padding: 20px;">
+                        No errors recorded
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TrailMakingTest {
+            constructor() {
+                this.mode = 'tmt-a';
+                this.isActive = false;
+                this.isPaused = false;
+                this.startTime = 0;
+                this.endTime = 0;
+                this.currentIndex = 0;
+                this.targets = [];
+                this.errors = [];
+                this.completedTargets = [];
+                this.trail = [];
+                
+                this.canvas = null;
+                this.ctx = null;
+                this.circles = [];
+                
+                this.sequences = {
+                    'tmt-a': Array.from({length: 25}, (_, i) => (i + 1).toString()),
+                    'tmt-b': this.generateTMTBSequence(25),
+                    'practice': this.generateTMTBSequence(8)
+                };
+                
+                this.initElements();
+                this.setupEventListeners();
+                this.updateDisplay();
+                this.updateInstructions();
+                this.setupCanvas();
+            }
+
+            generateTMTBSequence(length) {
+                const sequence = [];
+                let number = 1;
+                let letter = 'A';
+                
+                for (let i = 0; i < length; i++) {
+                    if (i % 2 === 0) {
+                        sequence.push(number.toString());
+                        number++;
+                    } else {
+                        sequence.push(letter);
+                        letter = String.fromCharCode(letter.charCodeAt(0) + 1);
+                    }
+                }
+                return sequence;
+            }
+
+            initElements() {
+                this.canvas = document.getElementById('trailCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                
+                this.messageDisplay = document.getElementById('messageDisplay');
+                this.startBtn = document.getElementById('startBtn');
+                this.restartBtn = document.getElementById('restartBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                
+                this.currentTargetDisplay = document.getElementById('currentTarget');
+                this.errorCountDisplay = document.getElementById('errorCount');
+                this.currentTimeDisplay = document.getElementById('currentTime');
+                this.completedCountDisplay = document.getElementById('completedCount');
+                this.progressFill = document.getElementById('progressFill');
+                this.timerDisplay = document.getElementById('timerDisplay');
+                
+                this.instructions = document.getElementById('instructions');
+                this.testTypeDisplay = document.getElementById('testType');
+                this.targetCountDisplay = document.getElementById('targetCount');
+                this.sequenceTypeDisplay = document.getElementById('sequenceType');
+                this.difficultyDisplay = document.getElementById('difficulty');
+            }
+
+            setupEventListeners() {
+                // Mode selection
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (this.isActive) return;
+                        
+                        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        this.mode = e.target.dataset.mode;
+                        this.updateDisplay();
+                        this.updateInstructions();
+                        this.generateTargets();
+                    });
+                });
+
+                // Control buttons
+                this.startBtn.addEventListener('click', () => this.startTest());
+                this.restartBtn.addEventListener('click', () => this.restartTest());
+                this.resetBtn.addEventListener('click', () => this.resetTest());
+
+                // Canvas events
+                this.canvas.addEventListener('click', (e) => this.handleCanvasClick(e));
+                this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+                // Window resize
+                window.addEventListener('resize', () => this.handleResize());
+            }
+
+            setupCanvas() {
+                const container = this.canvas.parentElement;
+                const rect = container.getBoundingClientRect();
+                
+                this.canvas.width = rect.width * window.devicePixelRatio;
+                this.canvas.height = 600 * window.devicePixelRatio;
+                this.canvas.style.width = rect.width + 'px';
+                this.canvas.style.height = '600px';
+                
+                this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                
+                this.canvasWidth = rect.width;
+                this.canvasHeight = 600;
+                
+                this.generateTargets();
+            }
+
+            updateDisplay() {
+                const sequence = this.sequences[this.mode];
+                
+                this.testTypeDisplay.textContent = this.mode.toUpperCase();
+                this.targetCountDisplay.textContent = sequence.length;
+                
+                if (this.mode === 'tmt-a') {
+                    this.sequenceTypeDisplay.textContent = 'Numbers';
+                    this.difficultyDisplay.textContent = 'Standard';
+                } else if (this.mode === 'tmt-b') {
+                    this.sequenceTypeDisplay.textContent = 'Mixed';
+                    this.difficultyDisplay.textContent = 'Advanced';
+                } else {
+                    this.sequenceTypeDisplay.textContent = 'Mixed';
+                    this.difficultyDisplay.textContent = 'Practice';
+                }
+            }
+
+            updateInstructions() {
+                const instructions = {
+                    'tmt-a': {
+                        title: 'Trail Making Test A',
+                        text: 'Connect the numbered circles in ascending order as quickly as possible.',
+                        example: '1 → 2 → 3 → 4 → 5 → ...'
+                    },
+                    'tmt-b': {
+                        title: 'Trail Making Test B',
+                        text: 'Alternate between numbers and letters in ascending order as quickly as possible.',
+                        example: '1 → A → 2 → B → 3 → C → ...'
+                    },
+                    'practice': {
+                        title: 'Practice Trail Making',
+                        text: 'Practice alternating between numbers and letters. Perfect for learning the pattern.',
+                        example: '1 → A → 2 → B → 3 → C → ...'
+                    }
+                };
+
+                const instruction = instructions[this.mode];
+                this.instructions.innerHTML = `
+                    <h3>${instruction.title}</h3>
+                    <p>${instruction.text}</p>
+                    <div class="sequence-example">${instruction.example}</div>
+                    <p>Click on each circle in the correct sequence. If you make an error, you'll be guided back to the correct path.</p>
+                `;
+            }
+
+            generateTargets() {
+                this.targets = [];
+                this.circles = [];
+                const sequence = this.sequences[this.mode];
+                
+                // Generate random positions for targets
+                const margin = 60;
+                const positions = [];
+                
+                for (let i = 0; i < sequence.length; i++) {
+                    let position;
+                    let attempts = 0;
+                    
+                    do {
+                        position = {
+                            x: margin + Math.random() * (this.canvasWidth - 2 * margin),
+                            y: margin + Math.random() * (this.canvasHeight - 2 * margin)
+                        };
+                        attempts++;
+                    } while (this.isTooClose(position, positions) && attempts < 100);
+                    
+                    positions.push(position);
+                    
+                    this.targets.push({
+                        id: i,
+                        label: sequence[i],
+                        x: position.x,
+                        y: position.y,
+                        radius: 25,
+                        state: 'pending' // pending, completed, error
+                    });
+                }
+                
+                // No highlighting - user must find the first target themselves
+                this.drawCanvas();
+            }
+
+            isTooClose(newPos, existingPositions, minDistance = 80) {
+                return existingPositions.some(pos => {
+                    const dx = newPos.x - pos.x;
+                    const dy = newPos.y - pos.y;
+                    return Math.sqrt(dx * dx + dy * dy) < minDistance;
+                });
+            }
+
+            drawCanvas() {
+                this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+                
+                // Draw trail lines
+                this.drawTrail();
+                
+                // Draw targets
+                this.targets.forEach(target => {
+                    this.drawTarget(target);
+                });
+            }
+
+            drawTrail() {
+                if (this.trail.length < 2) return;
+                
+                this.ctx.strokeStyle = '#666666';
+                this.ctx.lineWidth = 2;
+                this.ctx.setLineDash([5, 5]);
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                
+                for (let i = 1; i < this.trail.length; i++) {
+                    this.ctx.lineTo(this.trail[i].x, this.trail[i].y);
+                }
+                
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+            }
+
+            drawTarget(target) {
+                const x = target.x;
+                const y = target.y;
+                const radius = target.radius;
+                
+                // Set colors based on state
+                let fillColor, borderColor, textColor;
+                
+                switch (target.state) {
+                    case 'pending':
+                        fillColor = '#2e2e2e';
+                        borderColor = '#888888';
+                        textColor = '#f5f5f5';
+                        break;
+                    case 'completed':
+                        fillColor = '#4169e1';
+                        borderColor = '#4169e1';
+                        textColor = '#ffffff';
+                        break;
+                    case 'error':
+                        fillColor = '#ff6b6b';
+                        borderColor = '#ffffff';
+                        textColor = '#ffffff';
+                        break;
+                }
+                
+                // Draw circle
+                this.ctx.fillStyle = fillColor;
+                this.ctx.strokeStyle = borderColor;
+                this.ctx.lineWidth = 2;
+                
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.stroke();
+                
+                // Draw label
+                this.ctx.fillStyle = textColor;
+                this.ctx.font = 'bold 16px Roboto Condensed';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                this.ctx.fillText(target.label, x, y);
+            }
+
+            handleCanvasClick(e) {
+                if (!this.isActive) return;
+                
+                const rect = this.canvas.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+                
+                // Find clicked target
+                const clickedTarget = this.targets.find(target => {
+                    const dx = clickX - target.x;
+                    const dy = clickY - target.y;
+                    return Math.sqrt(dx * dx + dy * dy) <= target.radius;
+                });
+                
+                if (clickedTarget) {
+                    this.handleTargetClick(clickedTarget);
+                }
+            }
+
+            handleTargetClick(target) {
+                const expectedTarget = this.targets[this.currentIndex];
+                
+                if (target.id === expectedTarget.id) {
+                    // Correct target
+                    this.handleCorrectTarget(target);
+                } else {
+                    // Wrong target
+                    this.handleError(target, expectedTarget);
+                }
+            }
+
+            handleCorrectTarget(target) {
+                // Update target state
+                target.state = 'completed';
+                this.completedTargets.push(target);
+                
+                // Add to trail
+                this.trail.push({ x: target.x, y: target.y });
+                
+                // Move to next target
+                this.currentIndex++;
+                
+                if (this.currentIndex >= this.targets.length) {
+                    // Test complete
+                    this.endTest();
+                    return;
+                }
+                
+                // No highlighting for next target - user must find it themselves
+                this.updateProgress();
+                this.drawCanvas();
+            }
+
+            handleError(clickedTarget, expectedTarget) {
+                // Log error
+                this.errors.push({
+                    timestamp: Date.now() - this.startTime,
+                    expected: expectedTarget.label,
+                    clicked: clickedTarget.label,
+                    position: this.currentIndex
+                });
+                
+                // Visual feedback
+                clickedTarget.state = 'error';
+                this.drawCanvas();
+                
+                // Show error message
+                this.messageDisplay.textContent = `Wrong! Click ${expectedTarget.label} next.`;
+                this.messageDisplay.className = 'message-display error';
+                
+                // Reset after short delay
+                setTimeout(() => {
+                    clickedTarget.state = 'pending';
+                    this.messageDisplay.textContent = 'Continue connecting the sequence...';
+                    this.messageDisplay.className = 'message-display active';
+                    this.drawCanvas();
+                }, 1000);
+                
+                this.updateProgress();
+            }
+
+            async startTest() {
+                if (this.isActive) return;
+                
+                this.isActive = true;
+                this.startTime = Date.now();
+                this.currentIndex = 0;
+                this.errors = [];
+                this.completedTargets = [];
+                this.trail = [];
+                
+                this.startBtn.disabled = true;
+                this.restartBtn.disabled = false;
+                this.canvas.classList.remove('disabled');
+                
+                this.messageDisplay.textContent = 'Get ready...';
+                this.messageDisplay.className = 'message-display waiting';
+                
+                // Countdown
+                await this.showCountdown();
+                
+                if (this.isActive) {
+                    this.messageDisplay.textContent = 'Connect the sequence as quickly as possible!';
+                    this.messageDisplay.className = 'message-display active';
+                    this.startTimer();
+                }
+            }
+
+            async showCountdown() {
+                const countdown = document.createElement('div');
+                countdown.className = 'countdown';
+                this.messageDisplay.appendChild(countdown);
+                
+                for (let i = 3; i > 0; i--) {
+                    countdown.textContent = i;
+                    await this.delay(1000);
+                    if (!this.isActive) return;
+                }
+                
+                countdown.remove();
+            }
+
+            startTimer() {
+                this.timerInterval = setInterval(() => {
+                    const elapsed = (Date.now() - this.startTime) / 1000;
+                    this.timerDisplay.textContent = `${elapsed.toFixed(2)}s`;
+                    this.currentTimeDisplay.textContent = `${elapsed.toFixed(1)}s`;
+                }, 100);
+            }
+
+            updateProgress() {
+                const sequence = this.sequences[this.mode];
+                
+                // Don't show the next target - that would give it away!
+                this.currentTargetDisplay.textContent = '?';
+                this.errorCountDisplay.textContent = this.errors.length;
+                this.completedCountDisplay.textContent = this.completedTargets.length;
+                
+                const progress = (this.completedTargets.length / sequence.length) * 100;
+                this.progressFill.style.width = `${progress}%`;
+            }
+
+            restartTest() {
+                this.endTest();
+                this.resetTest();
+                setTimeout(() => this.startTest(), 100);
+            }
+
+            resetTest() {
+                this.endTest();
+                
+                this.currentIndex = 0;
+                this.errors = [];
+                this.completedTargets = [];
+                this.trail = [];
+                
+                this.startBtn.disabled = false;
+                this.restartBtn.disabled = true;
+                this.canvas.classList.add('disabled');
+                
+                this.messageDisplay.textContent = 'Click START to begin your trail making assessment';
+                this.messageDisplay.className = 'message-display waiting';
+                
+                this.timerDisplay.textContent = '0.00s';
+                
+                this.generateTargets();
+                this.updateProgress();
+                this.updateResults();
+            }
+
+            endTest() {
+                this.isActive = false;
+                this.endTime = Date.now();
+                
+                clearInterval(this.timerInterval);
+                
+                this.startBtn.disabled = false;
+                this.restartBtn.disabled = true;
+                this.canvas.classList.add('disabled');
+                
+                this.messageDisplay.textContent = 'Test Complete! Check your performance analysis below.';
+                this.messageDisplay.className = 'message-display complete';
+                
+                this.updateResults();
+                this.updateErrorLog();
+            }
+
+            updateResults() {
+                const sequence = this.sequences[this.mode];
+                
+                if (this.endTime === 0 || this.completedTargets.length === 0) {
+                    // Reset display
+                    document.getElementById('completionTime').textContent = '-';
+                    document.getElementById('totalErrors').textContent = '0';
+                    document.getElementById('processingSpeed').textContent = '-';
+                    document.getElementById('executiveScore').textContent = '-';
+                    return;
+                }
+
+                const completionTime = (this.endTime - this.startTime) / 1000;
+                const timePerTarget = completionTime / sequence.length;
+                const errorRate = (this.errors.length / sequence.length) * 100;
+                const processingSpeed = this.calculateProcessingSpeed(completionTime);
+                const executiveScore = this.calculateExecutiveScore();
+
+                document.getElementById('completionTime').textContent = completionTime.toFixed(2);
+                document.getElementById('totalErrors').textContent = this.errors.length;
+                document.getElementById('processingSpeed').textContent = processingSpeed;
+                document.getElementById('executiveScore').textContent = executiveScore;
+
+                // Update analysis
+                document.getElementById('timePerTarget').textContent = timePerTarget.toFixed(2);
+                document.getElementById('errorRate').textContent = `${errorRate.toFixed(1)}%`;
+                document.getElementById('flexibilityScore').textContent = this.calculateFlexibilityScore();
+
+                // Performance indicators
+                this.updatePerformanceIndicator('timePerformance', completionTime, this.getTimeBenchmarks());
+                this.updatePerformanceIndicator('errorPerformance', this.errors.length, [0, 1, 3], true);
+                this.updatePerformanceIndicator('speedPerformance', processingSpeed, [85, 70, 55]);
+                this.updatePerformanceIndicator('execPerformance', executiveScore, [90, 75, 60]);
+            }
+
+            getTimeBenchmarks() {
+                // Different benchmarks for different test types
+                switch (this.mode) {
+                    case 'tmt-a':
+                        return [30, 45, 60]; // Excellent, Good, Average thresholds
+                    case 'tmt-b':
+                        return [75, 120, 180];
+                    case 'practice':
+                        return [20, 30, 45];
+                    default:
+                        return [30, 45, 60];
+                }
+            }
+
+            calculateProcessingSpeed(time) {
+                const sequence = this.sequences[this.mode];
+                const targetsPerSecond = sequence.length / time;
+                return Math.round(targetsPerSecond * 100); // Scale to percentage-like score
+            }
+
+            calculateExecutiveScore() {
+                const sequence = this.sequences[this.mode];
+                const completionTime = (this.endTime - this.startTime) / 1000;
+                const timeScore = Math.max(0, 100 - completionTime);
+                const errorPenalty = this.errors.length * 5;
+                const difficultyBonus = this.mode === 'tmt-b' ? 20 : 0;
+                
+                return Math.max(0, Math.round(timeScore - errorPenalty + difficultyBonus));
+            }
+
+            calculateFlexibilityScore() {
+                if (this.mode === 'tmt-a') return 'N/A';
+                
+                const switchErrors = this.errors.filter(error => {
+                    const expectedIndex = this.sequences[this.mode].indexOf(error.expected);
+                    const isNumberExpected = !isNaN(error.expected);
+                    const isNumberClicked = !isNaN(error.clicked);
+                    return isNumberExpected !== isNumberClicked;
+                }).length;
+                
+                const totalSwitches = Math.floor(this.sequences[this.mode].length / 2);
+                const flexibilityScore = Math.max(0, 100 - (switchErrors / totalSwitches) * 100);
+                
+                return `${Math.round(flexibilityScore)}%`;
+            }
+
+            updateErrorLog() {
+                const errorList = document.getElementById('errorList');
+                
+                if (this.errors.length === 0) {
+                    errorList.innerHTML = '<div style="color: var(--color-light-grey); font-style: italic; text-align: center; padding: 20px;">No errors recorded - Perfect performance!</div>';
+                    return;
+                }
+                
+                errorList.innerHTML = '';
+                this.errors.forEach((error, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'error-item';
+                    item.innerHTML = `
+                        <strong>Error ${index + 1}:</strong> Expected "${error.expected}", clicked "${error.clicked}" 
+                        at ${(error.timestamp / 1000).toFixed(1)}s
+                    `;
+                    errorList.appendChild(item);
+                });
+            }
+
+            updatePerformanceIndicator(elementId, value, thresholds, reverse = false) {
+                const element = document.getElementById(elementId);
+                let performance, className;
+
+                if (reverse) {
+                    // Lower is better
+                    if (value <= thresholds[0]) {
+                        performance = 'Excellent';
+                        className = 'excellent';
+                    } else if (value <= thresholds[1]) {
+                        performance = 'Good';
+                        className = 'good';
+                    } else if (value <= thresholds[2]) {
+                        performance = 'Average';
+                        className = 'average';
+                    } else {
+                        performance = 'Poor';
+                        className = 'poor';
+                    }
+                } else {
+                    // Higher is better
+                    if (value >= thresholds[0]) {
+                        performance = 'Excellent';
+                        className = 'excellent';
+                    } else if (value >= thresholds[1]) {
+                        performance = 'Good';
+                        className = 'good';
+                    } else if (value >= thresholds[2]) {
+                        performance = 'Average';
+                        className = 'average';
+                    } else {
+                        performance = 'Poor';
+                        className = 'poor';
+                    }
+                }
+
+                element.textContent = performance;
+                element.className = `performance-indicator ${className}`;
+            }
+
+            handleResize() {
+                this.setupCanvas();
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize the test when the page loads
+        window.addEventListener('load', () => {
+            new TrailMakingTest();
+        });
+    </script>
+</body>
+</html>
