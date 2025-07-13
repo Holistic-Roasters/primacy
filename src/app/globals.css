@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  --color-black: #080808;
+  --color-dark-grey: #1a1a1a;
+  --color-mid-grey: #2e2e2e;
+  --color-light-grey: #888888;
+  --color-white: #f5f5f5;
+  --color-accent: #00ff9d;
+  --color-coffee: #ff6b6b;
+  --font-primary: "Roboto", sans-serif;
+  --font-display: "Roboto Condensed", sans-serif;
+}
+body {
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-primary);
+}
