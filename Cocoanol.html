@@ -575,6 +575,72 @@
             }
         }
 
+        /* Author Card */
+        .author-card {
+            background-color: var(--dark-grey);
+            border-radius: 8px;
+            padding: var(--space-xl);
+            margin: var(--space-xxl) 0;
+            border: 1px solid var(--mid-grey);
+        }
+
+        .author-content {
+            display: flex;
+            gap: var(--space-lg);
+            align-items: flex-start;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: var(--mid-grey);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 2px solid var(--apex-green);
+        }
+
+        .author-avatar span {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--apex-green);
+            letter-spacing: 0.05em;
+        }
+
+        .author-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xs);
+            color: var(--white);
+        }
+
+        .author-title {
+            color: var(--apex-green);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-md);
+        }
+
+        .author-bio {
+            color: var(--light-grey);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .author-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .author-avatar {
+                margin: 0 auto;
+            }
+        }
+
         /* Loading Animation */
         .loading {
             display: inline-block;
@@ -1172,6 +1238,20 @@
             <div style="margin-top: var(--space-lg);">
                 <a href="/apex" class="btn btn-primary" style="margin-right: var(--space-sm);">EXPLORE APEX</a>
                 <a href="/reset" class="btn btn-secondary">EXPLORE RESET</a>
+            </div>
+        </section>
+
+        <!-- Author Card -->
+        <section class="author-card">
+            <div class="author-content">
+                <div class="author-avatar">
+                    <span>GK</span>
+                </div>
+                <div class="author-info">
+                    <h3>Gregory Kalinin</h3>
+                    <p class="author-title">Co-Founder, Holistic Roasters & Primacy</p>
+                    <p class="author-bio">Gregory Kalinin is a serial entrepreneur who co-founded Primacy to engineer no-compromise human performance solutions. With a passion for evidence-based supplementation, Gregory leads PRIMACY's product development with a focus on creating protocols that deliver measurable results.</p>
+                </div>
             </div>
         </section>
     </main>
