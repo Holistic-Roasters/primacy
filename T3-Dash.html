@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMACY Protocol Dashboard - Performance Optimization Platform</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primacy-black': '#080808',
+                        'primacy-dark': '#1a1a1a',
+                        'primacy-mid': '#2e2e2e',
+                        'primacy-light': '#888888',
+                        'primacy-white': '#f5f5f5',
+                        'apex-green': '#00ff9d',
+                        'reset-blue': '#00c6ff',
+                        'warning-orange': '#ff9500',
+                        'danger-red': '#ff3b30'
+                    },
+                    fontFamily: {
+                        'condensed': ['Roboto Condensed', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif'],
+                        'mono': ['Space Mono', 'monospace']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'fade-in': 'fadeIn 0.5s ease-in'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom animations and styles */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .glow-apex {
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+        }
+        
+        .glow-reset {
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+        
+        .glow-premium {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .tier-badge {
+            background: linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to));
+            backdrop-filter: blur(10px);
+        }
+        
+        .glass-effect {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-primacy-black text-primacy-white font-roboto min-h-screen">
+    
+    <!-- Navigation Header -->
+    <nav class="glass-effect fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="font-condensed text-2xl font-bold">
+                    <span class="text-apex-green">PRIMACY</span>
+                    <span class="text-primacy-white">PROTOCOL</span>
+                </div>
+                <div id="tierIndicator" class="px-3 py-1 rounded-full text-xs font-mono"></div>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <button onclick="showDashboard()" class="hover:text-apex-green transition">Dashboard</button>
+                <button onclick="showCognitiveTests()" class="hover:text-apex-green transition">Tests</button>
+                <button onclick="showWearables()" class="hover:text-apex-green transition">Wearables</button>
+                <button onclick="showCorrelations()" class="hover:text-apex-green transition">Correlations</button>
+                <button onclick="showAICoach()" class="hover:text-apex-green transition">AI Coach</button>
+                <button onclick="showCommunity()" class="hover:text-apex-green transition">The Foundry</button>
+                <button onclick="showTierSelection()" class="px-4 py-2 bg-apex-green text-primacy-black rounded-lg font-bold hover:glow-apex transition">
+                    <i class="fas fa-crown mr-2"></i>Upgrade
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main class="pt-20 px-6 pb-10">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Tier Selection Modal (Initially shown) -->
+            <div id="tierSelection" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+                <div class="bg-primacy-dark rounded-2xl p-8 max-w-4xl w-full animate-slide-up">
+                    <h2 class="text-3xl font-condensed font-bold text-center mb-8">Choose Your Access Level</h2>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Tier 1: Anonymous -->
+                        <div class="glass-effect rounded-xl p-6 hover:glow-apex transition cursor-pointer" onclick="selectTier(1)">
+                            <div class="text-center mb-4">
+                                <i class="fas fa-user-secret text-4xl text-primacy-light"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Anonymous</h3>
+                            <p class="text-sm text-primacy-light mb-4">Try before you commit</p>
+                            <ul class="space-y-2 text-sm">
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>2 Free Cognitive Tests</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Instant Results</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>No Account Required</li>
+                                <li><i class="fas fa-times text-danger-red mr-2"></i>No Historical Data</li>
+                                <li><i class="fas fa-times text-danger-red mr-2"></i>Limited Features</li>
+                            </ul>
+                            <button class="w-full mt-6 py-2 bg-primacy-mid rounded-lg hover:bg-primacy-light transition">
+                                Try Free
+                            </button>
+                        </div>
+                        
+                        <!-- Tier 2: Operator -->
+                        <div class="glass-effect rounded-xl p-6 hover:glow-reset transition cursor-pointer" onclick="selectTier(2)">
+                            <div class="text-center mb-4">
+                                <i class="fas fa-user-astronaut text-4xl text-reset-blue"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Operator</h3>
+                            <p class="text-sm text-primacy-light mb-4">Free account with core features</p>
+                            <ul class="space-y-2 text-sm">
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>All 9 Cognitive Tests</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Historical Charts</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Basic Wearable Integration</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Daily/Weekly/Monthly Views</li>
+                                <li><i class="fas fa-times text-danger-red mr-2"></i>No AI Coach</li>
+                            </ul>
+                            <button class="w-full mt-6 py-2 bg-reset-blue text-primacy-black rounded-lg hover:glow-reset transition font-bold">
+                                Sign Up Free
+                            </button>
+                        </div>
+                        
+                        <!-- Tier 3: Protocol Subscriber -->
+                        <div class="glass-effect rounded-xl p-6 border-2 border-apex-green hover:glow-apex transition cursor-pointer" onclick="selectTier(3)">
+                            <div class="text-center mb-4">
+                                <i class="fas fa-crown text-4xl text-apex-green"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Protocol Subscriber</h3>
+                            <p class="text-sm text-apex-green mb-4">Premium access to all features</p>
+                            <ul class="space-y-2 text-sm">
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Everything in Operator</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Kai Mercer AI Coach</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Correlation Engine</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Advanced Reports</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>The Foundry Community</li>
+                                <li><i class="fas fa-check text-apex-green mr-2"></i>Premium Device Dashboards</li>
+                            </ul>
+                            <button class="w-full mt-6 py-2 bg-apex-green text-primacy-black rounded-lg hover:opacity-90 transition font-bold">
+                                Go Premium
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center text-sm text-primacy-light mt-8">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Founders receive lifetime Protocol access. Product purchases include time-limited premium access.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-condensed font-bold mb-2">Performance Dashboard</h1>
+                    <p class="text-primacy-light">Track your optimization journey</p>
+                </div>
+                
+                <!-- Protocol Tracking and Context Logging (Tier 3 only) -->
+                <div id="protocolTracking" class="hidden">
+                    <!-- Will be populated for Tier 3 users -->
+                </div>
+                
+                <!-- Quick Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-effect rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-brain text-2xl text-apex-green"></i>
+                            <span class="text-xs text-primacy-light">+12%</span>
+                        </div>
+                        <div class="text-2xl font-bold">92</div>
+                        <div class="text-sm text-primacy-light">Cognitive Score</div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-heartbeat text-2xl text-reset-blue"></i>
+                            <span class="text-xs text-primacy-light">-3%</span>
+                        </div>
+                        <div class="text-2xl font-bold">58</div>
+                        <div class="text-sm text-primacy-light">HRV Average</div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-bed text-2xl text-warning-orange"></i>
+                            <span class="text-xs text-apex-green">+8%</span>
+                        </div>
+                        <div class="text-2xl font-bold">7.2h</div>
+                        <div class="text-sm text-primacy-light">Sleep Quality</div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-fire text-2xl text-danger-red"></i>
+                            <span class="text-xs text-apex-green">+5%</span>
+                        </div>
+                        <div class="text-2xl font-bold">326</div>
+                        <div class="text-sm text-primacy-light">Day Streak</div>
+                    </div>
+                </div>
+                
+                <!-- Performance Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="glass-effect rounded-xl p-6">
+                        <h3 class="text-lg font-bold mb-4">Cognitive Performance Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="cognitiveChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <h3 class="text-lg font-bold mb-4">Recovery Metrics</h3>
+                        <div class="chart-container">
+                            <canvas id="recoveryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Activities -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h3 class="text-lg font-bold mb-4">Recent Activities</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between py-3 border-b border-primacy-mid">
+                            <div class="flex items-center space-x-4">
+                                <i class="fas fa-check-circle text-apex-green"></i>
+                                <div>
+                                    <div class="font-medium">Completed N-Back Test</div>
+                                    <div class="text-sm text-primacy-light">Score: 95/100</div>
+                                </div>
+                            </div>
+                            <span class="text-sm text-primacy-light">2 hours ago</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-primacy-mid">
+                            <div class="flex items-center space-x-4">
+                                <i class="fas fa-moon text-reset-blue"></i>
+                                <div>
+                                    <div class="font-medium">Sleep Session Recorded</div>
+                                    <div class="text-sm text-primacy-light">Quality: 86%</div>
+                                </div>
+                            </div>
+                            <span class="text-sm text-primacy-light">8 hours ago</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-primacy-mid">
+                            <div class="flex items-center space-x-4">
+                                <i class="fas fa-dumbbell text-warning-orange"></i>
+                                <div>
+                                    <div class="font-medium">Workout Completed</div>
+                                    <div class="text-sm text-primacy-light">Zone 2 Cardio - 45 min</div>
+                                </div>
+                            </div>
+                            <span class="text-sm text-primacy-light">Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cognitive Tests View -->
+            <div id="cognitiveTestsView" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-condensed font-bold mb-2">Cognitive Assessment Suite</h1>
+                    <p class="text-primacy-light">Measure and optimize your mental performance</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Test Cards -->
+                    <div class="glass-effect rounded-xl p-6 hover:glow-apex transition cursor-pointer" onclick="startTest('nback')">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-th text-3xl text-apex-green"></i>
+                            <span class="px-2 py-1 bg-apex-green text-primacy-black text-xs rounded-full font-bold">FREE</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">N-Back Test</h3>
+                        <p class="text-sm text-primacy-light mb-4">Working memory and attention</p>
+                        <div class="text-sm space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Duration:</span>
+                                <span>5-10 min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Last Score:</span>
+                                <span class="text-apex-green">92/100</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 bg-apex-green text-primacy-black rounded-lg font-bold hover:opacity-90 transition">
+                            Start Test
+                        </button>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6 hover:glow-apex transition cursor-pointer" onclick="startTest('reaction')">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-bolt text-3xl text-warning-orange"></i>
+                            <span class="px-2 py-1 bg-warning-orange text-primacy-black text-xs rounded-full font-bold">FREE</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Reaction Time</h3>
+                        <p class="text-sm text-primacy-light mb-4">Processing speed and reflexes</p>
+                        <div class="text-sm space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Duration:</span>
+                                <span>2-3 min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Best Time:</span>
+                                <span class="text-apex-green">182ms</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 bg-warning-orange text-primacy-black rounded-lg font-bold hover:opacity-90 transition">
+                            Start Test
+                        </button>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6 opacity-60" id="stroopTest">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-palette text-3xl text-reset-blue"></i>
+                            <span class="px-2 py-1 bg-reset-blue text-primacy-black text-xs rounded-full font-bold">OPERATOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Stroop Test</h3>
+                        <p class="text-sm text-primacy-light mb-4">Cognitive flexibility and control</p>
+                        <div class="text-sm space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Duration:</span>
+                                <span>5 min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Requires:</span>
+                                <span>Operator+</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 bg-primacy-mid text-primacy-light rounded-lg font-bold cursor-not-allowed" disabled>
+                            <i class="fas fa-lock mr-2"></i>Upgrade to Access
+                        </button>
+                    </div>
+                    
+                    <!-- More test cards... -->
+                    <div class="glass-effect rounded-xl p-6 opacity-60">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-shapes text-3xl text-primacy-light"></i>
+                            <span class="px-2 py-1 bg-primacy-light text-primacy-black text-xs rounded-full font-bold">OPERATOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Pattern Recognition</h3>
+                        <p class="text-sm text-primacy-light mb-4">Visual processing and logic</p>
+                        <button class="w-full mt-4 py-2 bg-primacy-mid text-primacy-light rounded-lg font-bold cursor-not-allowed" disabled>
+                            <i class="fas fa-lock mr-2"></i>Upgrade to Access
+                        </button>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6 opacity-60">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-list-ol text-3xl text-primacy-light"></i>
+                            <span class="px-2 py-1 bg-primacy-light text-primacy-black text-xs rounded-full font-bold">OPERATOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Digit Span</h3>
+                        <p class="text-sm text-primacy-light mb-4">Short-term memory capacity</p>
+                        <button class="w-full mt-4 py-2 bg-primacy-mid text-primacy-light rounded-lg font-bold cursor-not-allowed" disabled>
+                            <i class="fas fa-lock mr-2"></i>Upgrade to Access
+                        </button>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6 opacity-60">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-eye text-3xl text-primacy-light"></i>
+                            <span class="px-2 py-1 bg-primacy-light text-primacy-black text-xs rounded-full font-bold">OPERATOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Visual Search</h3>
+                        <p class="text-sm text-primacy-light mb-4">Attention and perception</p>
+                        <button class="w-full mt-4 py-2 bg-primacy-mid text-primacy-light rounded-lg font-bold cursor-not-allowed" disabled>
+                            <i class="fas fa-lock mr-2"></i>Upgrade to Access
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Test History -->
+                <div class="mt-8 glass-effect rounded-xl p-6" id="testHistory">
+                    <h3 class="text-lg font-bold mb-4">Recent Test Results</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-primacy-mid">
+                                    <th class="text-left py-3">Test</th>
+                                    <th class="text-left py-3">Score</th>
+                                    <th class="text-left py-3">Percentile</th>
+                                    <th class="text-left py-3">Date</th>
+                                    <th class="text-left py-3">Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-primacy-mid">
+                                    <td class="py-3">N-Back Test</td>
+                                    <td class="py-3 text-apex-green">92/100</td>
+                                    <td class="py-3">95th</td>
+                                    <td class="py-3">Today</td>
+                                    <td class="py-3"><i class="fas fa-arrow-up text-apex-green"></i></td>
+                                </tr>
+                                <tr class="border-b border-primacy-mid">
+                                    <td class="py-3">Reaction Time</td>
+                                    <td class="py-3 text-warning-orange">182ms</td>
+                                    <td class="py-3">88th</td>
+                                    <td class="py-3">Yesterday</td>
+                                    <td class="py-3"><i class="fas fa-arrow-up text-apex-green"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wearables View -->
+            <div id="wearablesView" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-condensed font-bold mb-2">Wearable Integration</h1>
+                    <p class="text-primacy-light">Connect your devices for comprehensive tracking</p>
+                </div>
+                
+                <!-- Connected Devices -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-effect rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" class="w-8 h-8 filter invert" alt="Apple">
+                            <span class="px-2 py-1 bg-apex-green text-primacy-black text-xs rounded-full">Connected</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Apple Watch</h3>
+                        <p class="text-sm text-primacy-light mb-4">Series 8</p>
+                        <div class="text-sm space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Last Sync:</span>
+                                <span>2 min ago</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Data Points:</span>
+                                <span>12,483</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-ring text-3xl text-reset-blue"></i>
+                            <span class="px-2 py-1 bg-apex-green text-primacy-black text-xs rounded-full">Connected</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Oura Ring</h3>
+                        <p class="text-sm text-primacy-light mb-4">Gen 3</p>
+                        <div class="text-sm space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Last Sync:</span>
+                                <span>1 hour ago</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primacy-light">Battery:</span>
+                                <span>78%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6 opacity-60">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-heartbeat text-3xl text-primacy-light"></i>
+                            <span class="px-2 py-1 bg-primacy-mid text-primacy-light text-xs rounded-full">Not Connected</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Whoop Strap</h3>
+                        <p class="text-sm text-primacy-light mb-4">Add device</p>
+                        <button class="w-full mt-4 py-2 bg-primacy-mid text-primacy-white rounded-lg hover:bg-primacy-light transition">
+                            <i class="fas fa-plus mr-2"></i>Connect Device
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Biometric Data -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-effect rounded-xl p-6">
+                        <h3 class="text-lg font-bold mb-4">Heart Rate Variability</h3>
+                        <div class="chart-container">
+                            <canvas id="hrvChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <h3 class="text-lg font-bold mb-4">Sleep Stages</h3>
+                        <div class="chart-container">
+                            <canvas id="sleepChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <h3 class="text-lg font-bold mb-4">Activity Zones</h3>
+                        <div class="chart-container">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-xl p-6">
+                        <h3 class="text-lg font-bold mb-4">Recovery Score</h3>
+                        <div class="chart-container">
+                            <canvas id="recoveryScoreChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Correlations View (Premium) -->
+            <div id="correlationsView" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-condensed font-bold mb-2">Correlation Engine</h1>
+                    <p class="text-primacy-light">Discover patterns in your performance data</p>
+                </div>
+                
+                <div id="correlationsContent">
+                    <!-- Will be populated based on tier -->
+                </div>
+            </div>
+            
+            <!-- AI Coach View (Premium) -->
+            <div id="aiCoachView" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-condensed font-bold mb-2">Kai Mercer - AI Performance Coach</h1>
+                    <p class="text-primacy-light">Your personalized optimization partner</p>
+                </div>
+                
+                <div id="aiCoachContent">
+                    <!-- Will be populated based on tier -->
+                </div>
+            </div>
+            
+            <!-- Community View (Premium) -->
+            <div id="communityView" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-condensed font-bold mb-2">The Foundry</h1>
+                    <p class="text-primacy-light">Elite performance community</p>
+                </div>
+                
+                <div id="communityContent">
+                    <!-- Will be populated based on tier -->
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!-- Test Modal -->
+    <div id="testModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden">
+        <div class="bg-primacy-dark rounded-2xl p-8 max-w-2xl w-full">
+            <div id="testContent">
+                <!-- Test content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

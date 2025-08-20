@@ -7,6 +7,11 @@ let userData = {
     wearableData: {},
     correlations: [],
     contextLogs: [],
+    basicContextLogs: [],
+    protocolLogs: {
+        apex: [],
+        reset: []
+    },
     streak: 326,
     totalTests: 0
 };
@@ -118,7 +123,7 @@ function selectTier(tier, showDash = true) {
 function updateTierIndicator(tier) {
     const indicator = document.getElementById('tierIndicator');
     const tierNames = ['', 'ANONYMOUS', 'OPERATOR', 'PROTOCOL'];
-    const tierColors = ['', 'bg-primacy-light', 'bg-reset-blue', 'bg-gradient-to-r from-premium-gold to-warning-orange'];
+    const tierColors = ['', 'bg-primacy-light', 'bg-reset-blue', 'bg-apex-green'];
     
     if (tier > 0) {
         indicator.innerHTML = `<i class="fas fa-circle mr-2"></i>${tierNames[tier]}`;
@@ -177,6 +182,14 @@ function showDashboard() {
     hideAllViews();
     document.getElementById('dashboardView').classList.remove('hidden');
     currentView = 'dashboard';
+    
+    // Show context/protocol tracking based on tier
+    if (currentTier === 2) {
+        initializeBasicContextTracking();
+    } else if (currentTier === 3) {
+        initializeProtocolTracking();
+    }
+    
     initializeCharts();
 }
 
@@ -473,99 +486,153 @@ function initializeBasicCorrelations() {
     const container = document.getElementById('correlationsContent');
     if (!container) return;
     
+    // Basic context factors for Tier 2
+    const basicContextFactors = [
+        { id: 'late-meal-basic', label: 'Late Meal', icon: 'fa-utensils', color: '#ff3b30' },
+        { id: 'alcohol-basic', label: 'Alcohol', icon: 'fa-wine-glass', color: '#ff3b30' },
+        { id: 'caffeine-late-basic', label: 'Caffeine Late', icon: 'fa-coffee', color: '#ff3b30' },
+        { id: 'high-stress-basic', label: 'High Stress Day', icon: 'fa-brain', color: '#ff9500' },
+        { id: 'travel-basic', label: 'Travel', icon: 'fa-plane', color: '#9b59b6' }
+    ];
+    
     container.innerHTML = `
         <div class="mb-6 p-4 bg-reset-blue bg-opacity-20 rounded-lg border border-reset-blue">
             <div class="flex items-center space-x-2 mb-2">
                 <i class="fas fa-info-circle text-reset-blue"></i>
                 <h3 class="text-lg font-bold">Basic Correlation Engine</h3>
             </div>
-            <p class="text-sm text-primacy-light">Discover patterns between your key metrics. Upgrade to Protocol for advanced context logging and AI insights.</p>
+            <p class="text-sm text-primacy-light">Analyzes patterns between your 5 tracked context factors and performance metrics.</p>
+            <p class="text-xs text-reset-blue mt-2">
+                <i class="fas fa-info-circle mr-1"></i>
+                Log your daily context from the Dashboard tab
+            </p>
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="glass-effect rounded-xl p-6">
-                <h3 class="text-lg font-bold mb-4">Key Performance Correlations</h3>
+                <h3 class="text-lg font-bold mb-4">Context-Based Discoveries</h3>
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-primacy-black rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-bed text-reset-blue"></i>
-                            <span>Sleep Duration → Next Day Score</span>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-utensils text-danger-red"></i>
+                                <span class="text-sm font-bold">Late Meal Impact</span>
+                            </div>
+                            <span class="text-xs text-danger-red">-15% Sleep</span>
                         </div>
-                        <span class="text-apex-green font-bold">+0.72</span>
+                        <p class="text-xs text-primacy-light">When logged, next day cognitive scores drop 10% on average</p>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-primacy-black rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-heartbeat text-reset-blue"></i>
-                            <span>Resting HR → Cognitive Performance</span>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-wine-glass text-danger-red"></i>
+                                <span class="text-sm font-bold">Alcohol Effect</span>
+                            </div>
+                            <span class="text-xs text-danger-red">-22% HRV</span>
                         </div>
-                        <span class="text-warning-orange font-bold">-0.58</span>
+                        <p class="text-xs text-primacy-light">Reduces deep sleep by 25% and affects recovery for 48 hours</p>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-primacy-black rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-running text-reset-blue"></i>
-                            <span>Exercise → Sleep Quality</span>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-coffee text-warning-orange"></i>
+                                <span class="text-sm font-bold">Late Caffeine</span>
+                            </div>
+                            <span class="text-xs text-warning-orange">-18% Deep Sleep</span>
                         </div>
-                        <span class="text-apex-green font-bold">+0.64</span>
+                        <p class="text-xs text-primacy-light">Delays sleep onset by 45 min when consumed after 2 PM</p>
+                    </div>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-brain text-warning-orange"></i>
+                                <span class="text-sm font-bold">High Stress</span>
+                            </div>
+                            <span class="text-xs text-warning-orange">-12% Performance</span>
+                        </div>
+                        <p class="text-xs text-primacy-light">Correlates with 20% more awakenings during sleep</p>
+                    </div>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-plane text-primacy-light"></i>
+                                <span class="text-sm font-bold">Travel Days</span>
+                            </div>
+                            <span class="text-xs text-warning-orange">Variable Impact</span>
+                        </div>
+                        <p class="text-xs text-primacy-light">Recovery metrics decline 30% for 2-3 days post-travel</p>
                     </div>
                 </div>
             </div>
             
             <div class="glass-effect rounded-xl p-6">
-                <h3 class="text-lg font-bold mb-4">Weekly Patterns</h3>
+                <h3 class="text-lg font-bold mb-4">Impact Over Time</h3>
                 <div class="chart-container" style="height: 250px;">
                     <canvas id="basicCorrelationChart"></canvas>
                 </div>
+                <p class="text-xs text-primacy-light mt-3">Shows how logged factors affected your metrics this week</p>
             </div>
             
             <div class="glass-effect rounded-xl p-6 col-span-full">
-                <h3 class="text-lg font-bold mb-4">Simple Correlation Matrix</h3>
+                <h3 class="text-lg font-bold mb-4">Context Factor Impact Matrix</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="border-b border-primacy-mid">
-                                <th class="p-2 text-left">Metric</th>
-                                <th class="p-2 text-center">Sleep</th>
+                                <th class="p-2 text-left">Context Factor</th>
+                                <th class="p-2 text-center">Sleep Quality</th>
                                 <th class="p-2 text-center">HRV</th>
-                                <th class="p-2 text-center">Exercise</th>
                                 <th class="p-2 text-center">Cognitive</th>
+                                <th class="p-2 text-center">Energy</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="border-b border-primacy-mid">
-                                <td class="p-2 font-bold">Sleep</td>
-                                <td class="p-2 text-center">1.00</td>
-                                <td class="p-2 text-center text-apex-green">0.68</td>
-                                <td class="p-2 text-center text-apex-green">0.52</td>
-                                <td class="p-2 text-center text-apex-green">0.71</td>
+                                <td class="p-2 font-bold"><i class="fas fa-utensils mr-2"></i>Late Meal</td>
+                                <td class="p-2 text-center text-danger-red">-15%</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
+                                <td class="p-2 text-center text-danger-red">-12%</td>
                             </tr>
                             <tr class="border-b border-primacy-mid">
-                                <td class="p-2 font-bold">HRV</td>
-                                <td class="p-2 text-center text-apex-green">0.68</td>
-                                <td class="p-2 text-center">1.00</td>
-                                <td class="p-2 text-center text-apex-green">0.45</td>
-                                <td class="p-2 text-center text-apex-green">0.58</td>
+                                <td class="p-2 font-bold"><i class="fas fa-wine-glass mr-2"></i>Alcohol</td>
+                                <td class="p-2 text-center text-danger-red">-25%</td>
+                                <td class="p-2 text-center text-danger-red">-22%</td>
+                                <td class="p-2 text-center text-danger-red">-18%</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
                             </tr>
                             <tr class="border-b border-primacy-mid">
-                                <td class="p-2 font-bold">Exercise</td>
-                                <td class="p-2 text-center text-apex-green">0.52</td>
-                                <td class="p-2 text-center text-apex-green">0.45</td>
-                                <td class="p-2 text-center">1.00</td>
-                                <td class="p-2 text-center text-warning-orange">0.38</td>
+                                <td class="p-2 font-bold"><i class="fas fa-coffee mr-2"></i>Caffeine Late</td>
+                                <td class="p-2 text-center text-danger-red">-18%</td>
+                                <td class="p-2 text-center text-warning-orange">-5%</td>
+                                <td class="p-2 text-center text-primacy-light">+5%*</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
                             </tr>
                             <tr class="border-b border-primacy-mid">
-                                <td class="p-2 font-bold">Cognitive</td>
-                                <td class="p-2 text-center text-apex-green">0.71</td>
-                                <td class="p-2 text-center text-apex-green">0.58</td>
-                                <td class="p-2 text-center text-warning-orange">0.38</td>
-                                <td class="p-2 text-center">1.00</td>
+                                <td class="p-2 font-bold"><i class="fas fa-brain mr-2"></i>High Stress</td>
+                                <td class="p-2 text-center text-warning-orange">-12%</td>
+                                <td class="p-2 text-center text-danger-red">-15%</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
+                                <td class="p-2 text-center text-danger-red">-20%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-plane mr-2"></i>Travel</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
+                                <td class="p-2 text-center text-warning-orange">-12%</td>
+                                <td class="p-2 text-center text-warning-orange">-5%</td>
+                                <td class="p-2 text-center text-danger-red">-15%</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="text-xs text-primacy-light mt-4">
-                    <i class="fas fa-lock mr-2"></i>
-                    Upgrade to Protocol for advanced correlations with context logging, AI insights, and personalized recommendations.
-                </p>
+                <p class="text-xs text-primacy-light mt-3">*Short-term boost, but negative impact on next-day performance</p>
+                <div class="mt-4 p-3 bg-primacy-black rounded-lg">
+                    <p class="text-xs text-primacy-light">
+                        <i class="fas fa-sparkles text-apex-green mr-2"></i>
+                        <strong>Want deeper insights?</strong> Upgrade to Protocol for 18+ context factors, AI-powered pattern discovery, 
+                        and personalized recommendations based on your unique response patterns.
+                    </p>
+                </div>
             </div>
         </div>
     `;
@@ -579,27 +646,70 @@ function initializeBasicCorrelations() {
                 data: {
                     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     datasets: [{
-                        label: 'Sleep Score',
+                        label: 'Performance (No Context)',
                         data: [75, 82, 78, 85, 73, 88, 84],
-                        borderColor: '#0066ff',
+                        borderColor: '#888888',
+                        borderDash: [5, 5],
                         tension: 0.4
                     }, {
-                        label: 'Performance',
-                        data: [72, 85, 76, 88, 70, 92, 82],
+                        label: 'Performance (With Context)',
+                        data: [75, 70, 78, 85, 65, 88, 84],
                         borderColor: '#00ff9d',
                         tension: 0.4
+                    }, {
+                        label: 'Context Factors Logged',
+                        data: [0, 2, 0, 0, 3, 0, 1],
+                        borderColor: '#ff3b30',
+                        backgroundColor: 'rgba(255, 59, 48, 0.1)',
+                        yAxisID: 'y1',
+                        type: 'bar'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
                     plugins: {
-                        legend: { labels: { color: '#f5f5f5' } }
+                        legend: { labels: { color: '#f5f5f5' } },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    if (context.datasetIndex === 2) {
+                                        const factors = [
+                                            [],
+                                            ['Late Meal', 'Alcohol'],
+                                            [],
+                                            [],
+                                            ['Caffeine Late', 'High Stress', 'Travel'],
+                                            [],
+                                            ['Late Meal']
+                                        ];
+                                        const day = context.dataIndex;
+                                        return factors[day].length ? 'Logged: ' + factors[day].join(', ') : '';
+                                    }
+                                }
+                            }
+                        }
                     },
                     scales: {
                         y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
                             grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            ticks: { color: '#888' }
+                            ticks: { color: '#888' },
+                            title: { display: true, text: 'Performance Score', color: '#888' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#888' },
+                            title: { display: true, text: 'Context Factors', color: '#888' }
                         },
                         x: {
                             grid: { color: 'rgba(255, 255, 255, 0.1)' },
@@ -618,282 +728,417 @@ function initializeAdvancedCorrelations() {
     if (!container) return;
     
     container.innerHTML = `
-        <div class="mb-6 p-4 bg-gradient-to-r from-premium-gold to-warning-orange bg-opacity-20 rounded-lg border border-premium-gold">
+        <div class="mb-6 p-4 bg-primacy-mid rounded-lg border border-primacy-light">
             <div class="flex items-center space-x-2 mb-2">
-                <i class="fas fa-crown text-premium-gold"></i>
-                <h3 class="text-lg font-bold">Advanced Correlation Engine with Context Logging</h3>
+                <i class="fas fa-crown text-primacy-white"></i>
+                <h3 class="text-lg font-bold">Advanced Correlation Engine</h3>
             </div>
-            <p class="text-sm text-primacy-light">AI-powered insights with color-coded physiological system tracking for comprehensive performance optimization.</p>
-        </div>
-        
-        <!-- Context Log Panel -->
-        <div class="glass-effect rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold mb-4">Today's Context Log</h3>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
-                ${Object.entries(contextCategories).map(([key, cat]) => `
-                    <div class="text-center">
-                        <div class="text-2xl mb-1">${cat.emoji}</div>
-                        <div class="text-xs font-bold">${cat.label}</div>
-                    </div>
-                `).join('')}
-            </div>
-            
-            <div class="border-t border-primacy-mid pt-4">
-                <h4 class="text-sm font-bold mb-3">Quick Log Entry</h4>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                    ${contextLogItems.map(item => `
-                        <button onclick="logContext('${item.id}')" class="p-2 bg-primacy-black rounded-lg hover:bg-primacy-mid transition text-xs flex items-center justify-center space-x-1" style="border-left: 3px solid ${contextCategories[item.category].color}">
-                            <i class="fas ${item.icon}"></i>
-                            <span>${item.label}</span>
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-            
-            <div class="mt-4 p-3 bg-primacy-black rounded-lg">
-                <h4 class="text-sm font-bold mb-2">Recent Logs</h4>
-                <div class="space-y-2" id="recentContextLogs">
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center space-x-2">
-                            <span>🟩</span>
-                            <span>Strength Training</span>
-                        </div>
-                        <span class="text-primacy-light">2 hours ago</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center space-x-2">
-                            <span>🟥</span>
-                            <span>Caffeine Late</span>
-                        </div>
-                        <span class="text-primacy-light">4 hours ago</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center space-x-2">
-                            <span>🟦</span>
-                            <span>Poor Sleep Quality</span>
-                        </div>
-                        <span class="text-primacy-light">This morning</span>
-                    </div>
-                </div>
-            </div>
+            <p class="text-sm text-primacy-light">AI-powered analysis explains your performance patterns based on logged context and protocol data.</p>
+            <p class="text-xs text-apex-green mt-2">
+                <i class="fas fa-info-circle mr-1"></i>
+                Log your daily context and protocols from the Dashboard tab
+            </p>
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="glass-effect rounded-xl p-6">
-                <h3 class="text-lg font-bold mb-4">System-Based Correlations</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-bed text-apex-green"></i>
-                            <span>Sleep Quality → Cognitive Score</span>
-                        </div>
-                        <span class="text-apex-green font-bold">+0.84</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-heartbeat text-reset-blue"></i>
-                            <span>HRV → Recovery Rate</span>
-                        </div>
-                        <span class="text-reset-blue font-bold">+0.72</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-dumbbell text-warning-orange"></i>
-                            <span>Exercise → Next Day Performance</span>
-                        </div>
-                        <span class="text-warning-orange font-bold">+0.68</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-coffee text-danger-red"></i>
-                            <span>Caffeine → Sleep Quality</span>
-                        </div>
-                        <span class="text-danger-red font-bold">-0.42</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="glass-effect rounded-xl p-6">
-                <h3 class="text-lg font-bold mb-4">AI-Discovered Insights</h3>
-                <div class="space-y-4">
-                    <div class="p-4 bg-primacy-black rounded-lg border-l-4 border-apex-green">
-                        <p class="text-sm mb-2">Your cognitive performance peaks 2-3 hours after waking when preceded by 7+ hours of sleep.</p>
-                        <span class="text-xs text-primacy-light">Confidence: 92%</span>
-                    </div>
-                    <div class="p-4 bg-primacy-black rounded-lg border-l-4 border-reset-blue">
-                        <p class="text-sm mb-2">Zone 2 cardio for 30+ minutes correlates with 15% better HRV the following night.</p>
-                        <span class="text-xs text-primacy-light">Confidence: 87%</span>
-                    </div>
-                    <div class="p-4 bg-primacy-black rounded-lg border-l-4 border-warning-orange">
-                        <p class="text-sm mb-2">Your reaction times improve by 12% when ambient temperature is between 65-68°F.</p>
-                        <span class="text-xs text-primacy-light">Confidence: 79%</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="glass-effect rounded-xl p-6">
-                <h3 class="text-lg font-bold mb-4">Context-Aware Predictions</h3>
+                <h3 class="text-lg font-bold mb-4">Context-Based Explanations</h3>
                 <div class="space-y-3">
-                    <div class="p-3 bg-primacy-black rounded-lg border-l-4" style="border-color: #ff3b30">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold">🟥 Metabolic Alert</span>
-                            <span class="text-xs text-danger-red">High Impact</span>
-                        </div>
-                        <p class="text-sm">Late caffeine + poor sleep pattern detected. Expected 18% cognitive decline tomorrow without intervention.</p>
-                    </div>
-                    
-                    <div class="p-3 bg-primacy-black rounded-lg border-l-4" style="border-color: #00ff9d">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold">🟩 Performance Boost</span>
-                            <span class="text-xs text-apex-green">Positive Trend</span>
-                        </div>
-                        <p class="text-sm">Your strength training + recovery day combo shows +15% HRV improvement pattern.</p>
-                    </div>
-                    
-                    <div class="p-3 bg-primacy-black rounded-lg border-l-4" style="border-color: #9b59b6">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold">🟪 Environmental Factor</span>
-                            <span class="text-xs" style="color: #9b59b6">Monitor</span>
-                        </div>
-                        <p class="text-sm">Cold exposure sessions correlate with 22% faster reaction times within 4 hours.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="glass-effect rounded-xl p-6 col-span-full">
-                <h3 class="text-lg font-bold mb-4">Physiological System Balance</h3>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-                    ${Object.entries(contextCategories).map(([key, cat]) => `
-                        <div class="text-center">
-                            <div class="relative">
-                                <svg class="w-24 h-24 mx-auto">
-                                    <circle cx="48" cy="48" r="40" stroke="${cat.color}" stroke-width="8" fill="none" stroke-dasharray="${Math.random() * 150 + 100} 251.2" transform="rotate(-90 48 48)"/>
-                                    <circle cx="48" cy="48" r="40" stroke="#2e2e2e" stroke-width="8" fill="none"/>
-                                </svg>
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <span class="text-2xl">${cat.emoji}</span>
-                                </div>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-flask text-apex-green"></i>
+                                <span class="text-sm font-bold">Protocol Timing Impact</span>
                             </div>
-                            <div class="text-xs mt-2">${cat.label.split(' ')[0]}</div>
-                            <div class="text-lg font-bold" style="color: ${cat.color}">${Math.floor(Math.random() * 30 + 60)}%</div>
                         </div>
-                    `).join('')}
-                </div>
-                
-                <div class="p-4 bg-primacy-black rounded-lg">
-                    <h4 class="text-sm font-bold mb-2">Weekly System Load Analysis</h4>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="systemLoadChart"></canvas>
+                        <p class="text-xs text-primacy-light">APEX at 8 AM correlates with +15% cognitive scores 2-4 hours post-dose. RESET at 9 PM shows optimal sleep architecture improvement.</p>
+                        <div class="text-xs mt-2 text-apex-green">
+                            Based on 32 APEX doses, 28 RESET doses tracked
+                        </div>
+                    </div>
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-utensils text-danger-red"></i>
+                                <span class="text-sm font-bold">Why your sleep score dropped</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-primacy-light">Late Meal logged at 9 PM typically reduces your deep sleep by 18%. Last night: 1.2h deep sleep vs 1.5h average.</p>
+                        <div class="text-xs mt-2 text-apex-green">
+                            AI Recommendation: Finish eating by 7 PM for optimal recovery
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-dumbbell text-apex-green"></i>
+                                <span class="text-sm font-bold">Why your HRV improved</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-primacy-light">Strength Training + Cold Exposure combo yesterday. This pattern consistently boosts your HRV by 10-15ms.</p>
+                        <div class="text-xs mt-2 text-apex-green">
+                            Pattern detected 23 times with 91% consistency
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-brain text-warning-orange"></i>
+                                <span class="text-sm font-bold">Why cognitive scores varied</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-primacy-light">High Stress + Travel logged this week. This combination typically reduces your reaction time by 15% for 48-72 hours.</p>
+                        <div class="text-xs mt-2 text-apex-green">
+                            AI Recommendation: Prioritize recovery protocols
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-snowflake text-reset-blue"></i>
+                                <span class="text-sm font-bold">Positive discovery</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-primacy-light">Cold Exposure before cognitive tests improves your scores by 8%. Effect lasts 2-3 hours based on 15 instances.</p>
                     </div>
                 </div>
             </div>
             
+            <div class="glass-effect rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4">Performance Trends</h3>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="advancedCorrelationChart"></canvas>
+                </div>
+                <p class="text-xs text-primacy-light mt-3">Your actual performance data with AI explanations for variations</p>
+            </div>
+            
             <div class="glass-effect rounded-xl p-6 col-span-full">
-                <h3 class="text-lg font-bold mb-4">Advanced Correlation Matrix with Context</h3>
-                <div class="chart-container" style="height: 400px;">
-                    <canvas id="advancedCorrelationHeatmap"></canvas>
+                <h3 class="text-lg font-bold mb-4">Complete Context Factor Impact Matrix</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-primacy-mid">
+                                <th class="p-2 text-left">Context Factor</th>
+                                <th class="p-2 text-center">Sleep</th>
+                                <th class="p-2 text-center">HRV</th>
+                                <th class="p-2 text-center">Cognitive</th>
+                                <th class="p-2 text-center">Energy</th>
+                                <th class="p-2 text-center">Recovery</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Negative Factors -->
+                            <tr class="border-b border-primacy-mid bg-primacy-black bg-opacity-50">
+                                <td colspan="6" class="p-2 text-xs font-bold text-danger-red">Negative Impact Factors</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-utensils mr-2"></i>Late Meal</td>
+                                <td class="p-2 text-center text-danger-red">-18%</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
+                                <td class="p-2 text-center text-warning-orange">-12%</td>
+                                <td class="p-2 text-center text-danger-red">-15%</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-wine-glass mr-2"></i>Alcohol</td>
+                                <td class="p-2 text-center text-danger-red">-28%</td>
+                                <td class="p-2 text-center text-danger-red">-25%</td>
+                                <td class="p-2 text-center text-danger-red">-20%</td>
+                                <td class="p-2 text-center text-warning-orange">-12%</td>
+                                <td class="p-2 text-center text-danger-red">-35%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-coffee mr-2"></i>Caffeine Late</td>
+                                <td class="p-2 text-center text-danger-red">-22%</td>
+                                <td class="p-2 text-center text-warning-orange">-5%</td>
+                                <td class="p-2 text-center text-primacy-light">+8%*</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
+                                <td class="p-2 text-center text-warning-orange">-12%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-tint-slash mr-2"></i>Low Hydration</td>
+                                <td class="p-2 text-center text-warning-orange">-5%</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
+                                <td class="p-2 text-center text-danger-red">-15%</td>
+                                <td class="p-2 text-center text-danger-red">-20%</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-brain mr-2"></i>High Stress</td>
+                                <td class="p-2 text-center text-warning-orange">-15%</td>
+                                <td class="p-2 text-center text-danger-red">-18%</td>
+                                <td class="p-2 text-center text-warning-orange">-10%</td>
+                                <td class="p-2 text-center text-danger-red">-25%</td>
+                                <td class="p-2 text-center text-danger-red">-20%</td>
+                            </tr>
+                            
+                            <!-- Positive Factors -->
+                            <tr class="border-b border-primacy-mid bg-primacy-black bg-opacity-50">
+                                <td colspan="6" class="p-2 text-xs font-bold text-apex-green">Positive Impact Factors</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-fire mr-2"></i>HIIT Workout</td>
+                                <td class="p-2 text-center text-warning-orange">-5%*</td>
+                                <td class="p-2 text-center text-apex-green">+12%**</td>
+                                <td class="p-2 text-center text-apex-green">+8%</td>
+                                <td class="p-2 text-center text-apex-green">+15%</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-dumbbell mr-2"></i>Strength Training</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-apex-green">+8%</td>
+                                <td class="p-2 text-center text-apex-green">+5%</td>
+                                <td class="p-2 text-center text-apex-green">+10%</td>
+                                <td class="p-2 text-center text-apex-green">+5%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-spa mr-2"></i>Recovery Day</td>
+                                <td class="p-2 text-center text-apex-green">+10%</td>
+                                <td class="p-2 text-center text-apex-green">+15%</td>
+                                <td class="p-2 text-center text-apex-green">+5%</td>
+                                <td class="p-2 text-center text-apex-green">+8%</td>
+                                <td class="p-2 text-center text-apex-green">+20%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-snowflake mr-2"></i>Cold Exposure</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-apex-green">+10%</td>
+                                <td class="p-2 text-center text-apex-green">+12%</td>
+                                <td class="p-2 text-center text-apex-green">+18%</td>
+                                <td class="p-2 text-center text-apex-green">+8%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-temperature-high mr-2"></i>Sauna</td>
+                                <td class="p-2 text-center text-apex-green">+12%</td>
+                                <td class="p-2 text-center text-apex-green">+8%</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-warning-orange">-5%*</td>
+                                <td class="p-2 text-center text-apex-green">+15%</td>
+                            </tr>
+                            
+                            <!-- Variable Factors -->
+                            <tr class="border-b border-primacy-mid bg-primacy-black bg-opacity-50">
+                                <td colspan="6" class="p-2 text-xs font-bold text-primacy-light">Variable Impact Factors</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-plane mr-2"></i>Travel</td>
+                                <td class="p-2 text-center text-warning-orange">-12%</td>
+                                <td class="p-2 text-center text-warning-orange">-15%</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
+                                <td class="p-2 text-center text-danger-red">-18%</td>
+                                <td class="p-2 text-center text-danger-red">-25%</td>
+                            </tr>
+                            
+                            <!-- Protocol Timing Impact -->
+                            <tr class="border-b border-primacy-mid bg-primacy-black bg-opacity-50">
+                                <td colspan="6" class="p-2 text-xs font-bold text-primacy-white">
+                                    <i class="fas fa-flask mr-2"></i>Protocol Timing Impact (Optimal Windows)
+                                </td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-bolt mr-2"></i>APEX (6-9 AM)</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-apex-green">+5%</td>
+                                <td class="p-2 text-center text-apex-green">+15%</td>
+                                <td class="p-2 text-center text-apex-green">+20%</td>
+                                <td class="p-2 text-center text-apex-green">+8%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-bolt mr-2"></i>APEX (12-3 PM)</td>
+                                <td class="p-2 text-center text-warning-orange">-5%*</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-apex-green">+10%</td>
+                                <td class="p-2 text-center text-apex-green">+12%</td>
+                                <td class="p-2 text-center text-apex-green">+5%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-moon mr-2"></i>RESET (8-10 PM)</td>
+                                <td class="p-2 text-center text-apex-green">+18%</td>
+                                <td class="p-2 text-center text-apex-green">+12%</td>
+                                <td class="p-2 text-center text-apex-green">+8%**</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-apex-green">+15%</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold"><i class="fas fa-moon mr-2"></i>RESET (Too Early <6 PM)</td>
+                                <td class="p-2 text-center text-warning-orange">+5%</td>
+                                <td class="p-2 text-center text-primacy-light">±0%</td>
+                                <td class="p-2 text-center text-warning-orange">-5%</td>
+                                <td class="p-2 text-center text-warning-orange">-8%</td>
+                                <td class="p-2 text-center text-primacy-light">+3%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                    <p class="text-xs text-primacy-light">* Short-term effect, reverses within 24h</p>
+                    <p class="text-xs text-primacy-light">** Delayed positive effect after 24-48h</p>
+                </div>
+                <div class="mt-4 p-3 bg-primacy-mid rounded-lg">
+                    <p class="text-xs">
+                        <i class="fas fa-crown text-primacy-white mr-2"></i>
+                        <strong>Remember:</strong> These percentages show typical impact on YOUR performance based on YOUR data. 
+                        Context helps explain why metrics changed, but the performance data itself comes from your wearables and cognitive tests.
+                    </p>
                 </div>
             </div>
+
         </div>
     `;
     
     // Initialize advanced charts
     setTimeout(() => {
-        // System Load Chart
-        const systemLoadCtx = document.getElementById('systemLoadChart');
-        if (systemLoadCtx && systemLoadCtx.getContext) {
-            new Chart(systemLoadCtx.getContext('2d'), {
-                type: 'bar',
+        // Performance trend chart with context explanations
+        const trendCtx = document.getElementById('advancedCorrelationChart');
+        if (trendCtx && trendCtx.getContext) {
+            new Chart(trendCtx.getContext('2d'), {
+                type: 'line',
                 data: {
                     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    datasets: [
-                        {
-                            label: 'Sleep & Recovery',
-                            data: [70, 65, 80, 75, 70, 85, 82],
-                            backgroundColor: '#0066ff'
-                        },
-                        {
-                            label: 'Physical',
-                            data: [85, 40, 90, 45, 80, 30, 40],
-                            backgroundColor: '#00ff9d'
-                        },
-                        {
-                            label: 'Cognitive',
-                            data: [60, 75, 65, 80, 70, 50, 55],
-                            backgroundColor: '#ff9500'
-                        },
-                        {
-                            label: 'Metabolic',
-                            data: [55, 60, 50, 65, 70, 80, 75],
-                            backgroundColor: '#ff3b30'
-                        },
-                        {
-                            label: 'Environment',
-                            data: [40, 45, 60, 50, 45, 35, 40],
-                            backgroundColor: '#9b59b6'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            stacked: true,
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            ticks: { color: '#888' }
-                        },
-                        y: {
-                            stacked: true,
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            ticks: { color: '#888' }
-                        }
-                    },
-                    plugins: {
-                        legend: { labels: { color: '#f5f5f5' } }
-                    }
-                }
-            });
-        }
-        
-        // Advanced Correlation Heatmap
-        const heatmapCtx = document.getElementById('advancedCorrelationHeatmap');
-        if (heatmapCtx && heatmapCtx.getContext) {
-            new Chart(heatmapCtx.getContext('2d'), {
-                type: 'bubble',
-                data: {
                     datasets: [{
-                        label: 'Positive Correlation',
-                        data: [
-                            {x: 1, y: 2, r: 15},
-                            {x: 2, y: 3, r: 12},
-                            {x: 3, y: 4, r: 10},
-                            {x: 1, y: 4, r: 8}
-                        ],
-                        backgroundColor: 'rgba(0, 255, 157, 0.6)'
+                        label: 'Cognitive Score (Actual)',
+                        data: [88, 72, 85, 90, 68, 92, 86],
+                        borderColor: '#00ff9d',
+                        backgroundColor: 'rgba(0, 255, 157, 0.1)',
+                        tension: 0.4,
+                        pointStyle: function(context) {
+                            // Show special marker if APEX was taken that day
+                            const apexDays = [true, false, false, true, false, true, false];
+                            return apexDays[context.dataIndex] ? 'rectRot' : 'circle';
+                        },
+                        pointRadius: function(context) {
+                            const apexDays = [true, false, false, true, false, true, false];
+                            return apexDays[context.dataIndex] ? 8 : 4;
+                        }
                     }, {
-                        label: 'Negative Correlation',
-                        data: [
-                            {x: 2, y: 1, r: 10},
-                            {x: 4, y: 2, r: 8}
-                        ],
-                        backgroundColor: 'rgba(255, 59, 48, 0.6)'
+                        label: 'HRV (Actual)',
+                        data: [58, 48, 55, 62, 45, 65, 60],
+                        borderColor: '#00c6ff',
+                        backgroundColor: 'rgba(0, 198, 255, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.4,
+                        pointStyle: function(context) {
+                            // Show special marker if RESET was taken that day
+                            const resetDays = [true, true, false, false, true, false, true];
+                            return resetDays[context.dataIndex] ? 'rectRot' : 'circle';
+                        },
+                        pointRadius: function(context) {
+                            const resetDays = [true, true, false, false, true, false, true];
+                            return resetDays[context.dataIndex] ? 8 : 4;
+                        }
+                    }, {
+                        label: 'Context Factors Logged',
+                        data: [1, 3, 0, 0, 5, 0, 2],
+                        type: 'bar',
+                        backgroundColor: 'rgba(155, 89, 182, 0.3)',
+                        borderColor: '#9b59b6',
+                        yAxisID: 'y2'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
                     plugins: {
-                        legend: { labels: { color: '#f5f5f5' } }
+                        legend: { labels: { color: '#f5f5f5' } },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const results = [];
+                                    
+                                    // Protocol information
+                                    const protocols = [
+                                        { apex: '8:00 AM', reset: '9:30 PM' },
+                                        { apex: null, reset: '10:00 PM' },
+                                        { apex: null, reset: null },
+                                        { apex: '7:30 AM', reset: null },
+                                        { apex: null, reset: '9:00 PM' },
+                                        { apex: '8:30 AM', reset: null },
+                                        { apex: null, reset: '10:30 PM' }
+                                    ];
+                                    
+                                    const dayProtocol = protocols[context.dataIndex];
+                                    if (dayProtocol.apex) results.push(`APEX: ${dayProtocol.apex}`);
+                                    if (dayProtocol.reset) results.push(`RESET: ${dayProtocol.reset}`);
+                                    
+                                    if (context.datasetIndex === 0) { // Cognitive Score
+                                        const explanations = [
+                                            'APEX at optimal time (+15% boost observed)',
+                                            'Drop explained by: Late Meal + Alcohol (-16%)',
+                                            'Recovering from Tuesday factors',
+                                            'APEX boost + good sleep = peak performance',
+                                            'Major drop despite RESET: High Stress + Travel override',
+                                            'APEX timing perfect, Cold Exposure synergy',
+                                            'RESET helped sleep but Late Meal impact remains'
+                                        ];
+                                        results.push(explanations[context.dataIndex]);
+                                    }
+                                    
+                                    if (context.datasetIndex === 1) { // HRV
+                                        const explanations = [
+                                            'RESET improved recovery (+12ms vs baseline)',
+                                            'RESET partially offset alcohol impact',
+                                            'No protocols - natural recovery',
+                                            'Morning APEX shows delayed HRV benefit',
+                                            'RESET couldn\'t overcome stress factors',
+                                            'Excellent recovery without RESET',
+                                            'RESET maintained good HRV despite late meal'
+                                        ];
+                                        results.push(explanations[context.dataIndex]);
+                                    }
+                                    
+                                    if (context.datasetIndex === 2) { // Context factors
+                                        const factors = [
+                                            ['Recovery Day'],
+                                            ['Late Meal', 'Alcohol', 'High Stress'],
+                                            [],
+                                            [],
+                                            ['High Stress', 'Travel', 'Caffeine Late', 'Low Hydration', 'Late Meal'],
+                                            [],
+                                            ['Late Meal', 'Caffeine Late']
+                                        ];
+                                        const day = context.dataIndex;
+                                        if (factors[day].length) {
+                                            results.push('Context: ' + factors[day].join(', '));
+                                        }
+                                    }
+                                    
+                                    return results;
+                                }
+                            }
+                        }
                     },
                     scales: {
-                        x: {
-                            title: { display: true, text: 'Variables', color: '#888' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            ticks: { color: '#888' }
-                        },
                         y: {
-                            title: { display: true, text: 'Variables', color: '#888' },
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#888' },
+                            title: { display: true, text: 'Cognitive Score', color: '#888' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#888' },
+                            title: { display: true, text: 'HRV (ms)', color: '#888' }
+                        },
+                        y2: {
+                            type: 'linear',
+                            display: false,
+                            max: 10,
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: {
                             grid: { color: 'rgba(255, 255, 255, 0.1)' },
                             ticks: { color: '#888' }
                         }
@@ -952,19 +1197,23 @@ function updateAICoachView(isPremium) {
                             <div class="flex items-start space-x-3">
                                 <div class="w-8 h-8 bg-gradient-to-r from-apex-green to-reset-blue rounded-full flex-shrink-0"></div>
                                 <div class="bg-primacy-black rounded-lg p-4 max-w-md">
-                                    <p class="text-sm">Good morning! I've analyzed your recent performance data. Your cognitive scores are trending upward, but I noticed your sleep quality dipped last night. This might impact today's performance.</p>
+                                    <p class="text-sm">Good morning! I've analyzed your biometric data along with the context you've been logging. The combination gives me a much clearer picture of your performance patterns.</p>
                                 </div>
                             </div>
                             
                             <div class="flex items-start space-x-3">
                                 <div class="w-8 h-8 bg-gradient-to-r from-apex-green to-reset-blue rounded-full flex-shrink-0"></div>
                                 <div class="bg-primacy-black rounded-lg p-4 max-w-md">
-                                    <p class="text-sm mb-3">Based on your patterns, here are my recommendations for today:</p>
+                                    <p class="text-sm mb-3">Based on your logged context (Late Meal 🟥, Poor Sleep 🟦) combined with your HRV data, here's what I recommend:</p>
                                     <ul class="text-sm space-y-2">
-                                        <li>• Schedule cognitive work between 9-11 AM (your peak window)</li>
-                                        <li>• Consider a 20-minute power nap around 2 PM</li>
-                                        <li>• Aim for Zone 2 cardio this evening to boost tomorrow's HRV</li>
+                                        <li>• Delay intensive cognitive work until after 10 AM (your recovery is still ongoing)</li>
+                                        <li>• Prioritize hydration - your metabolic markers suggest dehydration</li>
+                                        <li>• Keep today's training light - your body needs recovery more than stress</li>
                                     </ul>
+                                    <div class="mt-3 p-2 bg-primacy-mid rounded text-xs">
+                                        <i class="fas fa-lightbulb text-warning-orange mr-1"></i>
+                                        Insight: When you log "Late Meal", your next day's performance drops 12% on average
+                                    </div>
                                 </div>
                             </div>
                             
@@ -1053,7 +1302,7 @@ function updateAICoachView(isPremium) {
                     Get personalized coaching based on your unique data patterns. Kai analyzes your performance metrics 
                     and provides actionable insights to help you reach peak performance.
                 </p>
-                <button onclick="showTierSelection()" class="px-6 py-3 bg-gradient-to-r from-premium-gold to-warning-orange text-primacy-black rounded-lg font-bold hover:glow-premium transition">
+                <button onclick="showTierSelection()" class="px-6 py-3 bg-apex-green text-primacy-black rounded-lg font-bold hover:opacity-90 transition">
                     <i class="fas fa-crown mr-2"></i>Upgrade to Protocol
                 </button>
             </div>
@@ -1074,8 +1323,8 @@ function updateCommunityView(isPremium) {
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <span class="text-premium-gold font-bold">1</span>
-                                <div class="w-8 h-8 bg-gradient-to-r from-premium-gold to-warning-orange rounded-full"></div>
+                                <span class="text-apex-green font-bold">1</span>
+                                <div class="w-8 h-8 bg-apex-green rounded-full"></div>
                                 <span class="text-sm">AlphaRunner</span>
                             </div>
                             <span class="text-sm font-mono text-apex-green">98.5</span>
@@ -1193,7 +1442,7 @@ function updateCommunityView(isPremium) {
                     Connect with elite performers, share protocols, participate in challenges, 
                     and accelerate your optimization journey with a community of like-minded individuals.
                 </p>
-                <button onclick="showTierSelection()" class="px-6 py-3 bg-gradient-to-r from-premium-gold to-warning-orange text-primacy-black rounded-lg font-bold hover:glow-premium transition">
+                <button onclick="showTierSelection()" class="px-6 py-3 bg-apex-green text-primacy-black rounded-lg font-bold hover:opacity-90 transition">
                     <i class="fas fa-crown mr-2"></i>Upgrade to Protocol
                 </button>
             </div>
@@ -1358,10 +1607,466 @@ function closeTest() {
     document.getElementById('testContent').innerHTML = '';
 }
 
-// Context Logging Functions
+// Basic Context Logging for Tier 2
+function logBasicContext(itemId) {
+    // Get today's date
+    const today = new Date().toDateString();
+    
+    // Check if already logged today
+    if (!userData.basicContextLogs) {
+        userData.basicContextLogs = [];
+    }
+    
+    const todayLogs = userData.basicContextLogs.filter(log => 
+        new Date(log.timestamp).toDateString() === today
+    );
+    
+    if (todayLogs.find(log => log.itemId === itemId)) {
+        // Already logged
+        showBasicContextFeedback(itemId, true);
+        return;
+    }
+    
+    // Add to logs
+    userData.basicContextLogs.push({
+        itemId: itemId,
+        timestamp: new Date().toISOString()
+    });
+    
+    // Update display
+    updateBasicContextDisplay();
+    showBasicContextFeedback(itemId, false);
+}
+
+function updateBasicContextDisplay() {
+    const container = document.getElementById('basicContextLogs');
+    const counter = document.getElementById('basicContextCount');
+    if (!container) return;
+    
+    const today = new Date().toDateString();
+    const todayLogs = userData.basicContextLogs.filter(log => 
+        new Date(log.timestamp).toDateString() === today
+    );
+    
+    if (counter) {
+        counter.textContent = `${todayLogs.length} logged`;
+    }
+    
+    if (todayLogs.length === 0) {
+        container.innerHTML = '<em>No factors logged yet today</em>';
+        return;
+    }
+    
+    const factorMap = {
+        'late-meal-basic': 'Late Meal',
+        'alcohol-basic': 'Alcohol',
+        'caffeine-late-basic': 'Caffeine Late',
+        'high-stress-basic': 'High Stress Day',
+        'travel-basic': 'Travel'
+    };
+    
+    container.innerHTML = todayLogs.map(log => factorMap[log.itemId]).join(', ');
+}
+
+function showBasicContextFeedback(itemId, alreadyLogged) {
+    const factorMap = {
+        'late-meal-basic': 'Late Meal',
+        'alcohol-basic': 'Alcohol',
+        'caffeine-late-basic': 'Caffeine Late',
+        'high-stress-basic': 'High Stress Day',
+        'travel-basic': 'Travel'
+    };
+    
+    const feedback = document.createElement('div');
+    feedback.className = 'fixed bottom-4 right-4 p-4 glass-effect rounded-lg animate-slide-up z-50';
+    
+    if (alreadyLogged) {
+        feedback.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-check-circle text-2xl text-primacy-light"></i>
+                <div>
+                    <div class="font-bold">${factorMap[itemId]}</div>
+                    <div class="text-xs text-primacy-light">Already logged today</div>
+                </div>
+            </div>
+        `;
+    } else {
+        feedback.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-check-circle text-2xl text-reset-blue"></i>
+                <div>
+                    <div class="font-bold">Context Logged</div>
+                    <div class="text-xs text-reset-blue">${factorMap[itemId]} added to analysis</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+        feedback.style.opacity = '0';
+        feedback.style.transform = 'translateY(20px)';
+        setTimeout(() => feedback.remove(), 300);
+    }, 2000);
+}
+
+// Initialize Basic Context Tracking in Dashboard for Tier 2
+function initializeBasicContextTracking() {
+    const container = document.getElementById('protocolTracking');
+    if (!container) return;
+    
+    const basicContextFactors = [
+        { id: 'late-meal-basic', label: 'Late Meal', icon: 'fa-utensils', color: '#ff3b30' },
+        { id: 'alcohol-basic', label: 'Alcohol', icon: 'fa-wine-glass', color: '#ff3b30' },
+        { id: 'caffeine-late-basic', label: 'Caffeine Late', icon: 'fa-coffee', color: '#ff3b30' },
+        { id: 'high-stress-basic', label: 'High Stress Day', icon: 'fa-brain', color: '#ff9500' },
+        { id: 'travel-basic', label: 'Travel', icon: 'fa-plane', color: '#9b59b6' }
+    ];
+    
+    container.classList.remove('hidden');
+    container.innerHTML = `
+        <!-- Basic Context Logging -->
+        <div class="glass-effect rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold mb-4">Log Today's Context</h3>
+            <p class="text-xs text-primacy-light mb-4">Track 5 key factors to improve correlation accuracy:</p>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                ${basicContextFactors.map(factor => `
+                    <button onclick="logBasicContext('${factor.id}')" class="p-3 bg-primacy-black rounded-lg hover:bg-primacy-mid transition flex flex-col items-center space-y-2 border-l-4" style="border-color: ${factor.color}">
+                        <i class="fas ${factor.icon} text-xl"></i>
+                        <span class="text-xs">${factor.label}</span>
+                    </button>
+                `).join('')}
+            </div>
+            <div class="mt-4 p-3 bg-primacy-black rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-bold">Today's Logged Factors</span>
+                    <span class="text-xs text-reset-blue" id="basicContextCount">0 logged</span>
+                </div>
+                <div id="basicContextLogs" class="text-xs text-primacy-light">
+                    <em>No factors logged yet today</em>
+                </div>
+            </div>
+            <div class="mt-3 p-3 bg-reset-blue bg-opacity-20 rounded-lg">
+                <p class="text-xs">
+                    <i class="fas fa-crown mr-1"></i>
+                    <strong>Upgrade to Protocol</strong> for 18+ context factors and supplement protocol tracking
+                </p>
+            </div>
+        </div>
+    `;
+    
+    // Initialize display
+    updateBasicContextDisplay();
+}
+
+// Initialize Protocol Tracking in Dashboard for Tier 3
+function initializeProtocolTracking() {
+    const container = document.getElementById('protocolTracking');
+    if (!container) return;
+    
+    container.classList.remove('hidden');
+    container.innerHTML = `
+        <!-- APEX and RESET Protocol Logging -->
+        <div class="glass-effect rounded-xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">Protocol Tracking</h3>
+                <span class="text-xs text-primacy-light">
+                    <i class="fas fa-flask mr-1"></i>
+                    Track supplement timing for correlation analysis
+                </span>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                <!-- APEX Protocol -->
+                <div class="p-4 bg-primacy-black rounded-lg border border-apex-green">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-apex-green rounded-full flex items-center justify-center">
+                                <i class="fas fa-bolt text-primacy-black text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">APEX Protocol</h4>
+                                <p class="text-xs text-primacy-light">Performance Enhancement</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="date" id="apexDate" class="flex-1 bg-primacy-black rounded px-2 py-1 text-xs" value="${new Date().toISOString().split('T')[0]}">
+                            <input type="time" id="apexTime" class="bg-primacy-black rounded px-2 py-1 text-xs" value="${new Date().toTimeString().slice(0,5)}">
+                        </div>
+                        <button onclick="logProtocol('apex')" class="w-full py-2 bg-apex-green text-primacy-black rounded text-xs font-bold hover:opacity-90 transition">
+                            <i class="fas fa-plus mr-1"></i>Log APEX Dose
+                        </button>
+                    </div>
+                    
+                    <div class="mt-3 pt-3 border-t border-primacy-mid">
+                        <p class="text-xs text-primacy-light mb-2">Recent APEX Doses:</p>
+                        <div id="recentApexLogs" class="space-y-1 text-xs">
+                            <span class="text-primacy-light italic">No doses logged yet</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RESET Protocol -->
+                <div class="p-4 bg-primacy-black rounded-lg border border-reset-blue">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-reset-blue rounded-full flex items-center justify-center">
+                                <i class="fas fa-moon text-primacy-black text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">RESET Protocol</h4>
+                                <p class="text-xs text-primacy-light">Recovery & Sleep Support</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="date" id="resetDate" class="flex-1 bg-primacy-black rounded px-2 py-1 text-xs" value="${new Date().toISOString().split('T')[0]}">
+                            <input type="time" id="resetTime" class="bg-primacy-black rounded px-2 py-1 text-xs" value="${new Date().toTimeString().slice(0,5)}">
+                        </div>
+                        <button onclick="logProtocol('reset')" class="w-full py-2 bg-reset-blue text-primacy-black rounded text-xs font-bold hover:opacity-90 transition">
+                            <i class="fas fa-plus mr-1"></i>Log RESET Dose
+                        </button>
+                    </div>
+                    
+                    <div class="mt-3 pt-3 border-t border-primacy-mid">
+                        <p class="text-xs text-primacy-light mb-2">Recent RESET Doses:</p>
+                        <div id="recentResetLogs" class="space-y-1 text-xs">
+                            <span class="text-primacy-light italic">No doses logged yet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-3 bg-primacy-black rounded-lg">
+                <p class="text-xs text-primacy-light">
+                    <i class="fas fa-info-circle text-reset-blue mr-2"></i>
+                    <strong>Tip:</strong> You can log past doses by changing the date/time. The AI will analyze protocol timing 
+                    correlations with your performance metrics to optimize dosing schedules.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Context Logging -->
+        <div class="glass-effect rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold mb-4">Log Today's Context</h3>
+            <div class="mb-3 p-3 bg-primacy-black rounded-lg">
+                <p class="text-xs text-primacy-light">
+                    <i class="fas fa-info-circle text-reset-blue mr-2"></i>
+                    Log relevant daily factors to help the AI understand what influences your performance.
+                </p>
+            </div>
+            
+            <p class="text-xs text-primacy-light mb-4">Select all factors that apply today:</p>
+            
+            <!-- All context factors in a grid -->
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-2 mb-4">
+                ${contextLogItems.map(item => `
+                    <button onclick="logContext('${item.id}')" class="p-3 bg-primacy-black rounded-lg hover:bg-primacy-mid transition flex flex-col items-center space-y-2 text-xs border-l-4" style="border-color: ${contextCategories[item.category].color}">
+                        <i class="fas ${item.icon} text-lg"></i>
+                        <span class="text-center">${item.label}</span>
+                    </button>
+                `).join('')}
+            </div>
+            
+            <div class="mt-4 p-3 bg-primacy-black rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-bold">Today's Logged Factors</span>
+                    <span class="text-xs text-apex-green" id="contextCount">0 logged</span>
+                </div>
+                <div id="todayContextLogs" class="text-xs text-primacy-light">
+                    <em>No factors logged yet today</em>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Initialize displays
+    updateProtocolDisplay('apex');
+    updateProtocolDisplay('reset');
+    updateTodayContextLogs();
+}
+
+// Protocol Logging Functions for Tier 3
+function logProtocol(type) {
+    // Get date and time inputs
+    const dateInput = document.getElementById(`${type}Date`);
+    const timeInput = document.getElementById(`${type}Time`);
+    
+    if (!dateInput || !timeInput) return;
+    
+    const date = dateInput.value;
+    const time = timeInput.value;
+    
+    if (!date || !time) {
+        alert('Please select both date and time for the protocol dose.');
+        return;
+    }
+    
+    // Create timestamp from date and time
+    const timestamp = new Date(`${date}T${time}`).toISOString();
+    
+    // Check if this exact timestamp already exists
+    const exists = userData.protocolLogs[type].some(log => log.timestamp === timestamp);
+    if (exists) {
+        showProtocolFeedback(type, true);
+        return;
+    }
+    
+    // Add to protocol logs
+    const logEntry = {
+        id: Date.now(),
+        type: type,
+        timestamp: timestamp,
+        date: date,
+        time: time,
+        loggedAt: new Date().toISOString()
+    };
+    
+    userData.protocolLogs[type].unshift(logEntry);
+    
+    // Sort by timestamp (most recent first)
+    userData.protocolLogs[type].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    // Update display
+    updateProtocolDisplay(type);
+    showProtocolFeedback(type, false);
+    
+    // Trigger AI analysis
+    analyzeProtocolTiming(type, timestamp);
+}
+
+function updateProtocolDisplay(type) {
+    const container = document.getElementById(`recent${type.charAt(0).toUpperCase() + type.slice(1)}Logs`);
+    if (!container) return;
+    
+    const recentLogs = userData.protocolLogs[type].slice(0, 5);
+    
+    if (recentLogs.length === 0) {
+        container.innerHTML = '<span class="text-primacy-light italic">No doses logged yet</span>';
+        return;
+    }
+    
+    container.innerHTML = recentLogs.map(log => {
+        const logDate = new Date(log.timestamp);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        let dateStr;
+        if (logDate.toDateString() === today.toDateString()) {
+            dateStr = 'Today';
+        } else if (logDate.toDateString() === yesterday.toDateString()) {
+            dateStr = 'Yesterday';
+        } else {
+            dateStr = logDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+        
+        const timeStr = logDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        const color = type === 'apex' ? 'text-apex-green' : 'text-reset-blue';
+        
+        return `
+            <div class="flex items-center justify-between">
+                <span>${dateStr} at ${timeStr}</span>
+                <i class="fas fa-check-circle ${color}"></i>
+            </div>
+        `;
+    }).join('');
+}
+
+function showProtocolFeedback(type, alreadyLogged) {
+    const feedback = document.createElement('div');
+    feedback.className = 'fixed bottom-4 right-4 p-4 glass-effect rounded-lg animate-slide-up z-50';
+    
+    const color = type === 'apex' ? 'apex-green' : 'reset-blue';
+    const icon = type === 'apex' ? 'bolt' : 'moon';
+    const name = type.toUpperCase();
+    
+    if (alreadyLogged) {
+        feedback.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-exclamation-circle text-2xl text-warning-orange"></i>
+                <div>
+                    <div class="font-bold">${name} Already Logged</div>
+                    <div class="text-xs text-primacy-light">This dose time is already recorded</div>
+                </div>
+            </div>
+        `;
+    } else {
+        feedback.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-${color} rounded-full flex items-center justify-center">
+                    <i class="fas fa-${icon} text-primacy-black"></i>
+                </div>
+                <div>
+                    <div class="font-bold">${name} Protocol Logged</div>
+                    <div class="text-xs text-${color}">AI analyzing timing correlations...</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+        feedback.style.opacity = '0';
+        feedback.style.transform = 'translateY(20px)';
+        setTimeout(() => feedback.remove(), 300);
+    }, 2500);
+}
+
+function analyzeProtocolTiming(type, timestamp) {
+    // Simulate AI analysis of protocol timing
+    const hour = new Date(timestamp).getHours();
+    
+    if (type === 'apex') {
+        if (hour < 12) {
+            console.log('APEX taken in morning - optimal for cognitive performance boost');
+        } else if (hour < 15) {
+            console.log('APEX taken early afternoon - good for avoiding afternoon slump');
+        } else {
+            console.log('APEX taken late - monitor sleep impact');
+        }
+    } else if (type === 'reset') {
+        if (hour < 18) {
+            console.log('RESET taken early - may be too early for optimal sleep support');
+        } else if (hour < 22) {
+            console.log('RESET taken in optimal window - 1-3 hours before sleep');
+        } else {
+            console.log('RESET taken late - good timing for sleep support');
+        }
+    }
+    
+    // In production, this would correlate with actual performance metrics
+    updateProtocolCorrelations(type);
+}
+
+function updateProtocolCorrelations(type) {
+    // This would update the correlation displays to show protocol timing impact
+    // For now, just log for development
+    console.log(`Updating correlations for ${type.toUpperCase()} protocol timing patterns`);
+}
+
+// Advanced Context Logging Functions for Tier 3
 function logContext(itemId) {
     const item = contextLogItems.find(i => i.id === itemId);
     if (!item) return;
+    
+    // Check if already logged today
+    const today = new Date().toDateString();
+    const todayLogs = userData.contextLogs.filter(log => 
+        new Date(log.timestamp).toDateString() === today
+    );
+    
+    if (todayLogs.find(log => log.itemId === itemId)) {
+        showContextLogFeedback(item, true); // Already logged
+        return;
+    }
     
     // Add to user's context logs
     const logEntry = {
@@ -1371,52 +2076,85 @@ function logContext(itemId) {
         category: item.category,
         emoji: item.emoji,
         timestamp: new Date().toISOString(),
-        timeAgo: 'Just now'
+        date: today
     };
     
     userData.contextLogs.unshift(logEntry);
     
-    // Update recent logs display
-    updateRecentContextLogs();
+    // Update today's logs display
+    updateTodayContextLogs();
     
     // Show feedback
-    showContextLogFeedback(item);
+    showContextLogFeedback(item, false);
     
-    // Trigger correlation recalculation (simulated)
+    // Simulate AI processing the new context
     setTimeout(() => {
-        updateCorrelationInsights(item.category);
+        processContextForAI(item);
     }, 500);
 }
 
-function updateRecentContextLogs() {
-    const container = document.getElementById('recentContextLogs');
+function updateTodayContextLogs() {
+    const container = document.getElementById('todayContextLogs');
+    const countElement = document.getElementById('contextCount');
     if (!container) return;
     
-    const recentLogs = userData.contextLogs.slice(0, 5);
-    container.innerHTML = recentLogs.map(log => `
-        <div class="flex items-center justify-between text-xs">
-            <div class="flex items-center space-x-2">
-                <span>${log.emoji}</span>
-                <span>${log.label}</span>
-            </div>
-            <span class="text-primacy-light">${log.timeAgo}</span>
+    const today = new Date().toDateString();
+    const todayLogs = userData.contextLogs.filter(log => 
+        new Date(log.timestamp).toDateString() === today
+    );
+    
+    if (countElement) {
+        countElement.textContent = `${todayLogs.length} factor${todayLogs.length !== 1 ? 's' : ''} logged`;
+    }
+    
+    if (todayLogs.length === 0) {
+        container.innerHTML = '<p class="text-xs text-primacy-light italic">No context logged yet today</p>';
+        return;
+    }
+    
+    // Group by category
+    const grouped = {};
+    todayLogs.forEach(log => {
+        if (!grouped[log.category]) {
+            grouped[log.category] = [];
+        }
+        grouped[log.category].push(log);
+    });
+    
+    container.innerHTML = Object.entries(grouped).map(([category, logs]) => `
+        <div class="flex items-start space-x-2 text-xs">
+            <span>${contextCategories[category].emoji}</span>
+            <span class="text-primacy-light">${logs.map(l => l.label).join(', ')}</span>
         </div>
     `).join('');
 }
 
-function showContextLogFeedback(item) {
+function showContextLogFeedback(item, alreadyLogged = false) {
     // Create temporary feedback element
     const feedback = document.createElement('div');
     feedback.className = 'fixed bottom-4 right-4 p-4 glass-effect rounded-lg animate-slide-up z-50';
-    feedback.innerHTML = `
-        <div class="flex items-center space-x-3">
-            <span class="text-2xl">${item.emoji}</span>
-            <div>
-                <div class="font-bold">${item.label} Logged</div>
-                <div class="text-xs text-primacy-light">${contextCategories[item.category].label}</div>
+    
+    if (alreadyLogged) {
+        feedback.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-check-circle text-2xl text-primacy-light"></i>
+                <div>
+                    <div class="font-bold">${item.label}</div>
+                    <div class="text-xs text-primacy-light">Already logged today</div>
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        feedback.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">${item.emoji}</span>
+                <div>
+                    <div class="font-bold">Context Added</div>
+                    <div class="text-xs text-apex-green">AI will factor "${item.label}" into your analysis</div>
+                </div>
+            </div>
+        `;
+    }
     
     document.body.appendChild(feedback);
     
@@ -1428,18 +2166,34 @@ function showContextLogFeedback(item) {
     }, 2000);
 }
 
-function updateCorrelationInsights(category) {
-    // Simulate correlation insight update based on logged context
-    const insights = {
-        sleep: "Sleep pattern logged. Analyzing impact on tomorrow's cognitive performance...",
-        physical: "Physical activity recorded. Calculating recovery needs and HRV impact...",
-        cognitive: "Mental state logged. Adjusting performance predictions...",
-        metabolic: "Metabolic factor recorded. Updating energy balance correlations...",
-        environment: "Environmental factor logged. Assessing physiological adaptation requirements..."
+function processContextForAI(item) {
+    // Simulate AI processing the context data
+    // In production, this would send to backend for ML processing
+    
+    // Update AI Coach if it's open
+    if (currentView === 'aiCoach' && currentTier === 3) {
+        addAICoachContextResponse(item);
+    }
+    
+    // Log for development
+    console.log(`AI Processing: Context "${item.label}" (${item.category}) added to today's dataset for correlation analysis.`);
+}
+
+function addAICoachContextResponse(item) {
+    // Add a contextual response from the AI coach based on logged item
+    const responses = {
+        'late-meal': "I see you had a late meal. Based on your historical data, this typically affects your sleep quality. Consider a lighter breakfast tomorrow to balance your metabolic load.",
+        'caffeine-late': "Late caffeine noted. Your past patterns show this reduces deep sleep by 15-20%. Tomorrow's cognitive performance might be impacted - plan accordingly.",
+        'hiit': "Great HIIT session! Your HRV typically dips for 24-36 hours after high-intensity work. Focus on recovery today.",
+        'cold-exposure': "Cold exposure logged. This usually boosts your alertness for 3-4 hours. Good timing if you have cognitive work planned.",
+        'high-stress': "High stress day noted. Your data shows meditation or breathwork within 2 hours helps normalize your cortisol patterns.",
+        'poor-sleep': "Poor sleep quality logged. I'll adjust today's recommendations for lower intensity activities and suggest a recovery protocol."
     };
     
-    // Could trigger a notification or update UI with new insight
-    console.log(insights[category] || "Context logged successfully.");
+    const response = responses[item.id] || `${item.label} logged. I'll factor this into your performance analysis and upcoming recommendations.`;
+    
+    // This would update the AI coach chat interface with the contextual response
+    console.log(`Kai Mercer: ${response}`);
 }
 
 // Initialize charts when DOM is loaded
