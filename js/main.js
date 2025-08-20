@@ -6,9 +6,79 @@ let userData = {
     cognitiveScores: [],
     wearableData: {},
     correlations: [],
+    contextLogs: [],
     streak: 326,
     totalTests: 0
 };
+
+// Context Log Categories and Colors
+const contextCategories = {
+    sleep: {
+        color: '#0066ff', // Blue
+        emoji: '🟦',
+        label: 'Sleep & Recovery',
+        description: 'Restorative processes, HRV, sleep quality'
+    },
+    physical: {
+        color: '#00ff9d', // Green
+        emoji: '🟩',
+        label: 'Physical Performance',
+        description: 'Strength, endurance, training adaptation'
+    },
+    cognitive: {
+        color: '#ff9500', // Orange
+        emoji: '🟧',
+        label: 'Cognitive & Mood',
+        description: 'Focus, memory, stress resilience, emotional state'
+    },
+    metabolic: {
+        color: '#ff3b30', // Red
+        emoji: '🟥',
+        label: 'Metabolic & Hormonal',
+        description: 'Energy balance, glucose regulation, hormone levels'
+    },
+    environment: {
+        color: '#9b59b6', // Purple
+        emoji: '🟪',
+        label: 'Environment & Stressors',
+        description: 'External factors influencing physiological load'
+    }
+};
+
+// Context Log Items
+const contextLogItems = [
+    // Metabolic & Hormonal
+    { id: 'late-meal', label: 'Late Meal', category: 'metabolic', emoji: '🟥', icon: 'fa-utensils' },
+    { id: 'alcohol', label: 'Alcohol', category: 'metabolic', emoji: '🟥', icon: 'fa-wine-glass' },
+    { id: 'caffeine-late', label: 'Caffeine Late', category: 'metabolic', emoji: '🟥', icon: 'fa-coffee' },
+    { id: 'low-hydration', label: 'Low Hydration', category: 'metabolic', emoji: '🟥', icon: 'fa-tint-slash' },
+    
+    // Physical Performance
+    { id: 'hiit', label: 'High-Intensity Workout', category: 'physical', emoji: '🟩', icon: 'fa-fire' },
+    { id: 'strength', label: 'Strength Training', category: 'physical', emoji: '🟩', icon: 'fa-dumbbell' },
+    { id: 'recovery-day', label: 'Recovery Day', category: 'sleep', emoji: '🟦', icon: 'fa-spa' },
+    
+    // Sleep (Auto-fill for tracker users)
+    { id: 'short-sleep', label: 'Short Sleep', category: 'sleep', emoji: '🟦', icon: 'fa-bed' },
+    { id: 'poor-sleep', label: 'Poor Sleep Quality', category: 'sleep', emoji: '🟦', icon: 'fa-moon' },
+    
+    // Environment & Travel
+    { id: 'travel', label: 'Travel', category: 'environment', emoji: '🟪', icon: 'fa-plane' },
+    { id: 'altitude', label: 'Altitude Change', category: 'environment', emoji: '🟪', icon: 'fa-mountain' },
+    { id: 'sauna', label: 'Sauna / Heat', category: 'environment', emoji: '🟪', icon: 'fa-temperature-high' },
+    { id: 'cold-exposure', label: 'Cold Exposure', category: 'environment', emoji: '🟪', icon: 'fa-snowflake' },
+    
+    // Health & Wellness
+    { id: 'illness', label: 'Illness / Cold', category: 'metabolic', emoji: '🟥', icon: 'fa-virus' },
+    { id: 'injury', label: 'Injury / Pain', category: 'metabolic', emoji: '🟥', icon: 'fa-user-injured' },
+    
+    // Lifestyle & Mental State
+    { id: 'high-stress', label: 'High-Stress Day', category: 'cognitive', emoji: '🟧', icon: 'fa-brain' },
+    { id: 'sex', label: 'Sexual Activity', category: 'cognitive', emoji: '🟧', icon: 'fa-heart' },
+    
+    // Flexible Input
+    { id: 'other', label: 'Other', category: 'environment', emoji: '🟪', icon: 'fa-ellipsis-h' }
+];
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -81,14 +151,18 @@ function enableTierFeatures(tier) {
         }
     }
     
+    // Enable Tier 2 features (Basic Correlations)
+    if (tier >= 2) {
+        // Basic correlations available for Operator
+        updateCorrelationsView(tier);
+    }
+    
     // Enable Protocol features
     if (tier === 3) {
-        // Enable AI Coach, Correlations, Community
-        updateCorrelationsView(true);
+        // Enable AI Coach, Advanced Correlations, Community
         updateAICoachView(true);
         updateCommunityView(true);
     } else {
-        updateCorrelationsView(false);
         updateAICoachView(false);
         updateCommunityView(false);
     }
@@ -132,14 +206,20 @@ function showWearables() {
 }
 
 function showCorrelations() {
-    if (currentTier < 3) {
-        alert('Correlation Engine is available for Protocol Subscribers only. Upgrade to access advanced analytics.');
+    if (currentTier < 2) {
+        alert('Correlation features require an Operator account or higher. Please sign up to access correlation analytics.');
         return;
     }
     hideAllViews();
     document.getElementById('correlationsView').classList.remove('hidden');
     currentView = 'correlations';
-    initializeCorrelationCharts();
+    
+    // Initialize appropriate correlation view based on tier
+    if (currentTier === 2) {
+        initializeBasicCorrelations();
+    } else if (currentTier === 3) {
+        initializeAdvancedCorrelations();
+    }
 }
 
 function showAICoach() {
@@ -388,15 +468,219 @@ function initializeWearableCharts() {
     }
 }
 
-function initializeCorrelationCharts() {
-    // Create correlation matrix visualization
+// Basic Correlations for Tier 2
+function initializeBasicCorrelations() {
     const container = document.getElementById('correlationsContent');
     if (!container) return;
     
     container.innerHTML = `
+        <div class="mb-6 p-4 bg-reset-blue bg-opacity-20 rounded-lg border border-reset-blue">
+            <div class="flex items-center space-x-2 mb-2">
+                <i class="fas fa-info-circle text-reset-blue"></i>
+                <h3 class="text-lg font-bold">Basic Correlation Engine</h3>
+            </div>
+            <p class="text-sm text-primacy-light">Discover patterns between your key metrics. Upgrade to Protocol for advanced context logging and AI insights.</p>
+        </div>
+        
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="glass-effect rounded-xl p-6">
-                <h3 class="text-lg font-bold mb-4">Performance Correlations</h3>
+                <h3 class="text-lg font-bold mb-4">Key Performance Correlations</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-bed text-reset-blue"></i>
+                            <span>Sleep Duration → Next Day Score</span>
+                        </div>
+                        <span class="text-apex-green font-bold">+0.72</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-heartbeat text-reset-blue"></i>
+                            <span>Resting HR → Cognitive Performance</span>
+                        </div>
+                        <span class="text-warning-orange font-bold">-0.58</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-primacy-black rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-running text-reset-blue"></i>
+                            <span>Exercise → Sleep Quality</span>
+                        </div>
+                        <span class="text-apex-green font-bold">+0.64</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4">Weekly Patterns</h3>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="basicCorrelationChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-xl p-6 col-span-full">
+                <h3 class="text-lg font-bold mb-4">Simple Correlation Matrix</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-primacy-mid">
+                                <th class="p-2 text-left">Metric</th>
+                                <th class="p-2 text-center">Sleep</th>
+                                <th class="p-2 text-center">HRV</th>
+                                <th class="p-2 text-center">Exercise</th>
+                                <th class="p-2 text-center">Cognitive</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold">Sleep</td>
+                                <td class="p-2 text-center">1.00</td>
+                                <td class="p-2 text-center text-apex-green">0.68</td>
+                                <td class="p-2 text-center text-apex-green">0.52</td>
+                                <td class="p-2 text-center text-apex-green">0.71</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold">HRV</td>
+                                <td class="p-2 text-center text-apex-green">0.68</td>
+                                <td class="p-2 text-center">1.00</td>
+                                <td class="p-2 text-center text-apex-green">0.45</td>
+                                <td class="p-2 text-center text-apex-green">0.58</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold">Exercise</td>
+                                <td class="p-2 text-center text-apex-green">0.52</td>
+                                <td class="p-2 text-center text-apex-green">0.45</td>
+                                <td class="p-2 text-center">1.00</td>
+                                <td class="p-2 text-center text-warning-orange">0.38</td>
+                            </tr>
+                            <tr class="border-b border-primacy-mid">
+                                <td class="p-2 font-bold">Cognitive</td>
+                                <td class="p-2 text-center text-apex-green">0.71</td>
+                                <td class="p-2 text-center text-apex-green">0.58</td>
+                                <td class="p-2 text-center text-warning-orange">0.38</td>
+                                <td class="p-2 text-center">1.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-primacy-light mt-4">
+                    <i class="fas fa-lock mr-2"></i>
+                    Upgrade to Protocol for advanced correlations with context logging, AI insights, and personalized recommendations.
+                </p>
+            </div>
+        </div>
+    `;
+    
+    // Initialize basic chart
+    setTimeout(() => {
+        const ctx = document.getElementById('basicCorrelationChart');
+        if (ctx && ctx.getContext) {
+            new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Sleep Score',
+                        data: [75, 82, 78, 85, 73, 88, 84],
+                        borderColor: '#0066ff',
+                        tension: 0.4
+                    }, {
+                        label: 'Performance',
+                        data: [72, 85, 76, 88, 70, 92, 82],
+                        borderColor: '#00ff9d',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#f5f5f5' } }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#888' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#888' }
+                        }
+                    }
+                }
+            });
+        }
+    }, 100);
+}
+
+// Advanced Correlations for Tier 3
+function initializeAdvancedCorrelations() {
+    const container = document.getElementById('correlationsContent');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="mb-6 p-4 bg-gradient-to-r from-premium-gold to-warning-orange bg-opacity-20 rounded-lg border border-premium-gold">
+            <div class="flex items-center space-x-2 mb-2">
+                <i class="fas fa-crown text-premium-gold"></i>
+                <h3 class="text-lg font-bold">Advanced Correlation Engine with Context Logging</h3>
+            </div>
+            <p class="text-sm text-primacy-light">AI-powered insights with color-coded physiological system tracking for comprehensive performance optimization.</p>
+        </div>
+        
+        <!-- Context Log Panel -->
+        <div class="glass-effect rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold mb-4">Today's Context Log</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
+                ${Object.entries(contextCategories).map(([key, cat]) => `
+                    <div class="text-center">
+                        <div class="text-2xl mb-1">${cat.emoji}</div>
+                        <div class="text-xs font-bold">${cat.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div class="border-t border-primacy-mid pt-4">
+                <h4 class="text-sm font-bold mb-3">Quick Log Entry</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                    ${contextLogItems.map(item => `
+                        <button onclick="logContext('${item.id}')" class="p-2 bg-primacy-black rounded-lg hover:bg-primacy-mid transition text-xs flex items-center justify-center space-x-1" style="border-left: 3px solid ${contextCategories[item.category].color}">
+                            <i class="fas ${item.icon}"></i>
+                            <span>${item.label}</span>
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="mt-4 p-3 bg-primacy-black rounded-lg">
+                <h4 class="text-sm font-bold mb-2">Recent Logs</h4>
+                <div class="space-y-2" id="recentContextLogs">
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span>🟩</span>
+                            <span>Strength Training</span>
+                        </div>
+                        <span class="text-primacy-light">2 hours ago</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span>🟥</span>
+                            <span>Caffeine Late</span>
+                        </div>
+                        <span class="text-primacy-light">4 hours ago</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span>🟦</span>
+                            <span>Poor Sleep Quality</span>
+                        </div>
+                        <span class="text-primacy-light">This morning</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-effect rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4">System-Based Correlations</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
@@ -447,20 +731,134 @@ function initializeCorrelationCharts() {
                 </div>
             </div>
             
+            <div class="glass-effect rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4">Context-Aware Predictions</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-primacy-black rounded-lg border-l-4" style="border-color: #ff3b30">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold">🟥 Metabolic Alert</span>
+                            <span class="text-xs text-danger-red">High Impact</span>
+                        </div>
+                        <p class="text-sm">Late caffeine + poor sleep pattern detected. Expected 18% cognitive decline tomorrow without intervention.</p>
+                    </div>
+                    
+                    <div class="p-3 bg-primacy-black rounded-lg border-l-4" style="border-color: #00ff9d">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold">🟩 Performance Boost</span>
+                            <span class="text-xs text-apex-green">Positive Trend</span>
+                        </div>
+                        <p class="text-sm">Your strength training + recovery day combo shows +15% HRV improvement pattern.</p>
+                    </div>
+                    
+                    <div class="p-3 bg-primacy-black rounded-lg border-l-4" style="border-color: #9b59b6">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold">🟪 Environmental Factor</span>
+                            <span class="text-xs" style="color: #9b59b6">Monitor</span>
+                        </div>
+                        <p class="text-sm">Cold exposure sessions correlate with 22% faster reaction times within 4 hours.</p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="glass-effect rounded-xl p-6 col-span-full">
-                <h3 class="text-lg font-bold mb-4">Correlation Heatmap</h3>
+                <h3 class="text-lg font-bold mb-4">Physiological System Balance</h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+                    ${Object.entries(contextCategories).map(([key, cat]) => `
+                        <div class="text-center">
+                            <div class="relative">
+                                <svg class="w-24 h-24 mx-auto">
+                                    <circle cx="48" cy="48" r="40" stroke="${cat.color}" stroke-width="8" fill="none" stroke-dasharray="${Math.random() * 150 + 100} 251.2" transform="rotate(-90 48 48)"/>
+                                    <circle cx="48" cy="48" r="40" stroke="#2e2e2e" stroke-width="8" fill="none"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="text-2xl">${cat.emoji}</span>
+                                </div>
+                            </div>
+                            <div class="text-xs mt-2">${cat.label.split(' ')[0]}</div>
+                            <div class="text-lg font-bold" style="color: ${cat.color}">${Math.floor(Math.random() * 30 + 60)}%</div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="p-4 bg-primacy-black rounded-lg">
+                    <h4 class="text-sm font-bold mb-2">Weekly System Load Analysis</h4>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="systemLoadChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-xl p-6 col-span-full">
+                <h3 class="text-lg font-bold mb-4">Advanced Correlation Matrix with Context</h3>
                 <div class="chart-container" style="height: 400px;">
-                    <canvas id="correlationHeatmap"></canvas>
+                    <canvas id="advancedCorrelationHeatmap"></canvas>
                 </div>
             </div>
         </div>
     `;
     
-    // Initialize correlation heatmap
+    // Initialize advanced charts
     setTimeout(() => {
-        const heatmapCtx = document.getElementById('correlationHeatmap');
+        // System Load Chart
+        const systemLoadCtx = document.getElementById('systemLoadChart');
+        if (systemLoadCtx && systemLoadCtx.getContext) {
+            new Chart(systemLoadCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Sleep & Recovery',
+                            data: [70, 65, 80, 75, 70, 85, 82],
+                            backgroundColor: '#0066ff'
+                        },
+                        {
+                            label: 'Physical',
+                            data: [85, 40, 90, 45, 80, 30, 40],
+                            backgroundColor: '#00ff9d'
+                        },
+                        {
+                            label: 'Cognitive',
+                            data: [60, 75, 65, 80, 70, 50, 55],
+                            backgroundColor: '#ff9500'
+                        },
+                        {
+                            label: 'Metabolic',
+                            data: [55, 60, 50, 65, 70, 80, 75],
+                            backgroundColor: '#ff3b30'
+                        },
+                        {
+                            label: 'Environment',
+                            data: [40, 45, 60, 50, 45, 35, 40],
+                            backgroundColor: '#9b59b6'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#888' }
+                        },
+                        y: {
+                            stacked: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#888' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#f5f5f5' } }
+                    }
+                }
+            });
+        }
+        
+        // Advanced Correlation Heatmap
+        const heatmapCtx = document.getElementById('advancedCorrelationHeatmap');
         if (heatmapCtx && heatmapCtx.getContext) {
-            // Create a bubble chart as a heatmap substitute
             new Chart(heatmapCtx.getContext('2d'), {
                 type: 'bubble',
                 data: {
@@ -507,21 +905,21 @@ function initializeCorrelationCharts() {
 }
 
 // Premium Feature Views
-function updateCorrelationsView(isPremium) {
+function updateCorrelationsView(tier) {
     const container = document.getElementById('correlationsContent');
     if (!container) return;
     
-    if (!isPremium) {
+    if (tier < 2) {
         container.innerHTML = `
             <div class="glass-effect rounded-xl p-12 text-center">
                 <i class="fas fa-lock text-6xl text-primacy-light mb-6"></i>
                 <h3 class="text-2xl font-bold mb-4">Unlock Correlation Engine</h3>
                 <p class="text-primacy-light mb-6 max-w-2xl mx-auto">
-                    Discover hidden patterns in your performance data with AI-powered correlation analysis. 
-                    Find out what really drives your peak performance.
+                    Discover patterns in your performance data. Basic correlations available with Operator account, 
+                    advanced AI-powered analysis with context logging available for Protocol Subscribers.
                 </p>
-                <button onclick="showTierSelection()" class="px-6 py-3 bg-gradient-to-r from-premium-gold to-warning-orange text-primacy-black rounded-lg font-bold hover:glow-premium transition">
-                    <i class="fas fa-crown mr-2"></i>Upgrade to Protocol
+                <button onclick="showTierSelection()" class="px-6 py-3 bg-reset-blue text-primacy-black rounded-lg font-bold hover:opacity-90 transition">
+                    <i class="fas fa-user-astronaut mr-2"></i>Sign Up for Operator
                 </button>
             </div>
         `;
@@ -958,6 +1356,90 @@ function simulateReactionTest() {
 function closeTest() {
     document.getElementById('testModal').classList.add('hidden');
     document.getElementById('testContent').innerHTML = '';
+}
+
+// Context Logging Functions
+function logContext(itemId) {
+    const item = contextLogItems.find(i => i.id === itemId);
+    if (!item) return;
+    
+    // Add to user's context logs
+    const logEntry = {
+        id: Date.now(),
+        itemId: itemId,
+        label: item.label,
+        category: item.category,
+        emoji: item.emoji,
+        timestamp: new Date().toISOString(),
+        timeAgo: 'Just now'
+    };
+    
+    userData.contextLogs.unshift(logEntry);
+    
+    // Update recent logs display
+    updateRecentContextLogs();
+    
+    // Show feedback
+    showContextLogFeedback(item);
+    
+    // Trigger correlation recalculation (simulated)
+    setTimeout(() => {
+        updateCorrelationInsights(item.category);
+    }, 500);
+}
+
+function updateRecentContextLogs() {
+    const container = document.getElementById('recentContextLogs');
+    if (!container) return;
+    
+    const recentLogs = userData.contextLogs.slice(0, 5);
+    container.innerHTML = recentLogs.map(log => `
+        <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center space-x-2">
+                <span>${log.emoji}</span>
+                <span>${log.label}</span>
+            </div>
+            <span class="text-primacy-light">${log.timeAgo}</span>
+        </div>
+    `).join('');
+}
+
+function showContextLogFeedback(item) {
+    // Create temporary feedback element
+    const feedback = document.createElement('div');
+    feedback.className = 'fixed bottom-4 right-4 p-4 glass-effect rounded-lg animate-slide-up z-50';
+    feedback.innerHTML = `
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl">${item.emoji}</span>
+            <div>
+                <div class="font-bold">${item.label} Logged</div>
+                <div class="text-xs text-primacy-light">${contextCategories[item.category].label}</div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(feedback);
+    
+    // Remove after animation
+    setTimeout(() => {
+        feedback.style.opacity = '0';
+        feedback.style.transform = 'translateY(20px)';
+        setTimeout(() => feedback.remove(), 300);
+    }, 2000);
+}
+
+function updateCorrelationInsights(category) {
+    // Simulate correlation insight update based on logged context
+    const insights = {
+        sleep: "Sleep pattern logged. Analyzing impact on tomorrow's cognitive performance...",
+        physical: "Physical activity recorded. Calculating recovery needs and HRV impact...",
+        cognitive: "Mental state logged. Adjusting performance predictions...",
+        metabolic: "Metabolic factor recorded. Updating energy balance correlations...",
+        environment: "Environmental factor logged. Assessing physiological adaptation requirements..."
+    };
+    
+    // Could trigger a notification or update UI with new insight
+    console.log(insights[category] || "Context logged successfully.");
 }
 
 // Initialize charts when DOM is loaded
