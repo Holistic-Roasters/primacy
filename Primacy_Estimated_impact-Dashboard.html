@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primacy – 30‑Day Impact Dashboard (Mockup)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --bg:#0b0f13;
+      --panel:#121821;
+      --muted:#8a94a6;
+      --text:#eaf2ff;
+      --accent:#00ff9d; /* APEX green */
+      --accent2:#00c6ff; /* RESET blue */
+      --warn:#ffb020;
+      --good:#00e68a;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background:linear-gradient(180deg, #0b0f13 0%, #0a1119 100%);
+    }
+    header{
+      padding:28px 28px 10px; position:sticky; top:0; background:linear-gradient(180deg, rgba(11,15,19,.96) 0%, rgba(11,15,19,.80) 65%, rgba(11,15,19,0) 100%); backdrop-filter: blur(6px); z-index:5;
+    }
+    .title{
+      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    }
+    .logo{
+      width:42px; height:42px; border-radius:50%; background: radial-gradient(closest-side, var(--accent), transparent 70%), radial-gradient(closest-side, var(--accent2), transparent 70%); box-shadow:0 0 0 2px rgba(255,255,255,.06) inset, 0 8px 24px rgba(0,0,0,.5);
+    }
+    h1{font-size:22px; margin:0; letter-spacing:.3px}
+    .subtitle{color:var(--muted); font-size:13px}
+
+    .controls{
+      display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; padding:16px 0 10px;
+    }
+    .card{
+      background:linear-gradient(180deg, #0f1520, #0e141d); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); box-shadow:var(--shadow);
+    }
+    .panel{ padding:16px 16px; }
+    label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px}
+    select, .toggle, input[type="range"]{
+      width:100%; background:#0c121a; color:var(--text); border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:10px 12px; outline:none;
+    }
+    .row{ display:flex; gap:10px; align-items:center; }
+    .toggle-row{ display:flex; align-items:center; gap:8px; }
+    .hint{font-size:12px; color:var(--muted)}
+
+    .grid{
+      display:grid; gap:16px; padding:16px 28px 28px; grid-template-columns: repeat(12,1fr);
+    }
+    .kpis{ grid-column: span 12; display:grid; gap:16px; grid-template-columns: repeat(12,1fr); }
+    .kpi{ grid-column: span 3; padding:16px; position:relative; overflow:hidden }
+    .kpi h3{margin:0 0 6px; font-size:13px; color:var(--muted)}
+    .kpi .val{ font-size:28px; font-weight:700; letter-spacing:.3px }
+    .kpi .delta{ font-size:12px; margin-top:4px }
+    .kpi::after{content:""; position:absolute; right:-30px; bottom:-30px; width:160px; height:160px; border-radius:50%; background: radial-gradient(closest-side, rgba(0,198,255,.1), transparent 70%), radial-gradient(closest-side, rgba(0,255,157,.12), transparent 70%)}
+
+    .charts{ grid-column: span 12; display:grid; gap:16px; grid-template-columns: repeat(12,1fr); }
+    .chart-card{ grid-column: span 6; padding:16px }
+
+    .footer-note{ grid-column: span 12; color:var(--muted); font-size:12px; line-height:1.4; padding:8px 0 0 }
+
+    @media (max-width: 1100px){ .kpi{grid-column: span 6} .chart-card{grid-column: span 12} }
+    @media (max-width: 680px){ .controls{grid-template-columns: repeat(6,1fr)} .kpi{grid-column: span 12} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>Primacy Protocol Dashboard — 30‑Day Impact (Mockup)</h1>
+        <div class="subtitle">APEX + RESET | Persona‑based outcomes for Deep Sleep %, HRV, Reaction Time, and Productivity Window</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="card panel" style="grid-column: span 4;">
+        <label for="persona">Persona</label>
+        <select id="persona">
+          <option>Biohackers</option>
+          <option>Professionals</option>
+          <option>Creatives</option>
+          <option>Gamers/eSports</option>
+          <option>Athletes</option>
+        </select>
+      </div>
+
+      <div class="card panel" style="grid-column: span 3;">
+        <label for="scenario">Scenario</label>
+        <div class="toggle-row">
+          <input id="scenario" type="checkbox" />
+          <div class="hint"><strong>Conservative</strong> <span style="opacity:.7">/</span> <span>Optimistic</span></div>
+        </div>
+      </div>
+
+      <div class="card panel" style="grid-column: span 5;">
+        <label for="aggr">Improvement Intensity</label>
+        <div class="row">
+          <input id="aggr" type="range" min="0" max="100" value="50" />
+        </div>
+        <div class="hint">Adjusts within the selected range (0 = min, 100 = max)</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="kpis">
+      <div class="card kpi" id="kpi-rt">
+        <h3>Reaction Time (ms) ↓ is better</h3>
+        <div class="val" data-field="rt">—</div>
+        <div class="delta" data-delta="rt">—</div>
+      </div>
+      <div class="card kpi" id="kpi-deep">
+        <h3>Deep Sleep (%)</h3>
+        <div class="val" data-field="deep">—</div>
+        <div class="delta" data-delta="deep">—</div>
+      </div>
+      <div class="card kpi" id="kpi-hrv">
+        <h3>HRV (rMSSD index)</h3>
+        <div class="val" data-field="hrv">—</div>
+        <div class="delta" data-delta="hrv">—</div>
+      </div>
+      <div class="card kpi" id="kpi-prod">
+        <h3>Productivity Window (hrs)</h3>
+        <div class="val" data-field="prod">—</div>
+        <div class="delta" data-delta="prod">—</div>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="card chart-card"><canvas id="chartRt"></canvas></div>
+      <div class="card chart-card"><canvas id="chartDeep"></canvas></div>
+      <div class="card chart-card"><canvas id="chartHRV"></canvas></div>
+      <div class="card chart-card"><canvas id="chartProd"></canvas></div>
+      <div class="footer-note">
+        Notes: This mockup visualizes estimated improvements over 30 days using APEX + RESET. "Conservative" vs "Optimistic" ranges reflect science‑grounded vs marketing‑forward expectations. Individual results vary.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // --- Persona baselines and improvement ranges ---
+    // Each improvement is a % change relative to baseline (except Reaction Time which decreases)
+    const personas = {
+      "Biohackers": {
+        baseline: { rt: 250, deep: 20, hrv: 65, prod: 3.5 },
+        conservative: { rtDec: [10,15], deepInc: [8,15], hrvInc: [5,8], prodInc: [10,15] },
+        optimistic:   { rtDec: [25,35], deepInc: [15,25], hrvInc: [10,15], prodInc: [20,30] }
+      },
+      "Professionals": {
+        baseline: { rt: 270, deep: 18, hrv: 55, prod: 3.0 },
+        conservative: { rtDec: [8,12], deepInc: [10,15], hrvInc: [8,10], prodInc: [10,15] },
+        optimistic:   { rtDec: [15,20], deepInc: [20,20], hrvInc: [12,15], prodInc: [25,25] }
+      },
+      "Creatives": {
+        baseline: { rt: 260, deep: 19, hrv: 58, prod: 3.2 },
+        conservative: { rtDec: [10,15], deepInc: [10,12], hrvInc: [5,8], prodInc: [15,20] },
+        optimistic:   { rtDec: [20,25], deepInc: [15,20], hrvInc: [10,12], prodInc: [30,30] }
+      },
+      "Gamers/eSports": {
+        baseline: { rt: 240, deep: 17, hrv: 60, prod: 3.0 },
+        conservative: { rtDec: [10,15], deepInc: [10,15], hrvInc: [5,8], prodInc: [10,15] },
+        optimistic:   { rtDec: [25,35], deepInc: [20,20], hrvInc: [10,10], prodInc: [20,25] }
+      },
+      "Athletes": {
+        baseline: { rt: 255, deep: 20, hrv: 62, prod: 3.0 },
+        conservative: { rtDec: [8,12], deepInc: [10,15], hrvInc: [8,12], prodInc: [8,12] },
+        optimistic:   { rtDec: [15,20], deepInc: [20,25], hrvInc: [15,20], prodInc: [12,15] }
+      }
+    };
+
+    // Utility: easeOutCubic for smoother curves
+    const ease = t => 1 - Math.pow(1 - t, 3);
+
+    // Generate a 30-day series from baseline to target
+    function series(baseline, target, invert=false){
+      const days = 30; const out = [];
+      for(let d=0; d<=days; d++){
+        const t = ease(d/days);
+        const val = baseline + (target - baseline)*t;
+        out.push(Number(val.toFixed(2)));
+      }
+      return out;
+    }
+
+    // Compute target values from ranges and slider intensity
+    function computeTargets(pConf, optimistic, intensity){
+      const set = optimistic ? pConf.optimistic : pConf.conservative;
+      const pick = ([min,max]) => min + (max - min) * intensity; // percentage
+      // Reaction Time decreases
+      const rtDropPct = pick(set.rtDec) / 100;
+      const deepIncPct = pick(set.deepInc) / 100;
+      const hrvIncPct  = pick(set.hrvInc) / 100;
+      const prodIncPct = pick(set.prodInc) / 100;
+      return {
+        rt:  pConf.baseline.rt * (1 - rtDropPct),
+        deep:pConf.baseline.deep * (1 + deepIncPct),
+        hrv: pConf.baseline.hrv * (1 + hrvIncPct),
+        prod:pConf.baseline.prod * (1 + prodIncPct)
+      };
+    }
+
+    // Charts
+    const ctxRt   = document.getElementById('chartRt');
+    const ctxDeep = document.getElementById('chartDeep');
+    const ctxHRV  = document.getElementById('chartHRV');
+    const ctxProd = document.getElementById('chartProd');
+
+    function makeLine(ctx, label, color){
+      return new Chart(ctx, {
+        type: 'line',
+        data: { labels: Array.from({length:31}, (_,i)=> i), datasets:[{label, data:[], borderColor: color, backgroundColor: color, tension:.35, fill:false}] },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{
+            legend:{labels:{ color:'#cdd6e3'}},
+            tooltip:{ mode:'index', intersect:false, position:'nearest' }
+          },
+          scales:{
+            x:{ ticks:{ color:'#9aa4b2' }, grid:{ color:'rgba(255,255,255,.06)' }, title:{ display:true, text:'Days', color:'#9aa4b2'}},
+            y:{ ticks:{ color:'#9aa4b2' }, grid:{ color:'rgba(255,255,255,.06)' }}
+          }
+        }
+      });
+    }
+
+    const chartRt   = makeLine(ctxRt,   'Reaction Time (ms)',  getComputedStyle(document.documentElement).getPropertyValue('--accent'));
+    const chartDeep = makeLine(ctxDeep, 'Deep Sleep (%)',      getComputedStyle(document.documentElement).getPropertyValue('--accent2'));
+    const chartHRV  = makeLine(ctxHRV,  'HRV (rMSSD index)',   '#8bd0ff');
+    const chartProd = makeLine(ctxProd, 'Productivity (hrs)',  '#b8ffd9');
+
+    function setKPI(id, value, delta, invert=false){
+      const valEl = document.querySelector(`[data-field="${id}"]`);
+      const dEl   = document.querySelector(`[data-delta="${id}"]`);
+      valEl.textContent = value.toFixed(id==='rt'?0:2);
+      const sign = invert ? (delta<0?'+':'−') : (delta>=0?'+':'−');
+      const pct  = Math.abs(delta).toFixed(1)+'%';
+      dEl.textContent = `${sign} ${pct} vs baseline`;
+      dEl.style.color = (invert? delta<0 : delta>=0) ? 'var(--good)' : 'var(--warn)';
+    }
+
+    function update(){
+      const persona = document.getElementById('persona').value;
+      const optimistic = document.getElementById('scenario').checked;
+      const intensity = Number(document.getElementById('aggr').value)/100; // 0..1
+      const conf = personas[persona];
+      const targets = computeTargets(conf, optimistic, intensity);
+
+      // Build series
+      const days = Array.from({length:31}, (_,i)=> i);
+      const rtSeries   = series(conf.baseline.rt, targets.rt, true);
+      const deepSeries = series(conf.baseline.deep, targets.deep);
+      const hrvSeries  = series(conf.baseline.hrv, targets.hrv);
+      const prodSeries = series(conf.baseline.prod, targets.prod);
+
+      // Update charts
+      chartRt.data.labels = days;     chartRt.data.datasets[0].data = rtSeries;   chartRt.update();
+      chartDeep.data.labels = days;   chartDeep.data.datasets[0].data = deepSeries; chartDeep.update();
+      chartHRV.data.labels = days;    chartHRV.data.datasets[0].data = hrvSeries; chartHRV.update();
+      chartProd.data.labels = days;   chartProd.data.datasets[0].data = prodSeries; chartProd.update();
+
+      // Set end-of-period KPIs + deltas
+      const end = 30;
+      const base = conf.baseline;
+      setKPI('rt',   rtSeries[end],   ( (base.rt-rtSeries[end]) / base.rt )*100, true);
+      setKPI('deep', deepSeries[end], ( (deepSeries[end]-base.deep) / base.deep )*100);
+      setKPI('hrv',  hrvSeries[end],  ( (hrvSeries[end]-base.hrv) / base.hrv )*100);
+      setKPI('prod', prodSeries[end], ( (prodSeries[end]-base.prod) / base.prod )*100);
+    }
+
+    // Events
+    document.getElementById('persona').addEventListener('change', update);
+    document.getElementById('scenario').addEventListener('change', update);
+    document.getElementById('aggr').addEventListener('input', update);
+
+    // First paint
+    update();
+  </script>
+</body>
+</html>
