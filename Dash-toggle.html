@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Primacy • Protocol Dashboard — Concept (Customizable)</title>
+<style>
+  :root{
+    --bg:#0a0f14;           /* deep backdrop */
+    --bg-2:#0e1621;
+    --card:#101a27;         /* panels */
+    --ink:#e9f2ff;          /* primary text */
+    --muted:#9bb0c7;        /* secondary */
+    --grid:rgba(255,255,255,.06);
+    --apex:#00ff9d;         /* APEX green */
+    --reset:#00c6ff;        /* RESET blue */
+    --ok:#6cc04a;           /* success */
+    --warn:#ff7f2f;         /* warn */
+    --bad:#ef4e37;          /* danger */
+    --radius:18px;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink); background:
+    radial-gradient(1200px 800px at 15% -10%, rgba(0,198,255,.12), transparent 60%),
+    radial-gradient(1200px 900px at 85% 10%, rgba(0,255,157,.10), transparent 60%),
+    var(--bg);
+  }
+  a{color:var(--reset); text-decoration:none}
+  .shell{max-width:1280px; margin:0 auto; padding:28px}
+
+  header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px}
+  .brand{display:flex; align-items:center; gap:14px}
+  .glyph{width:40px; height:40px; border-radius:12px; background:conic-gradient(from 180deg, var(--apex), var(--reset)); box-shadow:0 0 26px rgba(0,198,255,.25), 0 0 20px rgba(0,255,157,.18)}
+  .title{font-weight:800; letter-spacing:.4px}
+  .subtitle{font-size:13px; color:var(--muted)}
+
+  .actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .btn{appearance:none; border:1px solid rgba(255,255,255,.12); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--ink); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700}
+  .btn.primary{border:0; color:#00131a; background:linear-gradient(90deg, var(--apex), var(--reset)); box-shadow:0 10px 24px rgba(0,0,0,.35)}
+  .btn.small{padding:8px 10px; font-size:12px}
+  .select{appearance:none; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:var(--card); color:var(--ink); padding:10px 12px}
+
+  .grid{display:grid; gap:14px}
+  .grid.core{grid-template-columns: repeat(2, minmax(0,1fr)); margin-top:10px}
+  .grid.modules{grid-template-columns: repeat(12, minmax(0,1fr));}
+  .col-4{grid-column: span 4}
+  .col-6{grid-column: span 6}
+  .col-8{grid-column: span 8}
+  .col-12{grid-column: span 12}
+  @media (max-width: 1100px){ .grid.modules{grid-template-columns: repeat(6, minmax(0,1fr));}.col-8{grid-column: span 6}}
+  @media (max-width: 760px){ .grid.core{grid-template-columns: 1fr}.grid.modules{grid-template-columns: repeat(1, minmax(0,1fr));}.col-4,.col-6,.col-8,.col-12{grid-column:1 / -1}}
+
+  .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow); position:relative}
+  .card .hd{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.06)}
+  .card .hd h3{margin:0; font-size:14px; font-weight:800; letter-spacing:.3px}
+  .muted{color:var(--muted)}
+  .card .bd{padding:14px 16px}
+  .kpi-val{font-size:28px; font-weight:900}
+  .pill{font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.16); color:#bfeaff}
+  .pill.ok{color:var(--ok)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)}
+  .spark{width:100%; height:44px}
+  .ghost{opacity:.8}
+
+  .dragger{cursor:grab; opacity:.6; user-select:none}
+  .drag-over{outline:2px dashed rgba(0,198,255,.6)}
+
+  .x{opacity:.7; border:0; background:transparent; color:var(--muted); font-weight:900; cursor:pointer}
+  .x[disabled]{opacity:.35; cursor:not-allowed}
+
+  .footer-note{font-size:12px; color:var(--muted); margin-top:18px}
+
+  /* Customizer panel */
+  .tray{position:fixed; right:0; top:0; bottom:0; width:380px; background:var(--bg-2); border-left:1px solid rgba(255,255,255,.12); transform:translateX(100%); transition:.25s; box-shadow:-12px 0 30px rgba(0,0,0,.45); z-index:50}
+  .tray.open{transform:none}
+  .tray .hd{padding:16px; border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:space-between}
+  .tray .bd{padding:14px 16px; display:grid; gap:12px}
+  .row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 10px; border:1px solid rgba(255,255,255,.12); border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01))}
+  .switch{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
+  .switch input{appearance:none; width:40px; height:22px; border-radius:999px; background:#263244; position:relative; outline:none; transition:.2s; border:1px solid rgba(255,255,255,.12)}
+  .switch input:checked{background:linear-gradient(90deg, var(--apex), var(--reset))}
+  .switch input:after{content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; background:#0b0f14; border-radius:999px; transition:.2s}
+  .switch input:checked:after{left:20px}
+
+  .preset{display:flex; gap:8px; flex-wrap:wrap}
+  .preset .btn{font-size:12px}
+
+  .hint{font-size:12px; color:#bfeaff}
+  .label{font-size:12px; color:#bfeaff}
+
+  .tiny{font-size:11px}
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="glyph" aria-hidden="true"></div>
+        <div>
+          <div class="title">PRIMACY — Protocol Dashboard</div>
+          <div class="subtitle">Core anchors + user-selected modules • Inspired by T3 Dash • APEX <span style="color:var(--apex)">#00ff9d</span> • RESET <span style="color:var(--reset)">#00c6ff</span></div>
+        </div>
+      </div>
+      <div class="actions">
+        <label class="label">Preset</label>
+        <select id="preset" class="select">
+          <option value="basic">Basic</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+          <option value="custom">Custom</option>
+        </select>
+        <button class="btn" id="editBtn">Customize</button>
+        <button class="btn primary" id="saveBtn">Save layout</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </header>
+
+    <!-- CORE (Non-customizable) -->
+    <section class="card" aria-label="Core section">
+      <div class="hd">
+        <h3>Core (always on)</h3>
+        <div class="tiny muted">HRV baseline & Sleep Score are fixed to preserve cohort comparability</div>
+      </div>
+      <div class="bd">
+        <div class="grid core">
+          <div class="card" id="core-hrv">
+            <div class="hd"><h3>HRV Baseline</h3><span class="pill ok" id="hrvFlag">rising</span></div>
+            <div class="bd">
+              <div class="kpi-val"><span id="hrvVal">62</span> ms</div>
+              <canvas class="spark" id="spHRV"></canvas>
+              <div class="tiny muted">7d avg vs 30d baseline</div>
+            </div>
+          </div>
+          <div class="card" id="core-sleep">
+            <div class="hd"><h3>Sleep Score</h3><span class="pill" id="sleepFlag">—</span></div>
+            <div class="bd">
+              <div class="kpi-val"><span id="sleepVal">85</span> / 100</div>
+              <canvas class="spark" id="spSleep"></canvas>
+              <div class="tiny muted">Last night • efficiency, stages, RHR, RR</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULES (Customizable) -->
+    <section class="card" style="margin-top:14px" aria-label="Custom modules">
+      <div class="hd">
+        <h3>Modules</h3>
+        <div class="tiny muted">Drag to reorder • toggle in Customize</div>
+      </div>
+      <div class="bd">
+        <div id="modulesGrid" class="grid modules"></div>
+        <div class="footer-note">Tip: Start with <strong>Basic</strong>. Add modules as you get comfortable. Your layout is saved locally (and can be persisted to your account backend).</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Customizer Tray -->
+  <aside id="tray" class="tray" aria-label="Customizer panel" aria-hidden="true">
+    <div class="hd">
+      <strong>Customize Dashboard</strong>
+      <button id="closeTray" class="x" aria-label="Close">✕</button>
+    </div>
+    <div class="bd">
+      <div class="preset">
+        <button class="btn small" data-preset="basic">Basic</button>
+        <button class="btn small" data-preset="intermediate">Intermediate</button>
+        <button class="btn small" data-preset="advanced">Advanced</button>
+      </div>
+      <div class="hint">Toggle modules</div>
+      <div id="toggles"></div>
+      <div class="hint">Density</div>
+      <div class="row"><span>Compact cards</span><label class="switch"><input type="checkbox" id="compactToggle"><span>On</span></label></div>
+      <div class="row"><span>Show helper tips</span><label class="switch"><input type="checkbox" id="tipsToggle" checked><span>On</span></label></div>
+      <div class="hint">Data simulation</div>
+      <div class="row"><span>Simulate daily sync</span><label class="switch"><input type="checkbox" id="simToggle" checked><span>On</span></label></div>
+    </div>
+  </aside>
+
+<script>
+/* --------------------------------------------------------
+  Primacy • Protocol Dashboard — Customizable Concept
+  - Single-file HTML/CSS/JS (no external libs)
+  - Core anchors: HRV, Sleep (non-removable)
+  - User modules: toggles + drag-and-drop ordering
+  - LocalStorage persistence of layout
+---------------------------------------------------------*/
+const q = (s, el=document) => el.querySelector(s);
+const qa = (s, el=document) => Array.from(el.querySelectorAll(s));
+
+// Mock wearable streams (90d)
+const mock = {
+  hrv: series(90, 58, i=> 58 + i*0.12 + noise(4)),
+  sleep: series(30, 82, i=> 82 + Math.sin(i/4)*4 + noise(3)),
+  readiness: series(30, 78, i=> 78 + Math.sin(i/5)*6 + noise(2)),
+  load: series(30, 45, i=> 45 + Math.sin(i/3)*12 + noise(5)),
+  glucose: series(24, 110, i=> 110 + Math.sin(i/1.6)*15 + noise(10)), // hourly avg
+  steps: series(14, 9800, i=> 9800 + Math.sin(i/1.8)*2200 + noise(1200)),
+  vo2: series(12, 48, i=> 48 + (i%4===0?0.2:0) + noise(0.1)),
+};
+
+function series(n, start, fn){
+  return new Array(n).fill(0).map((_,i)=>({t:daysAgo(n-i), v:typeof fn==='function'? fn(i): start+i}))
+}
+function noise(a){ return (Math.random()*2-1)*a }
+function daysAgo(n){ const d=new Date(); d.setDate(d.getDate()-n); return d }
+function fmt(n, d=0){ return Number(n).toFixed(d) }
+
+// Core rendering
+function renderCore(){
+  // HRV
+  const last7 = mock.hrv.slice(-7).map(p=>p.v), last30 = mock.hrv.slice(-30).map(p=>p.v);
+  const avg7 = avg(last7), avg30 = avg(last30);
+  q('#hrvVal').textContent = fmt(avg7,0);
+  const flag = avg7>avg30+1 ? ['rising','ok'] : avg7<avg30-1 ? ['falling','bad'] : ['stable','warn'];
+  const el = q('#hrvFlag'); el.textContent=flag[0]; el.className='pill '+flag[1];
+  spark(q('#spHRV'), mock.hrv.map(p=>p.v));
+
+  // Sleep
+  const last = mock.sleep[mock.sleep.length-1].v;
+  q('#sleepVal').textContent = fmt(last,0);
+  const sflag = last>=85?['great','ok'] : last>=75?['ok','warn'] : ['low','bad'];
+  const se = q('#sleepFlag'); se.textContent=sflag[0]; se.className='pill '+sflag[1];
+  spark(q('#spSleep'), mock.sleep.map(p=>p.v));
+}
+
+function avg(a){ return a.reduce((s,v)=>s+v,0)/Math.max(1,a.length) }
+
+function spark(canvas, values){
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = canvas.clientWidth; const h = canvas.height = canvas.clientHeight;
+  ctx.clearRect(0,0,w,h);
+  const min = Math.min(...values), max=Math.max(...values);
+  const y = v=> h - (v-min)/(max-min+1e-9)*h;
+  ctx.lineWidth = 2; ctx.strokeStyle = '#bfeaff';
+  ctx.beginPath(); values.forEach((v,i)=>{ const X = i/(values.length-1)*w, Y=y(v); if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y); });
+  ctx.stroke();
+  const g = ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'rgba(0,198,255,.25)'); g.addColorStop(1,'rgba(0,198,255,0)');
+  ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath(); ctx.fillStyle=g; ctx.fill();
+}
+
+// Module library
+const LIBRARY = [
+  {key:'readiness', name:'Readiness', cols:4, render:modReadiness},
+  {key:'training', name:'Training Load', cols:4, render:modTraining},
+  {key:'glucose', name:'Glucose (CGM)', cols:4, render:modGlucose},
+  {key:'hrzones', name:'HR Zones', cols:6, render:modHRZones},
+  {key:'steps', name:'Steps', cols:4, render:modSteps},
+  {key:'cycle', name:'Menstrual Cycle', cols:6, render:modCycle},
+  {key:'context', name:'Context Logs', cols:6, render:modContext},
+  {key:'labs', name:'Blood Labs', cols:6, render:modLabs},
+  {key:'vo2', name:'VO₂ Max', cols:4, render:modVO2},
+];
+
+// Presets
+const PRESETS = {
+  basic: ['readiness','steps','training'],
+  intermediate: ['readiness','training','hrzones','glucose'],
+  advanced: ['readiness','training','hrzones','glucose','labs','context','vo2','cycle'],
+};
+
+const state = {
+  preset:'basic',
+  compact:false,
+  tips:true,
+  modules:[], // array of keys in order
+};
+
+// Load persisted state
+(function init(){
+  const saved = JSON.parse(localStorage.getItem('primacy_dash_layout')||'null');
+  if(saved){ Object.assign(state, saved); }
+  else{ state.modules = PRESETS.basic.slice(); }
+  q('#preset').value = saved? state.preset: 'basic';
+  buildToggles();
+  renderModules();
+  renderCore();
+  bindUI();
+  if(q('#simToggle').checked) setInterval(simulateTick, 4000);
+})();
+
+function bindUI(){
+  q('#preset').addEventListener('change', (e)=>{
+    const val = e.target.value; if(val==='custom') return; applyPreset(val); openTray(false);
+  });
+  q('#editBtn').addEventListener('click', ()=> openTray(true));
+  q('#closeTray').addEventListener('click', ()=> openTray(false));
+  qa('[data-preset]').forEach(btn=> btn.addEventListener('click', ()=> applyPreset(btn.dataset.preset)) );
+  q('#saveBtn').addEventListener('click', saveLayout);
+  q('#resetBtn').addEventListener('click', ()=>{ localStorage.removeItem('primacy_dash_layout'); location.reload(); });
+  q('#compactToggle').checked = state.compact; q('#compactToggle').addEventListener('change', (e)=>{ state.compact=e.target.checked; document.body.classList.toggle('compact', state.compact); saveLayout(true); });
+  q('#tipsToggle').checked = state.tips; q('#tipsToggle').addEventListener('change', (e)=>{ state.tips=e.target.checked; saveLayout(true); renderModules(); });
+  q('#simToggle').addEventListener('change', ()=>{/* no-op placeholder */});
+}
+
+function openTray(show){
+  q('#tray').classList.toggle('open', !!show); q('#tray').setAttribute('aria-hidden', show? 'false':'true');
+}
+
+function applyPreset(name){
+  state.preset = name; state.modules = PRESETS[name].slice(); q('#preset').value = name; renderModules(); saveLayout(true);
+}
+
+function buildToggles(){
+  const box = q('#toggles'); box.innerHTML='';
+  LIBRARY.forEach(mod=>{
+    const row = document.createElement('div'); row.className='row';
+    row.innerHTML = `<span>${mod.name}</span><label class="switch"><input type="checkbox" ${state.modules.includes(mod.key)?'checked':''} data-key="${mod.key}"><span>On</span></label>`;
+    row.querySelector('input').addEventListener('change', (e)=>{
+      const k = e.target.dataset.key;
+      if(e.target.checked){ if(!state.modules.includes(k)) state.modules.push(k); }
+      else{ state.modules = state.modules.filter(x=>x!==k); }
+      state.preset='custom'; q('#preset').value='custom'; renderModules(); saveLayout(true);
+    });
+    box.appendChild(row);
+  });
+}
+
+function renderModules(){
+  const grid = q('#modulesGrid'); grid.innerHTML='';
+  state.modules.forEach(key=>{
+    const def = LIBRARY.find(m=>m.key===key); if(!def) return;
+    const card = document.createElement('div'); card.className=`card col-${def.cols}`; card.setAttribute('draggable','true'); card.dataset.key=key;
+    card.innerHTML = `<div class="hd"><h3>${def.name}</h3><div><span class="dragger" title="Drag">↕</span> <button class="x" aria-label="Remove">✕</button></div></div><div class="bd"></div>`;
+    const closeBtn = card.querySelector('.x'); closeBtn.addEventListener('click', ()=>{ state.modules = state.modules.filter(k=>k!==key); state.preset='custom'; renderModules(); buildToggles(); saveLayout(true); });
+    def.render(card.querySelector('.bd'));
+    // DnD
+    card.addEventListener('dragstart', onDragStart);
+    card.addEventListener('dragover', onDragOver);
+    card.addEventListener('drop', onDrop);
+    card.addEventListener('dragleave', e=> e.currentTarget.classList.remove('drag-over'));
+    grid.appendChild(card);
+  });
+  buildToggles();
+}
+
+let dragKey=null;
+function onDragStart(e){ dragKey = e.currentTarget.dataset.key; e.dataTransfer.setData('text/plain', dragKey); }
+function onDragOver(e){ e.preventDefault(); const target=e.currentTarget; target.classList.add('drag-over'); }
+function onDrop(e){ e.preventDefault(); const target=e.currentTarget; target.classList.remove('drag-over'); const toKey = target.dataset.key; if(!dragKey || !toKey || dragKey===toKey) return; const a=state.modules.indexOf(dragKey), b=state.modules.indexOf(toKey); [state.modules[a], state.modules[b]]=[state.modules[b], state.modules[a]]; renderModules(); saveLayout(true); }
+
+function saveLayout(silent){ localStorage.setItem('primacy_dash_layout', JSON.stringify(state)); if(!silent) toast('Layout saved'); }
+function toast(msg){ console.log(msg); }
+
+// Module renderers (minimal, fast canvases)
+function modReadiness(el){
+  const v = mock.readiness[mock.readiness.length-1].v; el.innerHTML = `<div class="kpi-val">${fmt(v,0)} / 100</div><canvas class="spark" id="spReady"></canvas><div class="tiny muted">Composite from sleep, HRV, load</div>`; spark(el.querySelector('#spReady'), mock.readiness.map(p=>p.v)); }
+
+function modTraining(el){
+  const v = avg(mock.load.slice(-7).map(p=>p.v)); el.innerHTML = `<div class="kpi-val">${fmt(v,0)}</div><canvas class="spark" id="spLoad"></canvas><div class="tiny muted">7d average training load</div>`; spark(el.querySelector('#spLoad'), mock.load.map(p=>p.v)); }
+
+function modGlucose(el){
+  const last = mock.glucose[mock.glucose.length-1].v; const tir = 0.86; const gv = 18; el.innerHTML = `<div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap"><div><div class="kpi-val">${fmt(last,0)} mg/dL</div><div class="tiny muted">Latest hourly avg • TIR ${fmt(tir*100,0)}% • GV ${fmt(gv,0)}</div></div><canvas id="donut" width="110" height="110" style="max-width:110px"></canvas></div><canvas class="spark" id="spG"></canvas>`; donut(el.querySelector('#donut'), tir); spark(el.querySelector('#spG'), mock.glucose.map(p=>p.v)); }
+
+function donut(canvas, ratio){
+  const ctx = canvas.getContext('2d'); const w=canvas.width, h=canvas.height, r=Math.min(w,h)/2-6, cx=w/2, cy=h/2;
+  ctx.clearRect(0,0,w,h);
+  // bg
+  ctx.lineWidth=12; ctx.strokeStyle='rgba(255,255,255,.14)'; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+  // arc
+  ctx.strokeStyle = '#7de8ff'; ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*ratio); ctx.stroke();
+  ctx.fillStyle='#bfeaff'; ctx.font='bold 14px Inter, ui-sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(`${fmt(ratio*100,0)}%`, cx, cy);
+}
+
+function modHRZones(el){
+  const z=[12,24,30,22,12]; const total=z.reduce((a,b)=>a+b,0); el.innerHTML = `<div class="kpi-val">${fmt(total,0)} min</div><div class="tiny muted">Time in zones (Z1–Z5, 7d)</div><canvas class="spark" id="spZ"></canvas>`; spark(el.querySelector('#spZ'), z.map((v,i)=> v + (Math.random()*6-3))); }
+
+function modSteps(el){ const v = avg(mock.steps.slice(-7).map(p=>p.v)); el.innerHTML = `<div class="kpi-val">${fmt(v,0)}</div><canvas class="spark" id="spSteps"></canvas><div class="tiny muted">7d avg steps</div>`; spark(el.querySelector('#spSteps'), mock.steps.map(p=>p.v)); }
+
+function modCycle(el){ el.innerHTML = `<div class="kpi-val">Day 16</div><div class="tiny muted">Predicted luteal phase • next cycle in ~12 days</div><div class="tiny muted">(User-controlled • optional module)</div>`; }
+
+function modContext(el){
+  const last30 = 30; const alcohol = 6, late = 8, sauna=4, stress=10; el.innerHTML = `<div style="display:grid; grid-template-columns: repeat(4,1fr); gap:10px"><div class="pill">Alcohol ${alcohol}/${last30}</div><div class="pill">Late meal ${late}/${last30}</div><div class="pill">Sauna/Cold ${sauna}/${last30}</div><div class="pill">High stress ${stress}/${last30}</div></div><div class="tiny muted" style="margin-top:8px">Correlations power AI Coach prompts and trend flags.</div>`;
+}
+
+function modLabs(el){ el.innerHTML = `<div class="kpi-val">Panels: 3</div><div class="tiny muted">Latest: 2025‑06‑15 • HbA1c 5.4% • LDL 118 mg/dL • CRP 1.2 mg/L</div><div class="tiny muted">(Connect labs via Terra • optional)</div>`; }
+
+function modVO2(el){ const v = mock.vo2[mock.vo2.length-1].v; el.innerHTML = `<div class="kpi-val">${fmt(v,1)} ml/kg/min</div><canvas class="spark" id="spVO2"></canvas><div class="tiny muted">12w trend</div>`; spark(el.querySelector('#spVO2'), mock.vo2.map(p=>p.v)); }
+
+// Simulate background tick (for demo feel)
+function simulateTick(){
+  // shift newest values
+  const push = (arr, next)=>{ arr.push({t:new Date(), v:next}); if(arr.length>120) arr.shift(); };
+  const last = a=> a[a.length-1].v;
+  push(mock.hrv, Math.max(40, last(mock.hrv) + noise(2)));
+  push(mock.sleep, Math.max(60, last(mock.sleep) + noise(1)));
+  push(mock.readiness, Math.max(60, last(mock.readiness) + noise(1)));
+  push(mock.load, Math.max(20, last(mock.load) + noise(3)));
+  push(mock.glucose, Math.max(70, last(mock.glucose) + noise(6)));
+  push(mock.steps, Math.max(1000, last(mock.steps) + noise(500)));
+  push(mock.vo2, Math.max(40, last(mock.vo2) + noise(0.05)));
+  renderCore(); qa('#modulesGrid .card').forEach(card=>{ const key=card.dataset.key; const def=LIBRARY.find(m=>m.key===key); def && def.render(card.querySelector('.bd')); });
+}
+</script>
+</body>
+</html>
